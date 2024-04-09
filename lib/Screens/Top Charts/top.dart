@@ -1,37 +1,17 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
-
 import 'package:app_links/app_links.dart';
-import 'package:blackhole/APIs/spotify_api.dart';
-import 'package:blackhole/CustomWidgets/custom_physics.dart';
-import 'package:blackhole/CustomWidgets/drawer.dart';
-import 'package:blackhole/CustomWidgets/empty_screen.dart';
-import 'package:blackhole/CustomWidgets/image_card.dart';
-import 'package:blackhole/Helpers/spotify_country.dart';
-import 'package:blackhole/Helpers/spotify_helper.dart';
-// import 'package:blackhole/Helpers/countrycodes.dart';
-import 'package:blackhole/Screens/Search/search.dart';
-import 'package:blackhole/constants/countrycodes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:xmusic/APIs/spotify_api.dart';
+import 'package:xmusic/CustomWidgets/custom_physics.dart';
+import 'package:xmusic/CustomWidgets/empty_screen.dart';
+import 'package:xmusic/CustomWidgets/image_card.dart';
+import 'package:xmusic/Helpers/spotify_country.dart';
+import 'package:xmusic/Helpers/spotify_helper.dart';
+// import 'package:xmusic/Helpers/countrycodes.dart';
+import 'package:xmusic/Screens/Search/search.dart';
+import 'package:xmusic/constants/countrycodes.dart';
 
 List localSongs = [];
 List globalSongs = [];
@@ -58,8 +38,6 @@ class _TopChartsState extends State<TopCharts>
   @override
   Widget build(BuildContext cntxt) {
     super.build(context);
-    final double screenWidth = MediaQuery.sizeOf(context).width;
-    final bool rotated = MediaQuery.sizeOf(context).height < screenWidth;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -108,7 +86,6 @@ class _TopChartsState extends State<TopCharts>
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
-          leading: rotated ? null : homeDrawer(context: context),
         ),
         body: NotificationListener(
           onNotification: (overscroll) {
@@ -130,7 +107,7 @@ class _TopChartsState extends State<TopCharts>
                 valueListenable: Hive.box('settings').listenable(),
                 builder: (BuildContext context, Box box, Widget? widget) {
                   return TopPage(
-                    type: box.get('region', defaultValue: 'India').toString(),
+                    type: box.get('region', defaultValue: 'Brazil').toString(),
                   );
                 },
               ),
@@ -148,7 +125,7 @@ Future<List> getChartDetails(String accessToken, String type) async {
   final String globalPlaylistId = CountryCodes.localChartCodes['Global']!;
   final String localPlaylistId = CountryCodes.localChartCodes.containsKey(type)
       ? CountryCodes.localChartCodes[type]!
-      : CountryCodes.localChartCodes['India']!;
+      : CountryCodes.localChartCodes['Brazil']!;
   final String playlistId =
       type == 'Global' ? globalPlaylistId : localPlaylistId;
   final List data = [];

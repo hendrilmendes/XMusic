@@ -1,31 +1,13 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
 import 'dart:convert';
 
 import 'package:audiotagger/audiotagger.dart';
 import 'package:audiotagger/models/tag.dart';
-import 'package:blackhole/APIs/spotify_api.dart';
-import 'package:blackhole/Helpers/matcher.dart';
-import 'package:blackhole/Helpers/spotify_helper.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
+import 'package:xmusic/APIs/spotify_api.dart';
+import 'package:xmusic/Helpers/matcher.dart';
+import 'package:xmusic/Helpers/spotify_helper.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Lyrics {
@@ -33,7 +15,10 @@ class Lyrics {
     required String id,
     required String title,
     required String artist,
+    required String album,
+    required String duration,
     required bool saavnHas,
+    int iteration = 0,
   }) async {
     final Map<String, String> result = {
       'lyrics': '',
@@ -42,11 +27,14 @@ class Lyrics {
       'id': id,
     };
 
-    Logger.root.info('Getting Synced Lyrics');
-    final res = await getSpotifyLyrics(title, artist);
-    result['lyrics'] = res['lyrics']!;
-    result['type'] = res['type']!;
-    result['source'] = res['source']!;
+    if (iteration == 0) {
+      Logger.root.info('Getting Synced Lyrics');
+      // final res = await getSpotifyLyrics(title, artist);
+      final res = await getLrclibLyrics(title, artist, album, duration);
+      result['lyrics'] = res['lyrics']!;
+      result['type'] = res['type']!;
+      result['source'] = res['source']!;
+    }
     if (result['lyrics'] == '') {
       Logger.root.info('Synced Lyrics, not found. Getting text lyrics');
       if (saavnHas) {
@@ -59,7 +47,10 @@ class Lyrics {
             id: id,
             title: title,
             artist: artist,
+            album: album,
+            duration: duration,
             saavnHas: false,
+            iteration: iteration + 1,
           );
           result['lyrics'] = res['lyrics']!;
           result['type'] = res['type']!;
@@ -101,13 +92,62 @@ class Lyrics {
       } else {
         fetchedLyrics = json.decode(rawLyrics[0]) as Map;
       }
-      final String lyrics =
-          fetchedLyrics['lyrics'].toString().replaceAll('<br>', '\n');
+      final String lyrics = fetchedLyrics['lyrics']
+              ?.toString()
+              .replaceAll('<br>', '\n')
+              .replaceAll(RegExp('[ ]{2,}'), ' ') ??
+          '';
       return lyrics;
     } catch (e) {
       Logger.root.severe('Error in getSaavnLyrics', e);
       return '';
     }
+  }
+
+  static Future<Map<String, String>> getLrclibLyrics(
+    String track,
+    String artist,
+    String album,
+    String duration,
+  ) async {
+    final Map<String, String> result = {
+      'lyrics': '',
+      'type': 'lrc',
+      'source': 'Lrclib',
+    };
+
+    final Uri lyricsUrl = Uri.https('lrclib.net', '/api/get', {
+      'track_name': track,
+      'artist_name': artist,
+      'album_name': album,
+      'duration': duration,
+    });
+    final Response res =
+        await get(lyricsUrl, headers: {'Accept': 'application/json'});
+    if (res.statusCode == 200) {
+      final Map lyricsData = await json.decode(res.body) as Map;
+      if (lyricsData['error'] == null) {
+        if (lyricsData['syncedLyrics'] != null &&
+            lyricsData['syncedLyrics'] != '') {
+          result['lyrics'] = lyricsData['syncedLyrics'].toString();
+        } else {
+          result['lyrics'] = lyricsData['plainLyrics']
+                  ?.toString()
+                  .replaceAll(RegExp('[ ]{2,}'), ' ') ??
+              '';
+          result['type'] = 'text';
+        }
+        return result;
+      }
+    } else {
+      if (res.statusCode != 404) {
+        Logger.root.severe(
+          'getLrclibLyrics returned ${res.statusCode}',
+          res.body,
+        );
+      }
+    }
+    return result;
   }
 
   static Future<Map<String, String>> getSpotifyLyrics(
@@ -261,7 +301,7 @@ class Lyrics {
         }
       }
     }
-    return lyrics.trim();
+    return lyrics.trim().replaceAll(RegExp('[ ]{2,}'), ' ');
   }
 
   static Future<String> getOffLyrics(String path) async {
@@ -305,7 +345,7 @@ class Lyrics {
       final String link = await getLyricsLink(title, artist);
       Logger.root.info('Found Musixmatch Lyrics Link: $link');
       final String lyrics = await scrapLink(link);
-      return lyrics;
+      return lyrics.replaceAll(RegExp('[ ]{2,}'), ' ');
     } catch (e) {
       Logger.root.severe('Error in getMusixMatchLyrics', e);
       return '';

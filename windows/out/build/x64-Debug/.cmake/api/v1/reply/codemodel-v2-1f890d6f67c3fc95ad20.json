@@ -113,7 +113,7 @@
 						0,
 						1
 					],
-					"name" : "blackhole",
+					"name" : "xmusic",
 					"targetIndexes" : 
 					[
 						1,
@@ -178,9 +178,9 @@
 			[
 				{
 					"directoryIndex" : 2,
-					"id" : "blackhole::@056c4f61b0156d1d9b06",
-					"jsonFile" : "target-blackhole-Debug-97a0c777659970d44c25.json",
-					"name" : "blackhole",
+					"id" : "xmusic::@056c4f61b0156d1d9b06",
+					"jsonFile" : "target-xmusic-Debug-97a0c777659970d44c25.json",
+					"name" : "xmusic",
 					"projectIndex" : 1
 				},
 				{
@@ -231,8 +231,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "E:/GitHub/blackhole/windows/out/build/x64-Debug",
-		"source" : "E:/GitHub/blackhole/windows"
+		"build" : "E:/GitHub/xmusic/windows/out/build/x64-Debug",
+		"source" : "E:/GitHub/xmusic/windows"
 	},
 	"version" : 
 	{

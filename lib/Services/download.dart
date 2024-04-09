@@ -1,30 +1,8 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
 import 'dart:io';
 
 import 'package:audiotagger/audiotagger.dart';
 import 'package:audiotagger/models/tag.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/Helpers/lyrics.dart';
-import 'package:blackhole/Services/ext_storage_provider.dart';
-import 'package:blackhole/Services/youtube_services.dart';
 // import 'package:ffmpeg_kit_flutter_audio/ffmpeg_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +14,10 @@ import 'package:logging/logging.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+// import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/Helpers/lyrics.dart';
+import 'package:xmusic/Services/ext_storage_provider.dart';
+import 'package:xmusic/Services/youtube_services.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class Download with ChangeNotifier {
@@ -158,7 +140,7 @@ class Download with ChangeNotifier {
           case 0:
             lastDownloadId = data['id'].toString();
           case 1:
-            downloadSong(context, dlPath, filename, data);
+            downloadSong(dlPath, filename, data);
           case 2:
             while (await File('$dlPath/$filename').exists()) {
               filename = filename.replaceAll('.m4a', ' (1).m4a');
@@ -254,7 +236,7 @@ class Download with ChangeNotifier {
                             onPressed: () async {
                               Navigator.pop(context);
                               Hive.box('downloads').delete(data['id']);
-                              downloadSong(context, dlPath, filename, data);
+                              downloadSong(dlPath, filename, data);
                               rememberOption = 1;
                             },
                             child:
@@ -274,7 +256,7 @@ class Download with ChangeNotifier {
                                     filename.replaceAll('.m4a', ' (1).m4a');
                               }
                               rememberOption = 2;
-                              downloadSong(context, dlPath, filename, data);
+                              downloadSong(dlPath, filename, data);
                             },
                             child: Text(
                               AppLocalizations.of(context)!.yes,
@@ -299,12 +281,11 @@ class Download with ChangeNotifier {
         );
       }
     } else {
-      downloadSong(context, dlPath, filename, data);
+      downloadSong(dlPath, filename, data);
     }
   }
 
   Future<void> downloadSong(
-    BuildContext context,
     String? dlPath,
     String fileName,
     Map data,
@@ -433,7 +414,9 @@ class Download with ChangeNotifier {
             final Map res = await Lyrics.getLyrics(
               id: data['id'].toString(),
               title: data['title'].toString(),
-              artist: data['artist'].toString(),
+              artist: data['artist']?.toString() ?? '',
+              album: data['album']?.toString() ?? '',
+              duration: data['duration']?.toString() ?? '180',
               saavnHas: data['has_lyrics'] == 'true',
             );
             lyrics = res['lyrics'].toString();
@@ -496,7 +479,7 @@ class Download with ChangeNotifier {
               genre: data['language'].toString(),
               year: data['year'].toString(),
               lyrics: lyrics,
-              comment: 'BlackHole',
+              comment: 'xmusic',
             );
             Logger.root.info('Started tag editing');
             final tagger = Audiotagger();
@@ -531,7 +514,7 @@ class Download with ChangeNotifier {
                     ? null
                     : int.parse(data['year'].toString()),
                 // lyrics: lyrics,
-                // comment: 'BlackHole',
+                // comment: 'xmusic',
                 // trackNumber: 1,
                 // trackTotal: 12,
                 // discNumber: 1,
@@ -577,11 +560,11 @@ class Download with ChangeNotifier {
         };
         Hive.box('downloads').put(songData['id'].toString(), songData);
 
-        Logger.root.info('Everything done, showing snackbar');
-        ShowSnackBar().showSnackBar(
-          context,
-          '"${data['title']}" ${AppLocalizations.of(context)!.downed}',
-        );
+        Logger.root.info('Everything Done!');
+        // ShowSnackBar().showSnackBar(
+        //   context,
+        //   '"${data['title']}" ${AppLocalizations.of(context)!.downed}',
+        // );
       } else {
         download = true;
         progress = 0.0;

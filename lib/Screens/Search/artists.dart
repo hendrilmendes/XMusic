@@ -1,41 +1,23 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
-import 'package:blackhole/APIs/api.dart';
-import 'package:blackhole/CustomWidgets/artist_like_button.dart';
-import 'package:blackhole/CustomWidgets/bouncy_sliver_scroll_view.dart';
-import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
-import 'package:blackhole/CustomWidgets/download_button.dart';
-import 'package:blackhole/CustomWidgets/empty_screen.dart';
-import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/horizontal_albumlist.dart';
-import 'package:blackhole/CustomWidgets/image_card.dart';
-import 'package:blackhole/CustomWidgets/like_button.dart';
-import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
-import 'package:blackhole/Models/url_image_generator.dart';
-import 'package:blackhole/Screens/Common/song_list.dart';
-import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:xmusic/APIs/api.dart';
+import 'package:xmusic/CustomWidgets/artist_like_button.dart';
+import 'package:xmusic/CustomWidgets/bouncy_sliver_scroll_view.dart';
+import 'package:xmusic/CustomWidgets/copy_clipboard.dart';
+import 'package:xmusic/CustomWidgets/download_button.dart';
+import 'package:xmusic/CustomWidgets/empty_screen.dart';
+import 'package:xmusic/CustomWidgets/gradient_containers.dart';
+import 'package:xmusic/CustomWidgets/horizontal_albumlist.dart';
+import 'package:xmusic/CustomWidgets/image_card.dart';
+import 'package:xmusic/CustomWidgets/like_button.dart';
+import 'package:xmusic/CustomWidgets/playlist_popupmenu.dart';
+import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:xmusic/Models/url_image_generator.dart';
+import 'package:xmusic/Screens/Common/song_list.dart';
+import 'package:xmusic/Services/player_service.dart';
 
 class ArtistSearchPage extends StatefulWidget {
   final Map data;

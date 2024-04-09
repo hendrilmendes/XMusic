@@ -1,32 +1,12 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
-
 import 'dart:math';
 
-import 'package:blackhole/CustomWidgets/drawer.dart';
-import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
-import 'package:blackhole/Screens/Home/saavn.dart';
-import 'package:blackhole/Screens/Search/search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
+import 'package:xmusic/Screens/Home/saavn.dart';
+import 'package:xmusic/Screens/Search/search.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -82,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       BoxConstraints constraints,
                     ) {
                       return FlexibleSpaceBar(
+                        titlePadding: EdgeInsets.zero,
                         // collapseMode: CollapseMode.parallax,
                         background: GestureDetector(
                           onTap: () async {
@@ -108,64 +89,57 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(
                                 height: 60,
                               ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 15.0,
-                                    ),
-                                    child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!
-                                          .homeGreet,
-                                      style: TextStyle(
-                                        letterSpacing: 2,
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.secondary,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
                               Padding(
                                 padding: const EdgeInsets.only(
                                   left: 15.0,
                                 ),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    ValueListenableBuilder(
-                                      valueListenable: Hive.box(
-                                        'settings',
-                                      ).listenable(),
-                                      builder: (
-                                        BuildContext context,
-                                        Box box,
-                                        Widget? child,
-                                      ) {
-                                        return Text(
-                                          (box.get('name') == null ||
-                                                  box.get('name') == '')
-                                              ? 'Guest'
-                                              : box
-                                                  .get(
-                                                    'name',
-                                                  )
-                                                  .split(
-                                                    ' ',
-                                                  )[0]
-                                                  .toString(),
-                                          style: const TextStyle(
-                                            letterSpacing: 2,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        );
-                                      },
+                                    Padding(
+                                      padding: EdgeInsets.zero,
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: AppLocalizations.of(
+                                                context,
+                                              )!
+                                                  .homeGreet,
+                                              style: TextStyle(
+                                                letterSpacing: 2,
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.secondary,
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: (Hive.box(
+                                                            'settings',
+                                                          ).get('name') ==
+                                                          null ||
+                                                      Hive.box(
+                                                            'settings',
+                                                          ).get('name') ==
+                                                          '')
+                                                  ? ' Guest'
+                                                  : ' ${Hive.box(
+                                                      'settings',
+                                                    ).get(
+                                                        'name',
+                                                      ).split(
+                                                        ' ',
+                                                      )[0]}',
+                                              style: const TextStyle(
+                                                letterSpacing: 2,
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -185,7 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   stretch: true,
                   toolbarHeight: 65,
                   title: Align(
-                    alignment: Alignment.centerRight,
                     child: AnimatedBuilder(
                       animation: _scrollController,
                       builder: (context, child) {
@@ -209,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             // margin: EdgeInsets.zero,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(
-                                10.0,
+                                100.0,
                               ),
                               color: Theme.of(context).cardColor,
                               boxShadow: const [
@@ -270,11 +243,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             body: SaavnHomePage(),
           ),
-          if (!rotated)
-            homeDrawer(
-              context: context,
-              padding: const EdgeInsets.only(top: 8.0, left: 4.0),
-            ),
         ],
       ),
     );

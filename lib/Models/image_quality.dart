@@ -1,3 +1,4 @@
+
 enum ImageQuality {
   low._('low'),
   medium._('medium'),

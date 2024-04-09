@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: blackhole
+# Project: xmusic
 # Configurations: Debug
 # =============================================================================
 
@@ -39,7 +39,7 @@ include CMakeFiles\rules.ninja
 # Utility command for install/local
 
 build CMakeFiles\install\local.util: CUSTOM_COMMAND all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -51,7 +51,7 @@ build install\local: phony CMakeFiles\install\local.util
 # Utility command for install
 
 build CMakeFiles\install.util: CUSTOM_COMMAND all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
   DESC = Install the project...
   pool = console
   restat = 1
@@ -63,7 +63,7 @@ build install: phony CMakeFiles\install.util
 # Utility command for edit_cache
 
 build CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -74,7 +74,7 @@ build edit_cache: phony CMakeFiles\edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\blackhole\windows -BE:\GitHub\blackhole\windows\out\build\x64-Debug"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\xmusic\windows -BE:\GitHub\xmusic\windows\out\build\x64-Debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -89,7 +89,7 @@ build list_install_components: phony
 
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
-# E:/GitHub/blackhole/windows/CMakeLists.txt
+# E:/GitHub/xmusic/windows/CMakeLists.txt
 # =============================================================================
 
 # =============================================================================
@@ -151,7 +151,7 @@ build flutter\flutter_wrapper_plugin.lib: CXX_STATIC_LIBRARY_LINKER__flutter_wra
 # Utility command for rebuild_cache
 
 build flutter\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\blackhole\windows -BE:\GitHub\blackhole\windows\out\build\x64-Debug"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\xmusic\windows -BE:\GitHub\xmusic\windows\out\build\x64-Debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -238,7 +238,7 @@ build flutter\flutter_assemble: phony flutter\CMakeFiles\flutter_assemble ..\..\
 # Utility command for install/local
 
 build flutter\CMakeFiles\install\local.util: CUSTOM_COMMAND flutter\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -250,7 +250,7 @@ build flutter\install\local: phony flutter\CMakeFiles\install\local.util
 # Utility command for install
 
 build flutter\CMakeFiles\install.util: CUSTOM_COMMAND flutter\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
   DESC = Install the project...
   pool = console
   restat = 1
@@ -262,7 +262,7 @@ build flutter\install: phony flutter\CMakeFiles\install.util
 # Utility command for edit_cache
 
 build flutter\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -273,7 +273,7 @@ build flutter\edit_cache: phony flutter\CMakeFiles\edit_cache.util
 # Custom command for ..\..\..\flutter\ephemeral\flutter_windows.dll
 
 build ..\..\..\flutter\ephemeral\flutter_windows.dll ..\..\..\flutter\ephemeral\flutter_export.h ..\..\..\flutter\ephemeral\flutter_windows.h ..\..\..\flutter\ephemeral\flutter_messenger.h ..\..\..\flutter\ephemeral\flutter_plugin_registrar.h ..\..\..\flutter\ephemeral\flutter_texture_registrar.h ..\..\..\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc ..\..\..\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc ..\..\..\flutter\ephemeral\cpp_client_wrapper\plugin_registrar.cc ..\..\..\flutter\ephemeral\cpp_client_wrapper\flutter_engine.cc ..\..\..\flutter\ephemeral\cpp_client_wrapper\flutter_view_controller.cc flutter\_phony_: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\Flutter PROJECT_DIR=E:\GitHub\blackhole FLUTTER_ROOT=C:\Flutter FLUTTER_EPHEMERAL_DIR=E:\GitHub\blackhole\windows\flutter\ephemeral PROJECT_DIR=E:\GitHub\blackhole FLUTTER_TARGET=lib\main.dart DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=true PACKAGE_CONFIG=E:\GitHub\blackhole\.dart_tool\package_config.json C:/Flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\flutter && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\Flutter PROJECT_DIR=E:\GitHub\xmusic FLUTTER_ROOT=C:\Flutter FLUTTER_EPHEMERAL_DIR=E:\GitHub\xmusic\windows\flutter\ephemeral PROJECT_DIR=E:\GitHub\xmusic FLUTTER_TARGET=lib\main.dart DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=true PACKAGE_CONFIG=E:\GitHub\xmusic\.dart_tool\package_config.json C:/Flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug"
   DESC = Generating ../../../../flutter/ephemeral/flutter_windows.dll, ../../../../flutter/ephemeral/flutter_export.h, ../../../../flutter/ephemeral/flutter_windows.h, ../../../../flutter/ephemeral/flutter_messenger.h, ../../../../flutter/ephemeral/flutter_plugin_registrar.h, ../../../../flutter/ephemeral/flutter_texture_registrar.h, ../../../../flutter/ephemeral/cpp_client_wrapper/core_implementations.cc, ../../../../flutter/ephemeral/cpp_client_wrapper/standard_codec.cc, ../../../../flutter/ephemeral/cpp_client_wrapper/plugin_registrar.cc, ../../../../flutter/ephemeral/cpp_client_wrapper/flutter_engine.cc, ../../../../flutter/ephemeral/cpp_client_wrapper/flutter_view_controller.cc, _phony_
 
 
@@ -284,7 +284,7 @@ build flutter\CMakeFiles\flutter_assemble: phony ..\..\..\flutter\ephemeral\flut
 
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
-# E:/GitHub/blackhole/windows/CMakeLists.txt
+# E:/GitHub/xmusic/windows/CMakeLists.txt
 # =============================================================================
 
 
@@ -294,105 +294,105 @@ build flutter\CMakeFiles\flutter_assemble: phony ..\..\..\flutter\ephemeral\flut
 build runner\list_install_components: phony
 
 # =============================================================================
-# Object build statements for EXECUTABLE target blackhole
+# Object build statements for EXECUTABLE target xmusic
 
 
 #############################################
-# Order-only phony target for blackhole
+# Order-only phony target for xmusic
 
-build cmake_object_order_depends_target_blackhole: phony || cmake_object_order_depends_target_flutter_wrapper_app cmake_object_order_depends_target_libwinmedia_plugin cmake_object_order_depends_target_url_launcher_windows_plugin flutter\flutter_assemble
+build cmake_object_order_depends_target_xmusic: phony || cmake_object_order_depends_target_flutter_wrapper_app cmake_object_order_depends_target_libwinmedia_plugin cmake_object_order_depends_target_url_launcher_windows_plugin flutter\flutter_assemble
 
-build runner\CMakeFiles\blackhole.dir\flutter_window.cpp.obj: CXX_COMPILER__blackhole_Debug ..\..\..\runner\flutter_window.cpp || cmake_object_order_depends_target_blackhole
+build runner\CMakeFiles\xmusic.dir\flutter_window.cpp.obj: CXX_COMPILER__xmusic_Debug ..\..\..\runner\flutter_window.cpp || cmake_object_order_depends_target_xmusic
   DEFINES = -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /W4 /WX /wd\"4100\" /EHsc -std:c++17
   INCLUDES = -I..\..\..\ -I..\..\..\flutter\ephemeral -I..\..\..\flutter\ephemeral\cpp_client_wrapper\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\libwinmedia\windows\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\url_launcher_windows\windows\include
-  OBJECT_DIR = runner\CMakeFiles\blackhole.dir
-  OBJECT_FILE_DIR = runner\CMakeFiles\blackhole.dir
-  TARGET_COMPILE_PDB = runner\CMakeFiles\blackhole.dir\
-  TARGET_PDB = runner\blackhole.pdb
+  OBJECT_DIR = runner\CMakeFiles\xmusic.dir
+  OBJECT_FILE_DIR = runner\CMakeFiles\xmusic.dir
+  TARGET_COMPILE_PDB = runner\CMakeFiles\xmusic.dir\
+  TARGET_PDB = runner\xmusic.pdb
 
-build runner\CMakeFiles\blackhole.dir\main.cpp.obj: CXX_COMPILER__blackhole_Debug ..\..\..\runner\main.cpp || cmake_object_order_depends_target_blackhole
+build runner\CMakeFiles\xmusic.dir\main.cpp.obj: CXX_COMPILER__xmusic_Debug ..\..\..\runner\main.cpp || cmake_object_order_depends_target_xmusic
   DEFINES = -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /W4 /WX /wd\"4100\" /EHsc -std:c++17
   INCLUDES = -I..\..\..\ -I..\..\..\flutter\ephemeral -I..\..\..\flutter\ephemeral\cpp_client_wrapper\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\libwinmedia\windows\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\url_launcher_windows\windows\include
-  OBJECT_DIR = runner\CMakeFiles\blackhole.dir
-  OBJECT_FILE_DIR = runner\CMakeFiles\blackhole.dir
-  TARGET_COMPILE_PDB = runner\CMakeFiles\blackhole.dir\
-  TARGET_PDB = runner\blackhole.pdb
+  OBJECT_DIR = runner\CMakeFiles\xmusic.dir
+  OBJECT_FILE_DIR = runner\CMakeFiles\xmusic.dir
+  TARGET_COMPILE_PDB = runner\CMakeFiles\xmusic.dir\
+  TARGET_PDB = runner\xmusic.pdb
 
-build runner\CMakeFiles\blackhole.dir\run_loop.cpp.obj: CXX_COMPILER__blackhole_Debug ..\..\..\runner\run_loop.cpp || cmake_object_order_depends_target_blackhole
+build runner\CMakeFiles\xmusic.dir\run_loop.cpp.obj: CXX_COMPILER__xmusic_Debug ..\..\..\runner\run_loop.cpp || cmake_object_order_depends_target_xmusic
   DEFINES = -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /W4 /WX /wd\"4100\" /EHsc -std:c++17
   INCLUDES = -I..\..\..\ -I..\..\..\flutter\ephemeral -I..\..\..\flutter\ephemeral\cpp_client_wrapper\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\libwinmedia\windows\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\url_launcher_windows\windows\include
-  OBJECT_DIR = runner\CMakeFiles\blackhole.dir
-  OBJECT_FILE_DIR = runner\CMakeFiles\blackhole.dir
-  TARGET_COMPILE_PDB = runner\CMakeFiles\blackhole.dir\
-  TARGET_PDB = runner\blackhole.pdb
+  OBJECT_DIR = runner\CMakeFiles\xmusic.dir
+  OBJECT_FILE_DIR = runner\CMakeFiles\xmusic.dir
+  TARGET_COMPILE_PDB = runner\CMakeFiles\xmusic.dir\
+  TARGET_PDB = runner\xmusic.pdb
 
-build runner\CMakeFiles\blackhole.dir\utils.cpp.obj: CXX_COMPILER__blackhole_Debug ..\..\..\runner\utils.cpp || cmake_object_order_depends_target_blackhole
+build runner\CMakeFiles\xmusic.dir\utils.cpp.obj: CXX_COMPILER__xmusic_Debug ..\..\..\runner\utils.cpp || cmake_object_order_depends_target_xmusic
   DEFINES = -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /W4 /WX /wd\"4100\" /EHsc -std:c++17
   INCLUDES = -I..\..\..\ -I..\..\..\flutter\ephemeral -I..\..\..\flutter\ephemeral\cpp_client_wrapper\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\libwinmedia\windows\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\url_launcher_windows\windows\include
-  OBJECT_DIR = runner\CMakeFiles\blackhole.dir
-  OBJECT_FILE_DIR = runner\CMakeFiles\blackhole.dir
-  TARGET_COMPILE_PDB = runner\CMakeFiles\blackhole.dir\
-  TARGET_PDB = runner\blackhole.pdb
+  OBJECT_DIR = runner\CMakeFiles\xmusic.dir
+  OBJECT_FILE_DIR = runner\CMakeFiles\xmusic.dir
+  TARGET_COMPILE_PDB = runner\CMakeFiles\xmusic.dir\
+  TARGET_PDB = runner\xmusic.pdb
 
-build runner\CMakeFiles\blackhole.dir\win32_window.cpp.obj: CXX_COMPILER__blackhole_Debug ..\..\..\runner\win32_window.cpp || cmake_object_order_depends_target_blackhole
+build runner\CMakeFiles\xmusic.dir\win32_window.cpp.obj: CXX_COMPILER__xmusic_Debug ..\..\..\runner\win32_window.cpp || cmake_object_order_depends_target_xmusic
   DEFINES = -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /W4 /WX /wd\"4100\" /EHsc -std:c++17
   INCLUDES = -I..\..\..\ -I..\..\..\flutter\ephemeral -I..\..\..\flutter\ephemeral\cpp_client_wrapper\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\libwinmedia\windows\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\url_launcher_windows\windows\include
-  OBJECT_DIR = runner\CMakeFiles\blackhole.dir
-  OBJECT_FILE_DIR = runner\CMakeFiles\blackhole.dir
-  TARGET_COMPILE_PDB = runner\CMakeFiles\blackhole.dir\
-  TARGET_PDB = runner\blackhole.pdb
+  OBJECT_DIR = runner\CMakeFiles\xmusic.dir
+  OBJECT_FILE_DIR = runner\CMakeFiles\xmusic.dir
+  TARGET_COMPILE_PDB = runner\CMakeFiles\xmusic.dir\
+  TARGET_PDB = runner\xmusic.pdb
 
-build runner\CMakeFiles\blackhole.dir\__\flutter\generated_plugin_registrant.cc.obj: CXX_COMPILER__blackhole_Debug ..\..\..\flutter\generated_plugin_registrant.cc || cmake_object_order_depends_target_blackhole
+build runner\CMakeFiles\xmusic.dir\__\flutter\generated_plugin_registrant.cc.obj: CXX_COMPILER__xmusic_Debug ..\..\..\flutter\generated_plugin_registrant.cc || cmake_object_order_depends_target_xmusic
   DEFINES = -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /W4 /WX /wd\"4100\" /EHsc -std:c++17
   INCLUDES = -I..\..\..\ -I..\..\..\flutter\ephemeral -I..\..\..\flutter\ephemeral\cpp_client_wrapper\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\libwinmedia\windows\include -I..\..\..\flutter\ephemeral\.plugin_symlinks\url_launcher_windows\windows\include
-  OBJECT_DIR = runner\CMakeFiles\blackhole.dir
-  OBJECT_FILE_DIR = runner\CMakeFiles\blackhole.dir\__\flutter
-  TARGET_COMPILE_PDB = runner\CMakeFiles\blackhole.dir\
-  TARGET_PDB = runner\blackhole.pdb
+  OBJECT_DIR = runner\CMakeFiles\xmusic.dir
+  OBJECT_FILE_DIR = runner\CMakeFiles\xmusic.dir\__\flutter
+  TARGET_COMPILE_PDB = runner\CMakeFiles\xmusic.dir\
+  TARGET_PDB = runner\xmusic.pdb
 
-build runner\CMakeFiles\blackhole.dir\Runner.rc.res: RC_COMPILER__blackhole_Debug E$:\GitHub\blackhole\windows\runner\Runner.rc || cmake_object_order_depends_target_blackhole
+build runner\CMakeFiles\xmusic.dir\Runner.rc.res: RC_COMPILER__xmusic_Debug E$:\GitHub\xmusic\windows\runner\Runner.rc || cmake_object_order_depends_target_xmusic
   DEFINES = -DNOMINMAX -DUNICODE -D_DEBUG -D_HAS_EXCEPTIONS=0 -D_UNICODE
-  DEP_FILE = runner\CMakeFiles\blackhole.dir\Runner.rc.res.d
+  DEP_FILE = runner\CMakeFiles\xmusic.dir\Runner.rc.res.d
   FLAGS = -DWIN32 -D_DEBUG
-  INCLUDES = -I E:\GitHub\blackhole\windows -I E:\GitHub\blackhole\windows\flutter\ephemeral -I E:\GitHub\blackhole\windows\flutter\ephemeral\cpp_client_wrapper\include -I E:\GitHub\blackhole\windows\flutter\ephemeral\.plugin_symlinks\libwinmedia\windows\include -I E:\GitHub\blackhole\windows\flutter\ephemeral\.plugin_symlinks\url_launcher_windows\windows\include
-  OBJECT_DIR = runner\CMakeFiles\blackhole.dir
-  OBJECT_FILE_DIR = runner\CMakeFiles\blackhole.dir
-  TARGET_COMPILE_PDB = runner\CMakeFiles\blackhole.dir\
-  TARGET_PDB = runner\blackhole.pdb
+  INCLUDES = -I E:\GitHub\xmusic\windows -I E:\GitHub\xmusic\windows\flutter\ephemeral -I E:\GitHub\xmusic\windows\flutter\ephemeral\cpp_client_wrapper\include -I E:\GitHub\xmusic\windows\flutter\ephemeral\.plugin_symlinks\libwinmedia\windows\include -I E:\GitHub\xmusic\windows\flutter\ephemeral\.plugin_symlinks\url_launcher_windows\windows\include
+  OBJECT_DIR = runner\CMakeFiles\xmusic.dir
+  OBJECT_FILE_DIR = runner\CMakeFiles\xmusic.dir
+  TARGET_COMPILE_PDB = runner\CMakeFiles\xmusic.dir\
+  TARGET_PDB = runner\xmusic.pdb
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target blackhole
+# Link build statements for EXECUTABLE target xmusic
 
 
 #############################################
-# Link the executable runner\blackhole.exe
+# Link the executable runner\xmusic.exe
 
-build runner\blackhole.exe: CXX_EXECUTABLE_LINKER__blackhole_Debug runner\CMakeFiles\blackhole.dir\flutter_window.cpp.obj runner\CMakeFiles\blackhole.dir\main.cpp.obj runner\CMakeFiles\blackhole.dir\run_loop.cpp.obj runner\CMakeFiles\blackhole.dir\utils.cpp.obj runner\CMakeFiles\blackhole.dir\win32_window.cpp.obj runner\CMakeFiles\blackhole.dir\__\flutter\generated_plugin_registrant.cc.obj runner\CMakeFiles\blackhole.dir\Runner.rc.res | flutter\flutter_wrapper_app.lib plugins\libwinmedia\libwinmedia_plugin.lib plugins\url_launcher_windows\url_launcher_windows_plugin.lib ..\..\..\flutter\ephemeral\flutter_windows.dll.lib ..\..\..\runner\runner.exe.manifest || flutter\flutter_assemble flutter\flutter_wrapper_app.lib plugins\libwinmedia\libwinmedia_plugin.dll plugins\url_launcher_windows\url_launcher_windows_plugin.dll
+build runner\xmusic.exe: CXX_EXECUTABLE_LINKER__xmusic_Debug runner\CMakeFiles\xmusic.dir\flutter_window.cpp.obj runner\CMakeFiles\xmusic.dir\main.cpp.obj runner\CMakeFiles\xmusic.dir\run_loop.cpp.obj runner\CMakeFiles\xmusic.dir\utils.cpp.obj runner\CMakeFiles\xmusic.dir\win32_window.cpp.obj runner\CMakeFiles\xmusic.dir\__\flutter\generated_plugin_registrant.cc.obj runner\CMakeFiles\xmusic.dir\Runner.rc.res | flutter\flutter_wrapper_app.lib plugins\libwinmedia\libwinmedia_plugin.lib plugins\url_launcher_windows\url_launcher_windows_plugin.lib ..\..\..\flutter\ephemeral\flutter_windows.dll.lib ..\..\..\runner\runner.exe.manifest || flutter\flutter_assemble flutter\flutter_wrapper_app.lib plugins\libwinmedia\libwinmedia_plugin.dll plugins\url_launcher_windows\url_launcher_windows_plugin.dll
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:windows
   LINK_LIBRARIES = flutter\flutter_wrapper_app.lib  plugins\libwinmedia\libwinmedia_plugin.lib  plugins\url_launcher_windows\url_launcher_windows_plugin.lib  ..\..\..\flutter\ephemeral\flutter_windows.dll.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
   MANIFESTS = ..\..\..\runner\runner.exe.manifest
-  OBJECT_DIR = runner\CMakeFiles\blackhole.dir
+  OBJECT_DIR = runner\CMakeFiles\xmusic.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_COMPILE_PDB = runner\CMakeFiles\blackhole.dir\
-  TARGET_FILE = runner\blackhole.exe
-  TARGET_IMPLIB = runner\blackhole.lib
-  TARGET_PDB = runner\blackhole.pdb
+  TARGET_COMPILE_PDB = runner\CMakeFiles\xmusic.dir\
+  TARGET_FILE = runner\xmusic.exe
+  TARGET_IMPLIB = runner\xmusic.lib
+  TARGET_PDB = runner\xmusic.pdb
 
 
 #############################################
 # Utility command for install/local
 
 build runner\CMakeFiles\install\local.util: CUSTOM_COMMAND runner\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\runner && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\runner && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -404,7 +404,7 @@ build runner\install\local: phony runner\CMakeFiles\install\local.util
 # Utility command for install
 
 build runner\CMakeFiles\install.util: CUSTOM_COMMAND runner\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\runner && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\runner && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
   DESC = Install the project...
   pool = console
   restat = 1
@@ -416,7 +416,7 @@ build runner\install: phony runner\CMakeFiles\install.util
 # Utility command for edit_cache
 
 build runner\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\runner && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\runner && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -427,7 +427,7 @@ build runner\edit_cache: phony runner\CMakeFiles\edit_cache.util
 # Utility command for rebuild_cache
 
 build runner\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\runner && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\blackhole\windows -BE:\GitHub\blackhole\windows\out\build\x64-Debug"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\runner && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\xmusic\windows -BE:\GitHub\xmusic\windows\out\build\x64-Debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -436,7 +436,7 @@ build runner\rebuild_cache: phony runner\CMakeFiles\rebuild_cache.util
 
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
-# E:/GitHub/blackhole/windows/flutter/generated_plugins.cmake
+# E:/GitHub/xmusic/windows/flutter/generated_plugins.cmake
 # =============================================================================
 
 # =============================================================================
@@ -483,7 +483,7 @@ build plugins\libwinmedia\libwinmedia_plugin.dll plugins\libwinmedia\libwinmedia
 # Utility command for install/local
 
 build plugins\libwinmedia\CMakeFiles\install\local.util: CUSTOM_COMMAND plugins\libwinmedia\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -495,7 +495,7 @@ build plugins\libwinmedia\install\local: phony plugins\libwinmedia\CMakeFiles\in
 # Utility command for install
 
 build plugins\libwinmedia\CMakeFiles\install.util: CUSTOM_COMMAND plugins\libwinmedia\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
   DESC = Install the project...
   pool = console
   restat = 1
@@ -507,7 +507,7 @@ build plugins\libwinmedia\install: phony plugins\libwinmedia\CMakeFiles\install.
 # Utility command for edit_cache
 
 build plugins\libwinmedia\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -518,7 +518,7 @@ build plugins\libwinmedia\edit_cache: phony plugins\libwinmedia\CMakeFiles\edit_
 # Utility command for rebuild_cache
 
 build plugins\libwinmedia\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\blackhole\windows -BE:\GitHub\blackhole\windows\out\build\x64-Debug"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\xmusic\windows -BE:\GitHub\xmusic\windows\out\build\x64-Debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -533,7 +533,7 @@ build plugins\libwinmedia\list_install_components: phony
 
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
-# E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows/CMakeLists.txt
+# E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows/CMakeLists.txt
 # =============================================================================
 
 # =============================================================================
@@ -554,11 +554,11 @@ build plugins\libwinmedia\libwinmedia\CMakeFiles\libwinmedia.dir\libwinmedia.cpp
   TARGET_COMPILE_PDB = plugins\libwinmedia\libwinmedia\CMakeFiles\libwinmedia.dir\
   TARGET_PDB = plugins\libwinmedia\libwinmedia\libwinmedia.pdb
 
-build plugins\libwinmedia\libwinmedia\CMakeFiles\libwinmedia.dir\libwinmedia.rc.res: RC_COMPILER__libwinmedia_Debug E$:\GitHub\blackhole\windows\flutter\ephemeral\.plugin_symlinks\libwinmedia\master\libwinmedia.rc || cmake_object_order_depends_target_libwinmedia
+build plugins\libwinmedia\libwinmedia\CMakeFiles\libwinmedia.dir\libwinmedia.rc.res: RC_COMPILER__libwinmedia_Debug E$:\GitHub\xmusic\windows\flutter\ephemeral\.plugin_symlinks\libwinmedia\master\libwinmedia.rc || cmake_object_order_depends_target_libwinmedia
   DEFINES = -DDART_VM -DUNICODE -D_UNICODE -Dlibwinmedia_EXPORTS
   DEP_FILE = plugins\libwinmedia\libwinmedia\CMakeFiles\libwinmedia.dir\libwinmedia.rc.res.d
   FLAGS = -DWIN32 -D_DEBUG
-  INCLUDES = -I E:\GitHub\blackhole\windows\flutter\ephemeral\.plugin_symlinks\libwinmedia\master\external\dart_api
+  INCLUDES = -I E:\GitHub\xmusic\windows\flutter\ephemeral\.plugin_symlinks\libwinmedia\master\external\dart_api
   OBJECT_DIR = plugins\libwinmedia\libwinmedia\CMakeFiles\libwinmedia.dir
   OBJECT_FILE_DIR = plugins\libwinmedia\libwinmedia\CMakeFiles\libwinmedia.dir
   TARGET_COMPILE_PDB = plugins\libwinmedia\libwinmedia\CMakeFiles\libwinmedia.dir\
@@ -590,7 +590,7 @@ build plugins\libwinmedia\libwinmedia\libwinmedia.dll plugins\libwinmedia\libwin
 # Utility command for install/local
 
 build plugins\libwinmedia\libwinmedia\CMakeFiles\install\local.util: CUSTOM_COMMAND plugins\libwinmedia\libwinmedia\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\libwinmedia\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\libwinmedia\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -602,7 +602,7 @@ build plugins\libwinmedia\libwinmedia\install\local: phony plugins\libwinmedia\l
 # Utility command for install
 
 build plugins\libwinmedia\libwinmedia\CMakeFiles\install.util: CUSTOM_COMMAND plugins\libwinmedia\libwinmedia\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\libwinmedia\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\libwinmedia\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
   DESC = Install the project...
   pool = console
   restat = 1
@@ -614,7 +614,7 @@ build plugins\libwinmedia\libwinmedia\install: phony plugins\libwinmedia\libwinm
 # Utility command for edit_cache
 
 build plugins\libwinmedia\libwinmedia\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\libwinmedia\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\libwinmedia\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -625,7 +625,7 @@ build plugins\libwinmedia\libwinmedia\edit_cache: phony plugins\libwinmedia\libw
 # Utility command for rebuild_cache
 
 build plugins\libwinmedia\libwinmedia\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\libwinmedia\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\blackhole\windows -BE:\GitHub\blackhole\windows\out\build\x64-Debug"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\libwinmedia\libwinmedia && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\xmusic\windows -BE:\GitHub\xmusic\windows\out\build\x64-Debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -640,7 +640,7 @@ build plugins\libwinmedia\libwinmedia\list_install_components: phony
 
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
-# E:/GitHub/blackhole/windows/flutter/generated_plugins.cmake
+# E:/GitHub/xmusic/windows/flutter/generated_plugins.cmake
 # =============================================================================
 
 
@@ -648,7 +648,7 @@ build plugins\libwinmedia\libwinmedia\list_install_components: phony
 # Utility command for rebuild_cache
 
 build plugins\url_launcher_windows\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\url_launcher_windows && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\blackhole\windows -BE:\GitHub\blackhole\windows\out\build\x64-Debug"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\url_launcher_windows && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\GitHub\xmusic\windows -BE:\GitHub\xmusic\windows\out\build\x64-Debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -717,7 +717,7 @@ build plugins\url_launcher_windows\url_launcher_windows_plugin.dll plugins\url_l
 # Utility command for install/local
 
 build plugins\url_launcher_windows\CMakeFiles\install\local.util: CUSTOM_COMMAND plugins\url_launcher_windows\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\url_launcher_windows && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\url_launcher_windows && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -729,7 +729,7 @@ build plugins\url_launcher_windows\install\local: phony plugins\url_launcher_win
 # Utility command for install
 
 build plugins\url_launcher_windows\CMakeFiles\install.util: CUSTOM_COMMAND plugins\url_launcher_windows\all
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\url_launcher_windows && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\url_launcher_windows && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -P cmake_install.cmake"
   DESC = Install the project...
   pool = console
   restat = 1
@@ -741,7 +741,7 @@ build plugins\url_launcher_windows\install: phony plugins\url_launcher_windows\C
 # Utility command for edit_cache
 
 build plugins\url_launcher_windows\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\GitHub\blackhole\windows\out\build\x64-Debug\plugins\url_launcher_windows && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D E:\GitHub\xmusic\windows\out\build\x64-Debug\plugins\url_launcher_windows && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -756,9 +756,9 @@ build plugins\url_launcher_windows\list_install_components: phony
 # =============================================================================
 # Target aliases.
 
-build blackhole: phony runner\blackhole.exe
+build xmusic: phony runner\xmusic.exe
 
-build blackhole.exe: phony runner\blackhole.exe
+build xmusic.exe: phony runner\xmusic.exe
 
 build flutter_assemble: phony flutter\flutter_assemble
 
@@ -788,44 +788,44 @@ build url_launcher_windows_plugin.dll: phony plugins\url_launcher_windows\url_la
 # =============================================================================
 
 #############################################
-# Folder: E:/GitHub/blackhole/windows/out/build/x64-Debug
+# Folder: E:/GitHub/xmusic/windows/out/build/x64-Debug
 
 build all: phony flutter\all runner\all plugins\libwinmedia\all plugins\url_launcher_windows\all
 
 # =============================================================================
 
 #############################################
-# Folder: E:/GitHub/blackhole/windows/out/build/x64-Debug/flutter
+# Folder: E:/GitHub/xmusic/windows/out/build/x64-Debug/flutter
 
 build flutter\all: phony flutter\flutter_wrapper_plugin.lib flutter\flutter_wrapper_app.lib
 
 # =============================================================================
 
 #############################################
-# Folder: E:/GitHub/blackhole/windows/out/build/x64-Debug/plugins/libwinmedia
+# Folder: E:/GitHub/xmusic/windows/out/build/x64-Debug/plugins/libwinmedia
 
 build plugins\libwinmedia\all: phony plugins\libwinmedia\libwinmedia_plugin.dll plugins\libwinmedia\libwinmedia\all
 
 # =============================================================================
 
 #############################################
-# Folder: E:/GitHub/blackhole/windows/out/build/x64-Debug/plugins/libwinmedia/libwinmedia
+# Folder: E:/GitHub/xmusic/windows/out/build/x64-Debug/plugins/libwinmedia/libwinmedia
 
 build plugins\libwinmedia\libwinmedia\all: phony plugins\libwinmedia\libwinmedia\libwinmedia.dll
 
 # =============================================================================
 
 #############################################
-# Folder: E:/GitHub/blackhole/windows/out/build/x64-Debug/plugins/url_launcher_windows
+# Folder: E:/GitHub/xmusic/windows/out/build/x64-Debug/plugins/url_launcher_windows
 
 build plugins\url_launcher_windows\all: phony plugins\url_launcher_windows\url_launcher_windows_plugin.dll
 
 # =============================================================================
 
 #############################################
-# Folder: E:/GitHub/blackhole/windows/out/build/x64-Debug/runner
+# Folder: E:/GitHub/xmusic/windows/out/build/x64-Debug/runner
 
-build runner\all: phony runner\blackhole.exe
+build runner\all: phony runner\xmusic.exe
 
 # =============================================================================
 # Built-in targets

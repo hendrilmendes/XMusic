@@ -13,11 +13,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.shadow.blackhole</string>
+	<string>com.github.hendrilmendes.music</string>
 	<key>PROJECT_ID</key>
-	<string>blackhole-6e784</string>
+	<string>xmusic-6e784</string>
 	<key>STORAGE_BUCKET</key>
-	<string>blackhole-6e784.appspot.com</string>
+	<string>xmusic-6e784.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>GOOGLE_APP_ID</key>
 	<string>1:1002304014127:ios:09fec9f7380538ab8843da</string>
 	<key>DATABASE_URL</key>
-	<string>https://blackhole-6e784-default-rtdb.firebaseio.com</string>
+	<string>https://xmusic-6e784-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

@@ -1,11 +1,12 @@
-import 'package:blackhole/CustomWidgets/box_switch_tile.dart';
-import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/Helpers/picker.dart';
-import 'package:blackhole/Services/ext_storage_provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
+import 'package:xmusic/CustomWidgets/gradient_containers.dart';
+import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/Helpers/picker.dart';
+import 'package:xmusic/Services/ext_storage_provider.dart';
 
 class DownloadPage extends StatefulWidget {
   const DownloadPage({super.key});

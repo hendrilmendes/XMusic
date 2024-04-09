@@ -1,21 +1,3 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
 import 'dart:async';
 import 'dart:io';
@@ -23,23 +5,6 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:audio_service/audio_service.dart';
-import 'package:blackhole/CustomWidgets/add_playlist.dart';
-import 'package:blackhole/CustomWidgets/animated_text.dart';
-import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
-import 'package:blackhole/CustomWidgets/download_button.dart';
-import 'package:blackhole/CustomWidgets/empty_screen.dart';
-import 'package:blackhole/CustomWidgets/equalizer.dart';
-import 'package:blackhole/CustomWidgets/like_button.dart';
-import 'package:blackhole/CustomWidgets/seek_bar.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
-import 'package:blackhole/Helpers/audio_service_helper.dart';
-import 'package:blackhole/Helpers/config.dart';
-import 'package:blackhole/Helpers/dominant_color.dart';
-import 'package:blackhole/Helpers/lyrics.dart';
-import 'package:blackhole/Helpers/mediaitem_converter.dart';
-import 'package:blackhole/Screens/Common/song_list.dart';
-import 'package:blackhole/Screens/Search/albums.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,6 +22,23 @@ import 'package:rxdart/rxdart.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:xmusic/CustomWidgets/add_playlist.dart';
+import 'package:xmusic/CustomWidgets/animated_text.dart';
+import 'package:xmusic/CustomWidgets/copy_clipboard.dart';
+import 'package:xmusic/CustomWidgets/download_button.dart';
+import 'package:xmusic/CustomWidgets/empty_screen.dart';
+import 'package:xmusic/CustomWidgets/equalizer.dart';
+import 'package:xmusic/CustomWidgets/like_button.dart';
+import 'package:xmusic/CustomWidgets/seek_bar.dart';
+import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
+import 'package:xmusic/Helpers/audio_service_helper.dart';
+import 'package:xmusic/Helpers/config.dart';
+import 'package:xmusic/Helpers/dominant_color.dart';
+import 'package:xmusic/Helpers/lyrics.dart';
+import 'package:xmusic/Helpers/mediaitem_converter.dart';
+import 'package:xmusic/Screens/Common/song_list.dart';
+import 'package:xmusic/Screens/Search/albums.dart';
 
 class PlayScreen extends StatefulWidget {
   const PlayScreen({super.key});
@@ -656,14 +638,25 @@ class _PlayScreenState extends State<PlayScreen> {
                               ]
                         : Theme.of(context).brightness == Brightness.dark
                             ? [
+                                // Top part
                                 if (gradientType == 'halfDark' ||
-                                    gradientType == 'fullDark')
+                                    gradientType == 'fullDark' ||
+                                    gradientType == 'fullDarkOnly')
                                   value?[1] ?? Colors.grey[900]!
                                 else
                                   value?[0] ?? Colors.grey[900]!,
-                                if (gradientType == 'fullMix')
+                                // Bottom part
+                                if (gradientType == 'fullMix' ||
+                                    gradientType == 'fullMixDarker' ||
+                                    gradientType == 'fullMixBlack' ||
+                                    gradientType == 'fullDarkOnly')
                                   value?[1] ?? Colors.black
                                 else
+                                  Colors.black,
+                                // Extra bottom part incase of full darker and black
+                                if (gradientType == 'fullMixDarker')
+                                  value?[1] ?? Colors.black,
+                                if (gradientType == 'fullMixBlack')
                                   Colors.black,
                               ]
                             : [
@@ -1050,46 +1043,46 @@ class NowPlayingStream extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      if (queue[queueStateIndex + index]
-                              .extras?['addedByAutoplay'] as bool? ??
-                          false)
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(
-                                    AppLocalizations.of(context)!.addedBy,
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                      fontSize: 5.0,
-                                    ),
-                                  ),
-                                ),
-                                RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(
-                                    AppLocalizations.of(context)!.autoplay,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontSize: 8.0,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5.0,
-                            ),
-                          ],
-                        ),
+                      // if (queue[queueStateIndex + index]
+                      //         .extras?['addedByAutoplay'] as bool? ??
+                      //     false)
+                      //   Column(
+                      //     mainAxisAlignment: MainAxisAlignment.end,
+                      //     children: [
+                      //       Row(
+                      //         crossAxisAlignment: CrossAxisAlignment.end,
+                      //         children: [
+                      //           RotatedBox(
+                      //             quarterTurns: 3,
+                      //             child: Text(
+                      //               AppLocalizations.of(context)!.addedBy,
+                      //               textAlign: TextAlign.start,
+                      //               style: const TextStyle(
+                      //                 fontSize: 5.0,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           RotatedBox(
+                      //             quarterTurns: 3,
+                      //             child: Text(
+                      //               AppLocalizations.of(context)!.autoplay,
+                      //               textAlign: TextAlign.start,
+                      //               style: TextStyle(
+                      //                 fontSize: 8.0,
+                      //                 color: Theme.of(context)
+                      //                     .colorScheme
+                      //                     .secondary,
+                      //                 fontWeight: FontWeight.w600,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //       const SizedBox(
+                      //         height: 5.0,
+                      //       ),
+                      //     ],
+                      //   ),
                       Card(
                         elevation: 5,
                         margin: EdgeInsets.zero,
@@ -1223,7 +1216,9 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
             id: widget.mediaItem.id,
             saavnHas: widget.mediaItem.extras?['has_lyrics'] == 'true',
             title: widget.mediaItem.title,
-            artist: widget.mediaItem.artist.toString(),
+            artist: widget.mediaItem.artist?.toString() ?? '',
+            album: widget.mediaItem.album?.toString() ?? '',
+            duration: (widget.mediaItem.duration?.inSeconds ?? 180).toString(),
           ).then((Map value) {
             lyrics['lyrics'] = value['lyrics'];
             lyrics['type'] = value['type'];
@@ -1254,6 +1249,8 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
         saavnHas: widget.mediaItem.extras?['has_lyrics'] == 'true',
         title: widget.mediaItem.title,
         artist: widget.mediaItem.artist.toString(),
+        album: widget.mediaItem.album?.toString() ?? '',
+        duration: (widget.mediaItem.duration?.inSeconds ?? 180).toString(),
       ).then((Map value) {
         if (widget.mediaItem.id != value['id']) {
           done.value = true;
@@ -1305,7 +1302,6 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                         Colors.transparent,
                         Colors.black,
                         Colors.black,
-                        Colors.black,
                         Colors.transparent,
                       ],
                     ).createShader(
@@ -1317,12 +1313,11 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(
-                        vertical: 60,
                         horizontal: 20,
                       ),
                       child: ValueListenableBuilder(
                         valueListenable: done,
-                        child: const CircularProgressIndicator(),
+                        child: const CircularProgressIndicator.adaptive(),
                         builder: (
                           BuildContext context,
                           bool value,
@@ -1344,10 +1339,12 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                                     )
                                   : lyrics['type'] == 'text'
                                       ? SelectableText(
-                                          lyrics['lyrics'].toString(),
+                                          '\n' * 5 +
+                                              lyrics['lyrics'].toString() +
+                                              '\n' * 5,
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
-                                            fontSize: 16.0,
+                                            fontSize: 18.0,
                                           ),
                                         )
                                       : StreamBuilder<Duration>(
@@ -1383,7 +1380,7 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                 ),
                 ValueListenableBuilder(
                   valueListenable: lyricsSource,
-                  child: const CircularProgressIndicator(),
+                  child: const CircularProgressIndicator.adaptive(),
                   builder: (
                     BuildContext context,
                     String value,
@@ -2203,7 +2200,7 @@ class NameNControls extends StatelessWidget {
             margin: EdgeInsets.zero,
             padding: EdgeInsets.zero,
             boxShadow: const [],
-            color: ['fullLight', 'fullMix'].contains(gradientType)
+            color: gradientType.contains('full')
                 ? Theme.of(context).brightness == Brightness.dark
                     ? const Color.fromRGBO(0, 0, 0, 0.05)
                     : const Color.fromRGBO(255, 255, 255, 0.05)

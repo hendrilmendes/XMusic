@@ -1,21 +1,3 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
 import 'dart:async';
 import 'dart:convert';
@@ -32,9 +14,9 @@ class SpotifyApi {
   ];
 
   /// You can signup for spotify developer account and get your own clientID and clientSecret incase you don't want to use these
-  final String clientID = '08de4eaf71904d1b95254fab3015d711';
-  final String clientSecret = '622b4fbad33947c59b95a6ae607de11d';
-  final String redirectUrl = 'blackhole://spotify/auth';
+  final String clientID = '8eff248a586a4650a74dfc6b2b8fdebe';
+  final String clientSecret = '96897c0c02a445f295f769ade99b5292';
+  final String redirectUrl = 'xmusic://spotify/auth';
   final String spotifyApiUrl = 'https://accounts.spotify.com/api';
   final String spotifyApiBaseUrl = 'https://api.spotify.com/v1';
   final String spotifyUserPlaylistEndpoint = '/me/playlists';
@@ -43,6 +25,8 @@ class SpotifyApi {
   final String spotifyFeaturedPlaylistsEndpoint = '/browse/featured-playlists';
   final String spotifyBaseUrl = 'https://accounts.spotify.com';
   final String requestToken = 'https://accounts.spotify.com/api/token';
+  final String playerAccessToken =
+      'https://open.spotify.com/get_access_token?reason=transport&productType=web_player';
 
   String requestAuthorization() =>
       'https://accounts.spotify.com/authorize?client_id=$clientID&response_type=code&redirect_uri=$redirectUrl&scope=${_scopes.join('%20')}';
@@ -111,6 +95,34 @@ class SpotifyApi {
       Logger.root.severe('Error in getting spotify access token: $e');
     }
     return [];
+  }
+
+  Future<Map> getPlayerAccessToken() async {
+    try {
+      final Uri path = Uri.parse(playerAccessToken);
+      final response = await get(
+        path,
+        headers: {
+          'User-Agent':
+              'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36',
+          'Accept': 'application/json',
+          'App-platform': 'WebPlayer',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map result = jsonDecode(response.body) as Map;
+        return result;
+      } else {
+        Logger.root.severe(
+          'Error in getPlayerAccessToken, called: $path, returned: ${response.statusCode}',
+          response.body,
+        );
+      }
+    } catch (e) {
+      Logger.root.severe('Error in getting spotify player access token: $e');
+    }
+    return {};
   }
 
   Future<List> getUserPlaylists(String accessToken) async {

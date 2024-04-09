@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "runner/blackhole.exe"
+			"path" : "runner/xmusic.exe"
 		},
 		{
-			"path" : "runner/blackhole.pdb"
+			"path" : "runner/xmusic.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -172,23 +172,23 @@
 			[
 				{
 					"backtrace" : 13,
-					"path" : "E:/GitHub/blackhole/windows"
+					"path" : "E:/GitHub/xmusic/windows"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral/cpp_client_wrapper/include"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral/cpp_client_wrapper/include"
 				},
 				{
 					"backtrace" : 0,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows/include"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows/include"
 				},
 				{
 					"backtrace" : 0,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/windows/include"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/windows/include"
 				}
 			],
 			"language" : "CXX",
@@ -244,23 +244,23 @@
 			[
 				{
 					"backtrace" : 13,
-					"path" : "E:/GitHub/blackhole/windows"
+					"path" : "E:/GitHub/xmusic/windows"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral/cpp_client_wrapper/include"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral/cpp_client_wrapper/include"
 				},
 				{
 					"backtrace" : 0,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows/include"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows/include"
 				},
 				{
 					"backtrace" : 0,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/windows/include"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/windows/include"
 				}
 			],
 			"language" : "RC",
@@ -289,19 +289,19 @@
 			"id" : "libwinmedia_plugin::@73ce7fa31f0c3a23f323"
 		}
 	],
-	"id" : "blackhole::@056c4f61b0156d1d9b06",
+	"id" : "xmusic::@056c4f61b0156d1d9b06",
 	"install" : 
 	{
 		"destinations" : 
 		[
 			{
 				"backtrace" : 3,
-				"path" : "E:/GitHub/blackhole/windows/out/install/x64-Debug"
+				"path" : "E:/GitHub/xmusic/windows/out/install/x64-Debug"
 			}
 		],
 		"prefix" : 
 		{
-			"path" : "E:/GitHub/blackhole/windows/out/install/x64-Debug"
+			"path" : "E:/GitHub/xmusic/windows/out/install/x64-Debug"
 		}
 	},
 	"link" : 
@@ -342,8 +342,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "blackhole",
-	"nameOnDisk" : "blackhole.exe",
+	"name" : "xmusic",
+	"nameOnDisk" : "xmusic.exe",
 	"paths" : 
 	{
 		"build" : "runner",

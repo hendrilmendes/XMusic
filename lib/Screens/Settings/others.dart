@@ -1,18 +1,19 @@
+
 import 'dart:io';
 
-import 'package:blackhole/CustomWidgets/box_switch_tile.dart';
-import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
-import 'package:blackhole/Helpers/picker.dart';
-import 'package:blackhole/constants/languagecodes.dart';
-import 'package:blackhole/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
+import 'package:xmusic/CustomWidgets/gradient_containers.dart';
+import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
+import 'package:xmusic/Helpers/picker.dart';
+import 'package:xmusic/constants/languagecodes.dart';
+import 'package:xmusic/main.dart';
 
 class OthersPage extends StatefulWidget {
   const OthersPage({super.key});
@@ -29,9 +30,9 @@ class _OthersPageState extends State<OthersPage> {
   List includedExcludedPaths = Hive.box('settings')
       .get('includedExcludedPaths', defaultValue: []) as List;
   String lang =
-      Hive.box('settings').get('lang', defaultValue: 'English') as String;
+      Hive.box('settings').get('lang', defaultValue: 'Portuguese') as String;
   bool useProxy =
-      Hive.box('settings').get('useProxy', defaultValue: false) as bool;
+      Hive.box('settings').get('useProxy', defaultValue: true) as bool;
 
   @override
   Widget build(BuildContext context) {

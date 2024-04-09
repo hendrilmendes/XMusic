@@ -1,33 +1,14 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
-
-import 'package:blackhole/CustomWidgets/box_switch_tile.dart';
-import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/Helpers/backup_restore.dart';
-import 'package:blackhole/Helpers/config.dart';
-import 'package:blackhole/constants/countrycodes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:sizer/sizer.dart';
+import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
+import 'package:xmusic/CustomWidgets/gradient_containers.dart';
+import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/Helpers/backup_restore.dart';
+import 'package:xmusic/Helpers/config.dart';
+import 'package:xmusic/constants/countrycodes.dart';
 
 class PrefScreen extends StatefulWidget {
   const PrefScreen({super.key});
@@ -57,11 +38,11 @@ class _PrefScreenState extends State<PrefScreen> {
   ];
   List<bool> isSelected = [true, false];
   List preferredLanguage = Hive.box('settings')
-      .get('preferredLanguage', defaultValue: ['Hindi'])?.toList() as List;
+      .get('preferredLanguage', defaultValue: ['English'])?.toList() as List;
   String region =
-      Hive.box('settings').get('region', defaultValue: 'India') as String;
+      Hive.box('settings').get('region', defaultValue: 'Brazil') as String;
   bool useProxy =
-      Hive.box('settings').get('useProxy', defaultValue: false) as bool;
+      Hive.box('settings').get('useProxy', defaultValue: true) as bool;
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +182,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(100.0),
                                         color: Colors.grey[900],
                                         boxShadow: const [
                                           BoxShadow(
@@ -401,7 +382,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(100.0),
                                         color: Colors.grey[900],
                                         boxShadow: const [
                                           BoxShadow(
@@ -533,7 +514,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                             .useProxy,
                                       ),
                                       keyName: 'useProxy',
-                                      defaultValue: false,
+                                      defaultValue: true,
                                       contentPadding: EdgeInsets.zero,
                                       onChanged: ({
                                         required bool val,
@@ -563,7 +544,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                       height: 55.0,
                                       decoration: BoxDecoration(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(100.0),
                                         color: Theme.of(context)
                                             .colorScheme
                                             .secondary,

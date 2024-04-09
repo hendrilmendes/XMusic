@@ -1,5 +1,6 @@
-import 'package:blackhole/Models/image_quality.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:xmusic/Models/image_quality.dart';
 
 class UrlImageGetter {
   final List<String?> _imageUrls;

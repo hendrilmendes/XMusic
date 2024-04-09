@@ -39,7 +39,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "e:/GitHub/blackhole/windows/out/build/x64-Debug"
+			"value" : "e:/GitHub/xmusic/windows/out/build/x64-Debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -403,7 +403,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "E:/GitHub/blackhole/windows"
+			"value" : "E:/GitHub/xmusic/windows"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -415,7 +415,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "E:/GitHub/blackhole/windows/out/install/x64-Debug"
+			"value" : "E:/GitHub/xmusic/windows/out/install/x64-Debug"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -599,7 +599,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "blackhole"
+			"value" : "xmusic"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -942,7 +942,7 @@
 			"value" : "FALSE"
 		},
 		{
-			"name" : "blackhole_BINARY_DIR",
+			"name" : "xmusic_BINARY_DIR",
 			"properties" : 
 			[
 				{
@@ -951,10 +951,10 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/out/build/x64-Debug"
+			"value" : "E:/GitHub/xmusic/windows/out/build/x64-Debug"
 		},
 		{
-			"name" : "blackhole_SOURCE_DIR",
+			"name" : "xmusic_SOURCE_DIR",
 			"properties" : 
 			[
 				{
@@ -963,7 +963,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows"
+			"value" : "E:/GitHub/xmusic/windows"
 		},
 		{
 			"name" : "libwinmedia_BINARY_DIR",
@@ -975,7 +975,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/out/build/x64-Debug/plugins/libwinmedia/libwinmedia"
+			"value" : "E:/GitHub/xmusic/windows/out/build/x64-Debug/plugins/libwinmedia/libwinmedia"
 		},
 		{
 			"name" : "libwinmedia_SOURCE_DIR",
@@ -987,7 +987,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/master"
+			"value" : "E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/master"
 		},
 		{
 			"name" : "libwinmedia_flutter_BINARY_DIR",
@@ -999,7 +999,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/out/build/x64-Debug/plugins/libwinmedia"
+			"value" : "E:/GitHub/xmusic/windows/out/build/x64-Debug/plugins/libwinmedia"
 		},
 		{
 			"name" : "libwinmedia_flutter_SOURCE_DIR",
@@ -1011,7 +1011,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows"
+			"value" : "E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows"
 		},
 		{
 			"name" : "runner_BINARY_DIR",
@@ -1023,7 +1023,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/out/build/x64-Debug/runner"
+			"value" : "E:/GitHub/xmusic/windows/out/build/x64-Debug/runner"
 		},
 		{
 			"name" : "runner_SOURCE_DIR",
@@ -1035,7 +1035,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/runner"
+			"value" : "E:/GitHub/xmusic/windows/runner"
 		},
 		{
 			"name" : "url_launcher_windows_BINARY_DIR",
@@ -1047,7 +1047,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/out/build/x64-Debug/plugins/url_launcher_windows"
+			"value" : "E:/GitHub/xmusic/windows/out/build/x64-Debug/plugins/url_launcher_windows"
 		},
 		{
 			"name" : "url_launcher_windows_SOURCE_DIR",
@@ -1059,7 +1059,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/windows"
+			"value" : "E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/windows"
 		},
 		{
 			"name" : "url_launcher_windows_plugin_LIB_DEPENDS",

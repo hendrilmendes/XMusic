@@ -1,21 +1,3 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
 import 'dart:async';
 import 'dart:convert';
@@ -23,12 +5,6 @@ import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
-import 'package:blackhole/APIs/api.dart';
-import 'package:blackhole/Helpers/mediaitem_converter.dart';
-import 'package:blackhole/Helpers/playlist.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
-import 'package:blackhole/Services/isolate_service.dart';
-import 'package:blackhole/Services/yt_music.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -36,6 +12,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:xmusic/APIs/api.dart';
+import 'package:xmusic/Helpers/mediaitem_converter.dart';
+import 'package:xmusic/Helpers/playlist.dart';
+import 'package:xmusic/Screens/Player/audioplayer.dart';
+import 'package:xmusic/Services/isolate_service.dart';
+import 'package:xmusic/Services/ytmusic/yt_music.dart';
 
 class AudioPlayerHandlerImpl extends BaseAudioHandler
     with QueueHandler, SeekHandler
@@ -68,6 +50,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   final BehaviorSubject<List<MediaItem>> _recentSubject =
       BehaviorSubject.seeded(<MediaItem>[]);
   final _playlist = ConcatenatingAudioSource(children: []);
+  final Set<String> currentQueueItems = {};
+
   @override
   final BehaviorSubject<double> volume = BehaviorSubject.seeded(1.0);
   @override
@@ -236,7 +220,11 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                     limit: 15,
                   );
                   Logger.root.info('Recieved recommendations: $res');
-                  refreshLinks.addAll(res);
+                  for (final e in res) {
+                    if (!currentQueueItems.contains(e)) {
+                      refreshLinks.add(e);
+                    }
+                  }
                   if (!jobRunning) {
                     refreshJob();
                   }
@@ -280,6 +268,17 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         _player!.seek(Duration.zero, index: 0);
       }
     });
+    //For autochanging the song from Youtube and is an ios or mac
+    if (Platform.isIOS || Platform.isMacOS) {
+      _player!.positionStream.listen((position) {
+        if (mediaItem.value != null &&
+            mediaItem.value!.genre == 'YouTube' &&
+            position >= mediaItem.value!.duration!) {
+          Logger.root.info('Skipping to next item as duration crossed');
+          skipToNext();
+        }
+      });
+    }
     // Broadcast the current queue.
     _effectiveSequence
         .map(
@@ -313,6 +312,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             });
           } else {
             await _playlist.addAll(_itemsToSources(lastQueue));
+            currentQueueItems.addAll(lastQueue.map((e) => e.id));
             try {
               await _player!
                   .setAudioSource(
@@ -381,6 +381,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   Future<void> refreshLink(Map newData) async {
     Logger.root.info('player | received new link for ${newData['title']}');
+    if (newData['url'] == null) {
+      return;
+    }
     final MediaItem newItem = MediaItemConverter.mapToMediaItem(newData);
     // final String? boxName = mediaItem.extras!['playlistBox']?.toString();
     // if (boxName != null) {
@@ -713,12 +716,14 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     final res = _itemToSource(mediaItem);
     if (res != null) {
       await _playlist.add(res);
+      currentQueueItems.add(mediaItem.id);
     }
   }
 
   @override
   Future<void> addQueueItems(List<MediaItem> mediaItems) async {
     await _playlist.addAll(_itemsToSources(mediaItems));
+    currentQueueItems.addAll(mediaItems.map((e) => e.id));
   }
 
   @override
@@ -726,13 +731,16 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     final res = _itemToSource(mediaItem);
     if (res != null) {
       await _playlist.insert(index, res);
+      currentQueueItems.add(mediaItem.id);
     }
   }
 
   @override
   Future<void> updateQueue(List<MediaItem> newQueue) async {
     await _playlist.clear();
+    currentQueueItems.clear();
     await _playlist.addAll(_itemsToSources(newQueue));
+    currentQueueItems.addAll(newQueue.map((e) => e.id));
     // addLastQueue(newQueue);
     // stationId = '';
     // stationNames = newQueue.map((e) => e.id).toList();
@@ -765,11 +773,14 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   Future<void> removeQueueItem(MediaItem mediaItem) async {
     final index = queue.value.indexOf(mediaItem);
     await _playlist.removeAt(index);
+    currentQueueItems.remove(mediaItem.id);
   }
 
   @override
   Future<void> removeQueueItemAt(int index) async {
     await _playlist.removeAt(index);
+    // won't remove from currentQueueItems
+    // so that same item don't gets added again
   }
 
   @override
@@ -918,6 +929,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       skipToMediaItem(extras!['id'] as String?, extras['index'] as int?);
     }
     return super.customAction(name, extras);
+  }
+
+  bool isPresentInQueue(String id) {
+    return currentQueueItems.contains(id);
   }
 
   Future<Map> getEqParms() async {

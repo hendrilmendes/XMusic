@@ -1,13 +1,14 @@
-import 'package:blackhole/CustomWidgets/box_switch_tile.dart';
-import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/popup.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
-import 'package:blackhole/Helpers/config.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
+import 'package:xmusic/CustomWidgets/gradient_containers.dart';
+import 'package:xmusic/CustomWidgets/popup.dart';
+import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
+import 'package:xmusic/Helpers/config.dart';
 
 class ThemePage extends StatefulWidget {
   final Function? callback;
@@ -29,7 +30,7 @@ class _ThemePageState extends State<ThemePage> {
   Map userThemes =
       Hive.box('settings').get('userThemes', defaultValue: {}) as Map;
   String themeColor =
-      Hive.box('settings').get('themeColor', defaultValue: 'Teal') as String;
+      Hive.box('settings').get('themeColor', defaultValue: 'Blue') as String;
   int colorHue = Hive.box('settings').get('colorHue', defaultValue: 400) as int;
 
   @override
@@ -706,10 +707,10 @@ class _ThemePageState extends State<ThemePage> {
                 currentTheme.switchCardColor('Grey900');
                 cardColor = 'Grey900';
 
-                themeColor = 'White';
+                themeColor = 'Blue';
                 colorHue = 400;
                 currentTheme.switchColor(
-                  'White',
+                  'Blue',
                   colorHue,
                 );
               },
@@ -787,7 +788,7 @@ class _ThemePageState extends State<ThemePage> {
                             : selectedTheme['cardColor'] as String;
 
                         themeColor = themeChoice == deflt
-                            ? 'Teal'
+                            ? 'Blue'
                             : selectedTheme['accentColor'] as String;
                         colorHue = themeChoice == deflt
                             ? 400

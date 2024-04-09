@@ -1,26 +1,9 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
 import 'package:app_links/app_links.dart';
-import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:xmusic/APIs/spotify_api.dart';
 
 Future<String?> retriveAccessToken() async {
   String? accessToken = Hive.box('settings')
@@ -53,6 +36,42 @@ Future<String?> retriveAccessToken() async {
     }
     return accessToken;
   }
+}
+
+Future<String?> retrivePlayerAccessToken() async {
+  final String? spotifyPlayerAccessToken = Hive.box('settings')
+      .get('spotifyPlayerAccessToken', defaultValue: null)
+      ?.toString();
+  final double spotifyPlayerTokenExpireAt = Hive.box('settings')
+      .get('spotifyPlayerTokenExpireAt', defaultValue: 0.0) as double;
+
+  if (spotifyPlayerAccessToken == null) {
+    return fetchAndStoreNewPlayerToken();
+  } else {
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+    if ((currentTime + 100000) >= spotifyPlayerTokenExpireAt) {
+      return fetchAndStoreNewPlayerToken();
+    }
+    return spotifyPlayerAccessToken;
+  }
+}
+
+Future<String?> fetchAndStoreNewPlayerToken() async {
+  Logger.root.info('Fetching new spotify player token');
+  final Map data = await SpotifyApi().getPlayerAccessToken();
+  if (data.isNotEmpty && data['accessToken'] != null) {
+    final spotifyPlayerAccessToken = data['accessToken'].toString();
+    Hive.box('settings')
+        .put('spotifyPlayerAccessToken', spotifyPlayerAccessToken);
+    Hive.box('settings').put(
+      'spotifyPlayerTokenExpireAt',
+      double.parse(
+        data['accessTokenExpirationTimestampMs']?.toString() ?? '0',
+      ),
+    );
+    return spotifyPlayerAccessToken;
+  }
+  return null;
 }
 
 Future<void> callSpotifyFunction({

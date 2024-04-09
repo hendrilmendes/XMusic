@@ -1,17 +1,16 @@
-import 'package:blackhole/CustomWidgets/drawer.dart';
-import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/Screens/Settings/about.dart';
-import 'package:blackhole/Screens/Settings/app_ui.dart';
-import 'package:blackhole/Screens/Settings/backup_and_restore.dart';
-import 'package:blackhole/Screens/Settings/download.dart';
-import 'package:blackhole/Screens/Settings/music_playback.dart';
-import 'package:blackhole/Screens/Settings/others.dart';
-import 'package:blackhole/Screens/Settings/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:xmusic/CustomWidgets/gradient_containers.dart';
+import 'package:xmusic/Screens/Settings/about.dart';
+import 'package:xmusic/Screens/Settings/app_ui.dart';
+import 'package:xmusic/Screens/Settings/backup_and_restore.dart';
+import 'package:xmusic/Screens/Settings/download.dart';
+import 'package:xmusic/Screens/Settings/music_playback.dart';
+import 'package:xmusic/Screens/Settings/others.dart';
+import 'package:xmusic/Screens/Settings/theme.dart';
 
 class NewSettingsPage extends StatefulWidget {
   final Function? callback;
@@ -51,12 +50,6 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           elevation: 0,
           backgroundColor: Colors.transparent,
           centerTitle: true,
-          leading: sectionsToShow.contains('Settings')
-              ? homeDrawer(
-                  context: context,
-                  padding: const EdgeInsets.only(left: 15.0),
-                )
-              : null,
           title: Text(
             AppLocalizations.of(context)!.settings,
             style: TextStyle(
@@ -82,7 +75,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
       margin: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
-          10.0,
+          100.0,
         ),
       ),
       elevation: 2.0,

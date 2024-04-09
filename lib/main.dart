@@ -1,36 +1,5 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
-
 import 'dart:async';
 import 'dart:io';
-
-import 'package:blackhole/Helpers/config.dart';
-import 'package:blackhole/Helpers/handle_native.dart';
-import 'package:blackhole/Helpers/import_export_playlist.dart';
-import 'package:blackhole/Helpers/logging.dart';
-import 'package:blackhole/Helpers/route_handler.dart';
-import 'package:blackhole/Screens/Common/routes.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
-import 'package:blackhole/constants/constants.dart';
-import 'package:blackhole/constants/languagecodes.dart';
-import 'package:blackhole/providers/audio_service_provider.dart';
-import 'package:blackhole/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -44,13 +13,24 @@ import 'package:metadata_god/metadata_god.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:sizer/sizer.dart';
+import 'package:xmusic/Helpers/config.dart';
+import 'package:xmusic/Helpers/handle_native.dart';
+import 'package:xmusic/Helpers/import_export_playlist.dart';
+import 'package:xmusic/Helpers/logging.dart';
+import 'package:xmusic/Helpers/route_handler.dart';
+import 'package:xmusic/Screens/Common/routes.dart';
+import 'package:xmusic/Screens/Player/audioplayer.dart';
+import 'package:xmusic/constants/constants.dart';
+import 'package:xmusic/constants/languagecodes.dart';
+import 'package:xmusic/providers/audio_service_provider.dart';
+import 'package:xmusic/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Paint.enableDithering = true; No longer needed
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    await Hive.initFlutter('BlackHole/Database');
+    await Hive.initFlutter('XMusic/Database');
   } else if (Platform.isIOS) {
     await Hive.initFlutter('Database');
   } else {
@@ -107,8 +87,8 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
     File dbFile = File('$dirPath/$boxName.hive');
     File lockFile = File('$dirPath/$boxName.lock');
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      dbFile = File('$dirPath/BlackHole/$boxName.hive');
-      lockFile = File('$dirPath/BlackHole/$boxName.lock');
+      dbFile = File('$dirPath/XMusic/$boxName.hive');
+      lockFile = File('$dirPath/XMusic/$boxName.lock');
     }
     await dbFile.delete();
     await lockFile.delete();
@@ -144,7 +124,7 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
 //     //   'subtitle',
 //     //   audioHandler?.mediaItem.value?.displaySubtitle,
 //     // );
-//     // await HomeWidget.updateWidget(name: 'BlackHoleMusicWidget');
+//     // await HomeWidget.updateWidget(name: 'XMusicWidget');
 //   }
 // }
 
@@ -159,13 +139,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale = const Locale('en', '');
-  late StreamSubscription _intentTextStreamSubscription;
   late StreamSubscription _intentDataStreamSubscription;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void dispose() {
-    _intentTextStreamSubscription.cancel();
     _intentDataStreamSubscription.cancel();
     super.dispose();
   }
@@ -173,7 +151,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // HomeWidget.setAppGroupId('com.shadow.blackhole');
+    // HomeWidget.setAppGroupId('com.github.hendrilmendes.music');
     // HomeWidget.registerBackgroundCallback(backgroundCallback);
     final String systemLangCode = Platform.localeName.substring(0, 2);
     final String? lang = Hive.box('settings').get('lang') as String?;
@@ -181,7 +159,7 @@ class _MyAppState extends State<MyApp> {
         LanguageCodes.languageCodes.values.contains(systemLangCode)) {
       _locale = Locale(systemLangCode);
     } else {
-      _locale = Locale(LanguageCodes.languageCodes[lang ?? 'English'] ?? 'en');
+      _locale = Locale(LanguageCodes.languageCodes[lang ?? 'Portuguese'] ?? 'pt');
     }
 
     AppTheme.currentTheme.addListener(() {
@@ -189,35 +167,53 @@ class _MyAppState extends State<MyApp> {
     });
 
     if (Platform.isAndroid || Platform.isIOS) {
-      // For sharing or opening urls/text coming from outside the app while the app is in the memory
-      _intentTextStreamSubscription =
-          ReceiveSharingIntent.getTextStream().listen(
-        (String value) {
-          Logger.root.info('Received intent on stream: $value');
-          handleSharedText(value, navigatorKey);
-        },
-        onError: (err) {
-          Logger.root.severe('ERROR in getTextStream', err);
-        },
-      );
-
-      // For sharing or opening urls/text coming from outside the app while the app is closed
-      ReceiveSharingIntent.getInitialText().then(
-        (String? value) {
-          Logger.root.info('Received Intent initially: $value');
-          if (value != null) handleSharedText(value, navigatorKey);
-        },
-        onError: (err) {
-          Logger.root.severe('ERROR in getInitialTextStream', err);
-        },
-      );
-
-      // For sharing files coming from outside the app while the app is in the memory
+      // For sharing or opening urls/text/files coming from outside the app while the app is in the memory
       _intentDataStreamSubscription =
           ReceiveSharingIntent.getMediaStream().listen(
         (List<SharedMediaFile> value) {
           if (value.isNotEmpty) {
+            Logger.root.info('Received intent on stream: $value');
             for (final file in value) {
+              if (file.type == SharedMediaType.text ||
+                  file.type == SharedMediaType.url) {
+                handleSharedText(file.path, navigatorKey);
+              }
+              if (file.type == SharedMediaType.file) {
+                if (file.path.endsWith('.json')) {
+                  final List playlistNames = Hive.box('settings')
+                          .get('playlistNames')
+                          ?.toList() as List? ??
+                      ['Favorite Songs'];
+                  importFilePlaylist(
+                    null,
+                    playlistNames,
+                    path: file.path,
+                    pickFile: false,
+                  ).then(
+                    (value) =>
+                        navigatorKey.currentState?.pushNamed('/playlists'),
+                  );
+                }
+              }
+            }
+          }
+        },
+        onError: (err) {
+          Logger.root.severe('ERROR in getMediaStream', err);
+        },
+      );
+
+      // For sharing files coming from outside the app while the app is closed
+      ReceiveSharingIntent.getInitialMedia()
+          .then((List<SharedMediaFile> value) {
+        if (value.isNotEmpty) {
+          Logger.root.info('Received Intent initially: $value');
+          for (final file in value) {
+            if (file.type == SharedMediaType.text ||
+                file.type == SharedMediaType.url) {
+              handleSharedText(file.path, navigatorKey);
+            }
+            if (file.type == SharedMediaType.file) {
               if (file.path.endsWith('.json')) {
                 final List playlistNames = Hive.box('settings')
                         .get('playlistNames')
@@ -234,33 +230,10 @@ class _MyAppState extends State<MyApp> {
               }
             }
           }
-        },
-        onError: (err) {
-          Logger.root.severe('ERROR in getDataStream', err);
-        },
-      );
-
-      // For sharing files coming from outside the app while the app is closed
-      ReceiveSharingIntent.getInitialMedia()
-          .then((List<SharedMediaFile> value) {
-        if (value.isNotEmpty) {
-          for (final file in value) {
-            if (file.path.endsWith('.json')) {
-              final List playlistNames = Hive.box('settings')
-                      .get('playlistNames')
-                      ?.toList() as List? ??
-                  ['Favorite Songs'];
-              importFilePlaylist(
-                null,
-                playlistNames,
-                path: file.path,
-                pickFile: false,
-              ).then(
-                (value) => navigatorKey.currentState?.pushNamed('/playlists'),
-              );
-            }
-          }
+          ReceiveSharingIntent.reset();
         }
+      }).onError((error, stackTrace) {
+        Logger.root.severe('ERROR in getInitialMedia', error);
       });
     }
   }
@@ -306,8 +279,8 @@ class _MyAppState extends State<MyApp> {
             builder: (context, orientation) {
               SizerUtil.setScreenSize(constraints, orientation);
               return MaterialApp(
-                title: 'BlackHole',
-                restorationScopeId: 'blackhole',
+                title: 'XMusic',
+                restorationScopeId: 'XMusic',
                 debugShowCheckedModeBanner: false,
                 themeMode: AppTheme.themeMode,
                 theme: AppTheme.lightTheme(

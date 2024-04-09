@@ -1,47 +1,69 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
-import 'package:blackhole/APIs/api.dart';
-import 'package:blackhole/APIs/spotify_api.dart';
-import 'package:blackhole/Helpers/audio_query.dart';
-import 'package:blackhole/Helpers/spotify_helper.dart';
-import 'package:blackhole/Screens/Common/song_list.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
-import 'package:blackhole/Screens/Search/search.dart';
-import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
-import 'package:blackhole/Services/player_service.dart';
-import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:xmusic/APIs/api.dart';
+import 'package:xmusic/APIs/spotify_api.dart';
+import 'package:xmusic/Helpers/audio_query.dart';
+import 'package:xmusic/Helpers/matcher.dart';
+import 'package:xmusic/Helpers/spotify_helper.dart';
+import 'package:xmusic/Screens/Common/song_list.dart';
+import 'package:xmusic/Screens/Player/audioplayer.dart';
+import 'package:xmusic/Screens/Search/search.dart';
+import 'package:xmusic/Screens/YouTube/youtube_playlist.dart';
+import 'package:xmusic/Services/player_service.dart';
+import 'package:xmusic/Services/youtube_services.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class HandleRoute {
   static Route? handleRoute(String? url) {
     Logger.root.info('received route url: $url');
     if (url == null) return null;
-    // blackhole specific url
-    // blackhole://blackhole/search?q=stay+with+me
+    // xmusic specific url
+    // xmusic://xmusic/search?q=stay+with+me
     if (url.startsWith('/search')) {
       final uri = Uri.parse(url);
-      final query = uri.queryParameters['q'];
+      final String? title = uri.queryParameters['title']?.toString();
+      final String? artist = uri.queryParameters['artist']?.toString();
+      final bool autoplay = uri.queryParameters['autoplay'] == 'true';
+      final String? query =
+          title != null && artist != null ? '$title - $artist' : title;
+
+      Logger.root.info('received search query: $query');
+
       if (query != null) {
+        if (autoplay) {
+          SaavnAPI()
+              .fetchSongSearchResults(
+            searchQuery: query,
+            count: 3,
+          )
+              .then((Map data) {
+            final List result = data['songs'] as List;
+            final index = findBestMatch(
+              result,
+              {
+                'title': title,
+                'artist': artist ?? '',
+              },
+            );
+            if (index != -1) {
+              // found a song
+              PlayerInvoke.init(
+                songsList: [result[index] as Map],
+                index: 0,
+                isOffline: false,
+              );
+            } else {
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => SearchPage(
+                  query: query,
+                  fromDirectSearch: true,
+                ),
+              );
+            }
+          });
+        }
         return PageRouteBuilder(
           pageBuilder: (_, __, ___) => SearchPage(
             query: query,

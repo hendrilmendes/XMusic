@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.shadow.blackhole">
+    package="com.github.hendrilmendes.music">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,7 +13,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="BlackHole"
+        android:label="XMusic"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
         
@@ -22,7 +22,7 @@
             android:resource="@xml/automotive_app_desc" />
         
         <receiver
-            android:name=".BlackHoleMusicWidget"
+            android:name=".XMusicWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -30,7 +30,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/black_hole_music_widget_info" />
+                android:resource="@xml/xmusic_widget_info" />
         </receiver>
 
         <activity
@@ -82,7 +82,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="blackhole" />
+                <data android:scheme="xmusic" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -91,7 +91,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="blackhole"
+                    android:host="xmusic"
                     android:pathPrefix="/play"
                     android:scheme="app" />
             </intent-filter>

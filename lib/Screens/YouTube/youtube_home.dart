@@ -1,32 +1,12 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
-
-import 'package:blackhole/CustomWidgets/drawer.dart';
-import 'package:blackhole/CustomWidgets/on_hover.dart';
-import 'package:blackhole/Screens/Search/search.dart';
-import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
-import 'package:blackhole/Services/youtube_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:xmusic/CustomWidgets/on_hover.dart';
+import 'package:xmusic/Screens/Search/search.dart';
+import 'package:xmusic/Screens/YouTube/youtube_playlist.dart';
+import 'package:xmusic/Services/youtube_services.dart';
 
 bool status = false;
 List searchedList = Hive.box('cache').get('ytHome', defaultValue: []) as List;
@@ -118,7 +98,7 @@ class _YouTubeState extends State<YouTube>
           children: [
             if (searchedList.isEmpty)
               const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               )
             else
               SingleChildScrollView(
@@ -459,7 +439,7 @@ class _YouTubeState extends State<YouTube>
                 // margin: EdgeInsets.zero,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
-                    10.0,
+                    100.0,
                   ),
                   color: Theme.of(context).cardColor,
                   boxShadow: const [
@@ -473,10 +453,6 @@ class _YouTubeState extends State<YouTube>
                 ),
                 child: Row(
                   children: [
-                    homeDrawer(context: context),
-                    const SizedBox(
-                      width: 5.0,
-                    ),
                     Text(
                       AppLocalizations.of(
                         context,

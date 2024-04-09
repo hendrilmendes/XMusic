@@ -162,11 +162,11 @@
 			[
 				{
 					"backtrace" : 10,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral/cpp_client_wrapper/include"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral/cpp_client_wrapper/include"
 				},
 				{
 					"backtrace" : 11,
-					"path" : "E:/GitHub/blackhole/windows/flutter/ephemeral"
+					"path" : "E:/GitHub/xmusic/windows/flutter/ephemeral"
 				}
 			],
 			"language" : "CXX",

@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = blackhole
+PRODUCT_NAME = xmusic
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.shadow.blackhole
+PRODUCT_BUNDLE_IDENTIFIER = com.github.hendrilmendes.music
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.shadow.blackhole. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.github.hendrilmendes.music. All rights reserved.

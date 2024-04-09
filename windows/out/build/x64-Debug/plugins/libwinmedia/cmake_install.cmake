@@ -1,8 +1,8 @@
-# Install script for directory: E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows
+# Install script for directory: E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/libwinmedia/windows
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "E:/GitHub/blackhole/windows/out/install/x64-Debug")
+  set(CMAKE_INSTALL_PREFIX "E:/GitHub/xmusic/windows/out/install/x64-Debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,6 +34,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("E:/GitHub/blackhole/windows/out/build/x64-Debug/plugins/libwinmedia/libwinmedia/cmake_install.cmake")
+  include("E:/GitHub/xmusic/windows/out/build/x64-Debug/plugins/libwinmedia/libwinmedia/cmake_install.cmake")
 endif()
 

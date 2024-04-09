@@ -1,8 +1,8 @@
-# Install script for directory: E:/GitHub/blackhole/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/windows
+# Install script for directory: E:/GitHub/xmusic/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/windows
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "E:/GitHub/blackhole/windows/out/install/x64-Debug")
+  set(CMAKE_INSTALL_PREFIX "E:/GitHub/xmusic/windows/out/install/x64-Debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

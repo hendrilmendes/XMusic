@@ -1,12 +1,12 @@
-import 'package:blackhole/CustomWidgets/box_switch_tile.dart';
-import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/Screens/Home/saavn.dart' as home_screen;
-import 'package:blackhole/Screens/Top Charts/top.dart' as top_screen;
-import 'package:blackhole/constants/countrycodes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
+import 'package:xmusic/CustomWidgets/gradient_containers.dart';
+import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/Screens/Home/saavn.dart' as home_screen;
+import 'package:xmusic/Screens/Top Charts/top.dart' as top_screen;
+import 'package:xmusic/constants/countrycodes.dart';
 
 class MusicPlaybackPage extends StatefulWidget {
   final Function? callback;
@@ -24,7 +24,7 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
   String ytQuality =
       Hive.box('settings').get('ytQuality', defaultValue: 'Low') as String;
   String region =
-      Hive.box('settings').get('region', defaultValue: 'India') as String;
+      Hive.box('settings').get('region', defaultValue: 'Brazil') as String;
   List<String> languages = [
     'Hindi',
     'English',
@@ -44,7 +44,7 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
     'Assamese',
   ];
   List preferredLanguage = Hive.box('settings')
-      .get('preferredLanguage', defaultValue: ['Hindi'])?.toList() as List;
+      .get('preferredLanguage', defaultValue: ['English'])?.toList() as List;
 
   @override
   Widget build(BuildContext context) {

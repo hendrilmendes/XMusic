@@ -1,43 +1,25 @@
-/*
- *  This file is part of BlackHole (https://github.com/Sangwan5688/BlackHole).
- * 
- * BlackHole is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BlackHole is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Copyright (c) 2021-2023, Ankit Sangwan
- */
 
 import 'dart:io';
 
-import 'package:blackhole/APIs/api.dart';
-import 'package:blackhole/CustomWidgets/collage.dart';
-import 'package:blackhole/CustomWidgets/horizontal_albumlist.dart';
-import 'package:blackhole/CustomWidgets/horizontal_albumlist_separated.dart';
-import 'package:blackhole/CustomWidgets/image_card.dart';
-import 'package:blackhole/CustomWidgets/like_button.dart';
-import 'package:blackhole/CustomWidgets/on_hover.dart';
-import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
-import 'package:blackhole/Helpers/extensions.dart';
-import 'package:blackhole/Helpers/format.dart';
-import 'package:blackhole/Models/image_quality.dart';
-import 'package:blackhole/Screens/Common/song_list.dart';
-import 'package:blackhole/Screens/Library/liked.dart';
-import 'package:blackhole/Screens/Search/artists.dart';
-import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:xmusic/APIs/api.dart';
+import 'package:xmusic/CustomWidgets/collage.dart';
+import 'package:xmusic/CustomWidgets/horizontal_albumlist.dart';
+import 'package:xmusic/CustomWidgets/horizontal_albumlist_separated.dart';
+import 'package:xmusic/CustomWidgets/image_card.dart';
+import 'package:xmusic/CustomWidgets/like_button.dart';
+import 'package:xmusic/CustomWidgets/on_hover.dart';
+import 'package:xmusic/CustomWidgets/snackbar.dart';
+import 'package:xmusic/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:xmusic/Helpers/extensions.dart';
+import 'package:xmusic/Helpers/format.dart';
+import 'package:xmusic/Models/image_quality.dart';
+import 'package:xmusic/Screens/Common/song_list.dart';
+import 'package:xmusic/Screens/Library/liked.dart';
+import 'package:xmusic/Screens/Search/artists.dart';
+import 'package:xmusic/Services/player_service.dart';
 
 bool fetched = false;
 List preferredLanguage = Hive.box('settings')

@@ -111,8 +111,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "E:/GitHub/blackhole/windows/out/build/x64-Debug",
-		"source" : "E:/GitHub/blackhole/windows"
+		"build" : "E:/GitHub/xmusic/windows/out/build/x64-Debug",
+		"source" : "E:/GitHub/xmusic/windows"
 	},
 	"version" : 
 	{
