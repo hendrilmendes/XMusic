@@ -1,6 +1,6 @@
 <img width="125px" src="https://github.com/hendrilmendes/XMusic/blob/main/assets/icon-white-trans.png" align="center" />
 
-# xmusic
+# XMusic
 
 Um reprodutor de música incrível para todas as suas necessidades!
 
@@ -18,9 +18,6 @@ Um reprodutor de música incrível para todas as suas necessidades!
      alt="Download from GitHub"
      height="60">](https://github.com/hendrilmendes/XMusic/releases)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[<img src="https://img.shields.io/badge/Telegram-2CA5E0?logo=telegram&logoColor=white"
-     alt="Join Telegram Channel"
-     height="60">](https://t.me/xmusic_official)
 
 ## Features
 
