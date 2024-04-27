@@ -10,18 +10,18 @@ environment:
   sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
-  app_links: ^4.0.1
+  app_links: ^5.0.0
   audio_service: ^0.18.13
   audiotagger: ^2.2.1
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
-  connectivity_plus: ^5.0.2
+  connectivity_plus: ^6.0.3
   cupertino_icons: ^1.0.6
   dart_des: ^1.0.2
-  device_info_plus: ^9.1.1
+  device_info_plus: ^10.1.0
   # ffmpeg_kit_flutter_audio: ^6.0.3
-  file_picker: ^8.0.0+1
+  file_picker: ^8.0.3
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
@@ -45,7 +45,7 @@ dependencies:
   material_design_icons_flutter: 5.0.5955-rc.1
   metadata_god: ^0.5.2+1
   on_audio_query: ^2.9.0
-  package_info_plus: ^5.0.1
+  package_info_plus: ^7.0.0
   palette_generator: ^0.3.3+3
   path_provider: ^2.1.2
   permission_handler: ^11.3.1
@@ -53,8 +53,8 @@ dependencies:
     git:
       url: https://github.com/hendrilmendes/PersistentBottomNavBar.git
       ref: a53a54e
-  receive_sharing_intent: ^1.6.8
-  share_plus: ^7.2.1
+  receive_sharing_intent: ^1.7.0
+  share_plus: ^8.0.3
   sizer: ^2.0.15
   sliding_up_panel: ^2.0.0+1
   url_launcher: ^6.2.2

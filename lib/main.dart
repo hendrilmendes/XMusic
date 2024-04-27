@@ -169,7 +169,7 @@ class _MyAppState extends State<MyApp> {
     if (Platform.isAndroid || Platform.isIOS) {
       // For sharing or opening urls/text/files coming from outside the app while the app is in the memory
       _intentDataStreamSubscription =
-          ReceiveSharingIntent.getMediaStream().listen(
+          ReceiveSharingIntent.instance.getMediaStream().listen(
         (List<SharedMediaFile> value) {
           if (value.isNotEmpty) {
             Logger.root.info('Received intent on stream: $value');
@@ -204,7 +204,7 @@ class _MyAppState extends State<MyApp> {
       );
 
       // For sharing files coming from outside the app while the app is closed
-      ReceiveSharingIntent.getInitialMedia()
+      ReceiveSharingIntent.instance.getInitialMedia()
           .then((List<SharedMediaFile> value) {
         if (value.isNotEmpty) {
           Logger.root.info('Received Intent initially: $value');
@@ -230,7 +230,7 @@ class _MyAppState extends State<MyApp> {
               }
             }
           }
-          ReceiveSharingIntent.reset();
+          ReceiveSharingIntent.instance.reset();
         }
       }).onError((error, stackTrace) {
         Logger.root.severe('ERROR in getInitialMedia', error);

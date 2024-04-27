@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -136,7 +135,12 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
     Logger.root.info('checking connectivity & setting quality');
 
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> results) {
+      final ConnectivityResult result =
+          results.isNotEmpty ? results[0] : ConnectivityResult.none;
+
       if (result == ConnectivityResult.mobile) {
         connectionType = 'mobile';
         Logger.root.info(

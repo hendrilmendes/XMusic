@@ -69,10 +69,6 @@ Este projeto está licenciado sob a [Licença MIT](LICENSE.md)
 
 Olhe alguns dos [problemas](https://github.com/hendrilmendes/XMusic/wiki/Common-Issues) e veja se pode lhe ajudar. Se seu problema não está lá, sinta-se livre para abrir um :)
 
-## Quer testar as versões beta? Preciso de ajuda??
-
-Você pode entrar no nosso [canal](https://t.me/xmusic_official) ou [grupo](https://t.me/joinchat/fHDC1AWnOhw0ZmI9) do Telegram se tiver alguma dúvida ou precisar de ajuda com algo, bem como para obter atualizações beta do projeto.
-
 ## O que há de novo
 
-Veja as novidades em [Changelog](Changelog.md)
+Veja as novidades no [Changelog](Changelog.md)

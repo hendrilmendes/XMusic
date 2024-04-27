@@ -7,4 +7,4 @@ Novo:
 - 
 
 Correções/Melhorias:
-- 
+- Correções e Melhorias de Desempenho

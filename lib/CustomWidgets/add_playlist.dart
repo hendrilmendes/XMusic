@@ -18,7 +18,6 @@ class AddToOffPlaylist {
     List<PlaylistModel> playlistDetails =
         await offlineAudioQuery.getPlaylists();
     showModalBottomSheet(
-      isDismissible: true,
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
@@ -128,7 +127,6 @@ class AddToPlaylist {
 
   void addToPlaylist(BuildContext context, MediaItem? mediaItem) {
     showModalBottomSheet(
-      isDismissible: true,
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {

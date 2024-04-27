@@ -206,7 +206,6 @@ class _PrefScreenState extends State<PrefScreen> {
                                     dense: true,
                                     onTap: () {
                                       showModalBottomSheet(
-                                        isDismissible: true,
                                         backgroundColor: Colors.transparent,
                                         context: context,
                                         builder: (BuildContext context) {
@@ -402,7 +401,6 @@ class _PrefScreenState extends State<PrefScreen> {
                                     dense: true,
                                     onTap: () {
                                       showModalBottomSheet(
-                                        isDismissible: true,
                                         backgroundColor: Colors.transparent,
                                         context: context,
                                         builder: (BuildContext context) {
