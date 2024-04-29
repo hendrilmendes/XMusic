@@ -159,7 +159,8 @@ class _MyAppState extends State<MyApp> {
         LanguageCodes.languageCodes.values.contains(systemLangCode)) {
       _locale = Locale(systemLangCode);
     } else {
-      _locale = Locale(LanguageCodes.languageCodes[lang ?? 'Portuguese'] ?? 'pt');
+      _locale =
+          Locale(LanguageCodes.languageCodes[lang ?? 'Portuguese'] ?? 'pt');
     }
 
     AppTheme.currentTheme.addListener(() {
@@ -204,7 +205,8 @@ class _MyAppState extends State<MyApp> {
       );
 
       // For sharing files coming from outside the app while the app is closed
-      ReceiveSharingIntent.instance.getInitialMedia()
+      ReceiveSharingIntent.instance
+          .getInitialMedia()
           .then((List<SharedMediaFile> value) {
         if (value.isNotEmpty) {
           Logger.root.info('Received Intent initially: $value');
@@ -253,68 +255,47 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
-        statusBarIconBrightness: AppTheme.themeMode == ThemeMode.system
-            ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
-                ? Brightness.light
-                : Brightness.dark
-            : AppTheme.themeMode == ThemeMode.dark
-                ? Brightness.light
-                : Brightness.dark,
-        systemNavigationBarIconBrightness:
-            AppTheme.themeMode == ThemeMode.system
-                ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
-                    ? Brightness.light
-                    : Brightness.dark
-                : AppTheme.themeMode == ThemeMode.dark
-                    ? Brightness.light
-                    : Brightness.dark,
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return OrientationBuilder(
-            builder: (context, orientation) {
-              SizerUtil.setScreenSize(constraints, orientation);
-              return MaterialApp(
-                title: 'XMusic',
-                restorationScopeId: 'XMusic',
-                debugShowCheckedModeBanner: false,
-                themeMode: AppTheme.themeMode,
-                theme: AppTheme.lightTheme(
-                  context: context,
-                ),
-                darkTheme: AppTheme.darkTheme(
-                  context: context,
-                ),
-                locale: _locale,
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: LanguageCodes.languageCodes.entries
-                    .map((languageCode) => Locale(languageCode.value, ''))
-                    .toList(),
-                routes: namedRoutes,
-                navigatorKey: navigatorKey,
-                onGenerateRoute: (RouteSettings settings) {
-                  if (settings.name == '/player') {
-                    return PageRouteBuilder(
-                      opaque: false,
-                      pageBuilder: (_, __, ___) => const PlayScreen(),
-                    );
-                  }
-                  return HandleRoute.handleRoute(settings.name);
-                },
-              );
-            },
-          );
-        },
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            SizerUtil.setScreenSize(constraints, orientation);
+            return MaterialApp(
+              title: 'XMusic',
+              restorationScopeId: 'XMusic',
+              debugShowCheckedModeBanner: false,
+              themeMode: AppTheme.themeMode,
+              theme: AppTheme.lightTheme(
+                context: context,
+              ),
+              darkTheme: AppTheme.darkTheme(
+                context: context,
+              ),
+              locale: _locale,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: LanguageCodes.languageCodes.entries
+                  .map((languageCode) => Locale(languageCode.value, ''))
+                  .toList(),
+              routes: namedRoutes,
+              navigatorKey: navigatorKey,
+              onGenerateRoute: (RouteSettings settings) {
+                if (settings.name == '/player') {
+                  return PageRouteBuilder(
+                    opaque: false,
+                    pageBuilder: (_, __, ___) => const PlayScreen(),
+                  );
+                }
+                return HandleRoute.handleRoute(settings.name);
+              },
+            );
+          },
+        );
+      },
     );
   }
 }

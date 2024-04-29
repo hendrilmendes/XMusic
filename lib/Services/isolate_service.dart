@@ -40,7 +40,7 @@ Future<void> _backgroundProcess(SendPort sendPort) async {
     if (!hiveInit) {
       String path = message.toString();
       if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-        path += '/xmusic/Database';
+        path += '/XMusic/Database';
       } else if (Platform.isIOS) {
         path += '/Database';
       }

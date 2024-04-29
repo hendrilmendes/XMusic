@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -683,42 +682,6 @@ class _ThemePageState extends State<ThemePage> {
                 AppLocalizations.of(
                   context,
                 )!
-                    .useAmoled,
-              ),
-              dense: true,
-              onTap: () {
-                currentTheme.switchTheme(
-                  useSystemTheme: false,
-                  isDark: true,
-                );
-                Hive.box('settings').put('darkMode', true);
-
-                settingsBox.put('backGrad', 4);
-                currentTheme.backGrad = 4;
-                settingsBox.put('cardGrad', 6);
-                currentTheme.cardGrad = 6;
-                settingsBox.put('bottomGrad', 4);
-                currentTheme.bottomGrad = 4;
-
-                currentTheme.switchCanvasColor('Black');
-                canvasColor = 'Black';
-
-                currentTheme.switchCardColor('Grey900');
-                cardColor = 'Grey900';
-
-                themeColor = 'Blue';
-                colorHue = 400;
-                currentTheme.switchColor(
-                  'Blue',
-                  colorHue,
-                );
-              },
-            ),
-            ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
                     .currentTheme,
               ),
               trailing: DropdownButton(
@@ -742,38 +705,38 @@ class _ThemePageState extends State<ThemePage> {
 
                         settingsBox.put(
                           'backGrad',
-                          themeChoice == deflt ? 2 : selectedTheme['backGrad'],
+                          themeChoice == deflt ? 4 : selectedTheme['backGrad'],
                         );
                         currentTheme.backGrad = themeChoice == deflt
-                            ? 2
+                            ? 4
                             : selectedTheme['backGrad'] as int;
 
                         settingsBox.put(
                           'cardGrad',
-                          themeChoice == deflt ? 4 : selectedTheme['cardGrad'],
+                          themeChoice == deflt ? 6 : selectedTheme['cardGrad'],
                         );
                         currentTheme.cardGrad = themeChoice == deflt
-                            ? 4
+                            ? 6
                             : selectedTheme['cardGrad'] as int;
 
                         settingsBox.put(
                           'bottomGrad',
                           themeChoice == deflt
-                              ? 3
+                              ? 4
                               : selectedTheme['bottomGrad'],
                         );
                         currentTheme.bottomGrad = themeChoice == deflt
-                            ? 3
+                            ? 4
                             : selectedTheme['bottomGrad'] as int;
 
                         currentTheme.switchCanvasColor(
                           themeChoice == deflt
-                              ? 'Grey'
+                              ? 'Black'
                               : selectedTheme['canvasColor'] as String,
                           notify: false,
                         );
                         canvasColor = themeChoice == deflt
-                            ? 'Grey'
+                            ? 'Black'
                             : selectedTheme['canvasColor'] as String;
 
                         currentTheme.switchCardColor(

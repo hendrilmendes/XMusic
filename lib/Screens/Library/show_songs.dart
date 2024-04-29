@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -154,6 +153,9 @@ class _SongsListState extends State<SongsList> {
                               const SizedBox(width: 10),
                               Text(
                                 e,
+                                style: TextStyle(
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
                               ),
                             ],
                           ),
@@ -186,6 +188,9 @@ class _SongsListState extends State<SongsList> {
                               const SizedBox(width: 10),
                               Text(
                                 e,
+                                style: TextStyle(
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
                               ),
                             ],
                           ),
@@ -198,14 +203,11 @@ class _SongsListState extends State<SongsList> {
             ),
           ],
           centerTitle: true,
-          backgroundColor: Theme.of(context).brightness == Brightness.dark
-              ? Colors.transparent
-              : Theme.of(context).colorScheme.secondary,
           elevation: 0,
         ),
         body: !processStatus
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               )
             : ListView.builder(
                 physics: const BouncingScrollPhysics(),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -19,9 +18,6 @@ class Stats extends StatelessWidget {
           title: Text(AppLocalizations.of(context)!.stats),
           centerTitle: true,
           shadowColor: Colors.transparent,
-          backgroundColor: Theme.of(context).brightness == Brightness.dark
-              ? Colors.transparent
-              : Theme.of(context).colorScheme.secondary,
           elevation: 0,
         ),
         backgroundColor: Colors.transparent,
@@ -30,6 +26,7 @@ class Stats extends StatelessWidget {
           child: Wrap(
             children: [
               Card(
+                color: Theme.of(context).cardColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                     10.0,
@@ -54,6 +51,7 @@ class Stats extends StatelessWidget {
                 ),
               ),
               Card(
+                color: Theme.of(context).cardColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                     10.0,
@@ -70,7 +68,8 @@ class Stats extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        mostPlayed['title']?.toString() ?? 'Unknown',
+                        mostPlayed['title']?.toString() ??
+                            AppLocalizations.of(context)!.unknown,
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,

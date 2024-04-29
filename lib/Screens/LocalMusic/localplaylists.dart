@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -176,6 +175,9 @@ class _LocalPlaylistsState extends State<LocalPlaylists> {
                             const SizedBox(width: 10.0),
                             Text(
                               AppLocalizations.of(context)!.delete,
+                              style: TextStyle(
+                                color: Theme.of(context).iconTheme.color,
+                              ),
                             ),
                           ],
                         ),

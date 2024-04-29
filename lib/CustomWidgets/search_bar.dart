@@ -72,6 +72,7 @@ class _SearchBarState extends State<SearchBar> {
         Column(
           children: [
             Card(
+              color:Theme.of(context).cardColor,
               margin: const EdgeInsets.fromLTRB(
                 18.0,
                 10.0,

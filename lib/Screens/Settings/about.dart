@@ -259,6 +259,32 @@ class _AboutPageState extends State<AboutPage> {
                           AppLocalizations.of(
                             context,
                           )!
+                              .openSource,
+                        ),
+                        subtitle: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!
+                              .openSourceSub,
+                        ),
+                        dense: true,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LicensePage(
+                                applicationName:
+                                    AppLocalizations.of(context)!.appTitle,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!
                               .moreInfo,
                         ),
                         dense: true,

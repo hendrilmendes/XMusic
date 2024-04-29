@@ -487,7 +487,7 @@ class _OthersPageState extends State<OthersPage> {
                     .useProxySub,
               ),
               keyName: 'useProxy',
-              defaultValue: false,
+              defaultValue: true,
               isThreeLine: true,
               onChanged: ({required bool val, required Box box}) {
                 useProxy = val;

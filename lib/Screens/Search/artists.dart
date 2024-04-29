@@ -68,7 +68,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
         backgroundColor: Colors.transparent,
         body: !fetched
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               )
             : data.isEmpty
                 ? emptyScreen(

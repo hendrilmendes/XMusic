@@ -1,9 +1,7 @@
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:xmusic/Screens/Library/liked.dart';
 import 'package:xmusic/Screens/LocalMusic/downed_songs.dart';
 import 'package:xmusic/Screens/LocalMusic/downed_songs_desktop.dart';
@@ -64,7 +62,7 @@ class _LibraryPageState extends State<LibraryPage> {
         ),
         LibraryTile(
           title: AppLocalizations.of(context)!.myMusic,
-          icon: MdiIcons.folderMusic,
+          icon: Icons.my_library_music_rounded,
           onTap: () {
             Navigator.push(
               context,

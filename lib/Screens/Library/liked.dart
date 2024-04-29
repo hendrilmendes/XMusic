@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -344,9 +343,6 @@ class _LikedSongsState extends State<LikedSongs>
               overflow: TextOverflow.ellipsis,
             ),
             centerTitle: true,
-            backgroundColor: Theme.of(context).brightness == Brightness.dark
-                ? Colors.transparent
-                : Theme.of(context).colorScheme.secondary,
             elevation: 0,
             bottom: TabBar(
               controller: _tcontroller,
@@ -461,6 +457,11 @@ class _LikedSongsState extends State<LikedSongs>
                                         const SizedBox(width: 10),
                                         Text(
                                           e,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -495,6 +496,11 @@ class _LikedSongsState extends State<LikedSongs>
                                         const SizedBox(width: 10),
                                         Text(
                                           e,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -544,7 +550,7 @@ class _LikedSongsState extends State<LikedSongs>
           ),
           body: !added
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator.adaptive(),
                 )
               : TabBarView(
                   physics: const CustomPhysics(),

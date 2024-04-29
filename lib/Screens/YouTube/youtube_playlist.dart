@@ -132,7 +132,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
           children: [
             if (!fetched)
               const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               )
             else
               BouncyPlaylistHeaderScrollView(
@@ -336,7 +336,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            CircularProgressIndicator(
+                            CircularProgressIndicator.adaptive(
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Theme.of(context).colorScheme.secondary,
                               ),

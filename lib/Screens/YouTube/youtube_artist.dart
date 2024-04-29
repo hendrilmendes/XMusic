@@ -72,7 +72,7 @@ class _YouTubeArtistState extends State<YouTubeArtist> {
           children: [
             if (!fetched)
               const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               )
             else
               BouncyImageSliverScrollView(
@@ -205,7 +205,7 @@ class _YouTubeArtistState extends State<YouTubeArtist> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            CircularProgressIndicator(
+                            CircularProgressIndicator.adaptive(
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Theme.of(context).colorScheme.secondary,
                               ),

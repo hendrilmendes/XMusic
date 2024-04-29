@@ -70,9 +70,6 @@ class ImportPlaylist extends StatelessWidget {
             AppLocalizations.of(context)!.importPlaylist,
           ),
           centerTitle: true,
-          backgroundColor: Theme.of(context).brightness == Brightness.dark
-              ? Colors.transparent
-              : Theme.of(context).colorScheme.secondary,
           elevation: 0,
         ),
         body: ListView.builder(

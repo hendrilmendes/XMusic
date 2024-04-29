@@ -297,7 +297,7 @@ class _TopPageState extends State<TopPage>
                     : const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircularProgressIndicator(),
+                          CircularProgressIndicator.adaptive(),
                         ],
                       ),
               )
@@ -346,6 +346,9 @@ class _TopPageState extends State<TopPage>
                                 const SizedBox(width: 10.0),
                                 Text(
                                   AppLocalizations.of(context)!.openInSpotify,
+                                  style: TextStyle(
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
                                 ),
                               ],
                             ),

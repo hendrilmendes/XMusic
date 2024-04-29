@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:audiotagger/audiotagger.dart';
@@ -306,9 +305,6 @@ class _DownloadsState extends State<Downloads>
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.downs),
             centerTitle: true,
-            backgroundColor: Theme.of(context).brightness == Brightness.dark
-                ? Colors.transparent
-                : Theme.of(context).colorScheme.secondary,
             elevation: 0,
             bottom: TabBar(
               controller: _tcontroller,
@@ -405,6 +401,9 @@ class _DownloadsState extends State<Downloads>
                                   const SizedBox(width: 10),
                                   Text(
                                     e,
+                                    style: TextStyle(
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -421,6 +420,8 @@ class _DownloadsState extends State<Downloads>
                       orderTypes
                           .map(
                             (e) => PopupMenuItem(
+                              textStyle:
+                                  Theme.of(context).popupMenuTheme.textStyle,
                               value: sortTypes.length + orderTypes.indexOf(e),
                               child: Row(
                                 children: [
@@ -451,7 +452,7 @@ class _DownloadsState extends State<Downloads>
           ),
           body: !added
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator.adaptive(),
                 )
               : TabBarView(
                   physics: const CustomPhysics(),
@@ -954,11 +955,17 @@ class _DownSongsTabState extends State<DownSongsTab>
                                         context,
                                       )!
                                           .edit,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                               PopupMenuItem(
+                                textStyle:
+                                    Theme.of(context).popupMenuTheme.textStyle,
                                 value: 1,
                                 child: Row(
                                   children: [

@@ -83,7 +83,7 @@ class _DownloadButtonState extends State<DownloadButton> {
                     child: Stack(
                       children: [
                         Center(
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator.adaptive(
                             value: down.progress == 1 ? null : down.progress,
                           ),
                         ),
@@ -239,7 +239,7 @@ class _MultiDownloadButtonState extends State<MultiDownloadButton> {
                         child: SizedBox(
                           height: 35,
                           width: 35,
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator.adaptive(
                             value: down.progress == 1 ? null : down.progress,
                           ),
                         ),
@@ -248,7 +248,7 @@ class _MultiDownloadButtonState extends State<MultiDownloadButton> {
                         child: SizedBox(
                           height: 30,
                           width: 30,
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator.adaptive(
                             value: done / widget.data.length,
                           ),
                         ),
@@ -357,7 +357,7 @@ class _AlbumDownloadButtonState extends State<AlbumDownloadButton> {
                         child: SizedBox(
                           height: 35,
                           width: 35,
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator.adaptive(
                             value: down.progress == 1 ? null : down.progress,
                           ),
                         ),
@@ -366,7 +366,7 @@ class _AlbumDownloadButtonState extends State<AlbumDownloadButton> {
                         child: SizedBox(
                           height: 30,
                           width: 30,
-                          child: CircularProgressIndicator(
+                          child: CircularProgressIndicator.adaptive(
                             value: data.isEmpty ? 0 : done / data.length,
                           ),
                         ),

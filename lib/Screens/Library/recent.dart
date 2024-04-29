@@ -35,9 +35,6 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.lastSession),
           centerTitle: true,
-          backgroundColor: Theme.of(context).brightness == Brightness.dark
-              ? Colors.transparent
-              : Theme.of(context).colorScheme.secondary,
           elevation: 0,
           actions: [
             IconButton(

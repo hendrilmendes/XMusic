@@ -1,9 +1,7 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
-
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip_card/flip_card.dart';
@@ -387,6 +385,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                       const SizedBox(width: 10.0),
                                       Text(
                                         AppLocalizations.of(context)!.viewAlbum,
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -402,6 +404,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                     const SizedBox(width: 10.0),
                                     Text(
                                       AppLocalizations.of(context)!.sleepTimer,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -422,6 +428,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                       const SizedBox(width: 10.0),
                                       Text(
                                         AppLocalizations.of(context)!.equalizer,
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -437,6 +447,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                     const SizedBox(width: 10.0),
                                     Text(
                                       AppLocalizations.of(context)!.songInfo,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -454,6 +468,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                       const SizedBox(width: 10.0),
                                       Text(
                                         AppLocalizations.of(context)!.viewAlbum,
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -470,6 +488,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                     Text(
                                       AppLocalizations.of(context)!
                                           .addToPlaylist,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -485,6 +507,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                     const SizedBox(width: 10.0),
                                     Text(
                                       AppLocalizations.of(context)!.sleepTimer,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -505,6 +531,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                       const SizedBox(width: 10.0),
                                       Text(
                                         AppLocalizations.of(context)!.equalizer,
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -528,6 +558,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                               context,
                                             )!
                                               .searchVideo,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -543,6 +577,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                     const SizedBox(width: 10.0),
                                     Text(
                                       AppLocalizations.of(context)!.songInfo,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -796,11 +834,6 @@ class ControlButtons extends StatelessWidget {
                           child: SizedBox(
                             height: miniplayer ? 40.0 : 65.0,
                             width: miniplayer ? 40.0 : 65.0,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).iconTheme.color!,
-                              ),
-                            ),
                           ),
                         ),
                       if (miniplayer)
@@ -1942,6 +1975,7 @@ class NameNControls extends StatelessWidget {
                       <PopupMenuEntry<String>>[
                     if (mediaItem.extras?['album_id'] != null)
                       PopupMenuItem<String>(
+                        textStyle: Theme.of(context).popupMenuTheme.textStyle,
                         value: '0',
                         child: Row(
                           children: [
@@ -1951,6 +1985,9 @@ class NameNControls extends StatelessWidget {
                             const SizedBox(width: 10.0),
                             Text(
                               AppLocalizations.of(context)!.viewAlbum,
+                              style: TextStyle(
+                                color: Theme.of(context).iconTheme.color,
+                              ),
                             ),
                           ],
                         ),
@@ -1958,6 +1995,7 @@ class NameNControls extends StatelessWidget {
                     if (mediaItem.artist != null)
                       ...artists.map(
                         (String artist) => PopupMenuItem<String>(
+                          textStyle: Theme.of(context).popupMenuTheme.textStyle,
                           value: artist,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,

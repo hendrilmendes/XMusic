@@ -51,9 +51,6 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
           Scaffold(
             appBar: AppBar(
-              backgroundColor: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.transparent
-                  : Theme.of(context).colorScheme.secondary,
               elevation: 0,
               title: Text(
                 AppLocalizations.of(context)!.about,

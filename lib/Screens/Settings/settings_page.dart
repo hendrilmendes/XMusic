@@ -72,6 +72,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
 
   Widget _searchBar(BuildContext context) {
     return Card(
+      color: Theme.of(context).cardColor,
       margin: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
@@ -96,7 +97,10 @@ class _NewSettingsPageState extends State<NewSettingsPage>
                     ),
                   ),
                   fillColor: Theme.of(context).colorScheme.secondary,
-                  prefixIcon: const Icon(CupertinoIcons.search),
+                  prefixIcon: Icon(
+                    CupertinoIcons.search,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                   suffixIcon: query.trim() != ''
                       ? IconButton(
                           onPressed: () {
@@ -143,7 +147,6 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           AppLocalizations.of(context)!.bottomGrad,
           AppLocalizations.of(context)!.canvasColor,
           AppLocalizations.of(context)!.cardColor,
-          AppLocalizations.of(context)!.useAmoled,
           AppLocalizations.of(context)!.currentTheme,
           AppLocalizations.of(context)!.saveTheme,
         ],
@@ -167,7 +170,6 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           AppLocalizations.of(context)!.compactNotificationButtons,
           AppLocalizations.of(context)!.showPlaylists,
           AppLocalizations.of(context)!.showLast,
-          AppLocalizations.of(context)!.navTabs,
           AppLocalizations.of(context)!.enableGesture,
           AppLocalizations.of(context)!.volumeGestureEnabled,
           AppLocalizations.of(context)!.useLessDataImage,
@@ -354,6 +356,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
     List<Map> options,
   ) {
     return Card(
+      color: Theme.of(context).listTileTheme.tileColor,
       margin: const EdgeInsets.symmetric(
         horizontal: 18.0,
         vertical: 10,

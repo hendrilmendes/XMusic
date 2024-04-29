@@ -338,14 +338,11 @@ class _DownloadedSongsDesktopState extends State<DownloadedSongsDesktop>
             //   ),
             // ],
             centerTitle: true,
-            backgroundColor: Theme.of(context).brightness == Brightness.dark
-                ? Colors.transparent
-                : Theme.of(context).colorScheme.secondary,
             elevation: 0,
           ),
           body: !added
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator.adaptive(),
                 )
               : TabBarView(
                   physics: const CustomPhysics(),

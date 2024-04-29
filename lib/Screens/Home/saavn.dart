@@ -1,6 +1,4 @@
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -130,7 +128,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
     }
     return (data.isEmpty && recentList.isEmpty)
         ? const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator.adaptive(),
           )
         : ListView.builder(
             physics: const BouncingScrollPhysics(),

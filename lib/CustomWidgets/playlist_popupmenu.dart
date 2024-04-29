@@ -1,4 +1,3 @@
-
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -41,7 +40,12 @@ class _PlaylistPopupMenuState extends State<PlaylistPopupMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.addToQueue),
+              Text(
+                AppLocalizations.of(context)!.addToQueue,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -54,7 +58,12 @@ class _PlaylistPopupMenuState extends State<PlaylistPopupMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.savePlaylist),
+              Text(
+                AppLocalizations.of(context)!.savePlaylist,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -13,7 +12,7 @@ class AppTheme {
     required BuildContext context,
   }) {
     return ThemeData(
-      useMaterial3: false,
+      useMaterial3: true,
       textSelectionTheme: TextSelectionThemeData(
         selectionHandleColor: currentTheme.currentColor(),
         cursorColor: currentTheme.currentColor(),
@@ -65,7 +64,9 @@ class AppTheme {
     required BuildContext context,
   }) {
     return ThemeData(
-      useMaterial3: false,
+      useMaterial3: true,
+      scaffoldBackgroundColor: Colors.black,
+      textTheme: Typography().white.apply(),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
@@ -79,12 +80,17 @@ class AppTheme {
         selectionColor: currentTheme.currentColor(),
       ),
       inputDecorationTheme: InputDecorationTheme(
+        hintStyle: const TextStyle(color: Colors.white),
+        labelStyle: const TextStyle(color: Colors.white),
         focusedBorder: UnderlineInputBorder(
           borderSide:
               BorderSide(width: 1.5, color: currentTheme.currentColor()),
         ),
       ),
       listTileTheme: ListTileThemeData(
+        tileColor: Colors.black,
+        iconColor: Colors.white,
+        textColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(7.0),
         ),
@@ -105,7 +111,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(7.0),
         ),
       ),
-      dialogBackgroundColor: currentTheme.getCardColor(),
+      dialogBackgroundColor: Colors.black,
       progressIndicatorTheme: const ProgressIndicatorThemeData()
           .copyWith(color: currentTheme.currentColor()),
       iconTheme: const IconThemeData(
@@ -119,6 +125,9 @@ class AppTheme {
             secondary: currentTheme.currentColor(),
             brightness: Brightness.dark,
           ),
+      popupMenuTheme: const PopupMenuThemeData(
+        color: Colors.black,
+      ),
     );
   }
 }

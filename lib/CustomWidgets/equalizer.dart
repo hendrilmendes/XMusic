@@ -30,7 +30,7 @@ class _EqualizerState extends State<Equalizer> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SwitchListTile(
+            SwitchListTile.adaptive(
               title: Text(AppLocalizations.of(context)!.equalizer),
               value: enabled,
               activeColor: Theme.of(context).colorScheme.secondary,

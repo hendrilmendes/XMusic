@@ -418,7 +418,7 @@ class _SearchPageState extends State<SearchPage> {
                             : Row(
                                 children: getChoices(context, [
                                   {'label': 'Saavn', 'key': 'saavn'},
-                                  {'label': 'YtMusic', 'key': 'ytm'},
+                                  {'label': 'YT Music', 'key': 'ytm'},
                                   {'label': 'YouTube', 'key': 'yt'},
                                 ]),
                               ),
@@ -426,7 +426,7 @@ class _SearchPageState extends State<SearchPage> {
                       Expanded(
                         child: !fetched
                             ? const Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator.adaptive(),
                               )
                             : (searchedList.isEmpty)
                                 ? nothingFound(context)

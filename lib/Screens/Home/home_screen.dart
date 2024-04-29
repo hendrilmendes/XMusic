@@ -31,6 +31,21 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  String getGreeting(BuildContext context) {
+    final hour = DateTime.now().hour;
+    var greeting = '';
+
+    if (hour < 12) {
+      greeting = AppLocalizations.of(context)!.goodMorning;
+    } else if (hour < 18) {
+      greeting = AppLocalizations.of(context)!.goodAfternoon;
+    } else {
+      greeting = AppLocalizations.of(context)!.goodEvening;
+    }
+
+    return greeting;
+  }
+
   @override
   Widget build(BuildContext context) {
     String name =
@@ -68,7 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () async {
                             showTextInputDialog(
                               context: context,
-                              title: 'Name',
+                              title: AppLocalizations.of(
+                                context,
+                              )!
+                                  .enterName,
                               initialText: name,
                               keyboardType: TextInputType.name,
                               onSubmitted:
@@ -101,10 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: AppLocalizations.of(
-                                                context,
-                                              )!
-                                                  .homeGreet,
+                                              text: getGreeting(context),
                                               style: TextStyle(
                                                 letterSpacing: 2,
                                                 color: Theme.of(
@@ -123,7 +138,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             'settings',
                                                           ).get('name') ==
                                                           '')
-                                                  ? ' Guest'
+                                                  ? AppLocalizations.of(
+                                                      context,
+                                                    )!
+                                                      .guest
                                                   : ' ${Hive.box(
                                                       'settings',
                                                     ).get(

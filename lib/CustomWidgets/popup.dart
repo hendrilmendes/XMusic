@@ -35,6 +35,7 @@ class PopupDialog {
               Align(
                 alignment: Alignment.topRight,
                 child: Card(
+                  color: Theme.of(context).cardColor,
                   elevation: 15.0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),

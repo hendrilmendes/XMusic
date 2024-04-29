@@ -281,7 +281,7 @@ class SearchAddPlaylist {
                                   child: SizedBox(
                                     height: 85,
                                     width: 85,
-                                    child: CircularProgressIndicator(
+                                    child: CircularProgressIndicator.adaptive(
                                       valueColor: AlwaysStoppedAnimation<Color>(
                                         Theme.of(ctxt).colorScheme.secondary,
                                       ),

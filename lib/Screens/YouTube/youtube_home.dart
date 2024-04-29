@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -453,6 +454,10 @@ class _YouTubeState extends State<YouTube>
                 ),
                 child: Row(
                   children: [
+                    Icon(
+                      CupertinoIcons.search,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                     Text(
                       AppLocalizations.of(
                         context,

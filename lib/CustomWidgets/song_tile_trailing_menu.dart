@@ -1,4 +1,3 @@
-
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +59,9 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                     context,
                   )!
                       .remove,
+                  style: TextStyle(
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                 ),
               ],
             ),
@@ -74,7 +76,12 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                 size: 26.0,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.playNext),
+              Text(
+                AppLocalizations.of(context)!.playNext,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -87,7 +94,12 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.addToQueue),
+              Text(
+                AppLocalizations.of(context)!.addToQueue,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -100,7 +112,12 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.addToPlaylist),
+              Text(
+                AppLocalizations.of(context)!.addToPlaylist,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -113,7 +130,12 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.viewAlbum),
+              Text(
+                AppLocalizations.of(context)!.viewAlbum,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -132,6 +154,9 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                         const SizedBox(width: 10.0),
                         Text(
                           '${AppLocalizations.of(context)!.viewArtist} ($artist)',
+                          style: TextStyle(
+                            color: Theme.of(context).iconTheme.color,
+                          ),
                         ),
                       ],
                     ),
@@ -147,7 +172,12 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.playRadio),
+              Text(
+                AppLocalizations.of(context)!.playRadio,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -160,7 +190,12 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.share),
+              Text(
+                AppLocalizations.of(context)!.share,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -251,6 +286,9 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
                   context,
                 )!
                     .searchHome,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
               ),
             ],
           ),
@@ -265,7 +303,12 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
                 size: 26.0,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.playNext),
+              Text(
+                AppLocalizations.of(context)!.playNext,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -278,7 +321,12 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.addToQueue),
+              Text(
+                AppLocalizations.of(context)!.addToQueue,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -291,7 +339,12 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.addToPlaylist),
+              Text(
+                AppLocalizations.of(context)!.addToPlaylist,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -304,7 +357,12 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.watchVideo),
+              Text(
+                AppLocalizations.of(context)!.watchVideo,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),
@@ -317,7 +375,12 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.share),
+              Text(
+                AppLocalizations.of(context)!.share,
+                style: TextStyle(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
             ],
           ),
         ),

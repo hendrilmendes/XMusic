@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -39,9 +38,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             AppLocalizations.of(context)!.playlists,
           ),
           centerTitle: true,
-          backgroundColor: Theme.of(context).brightness == Brightness.dark
-              ? Colors.transparent
-              : Theme.of(context).colorScheme.secondary,
           elevation: 0,
         ),
         body: SingleChildScrollView(
@@ -588,6 +584,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     const SizedBox(width: 10.0),
                                     Text(
                                       AppLocalizations.of(context)!.rename,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -601,6 +601,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     const SizedBox(width: 10.0),
                                     Text(
                                       AppLocalizations.of(context)!.delete,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -613,6 +617,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   const SizedBox(width: 10.0),
                                   Text(
                                     AppLocalizations.of(context)!.export,
+                                    style: TextStyle(
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -625,6 +632,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   const SizedBox(width: 10.0),
                                   Text(
                                     AppLocalizations.of(context)!.share,
+                                    style: TextStyle(
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
                                   ),
                                 ],
                               ),

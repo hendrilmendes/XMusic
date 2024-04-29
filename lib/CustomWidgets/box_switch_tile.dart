@@ -1,5 +1,3 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -35,7 +33,7 @@ class BoxSwitchTile extends StatelessWidget {
             isThreeLine: isThreeLine ?? false,
             dense: true,
             contentPadding: contentPadding,
-            trailing: CupertinoSwitch(
+            trailing: Switch.adaptive(
               activeColor: Theme.of(context).colorScheme.secondary,
               value: box.get(keyName, defaultValue: defaultValue) as bool? ??
                   defaultValue,

@@ -137,7 +137,7 @@ class _SongsListViewPageState extends State<SongsListViewPage> {
         backgroundColor: Colors.transparent,
         body: !fetched
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               )
             : BouncyPlaylistHeaderScrollView(
                 scrollController: _scrollController,

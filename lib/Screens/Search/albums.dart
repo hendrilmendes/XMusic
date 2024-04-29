@@ -111,7 +111,7 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
         backgroundColor: Colors.transparent,
         body: _searchedList == null
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               )
             : _searchedList!.isEmpty
                 ? emptyScreen(

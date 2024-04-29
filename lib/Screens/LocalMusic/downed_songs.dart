@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -418,14 +417,11 @@ class _DownloadedSongsState extends State<DownloadedSongs>
                 ),
             ],
             centerTitle: true,
-            backgroundColor: Theme.of(context).brightness == Brightness.dark
-                ? Colors.transparent
-                : Theme.of(context).colorScheme.secondary,
             elevation: 0,
           ),
           body: !added
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator.adaptive(),
                 )
               : TabBarView(
                   physics: const CustomPhysics(),
@@ -1232,6 +1228,9 @@ class _SongsTabState extends State<SongsTab>
                                   const SizedBox(width: 10.0),
                                   Text(
                                     AppLocalizations.of(context)!.addToPlaylist,
+                                    style: TextStyle(
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -1243,7 +1242,13 @@ class _SongsTabState extends State<SongsTab>
                                   children: [
                                     const Icon(Icons.delete_rounded),
                                     const SizedBox(width: 10.0),
-                                    Text(AppLocalizations.of(context)!.remove),
+                                    Text(
+                                      AppLocalizations.of(context)!.remove,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1275,7 +1280,12 @@ class _SongsTabState extends State<SongsTab>
                                 children: [
                                   const Icon(Icons.delete_rounded),
                                   const SizedBox(width: 10.0),
-                                  Text(AppLocalizations.of(context)!.delete),
+                                  Text(
+                                    AppLocalizations.of(context)!.delete,
+                                    style: TextStyle(
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),

@@ -33,7 +33,7 @@ Um reprodutor de música incrível para todas as suas necessidades!
 * Importe playlists do Spotify & YouTube
 * Importe/Exporte playlists em arquivo JSON
 * Compartilhe playlists
-* Despertador
+* Temporizador
 * Suporte à letras
 * Gestão de filas
 * Registra histórico de reprodução

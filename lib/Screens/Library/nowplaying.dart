@@ -38,10 +38,6 @@ class _NowPlayingState extends State<NowPlaying> {
                 : AppBar(
                     title: Text(AppLocalizations.of(context)!.nowPlaying),
                     centerTitle: true,
-                    backgroundColor:
-                        Theme.of(context).brightness == Brightness.dark
-                            ? Colors.transparent
-                            : Theme.of(context).colorScheme.secondary,
                     elevation: 0,
                   ),
             body: processingState == AudioProcessingState.idle

@@ -1,6 +1,6 @@
-
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
@@ -41,7 +41,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
           final List preferredMiniButtons = Hive.box('settings').get(
             'preferredMiniButtons',
-            defaultValue: ['Like', 'Play/Pause', 'Next'],
+            defaultValue: ['Like', 'Previous', 'Play/Pause', 'Next'],
           )?.toList() as List;
 
           final bool isLocal =
@@ -135,12 +135,22 @@ class _MiniPlayerState extends State<MiniPlayer> {
               Navigator.pushNamed(context, '/player');
             },
       title: Text(
-        isDummy ? 'Now Playing' : title,
+        isDummy
+            ? AppLocalizations.of(
+                context,
+              )!
+                .nowPlaying
+            : title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        isDummy ? 'Unknown' : subtitle,
+        isDummy
+            ? AppLocalizations.of(
+                context,
+              )!
+                .unknown
+            : subtitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -159,7 +169,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
               audioHandler,
               miniplayer: true,
               buttons: isLocalImage
-                  ? ['Like', 'Play/Pause', 'Next']
+                  ? ['Like', 'Previous', 'Play/Pause', 'Next']
                   : preferredMiniButtons,
             ),
     );

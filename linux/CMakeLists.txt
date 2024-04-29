@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "xmusic")
+set(BINARY_NAME "XMusic")
 set(APPLICATION_ID "com.github.hendrilmendes.music")
 
 cmake_policy(SET CMP0063 NEW)
