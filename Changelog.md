@@ -2,7 +2,14 @@ Changelog XMusic
 
 ======================================================
 
-#### 1.0.1 - (Em desenvolvimento)
+#### *.*.* - (Em desenvolvimento)
+
+Correções/Melhorias:
+- 
+
+======================================================
+
+#### 1.0.1
 Novo:
 - Suporte ao Material3
 
