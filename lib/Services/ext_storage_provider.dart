@@ -1,5 +1,5 @@
-
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -7,19 +7,31 @@ import 'package:permission_handler/permission_handler.dart';
 class ExtStorageProvider {
   // asking for permission
   static Future<bool> requestPermission(Permission permission) async {
-    if (await permission.isGranted) {
+    final PermissionStatus status = await permission.status;
+    if (kDebugMode) {
+      print('Permission status for $permission: $status');
+    }
+    if (status.isGranted) {
       return true;
     } else {
-      final result = await permission.request();
-      if (result == PermissionStatus.granted) {
-        return true;
-      } else {
-        return false;
+      final PermissionStatus result = await permission.request();
+      if (kDebugMode) {
+        print('Permission request result for $permission: $result');
       }
+      return result.isGranted;
     }
   }
 
-  // getting external storage path
+  static Future<bool> requestManageExternalStoragePermission() async {
+    if (Platform.isAndroid && int.tryParse(Platform.version.split('.')[0])! >= 30) {
+      // Android 11 or higher, use MANAGE_EXTERNAL_STORAGE permission
+      return requestPermission(Permission.manageExternalStorage);
+    } else {
+      // Android 10 or lower, use WRITE_EXTERNAL_STORAGE permission
+      return requestPermission(Permission.storage);
+    }
+  }
+
   static Future<String?> getExtStorage({
     required String dirName,
     required bool writeAccess,
@@ -29,36 +41,38 @@ class ExtStorageProvider {
     try {
       // checking platform
       if (Platform.isAndroid) {
-        if (await requestPermission(Permission.storage)) {
+        // Request storage permission
+        final bool storagePermissionGranted = await requestManageExternalStoragePermission();
+        if (kDebugMode) {
+          print('Storage permission granted: $storagePermissionGranted');
+        }
+
+        if (storagePermissionGranted) {
           directory = await getExternalStorageDirectory();
 
-          // getting main path
-          final String newPath = directory!.path
-              .replaceFirst('Android/data/com.github.hendrilmendes.music/files', dirName);
+          if (directory == null) {
+            throw 'External storage not available';
+          }
+
+          final String newPath = directory.path.replaceFirst(
+            'Android/data/com.github.hendrilmendes.music/files',
+            dirName,
+          );
 
           directory = Directory(newPath);
 
           // checking if directory exist or not
           if (!await directory.exists()) {
-            // if directory not exists then asking for permission to create folder
-            await requestPermission(Permission.manageExternalStorage);
-            //creating folder
-
             await directory.create(recursive: true);
           }
+
           if (await directory.exists()) {
-            try {
-              if (writeAccess) {
-                await requestPermission(Permission.manageExternalStorage);
-              }
-              // if directory exists then returning the complete path
-              return newPath;
-            } catch (e) {
-              rethrow;
-            }
+            return newPath;
+          } else {
+            throw 'Directory could not be created';
           }
         } else {
-          return throw 'something went wrong';
+          throw 'Storage permission denied';
         }
       } else if (Platform.isIOS || Platform.isMacOS) {
         directory = await getApplicationDocumentsDirectory();
@@ -69,8 +83,10 @@ class ExtStorageProvider {
         return '${directory!.path}/$dirName';
       }
     } catch (e) {
+      if (kDebugMode) {
+        print('Error: $e');
+      }
       rethrow;
     }
-    return directory.path;
   }
 }

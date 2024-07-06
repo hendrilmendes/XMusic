@@ -45,7 +45,7 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                 });
               },
               tooltip: AppLocalizations.of(context)!.clearAll,
-              icon: const Icon(Icons.clear_all_rounded),
+              icon: const Icon(Icons.delete_sweep_rounded),
             ),
           ],
         ),

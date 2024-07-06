@@ -20,7 +20,7 @@ class AudioHandlerHelper {
       builder: () => AudioPlayerHandlerImpl(),
       config: AudioServiceConfig(
         androidNotificationChannelId: 'com.github.hendrilmendes.music.channel.audio',
-        androidNotificationChannelName: 'xmusic',
+        androidNotificationChannelName: 'XMusic',
         androidNotificationIcon: 'drawable/ic_stat_music_note',
         androidShowNotificationBadge: true,
         androidStopForegroundOnPause: false,

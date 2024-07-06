@@ -200,7 +200,7 @@ class _AboutPageState extends State<AboutPage> {
                                               Navigator.pop(context);
                                               launchUrl(
                                                 Uri.parse(
-                                                  'https://mail.google.com/mail/?extsrc=mailto&url=mailto%3A%3Fto%3Dxmusicyoucantescape%40gmail.com%26subject%3DRegarding%2520Mobile%2520App',
+                                                  'mailto:hendrilmendes2015@gmail.com?subject=XMusic&body=Preciso+de+...',
                                                 ),
                                                 mode: LaunchMode
                                                     .externalApplication,

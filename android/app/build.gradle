@@ -39,7 +39,7 @@ android {
     defaultConfig {
         applicationId "com.github.hendrilmendes.music"
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -64,6 +64,10 @@ android {
             signingConfig signingConfigs.release
             shrinkResources false
         }
+        debug {
+            signingConfig signingConfigs.release
+            shrinkResources false
+        }
     }
 
     lintOptions {
@@ -80,5 +84,5 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.0"
 }

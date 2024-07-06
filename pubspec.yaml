@@ -4,13 +4,13 @@ description: An Open Source Music Player App.
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
 
-version: 1.0.1+2
+version: 1.0.11+13
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
 
 dependencies:
-  app_links: ^6.1.1
+  app_links: ^6.1.4
   audio_service: ^0.18.13
   audiotagger: ^2.2.1
   # bitsdojo_window: ^0.1.1+1 #For Desktops
@@ -21,7 +21,7 @@ dependencies:
   dart_des: ^1.0.2
   device_info_plus: ^10.1.0
   # ffmpeg_kit_flutter_audio: ^6.0.3
-  file_picker: ^8.0.3
+  file_picker: ^8.0.6
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
@@ -34,7 +34,7 @@ dependencies:
   get_it: ^7.6.8
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  # home_widget: ^0.3.0
+  home_widget: ^0.6.0
   html_unescape: ^2.0.0
   just_audio: ^0.9.38
   # Discontinued, Use just_audio_windows instead.

@@ -5,7 +5,9 @@ Changelog XMusic
 #### *.*.* - (Em desenvolvimento)
 
 Correções/Melhorias:
-- 
+- Correções de Bugs
+- Compatibilidade com Android 11 ou + melhorada
+- Ajustes Visuais
 
 ======================================================
 

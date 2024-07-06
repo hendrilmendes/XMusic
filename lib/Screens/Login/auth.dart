@@ -197,6 +197,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                     },
                                   ),
                                 ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
                                 GestureDetector(
                                   onTap: () async {
                                     if (controller.text.trim() == '') {
@@ -214,7 +217,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                     ),
                                     height: 55.0,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100.0),
+                                      borderRadius:
+                                          BorderRadius.circular(100.0),
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
@@ -238,6 +242,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                       ),
                                     ),
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(

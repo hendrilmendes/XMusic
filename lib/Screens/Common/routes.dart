@@ -19,7 +19,7 @@ Widget initialFuntion() {
 final Map<String, Widget Function(BuildContext)> namedRoutes = {
   '/': (context) => initialFuntion(),
   '/pref': (context) => const PrefScreen(),
-  '/setting': (context) => const NewSettingsPage(),
+  '/setting': (context) => const SettingsPage(),
   '/about': (context) => AboutScreen(),
   '/playlists': (context) => PlaylistScreen(),
   '/nowplaying': (context) => NowPlaying(),

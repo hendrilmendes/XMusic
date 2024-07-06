@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:audiotagger/audiotagger.dart';
@@ -80,6 +79,7 @@ class Download with ChangeNotifier {
         await openAppSettings();
       }
     }
+
     final RegExp avoid = RegExp(r'[\.\\\*\:\"\?#/;\|]');
     data['title'] = data['title'].toString().split('(From')[0].trim();
 
@@ -281,6 +281,7 @@ class Download with ChangeNotifier {
         );
       }
     } else {
+      Logger.root.info('File does not exist, starting download');
       downloadSong(dlPath, filename, data);
     }
   }

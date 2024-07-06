@@ -154,23 +154,6 @@ class DataSearch extends SearchDelegate {
     );
   }
 
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return theme.copyWith(
-      primaryColor: Theme.of(context).colorScheme.secondary,
-      textSelectionTheme:
-          const TextSelectionThemeData(cursorColor: Colors.white),
-      hintColor: Colors.white70,
-      primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
-      textTheme: theme.textTheme.copyWith(
-        titleLarge:
-            const TextStyle(fontWeight: FontWeight.normal, color: Colors.white),
-      ),
-      inputDecorationTheme:
-          const InputDecorationTheme(focusedBorder: InputBorder.none),
-    );
-  }
 }
 
 class DownloadsSearch extends SearchDelegate {
@@ -341,22 +324,4 @@ class DownloadsSearch extends SearchDelegate {
     );
   }
 
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return theme.copyWith(
-      primaryColor: Theme.of(context).colorScheme.secondary,
-      textSelectionTheme:
-          const TextSelectionThemeData(cursorColor: Colors.white),
-      hintColor: Colors.white70,
-      primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
-      textTheme: theme.textTheme.copyWith(
-        titleLarge:
-            const TextStyle(fontWeight: FontWeight.normal, color: Colors.white),
-      ),
-      inputDecorationTheme:
-          const InputDecorationTheme(focusedBorder: InputBorder.none),
-      scaffoldBackgroundColor: Colors.transparent,
-    );
-  }
 }

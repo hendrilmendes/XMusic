@@ -373,6 +373,9 @@ class _DownloadedSongsState extends State<DownloadedSongs>
                                   const SizedBox(width: 10),
                                   Text(
                                     e,
+                                    style: TextStyle(
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -405,6 +408,9 @@ class _DownloadedSongsState extends State<DownloadedSongs>
                                   const SizedBox(width: 10),
                                   Text(
                                     e,
+                                    style: TextStyle(
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
                                   ),
                                 ],
                               ),

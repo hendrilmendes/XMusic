@@ -384,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                     case 'Library':
                       return const LibraryPage();
                     default:
-                      return NewSettingsPage(callback: callback);
+                      return SettingsPage(callback: callback);
                   }
                 }).toList(),
               ),

@@ -526,7 +526,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                     ),
                                   ),
                                   const SizedBox(
-                                    height: 20.0,
+                                    height: 50,
                                   ),
                                   GestureDetector(
                                     onTap: () {
