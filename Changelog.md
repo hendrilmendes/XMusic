@@ -2,7 +2,7 @@ Changelog XMusic
 
 ======================================================
 
-#### *.*.* - (Em desenvolvimento)
+#### 1.0.14
 
 Correções/Melhorias:
 - Correções de Bugs
