@@ -7,21 +7,21 @@ publish_to: "none"
 version: 1.0.14+16
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
+  sdk: ">=3.5.0 <4.0.0"
 
 dependencies:
-  app_links: ^6.1.4
+  app_links: ^6.2.0
   audio_service: ^0.18.15
   audiotagger: ^2.2.1
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.3.1
   carousel_slider_plus: ^7.0.0
   connectivity_plus: ^6.0.3
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.8
   dart_des: ^1.0.2
-  device_info_plus: ^10.1.0
+  device_info_plus: ^10.1.2
   # ffmpeg_kit_flutter_audio: ^6.0.3
-  file_picker: ^8.0.6
+  file_picker: ^8.0.7
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
@@ -48,7 +48,7 @@ dependencies:
   material_design_icons_flutter: 5.0.5955-rc.1
   metadata_god: ^0.5.2+1
   on_audio_query: ^2.9.0
-  package_info_plus: ^8.0.0
+  package_info_plus: ^8.0.2
   palette_generator: ^0.3.3+4
   path_provider: ^2.1.2
   permission_handler: ^11.3.1
