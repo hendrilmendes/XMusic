@@ -1,21 +1,29 @@
-Changelog XMusic
+Changelog
 
 ======================================================
 
-#### 1.0.14
+## [1.0.14]
 
-Correções/Melhorias:
+## Alterações
+
+### Correções
+
 - Correções de Bugs
 - Compatibilidade com Android 11 ou + melhorada
 - Ajustes Visuais
 
 ======================================================
 
-#### 1.0.1
-Novo:
-- Suporte ao Material3
+## [1.0.1]
 
-Correções/Melhorias:
+## Alterações
+
+### Correções
+
 - Ajustes no design
 - Correções e Melhorias de Desempenho
 - Melhorias no tema escuro
+
+### Features
+
+- Suporte ao Material3
