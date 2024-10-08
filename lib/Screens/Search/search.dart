@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -277,6 +276,10 @@ class _SearchPageState extends State<SearchPage> {
                                           );
                                         });
                                       },
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(100.0),
+                                      ),
                                     ),
                                     onTap: () {
                                       setState(
@@ -393,6 +396,10 @@ class _SearchPageState extends State<SearchPage> {
                                                 );
                                               }
                                             },
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(100.0),
+                                            ),
                                           ),
                                         );
                                       },
@@ -932,6 +939,9 @@ class _SearchPageState extends State<SearchPage> {
               setState(() {});
             }
           },
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100.0),
+          ),
         ),
       );
     }).toList();

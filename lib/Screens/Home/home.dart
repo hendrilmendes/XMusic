@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xmusic/CustomWidgets/bottom_nav_bar.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
@@ -13,12 +13,10 @@ import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Helpers/backup_restore.dart';
 import 'package:xmusic/Helpers/downloads_checker.dart';
 import 'package:xmusic/Helpers/github.dart';
-import 'package:xmusic/Helpers/route_handler.dart';
 import 'package:xmusic/Helpers/update.dart';
 import 'package:xmusic/Screens/Common/routes.dart';
 import 'package:xmusic/Screens/Home/home_screen.dart';
 import 'package:xmusic/Screens/Library/library.dart';
-import 'package:xmusic/Screens/Player/audioplayer.dart';
 import 'package:xmusic/Screens/Settings/settings_page.dart';
 import 'package:xmusic/Screens/Top Charts/top.dart';
 import 'package:xmusic/Screens/YouTube/youtube_home.dart';
@@ -64,25 +62,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Future<bool> handleWillPop(BuildContext? context) async {
-  //   if (context == null) return false;
-  //   final now = DateTime.now();
-  //   final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
-  //       backButtonPressTime == null ||
-  //           now.difference(backButtonPressTime!) > const Duration(seconds: 3);
+  Future<bool> handleWillPop(BuildContext? context) async {
+    if (context == null) return false;
+    final now = DateTime.now();
+    final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
+        backButtonPressTime == null ||
+            now.difference(backButtonPressTime!) > const Duration(seconds: 3);
 
-  //   if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
-  //     backButtonPressTime = now;
-  //     ShowSnackBar().showSnackBar(
-  //       context,
-  //       AppLocalizations.of(context)!.exitConfirm,
-  //       duration: const Duration(seconds: 2),
-  //       noAction: true,
-  //     );
-  //     return false;
-  //   }
-  //   return true;
-  // }
+    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
+      backButtonPressTime = now;
+      ShowSnackBar().showSnackBar(
+        context,
+        AppLocalizations.of(context)!.exitConfirm,
+        duration: const Duration(seconds: 2),
+        noAction: true,
+      );
+      return false;
+    }
+    return true;
+  }
 
   void checkVersion() {
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -318,6 +316,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 controller: _controller,
                 itemCount: sectionsToShow.length,
+                onWillPop: (context) => handleWillPop(context),
                 navBarHeight: 60 +
                     (rotated ? 0 : 70) +
                     (useDense ? 0 : 10) +
@@ -325,21 +324,42 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Theme.of(context).brightness == Brightness.dark
                     ? Colors.black
                     : Colors.white,
-                // confineInSafeArea: false,
-                // onItemTapped: onItemTapped,
-                routeAndNavigatorSettings:
-                    CustomWidgetRouteAndNavigatorSettings(
-                  routes: namedRoutes,
-                  onGenerateRoute: (RouteSettings settings) {
-                    if (settings.name == '/player') {
-                      return PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => const PlayScreen(),
+                screens: sectionsToShow.map((section) {
+                  switch (section) {
+                    case 'Home':
+                      return CustomNavBarScreen(
+                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+                          routes: namedRoutes,
+                        ),
+                        screen: const HomeScreen(),
                       );
-                    }
-                    return HandleRoute.handleRoute(settings.name);
-                  },
-                ),
+                    case 'Top Charts':
+                      return CustomNavBarScreen(
+                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+                          routes: namedRoutes,
+                        ),
+                        screen: TopCharts(pageController: _pageController),
+                      );
+                    case 'YouTube':
+                      return CustomNavBarScreen(
+                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+                          routes: namedRoutes,
+                        ),
+                        screen: const YouTube(),
+                      );
+                    case 'Library':
+                      return CustomNavBarScreen(
+                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+                          routes: namedRoutes,
+                        ),
+                        screen: const LibraryPage(),
+                      );
+                    default:
+                      return CustomNavBarScreen(
+                        screen: SettingsPage(callback: callback),
+                      );
+                  }
+                }).toList(),
                 customWidget: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -347,11 +367,7 @@ class _HomePageState extends State<HomePage> {
                     if (!rotated)
                       ValueListenableBuilder(
                         valueListenable: _selectedIndex,
-                        builder: (
-                          BuildContext context,
-                          int indexValue,
-                          Widget? child,
-                        ) {
+                        builder: (context, indexValue, child) {
                           return AnimatedContainer(
                             duration: const Duration(milliseconds: 100),
                             height: 60,
@@ -371,22 +387,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                   ],
                 ),
-                screens: sectionsToShow.map((e) {
-                  switch (e) {
-                    case 'Home':
-                      return const HomeScreen();
-                    case 'Top Charts':
-                      return TopCharts(
-                        pageController: _pageController,
-                      );
-                    case 'YouTube':
-                      return const YouTube();
-                    case 'Library':
-                      return const LibraryPage();
-                    default:
-                      return SettingsPage(callback: callback);
-                  }
-                }).toList(),
               ),
             ),
           ],

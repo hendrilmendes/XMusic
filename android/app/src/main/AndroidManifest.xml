@@ -18,7 +18,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="XMusic"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:enableOnBackInvokedCallback="true">
         
         <meta-data
             android:name="com.google.android.gms.car.application"

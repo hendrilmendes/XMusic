@@ -179,7 +179,7 @@ class HorizontalAlbumsList extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         color: Colors.black87,
                                         borderRadius:
-                                            BorderRadius.circular(1000.0),
+                                            BorderRadius.circular(10.0),
                                       ),
                                       child: const Icon(
                                         Icons.play_arrow_rounded,

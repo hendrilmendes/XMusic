@@ -285,11 +285,22 @@ class _AboutPageState extends State<AboutPage> {
                           AppLocalizations.of(
                             context,
                           )!
-                              .moreInfo,
+                              .sourceCode,
+                        ),
+                        subtitle: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!
+                              .sourceCodeSub,
                         ),
                         dense: true,
                         onTap: () {
-                          Navigator.pushNamed(context, '/about');
+                          launchUrl(
+                            Uri.parse(
+                              'https://github.com/hendrilmendes/XMusic',
+                            ),
+                            mode: LaunchMode.externalApplication,
+                          );
                         },
                       ),
                     ],

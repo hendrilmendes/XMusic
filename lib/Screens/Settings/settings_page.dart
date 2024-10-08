@@ -270,7 +270,7 @@ class _SettingsPageState extends State<SettingsPage>
           AppLocalizations.of(context)!.likedWork,
           AppLocalizations.of(context)!.donateGpay,
           AppLocalizations.of(context)!.joinTg,
-          AppLocalizations.of(context)!.moreInfo,
+          AppLocalizations.of(context)!.sourceCode,
         ],
       },
     ];

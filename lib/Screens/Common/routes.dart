@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:xmusic/Screens/About/about.dart';
 import 'package:xmusic/Screens/Home/home.dart';
 import 'package:xmusic/Screens/Library/downloads.dart';
 import 'package:xmusic/Screens/Library/nowplaying.dart';
@@ -20,7 +19,6 @@ final Map<String, Widget Function(BuildContext)> namedRoutes = {
   '/': (context) => initialFuntion(),
   '/pref': (context) => const PrefScreen(),
   '/setting': (context) => const SettingsPage(),
-  '/about': (context) => AboutScreen(),
   '/playlists': (context) => PlaylistScreen(),
   '/nowplaying': (context) => NowPlaying(),
   '/recent': (context) => RecentlyPlayed(),

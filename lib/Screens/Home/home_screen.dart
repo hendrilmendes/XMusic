@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ) {
               return <Widget>[
                 SliverAppBar(
-                  expandedHeight: 135,
+                  expandedHeight: 100,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   // pinned: true,
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               const SizedBox(
-                                height: 60,
+                                height: 40,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(

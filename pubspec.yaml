@@ -15,7 +15,7 @@ dependencies:
   audiotagger: ^2.2.1
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.3.1
-  carousel_slider_plus: ^7.0.0
+  carousel_slider_plus: ^7.0.1
   connectivity_plus: ^6.0.3
   cupertino_icons: ^1.0.8
   dart_des: ^1.0.2
@@ -31,10 +31,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_lyric: ^2.0.4+6
-  get_it: ^7.6.8
+  get_it: ^7.7.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  home_widget: ^0.6.0
+  home_widget: ^0.7.0
   html_unescape: ^2.0.0
   just_audio: ^0.9.39
   # Discontinued, Use just_audio_windows instead.
@@ -52,10 +52,7 @@ dependencies:
   palette_generator: ^0.3.3+4
   path_provider: ^2.1.2
   permission_handler: ^11.3.1
-  persistent_bottom_nav_bar:
-    git:
-      url: https://github.com/hendrilmendes/PersistentBottomNavBar.git
-      ref: 4ae6550
+  persistent_bottom_nav_bar: ^6.2.1
   receive_sharing_intent: ^1.8.0
   share_plus: ^10.0.0
   sizer: ^2.0.15
@@ -63,7 +60,7 @@ dependencies:
   url_launcher: ^6.3.0
   uuid: ^3.0.7
   # workmanager: ^0.5.1
-  youtube_explode_dart: ^2.2.1
+  youtube_explode_dart: ^2.2.2
 
 dev_dependencies:
   flutter_test:

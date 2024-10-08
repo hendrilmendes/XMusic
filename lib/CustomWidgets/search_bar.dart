@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -72,7 +71,7 @@ class _SearchBarState extends State<SearchBar> {
         Column(
           children: [
             Card(
-              color:Theme.of(context).cardColor,
+              color: Theme.of(context).cardColor,
               margin: const EdgeInsets.fromLTRB(
                 18.0,
                 10.0,
@@ -81,7 +80,7 @@ class _SearchBarState extends State<SearchBar> {
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
-                  10.0,
+                  100.0,
                 ),
               ),
               elevation: 8.0,
@@ -202,15 +201,13 @@ class _SearchBarState extends State<SearchBar> {
                       return suggestedList.isEmpty
                           ? const SizedBox()
                           : Card(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 18.0,
-                              ),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 18.0),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  10.0,
-                                ),
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
                               elevation: 8.0,
+                              color: Colors.transparent,
                               child: SizedBox(
                                 height: min(
                                   MediaQuery.sizeOf(context).height / 1.75,

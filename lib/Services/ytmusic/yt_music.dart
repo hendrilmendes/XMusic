@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart';
@@ -14,7 +13,7 @@ class YtMusicService {
   static const baseApiEndpoint = '/youtubei/v1/';
   static const ytmParams = {
     'alt': 'json',
-    'key': 'AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30',
+    'key': 'AIzaSyBVNTFVEA52NfP2_2TRIsS5pTKLk_C7a2c',
   };
   static const userAgent =
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0';
