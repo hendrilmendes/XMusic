@@ -16,7 +16,7 @@ class YtMusicService {
     'key': 'AIzaSyBVNTFVEA52NfP2_2TRIsS5pTKLk_C7a2c',
   };
   static const userAgent =
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0';
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:118.0) Gecko/20100101 Firefox/118.0';
   static const Map<String, String> endpoints = {
     'search': 'search',
     'browse': 'browse',

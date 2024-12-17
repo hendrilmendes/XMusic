@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';
+import 'package:xmusic/Helpers/config.dart';
+import 'package:xmusic/Helpers/dominant_color.dart';
 import 'package:xmusic/Screens/Player/audioplayer.dart';
 
 class MiniPlayer extends StatefulWidget {
@@ -22,6 +26,15 @@ class MiniPlayer extends StatefulWidget {
 
 class _MiniPlayerState extends State<MiniPlayer> {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
+  final ValueNotifier<List<Color?>?> gradientColor =
+      ValueNotifier<List<Color?>?>(
+    GetIt.I<MyTheme>().playGradientColor,
+  );
+
+  void updateBackgroundColors(List<Color?> value) {
+    gradientColor.value = value;
+    return;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +54,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
           final List preferredMiniButtons = Hive.box('settings').get(
             'preferredMiniButtons',
-            defaultValue: ['Like', 'Previous', 'Play/Pause', 'Next'],
+            defaultValue: ['Like', 'Play/Pause', 'Next'],
           )?.toList() as List;
 
           final bool isLocal =
@@ -52,6 +65,24 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 defaultValue: false,
               ) as bool ||
               rotated;
+
+          if (mediaItem != null) {
+            if (mediaItem.artUri != null && mediaItem.artUri.toString() != '') {
+              mediaItem.artUri.toString().startsWith('file')
+                  ? getColors(
+                      imageProvider: FileImage(
+                        File(
+                          mediaItem.artUri!.toFilePath(),
+                        ),
+                      ),
+                    ).then((value) => updateBackgroundColors(value))
+                  : getColors(
+                      imageProvider: CachedNetworkImageProvider(
+                        mediaItem.artUri.toString(),
+                      ),
+                    ).then((value) => updateBackgroundColors(value));
+            }
+          }
 
           return Dismissible(
             key: const Key('miniplayer'),
@@ -78,37 +109,94 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 }
                 return Future.value(false);
               },
-              child: Card(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 2.0,
-                  vertical: 1.0,
-                ),
-                elevation: 0,
-                child: SizedBox(
-                  child: GradientContainer(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        miniplayerTile(
-                          context: context,
-                          preferredMiniButtons: preferredMiniButtons,
-                          useDense: useDense,
-                          title: mediaItem?.title ?? '',
-                          subtitle: mediaItem?.artist ?? '',
-                          imagePath: (isLocal
-                                  ? mediaItem?.artUri?.toFilePath()
-                                  : mediaItem?.artUri?.toString()) ??
-                              '',
-                          isLocalImage: isLocal,
-                          isDummy: mediaItem == null,
+              child: ValueListenableBuilder(
+                valueListenable: gradientColor,
+                builder: (context, value, child) {
+                  if (value == null) {
+                    return GradientContainer(
+                      borderRadius: true,
+                      child: SizedBox(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            miniplayerTile(
+                              context: context,
+                              preferredMiniButtons: preferredMiniButtons,
+                              useDense: useDense,
+                              title: mediaItem?.title ?? '',
+                              subtitle: mediaItem?.artist ?? '',
+                              imagePath: (isLocal
+                                      ? mediaItem?.artUri?.toFilePath()
+                                      : mediaItem?.artUri?.toString()) ??
+                                  '',
+                              isLocalImage: isLocal,
+                              isDummy: mediaItem == null,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: positionSlider(
+                                mediaItem?.duration?.inSeconds.toDouble(),
+                                null,
+                              ),
+                            ),
+                          ],
                         ),
-                        positionSlider(
-                          mediaItem?.duration?.inSeconds.toDouble(),
+                      ),
+                    );
+                  } else {
+                    final Color miniplayerColor =
+                        (value[0]?.computeLuminance() ?? 0) > 0.4
+                            ? HSLColor.fromColor(value[0] ?? Colors.black)
+                                .withLightness(0.4)
+                                .toColor()
+                            : value[0] ?? Colors.black;
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(15),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                        color: miniplayerColor,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 2.0,
+                      ),
+                      child: SizedBox(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            miniplayerTile(
+                              context: context,
+                              preferredMiniButtons: preferredMiniButtons,
+                              useDense: useDense,
+                              title: mediaItem?.title ?? '',
+                              subtitle: mediaItem?.artist ?? '',
+                              imagePath: (isLocal
+                                      ? mediaItem?.artUri?.toFilePath()
+                                      : mediaItem?.artUri?.toString()) ??
+                                  '',
+                              isLocalImage: isLocal,
+                              isDummy: mediaItem == null,
+                              buttonsColor: HSLColor.fromColor(miniplayerColor)
+                                  .withLightness(0.9)
+                                  .toColor(),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: positionSlider(
+                                mediaItem?.duration?.inSeconds.toDouble(),
+                                HSLColor.fromColor(miniplayerColor)
+                                    .withLightness(0.9)
+                                    .toColor(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           );
@@ -126,6 +214,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
     bool useDense = false,
     bool isLocalImage = false,
     bool isDummy = false,
+    Color? buttonsColor,
   }) {
     return ListTile(
       dense: useDense,
@@ -135,30 +224,30 @@ class _MiniPlayerState extends State<MiniPlayer> {
               Navigator.pushNamed(context, '/player');
             },
       title: Text(
-        isDummy
-            ? AppLocalizations.of(
-                context,
-              )!
-                .nowPlaying
-            : title,
+        isDummy ? 'Now Playing' : title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 15,
+          color: buttonsColor,
+        ),
       ),
       subtitle: Text(
-        isDummy
-            ? AppLocalizations.of(
-                context,
-              )!
-                .unknown
-            : subtitle,
+        isDummy ? 'Unknown' : subtitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 13,
+          color: buttonsColor != null
+              ? HSLColor.fromColor(buttonsColor).withLightness(0.85).toColor()
+              : null,
+        ),
       ),
       leading: Hero(
         tag: 'currentArtwork',
         child: imageCard(
           elevation: 8,
-          boxDimension: useDense ? 40.0 : 50.0,
+          boxDimension: useDense ? 44.0 : 50.0,
           localImage: isLocalImage,
           imageUrl: isLocalImage ? imagePath : imagePath,
         ),
@@ -169,13 +258,14 @@ class _MiniPlayerState extends State<MiniPlayer> {
               audioHandler,
               miniplayer: true,
               buttons: isLocalImage
-                  ? ['Like', 'Previous', 'Play/Pause', 'Next']
+                  ? ['Like', 'Play/Pause', 'Next']
                   : preferredMiniButtons,
+              buttonsColor: buttonsColor,
             ),
     );
   }
 
-  StreamBuilder<Duration> positionSlider(double? maxDuration) {
+  StreamBuilder<Duration> positionSlider(double? maxDuration, Color? color) {
     return StreamBuilder<Duration>(
       stream: AudioService.position,
       builder: (context, snapshot) {
@@ -186,10 +276,10 @@ class _MiniPlayerState extends State<MiniPlayer> {
             ? const SizedBox()
             : SliderTheme(
                 data: SliderTheme.of(context).copyWith(
-                  activeTrackColor: Theme.of(context).colorScheme.secondary,
+                  activeTrackColor: color ?? Colors.white,
                   inactiveTrackColor: Colors.transparent,
                   trackHeight: 0.5,
-                  thumbColor: Theme.of(context).colorScheme.secondary,
+                  thumbColor: color ?? Colors.white,
                   thumbShape: const RoundSliderThumbShape(
                     enabledThumbRadius: 1.0,
                   ),

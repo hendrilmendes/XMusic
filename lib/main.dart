@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -42,31 +41,8 @@ Future<void> main() async {
       limit: box['limit'] as bool? ?? false,
     );
   }
-  if (Platform.isAndroid) {
-    setOptimalDisplayMode();
-  }
   await startService();
   runApp(MyApp());
-}
-
-Future<void> setOptimalDisplayMode() async {
-  await FlutterDisplayMode.setHighRefreshRate();
-  final List<DisplayMode> supported = await FlutterDisplayMode.supported;
-  final DisplayMode active = await FlutterDisplayMode.active;
-
-  final List<DisplayMode> sameResolution = supported
-      .where(
-        (DisplayMode m) => m.width == active.width && m.height == active.height,
-      )
-      .toList()
-    ..sort(
-      (DisplayMode a, DisplayMode b) => b.refreshRate.compareTo(a.refreshRate),
-    );
-
-  final DisplayMode mostOptimalMode =
-      sameResolution.isNotEmpty ? sameResolution.first : active;
-
-  await FlutterDisplayMode.setPreferredMode(mostOptimalMode);
 }
 
 Future<void> startService() async {

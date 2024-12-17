@@ -151,6 +151,7 @@ class _VerticalSliderState extends State<VerticalSlider> {
           child: Slider(
             activeColor: Theme.of(context).colorScheme.secondary,
             inactiveColor:
+                // ignore: deprecated_member_use
                 Theme.of(context).colorScheme.secondary.withOpacity(0.4),
             value: sliderValue ?? widget.value!,
             min: widget.min!,

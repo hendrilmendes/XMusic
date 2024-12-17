@@ -147,7 +147,6 @@ class Download with ChangeNotifier {
             }
           default:
             lastDownloadId = data['id'].toString();
-            break;
         }
       } else {
         showDialog(

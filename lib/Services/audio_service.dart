@@ -1035,7 +1035,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     Logger.root.severe('Playback Error from audioservice: ${err.code}', err);
     if (err is PlatformException &&
         err.code == 'abort' &&
-        err.message == 'Connection aborted') return;
+        err.message == 'Connection aborted') {
+      return;
+    }
     _onError(err, null);
   }
 

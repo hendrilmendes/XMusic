@@ -1,4 +1,3 @@
-
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,12 +10,14 @@ class LikeButton extends StatefulWidget {
   final double? size;
   final Map? data;
   final bool showSnack;
+  final Color? color;
   const LikeButton({
     super.key,
     required this.mediaItem,
     this.size,
     this.data,
     this.showSnack = false,
+    this.color,
   });
 
   @override
@@ -75,7 +76,7 @@ class _LikeButtonState extends State<LikeButton>
       child: IconButton(
         icon: Icon(
           liked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-          color: liked ? Colors.redAccent : Theme.of(context).iconTheme.color,
+          color: widget.color,
         ),
         iconSize: widget.size ?? 24.0,
         tooltip: liked

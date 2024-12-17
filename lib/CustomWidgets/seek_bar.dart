@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 
 import 'dart:math';
 
@@ -16,6 +17,7 @@ class SeekBar extends StatefulWidget {
   // final double height;
   final ValueChanged<Duration>? onChanged;
   final ValueChanged<Duration>? onChangeEnd;
+  final Color? color;
 
   const SeekBar({
     required this.duration,
@@ -27,6 +29,7 @@ class SeekBar extends StatefulWidget {
     this.bufferedPosition = Duration.zero,
     this.onChanged,
     this.onChangeEnd,
+    this.color,
   });
 
   @override
@@ -145,8 +148,10 @@ class _SeekBarState extends State<SeekBar> {
                 SliderTheme(
                   data: _sliderThemeData.copyWith(
                     inactiveTrackColor: Colors.transparent,
-                    activeTrackColor: Theme.of(context).iconTheme.color,
-                    thumbColor: Theme.of(context).iconTheme.color,
+                    activeTrackColor:
+                        widget.color ?? Theme.of(context).iconTheme.color,
+                    thumbColor:
+                        widget.color ?? Theme.of(context).iconTheme.color,
                     thumbShape: const RoundSliderThumbShape(
                       enabledThumbRadius: 8.0,
                     ),

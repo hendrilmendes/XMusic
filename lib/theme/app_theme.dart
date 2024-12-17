@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:xmusic/Helpers/config.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -57,6 +58,9 @@ class AppTheme {
             brightness: Brightness.light,
             secondary: currentTheme.currentColor(),
           ),
+      textTheme: Typography()
+          .black
+          .apply(fontFamily: GoogleFonts.openSans().fontFamily),
     );
   }
 
@@ -66,7 +70,9 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.black,
-      textTheme: Typography().white.apply(),
+      textTheme: Typography()
+          .white
+          .apply(fontFamily: GoogleFonts.openSans().fontFamily),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
@@ -127,6 +133,18 @@ class AppTheme {
           ),
       popupMenuTheme: const PopupMenuThemeData(
         color: Colors.black,
+      ),
+      dialogTheme: const DialogTheme(
+        backgroundColor: Colors.black,
+        titleTextStyle: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        contentTextStyle: TextStyle(
+          fontSize: 16.0,
+          color: Colors.white,
+        ),
       ),
     );
   }

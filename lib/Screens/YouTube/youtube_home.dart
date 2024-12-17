@@ -317,6 +317,7 @@ class _YouTubeState extends State<YouTube>
                                                           Alignment.centerRight,
                                                       child: Container(
                                                         color: Colors.black
+                                                            // ignore: deprecated_member_use
                                                             .withOpacity(0.75),
                                                         width: (boxSize - 30) *
                                                             (16 / 9) /

@@ -721,10 +721,15 @@
   "openSource": "Licenças de Código Aberto",
   "@openSource": {},
   "openSourceSub": "Softwares de terceiros usados na construção do app",
+  "@openSourceSub": {},
   "goodMorning": "Bom dia,",
   "@goodMorning": {},
   "goodAfternoon": "Boa tarde,",
   "@goodAfternoon": {},
   "goodEvening": "Boa noite,",
-  "@goodEvening": {}
+  "@goodEvening": {},
+  "topResult": "Tendências do Momento",
+  "@topResult": {},
+  "podcasts": "Podcasts",
+  "@podcasts": {}
 }

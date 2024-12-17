@@ -234,7 +234,6 @@ class _LikedSongsState extends State<LikedSongs>
               .toUpperCase()
               .compareTo(b['dateAdded'].toString().toUpperCase()),
         );
-        break;
     }
 
     if (order == 1) {

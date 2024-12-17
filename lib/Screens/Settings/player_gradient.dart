@@ -29,7 +29,7 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
   final Set<String> recommended = {
     'halfDark',
     'fullDark',
-    'fullMixBlack',
+    'fullMix',
   };
   final Map<String, String> typeMapping = {
     'simple': 'Simple',
@@ -45,7 +45,7 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
   final List<Color?> gradientColor = [Colors.lightGreen, Colors.teal];
   final MyTheme currentTheme = GetIt.I<MyTheme>();
   String gradientType = Hive.box('settings')
-      .get('gradientType', defaultValue: 'halfDark')
+      .get('gradientType', defaultValue: 'fullMix')
       .toString();
 
   @override

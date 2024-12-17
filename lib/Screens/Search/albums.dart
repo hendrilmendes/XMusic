@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:xmusic/APIs/api.dart';
@@ -182,6 +181,8 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
                                           widget.type == 'Artists'
                                               ? ArtistSearchPage(
                                                   data: entry,
+                                                  artistId:
+                                                      entry['id'].toString(),
                                                 )
                                               : SongsListPage(
                                                   listItem: entry,

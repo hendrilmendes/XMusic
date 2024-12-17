@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -21,7 +22,7 @@ import 'package:xmusic/Services/player_service.dart';
 
 bool fetched = false;
 List preferredLanguage = Hive.box('settings')
-    .get('preferredLanguage', defaultValue: ['Hindi']) as List;
+    .get('preferredLanguage', defaultValue: ['English']) as List;
 List likedRadio =
     Hive.box('settings').get('likedRadio', defaultValue: []) as List;
 Map data = Hive.box('cache').get('homepage', defaultValue: {}) as Map;
@@ -380,6 +381,8 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                   opaque: false,
                                   pageBuilder: (_, __, ___) => ArtistSearchPage(
                                     data: likedArtistsList[idx] as Map,
+                                    artistId:
+                                        likedArtistsList[idx]['id'].toString(),
                                   ),
                                 ),
                               );

@@ -2,6 +2,21 @@ Changelog
 
 ======================================================
 
+## [1.1.0](https://github.com/hendrilmendes/XMusic/compare/1.0.14..1.1.0) (17-12-2024)
+
+## Alterações
+
+### Novo
+
+- Implementado recomendações nas pesquisas
+
+### Correções
+
+- Correções de bugs
+- Ajustes visuais
+
+======================================================
+
 ## [1.0.14]
 
 ## Alterações

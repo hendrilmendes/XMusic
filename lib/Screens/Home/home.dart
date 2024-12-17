@@ -274,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                     indicatorColor: Theme.of(context)
                         .colorScheme
                         .secondary
-                        .withOpacity(0.2),
+                        .withValues(),
                     destinations: sectionsToShow.map((e) {
                       switch (e) {
                         case 'Home':
@@ -375,8 +375,8 @@ class _HomePageState extends State<HomePage> {
                               currentIndex: indexValue,
                               backgroundColor: Theme.of(context).brightness ==
                                       Brightness.dark
-                                  ? Colors.black.withOpacity(0.9)
-                                  : Colors.white.withOpacity(0.9),
+                                  ? Colors.black.withValues()
+                                  : Colors.white.withValues(),
                               onTap: (index) {
                                 onItemTapped(index);
                               },

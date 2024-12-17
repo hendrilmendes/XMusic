@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xmusic/Helpers/config.dart';
@@ -6,7 +5,12 @@ import 'package:xmusic/Helpers/config.dart';
 class GradientContainer extends StatefulWidget {
   final Widget? child;
   final bool? opacity;
-  const GradientContainer({required this.child, this.opacity});
+  final bool? borderRadius;
+  const GradientContainer({
+    required this.child,
+    this.opacity,
+    this.borderRadius,
+  });
   @override
   _GradientContainerState createState() => _GradientContainerState();
 }
@@ -30,7 +34,17 @@ class _GradientContainerState extends State<GradientContainer> {
                   Colors.white,
                 ],
         ),
+        borderRadius: widget.borderRadius ?? false
+            ? const BorderRadius.all(
+                Radius.circular(15),
+              )
+            : null,
       ),
+      margin: widget.borderRadius ?? false
+          ? const EdgeInsets.symmetric(
+              horizontal: 2.0,
+            )
+          : null,
       child: widget.child,
     );
   }

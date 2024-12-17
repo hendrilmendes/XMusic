@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -10,11 +9,13 @@ class DownloadButton extends StatefulWidget {
   final Map data;
   final String? icon;
   final double? size;
+  final Color? color;
   const DownloadButton({
     super.key,
     required this.data,
     this.icon,
     this.size,
+    this.color,
   });
 
   @override
@@ -59,7 +60,7 @@ class _DownloadButtonState extends State<DownloadButton> {
             ? IconButton(
                 icon: const Icon(Icons.download_done_rounded),
                 tooltip: 'Download Done',
-                color: Theme.of(context).colorScheme.secondary,
+                color: widget.color ?? Theme.of(context).colorScheme.secondary,
                 iconSize: widget.size ?? 24.0,
                 onPressed: () {
                   down.prepareDownload(context, widget.data);
@@ -73,7 +74,7 @@ class _DownloadButtonState extends State<DownloadButton> {
                           : Icons.save_alt,
                     ),
                     iconSize: widget.size ?? 24.0,
-                    color: Theme.of(context).iconTheme.color,
+                    color: widget.color ?? Theme.of(context).iconTheme.color,
                     tooltip: 'Download',
                     onPressed: () {
                       down.prepareDownload(context, widget.data);
@@ -83,8 +84,9 @@ class _DownloadButtonState extends State<DownloadButton> {
                     child: Stack(
                       children: [
                         Center(
-                          child: CircularProgressIndicator.adaptive(
+                          child: CircularProgressIndicator(
                             value: down.progress == 1 ? null : down.progress,
+                            color: widget.color,
                           ),
                         ),
                         Center(
@@ -96,7 +98,8 @@ class _DownloadButtonState extends State<DownloadButton> {
                                   Icons.close_rounded,
                                 ),
                                 iconSize: 25.0,
-                                color: Theme.of(context).iconTheme.color,
+                                color: widget.color ??
+                                    Theme.of(context).iconTheme.color,
                                 tooltip: AppLocalizations.of(
                                   context,
                                 )!
@@ -239,7 +242,7 @@ class _MultiDownloadButtonState extends State<MultiDownloadButton> {
                         child: SizedBox(
                           height: 35,
                           width: 35,
-                          child: CircularProgressIndicator.adaptive(
+                          child: CircularProgressIndicator(
                             value: down.progress == 1 ? null : down.progress,
                           ),
                         ),
@@ -248,7 +251,7 @@ class _MultiDownloadButtonState extends State<MultiDownloadButton> {
                         child: SizedBox(
                           height: 30,
                           width: 30,
-                          child: CircularProgressIndicator.adaptive(
+                          child: CircularProgressIndicator(
                             value: done / widget.data.length,
                           ),
                         ),
@@ -357,7 +360,7 @@ class _AlbumDownloadButtonState extends State<AlbumDownloadButton> {
                         child: SizedBox(
                           height: 35,
                           width: 35,
-                          child: CircularProgressIndicator.adaptive(
+                          child: CircularProgressIndicator(
                             value: down.progress == 1 ? null : down.progress,
                           ),
                         ),
@@ -366,7 +369,7 @@ class _AlbumDownloadButtonState extends State<AlbumDownloadButton> {
                         child: SizedBox(
                           height: 30,
                           width: 30,
-                          child: CircularProgressIndicator.adaptive(
+                          child: CircularProgressIndicator(
                             value: data.isEmpty ? 0 : done / data.length,
                           ),
                         ),

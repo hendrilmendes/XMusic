@@ -259,6 +259,29 @@ class _AboutPageState extends State<AboutPage> {
                           AppLocalizations.of(
                             context,
                           )!
+                              .sourceCode,
+                        ),
+                        subtitle: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!
+                              .sourceCodeSub,
+                        ),
+                        dense: true,
+                        onTap: () {
+                          launchUrl(
+                            Uri.parse(
+                              'https://github.com/hendrilmendes/XMusic',
+                            ),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!
                               .openSource,
                         ),
                         subtitle: Text(
@@ -277,29 +300,6 @@ class _AboutPageState extends State<AboutPage> {
                                     AppLocalizations.of(context)!.appTitle,
                               ),
                             ),
-                          );
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          AppLocalizations.of(
-                            context,
-                          )!
-                              .sourceCode,
-                        ),
-                        subtitle: Text(
-                          AppLocalizations.of(
-                            context,
-                          )!
-                              .sourceCodeSub,
-                        ),
-                        dense: true,
-                        onTap: () {
-                          launchUrl(
-                            Uri.parse(
-                              'https://github.com/hendrilmendes/XMusic',
-                            ),
-                            mode: LaunchMode.externalApplication,
                           );
                         },
                       ),

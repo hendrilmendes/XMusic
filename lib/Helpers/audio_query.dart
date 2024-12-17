@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -156,6 +155,7 @@ class OfflineAudioQuery {
     double elevation = 5,
     ImageRepeat imageRepeat = ImageRepeat.noRepeat,
     bool gaplessPlayback = true,
+    bool queueView = false,
     Widget? errorWidget,
     Widget? placeholder,
   }) {
@@ -171,50 +171,81 @@ class OfflineAudioQuery {
       ),
       builder: (context, item) {
         if (item.data != null && item.data!.isNotEmpty) {
-          return Card(
-            elevation: elevation,
-            shape: RoundedRectangleBorder(
-              borderRadius: borderRadius ?? BorderRadius.circular(7.0),
-            ),
-            clipBehavior: clipBehavior,
-            child: Image(
-              image: FileImage(
-                File(
-                  item.data!,
+          return queueView
+              ? Image(
+                  image: FileImage(
+                    File(
+                      item.data!,
+                    ),
+                  ),
+                  gaplessPlayback: gaplessPlayback,
+                  repeat: imageRepeat,
+                  width: width,
+                  height: height,
+                  fit: fit,
+                  filterQuality: filterQuality,
+                  errorBuilder: (context, exception, stackTrace) {
+                    return errorWidget ??
+                        Image(
+                          fit: BoxFit.cover,
+                          height: height,
+                          width: width,
+                          image: const AssetImage('assets/cover.jpg'),
+                        );
+                  },
+                )
+              : Card(
+                  elevation: elevation,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: borderRadius ?? BorderRadius.circular(7.0),
+                  ),
+                  clipBehavior: clipBehavior,
+                  child: Image(
+                    image: FileImage(
+                      File(
+                        item.data!,
+                      ),
+                    ),
+                    gaplessPlayback: gaplessPlayback,
+                    repeat: imageRepeat,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    filterQuality: filterQuality,
+                    errorBuilder: (context, exception, stackTrace) {
+                      return errorWidget ??
+                          Image(
+                            fit: BoxFit.cover,
+                            height: height,
+                            width: width,
+                            image: const AssetImage('assets/cover.jpg'),
+                          );
+                    },
+                  ),
+                );
+        }
+        return queueView
+            ? placeholder ??
+                Image(
+                  fit: BoxFit.cover,
+                  height: height,
+                  width: width,
+                  image: const AssetImage('assets/cover.jpg'),
+                )
+            : Card(
+                elevation: elevation,
+                shape: RoundedRectangleBorder(
+                  borderRadius: borderRadius ?? BorderRadius.circular(7.0),
                 ),
-              ),
-              gaplessPlayback: gaplessPlayback,
-              repeat: imageRepeat,
-              width: width,
-              height: height,
-              fit: fit,
-              filterQuality: filterQuality,
-              errorBuilder: (context, exception, stackTrace) {
-                return errorWidget ??
+                clipBehavior: clipBehavior,
+                child: placeholder ??
                     Image(
                       fit: BoxFit.cover,
                       height: height,
                       width: width,
                       image: const AssetImage('assets/cover.jpg'),
-                    );
-              },
-            ),
-          );
-        }
-        return Card(
-          elevation: elevation,
-          shape: RoundedRectangleBorder(
-            borderRadius: borderRadius ?? BorderRadius.circular(7.0),
-          ),
-          clipBehavior: clipBehavior,
-          child: placeholder ??
-              Image(
-                fit: BoxFit.cover,
-                height: height,
-                width: width,
-                image: const AssetImage('assets/cover.jpg'),
-              ),
-        );
+                    ),
+              );
       },
     );
   }

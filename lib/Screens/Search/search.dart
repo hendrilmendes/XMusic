@@ -11,10 +11,13 @@ import 'package:xmusic/CustomWidgets/gradient_containers.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';
 import 'package:xmusic/CustomWidgets/like_button.dart';
 import 'package:xmusic/CustomWidgets/media_tile.dart';
+import 'package:xmusic/CustomWidgets/on_hover.dart';
 import 'package:xmusic/CustomWidgets/search_bar.dart' as searchbar;
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:xmusic/Helpers/extensions.dart';
+import 'package:xmusic/Helpers/format.dart';
+import 'package:xmusic/Models/image_quality.dart';
 import 'package:xmusic/Screens/Common/song_list.dart';
 import 'package:xmusic/Screens/Common/song_list_view.dart';
 import 'package:xmusic/Screens/Search/albums.dart';
@@ -60,7 +63,7 @@ class _SearchPageState extends State<SearchPage> {
   //     Hive.box('settings').get('showHistory', defaultValue: true) as bool;
   bool liveSearch =
       Hive.box('settings').get('liveSearch', defaultValue: true) as bool;
-  final ValueNotifier<List<String>> topSearch = ValueNotifier<List<String>>(
+  final ValueNotifier<List<Map>> topSearch = ValueNotifier<List<Map>>(
     [],
   );
 
@@ -198,6 +201,33 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
+  String getSubTitle(Map item) {
+    final type = item['type'];
+    switch (type) {
+      case 'playlist':
+        return 'Playlist • ${(item['subtitle']?.toString() ?? '').isEmpty ? 'JioSaavn' : item['subtitle'].toString().unescape()}';
+      case 'song':
+        return 'Single';
+      case 'show':
+        return 'Podcast • ${(item['subtitle']?.toString() ?? '').isEmpty ? 'JioSaavn' : item['subtitle'].toString().unescape()}';
+      case 'album':
+        final artists = item['more_info']?['artistMap']?['artists']
+            .map((artist) => artist['name'])
+            .toList();
+        if (artists != null) {
+          return 'Album • ${artists?.join(', ')?.toString().unescape()}';
+        } else if (item['subtitle'] != null && item['subtitle'] != '') {
+          return 'Album • ${item['subtitle']?.toString().unescape()}';
+        }
+        return 'Album';
+      default:
+        final artists = item['more_info']?['artistMap']?['artists']
+            .map((artist) => artist['name'])
+            .toList();
+        return artists?.join(', ')?.toString().unescape() ?? '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     fromHome ??= widget.fromHome;
@@ -205,6 +235,12 @@ class _SearchPageState extends State<SearchPage> {
       fetchResultCalled = true;
       fromHome! ? getTrendingSearch() : fetchResults();
     }
+    double boxSize =
+        MediaQuery.sizeOf(context).height > MediaQuery.sizeOf(context).width
+            ? MediaQuery.sizeOf(context).width / 2
+            : MediaQuery.sizeOf(context).height / 2.5;
+    if (boxSize > 250) boxSize = 250;
+
     return GradientContainer(
       child: SafeArea(
         child: Scaffold(
@@ -276,10 +312,6 @@ class _SearchPageState extends State<SearchPage> {
                                           );
                                         });
                                       },
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100.0),
-                                      ),
                                     ),
                                     onTap: () {
                                       setState(
@@ -315,7 +347,7 @@ class _SearchPageState extends State<SearchPage> {
                           valueListenable: topSearch,
                           builder: (
                             BuildContext context,
-                            List<String> value,
+                            List<Map> value,
                             Widget? child,
                           ) {
                             if (value.isEmpty) return const SizedBox();
@@ -323,82 +355,299 @@ class _SearchPageState extends State<SearchPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
                                     vertical: 10,
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .trendingSearch,
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                    ],
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .trendingSearch,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                    ),
                                   ),
                                 ),
                                 Align(
-                                  alignment: Alignment.topLeft,
+                                  alignment: Alignment.topCenter,
                                   child: Wrap(
                                     children: List<Widget>.generate(
                                       value.length,
                                       (int index) {
-                                        return Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 5.0,
-                                            vertical: (Platform.isWindows ||
-                                                    Platform.isLinux ||
-                                                    Platform.isMacOS)
-                                                ? 5.0
-                                                : 0.0,
-                                          ),
-                                          child: ChoiceChip(
-                                            label: Text(value[index]),
-                                            selectedColor: Theme.of(context)
-                                                .colorScheme
-                                                .secondary
-                                                .withOpacity(0.2),
-                                            labelStyle: TextStyle(
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyLarge!
-                                                  .color,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                            selected: false,
-                                            onSelected: (bool selected) {
-                                              if (selected) {
-                                                setState(
-                                                  () {
-                                                    fetched = false;
-                                                    query = value[index].trim();
-                                                    _controller.text = query;
-                                                    _controller.selection =
-                                                        TextSelection
-                                                            .fromPosition(
-                                                      TextPosition(
-                                                        offset: query.length,
+                                        final subTitle =
+                                            getSubTitle(value[index]);
+                                        return GestureDetector(
+                                          onLongPress: () {
+                                            Feedback.forLongPress(context);
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return InteractiveViewer(
+                                                  child: Stack(
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () =>
+                                                            Navigator.pop(
+                                                          context,
+                                                        ),
                                                       ),
-                                                    );
-                                                    addToHistory(query);
-                                                    fetchResultCalled = false;
-                                                    fromHome = false;
-                                                    searchedList = [];
-                                                    FocusManager
-                                                        .instance.primaryFocus
-                                                        ?.unfocus();
-                                                  },
+                                                      AlertDialog(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            15.0,
+                                                          ),
+                                                        ),
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        content: imageCard(
+                                                          borderRadius: 15.0,
+                                                          imageUrl: value[index]
+                                                                  ['image']
+                                                              .toString(),
+                                                          imageQuality:
+                                                              ImageQuality.high,
+                                                          boxDimension:
+                                                              MediaQuery.sizeOf(
+                                                                    context,
+                                                                  ).width *
+                                                                  0.8,
+                                                          placeholderImage: (value[
+                                                                              index]
+                                                                          [
+                                                                          'type'] ==
+                                                                      'playlist' ||
+                                                                  value[index][
+                                                                          'type'] ==
+                                                                      'album')
+                                                              ? const AssetImage(
+                                                                  'assets/album.png',
+                                                                )
+                                                              : value[index][
+                                                                          'type'] ==
+                                                                      'artist'
+                                                                  ? const AssetImage(
+                                                                      'assets/artist.png',
+                                                                    )
+                                                                  : const AssetImage(
+                                                                      'assets/cover.jpg',
+                                                                    ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          onTap: () async {
+                                            if (value[index]['type'] ==
+                                                'song') {
+                                              PlayerInvoke.init(
+                                                songsList: await FormatResponse
+                                                    .formatSongsInList(
+                                                  [value[index]],
+                                                ),
+                                                index: 0,
+                                                isOffline: false,
+                                              );
+                                            } else {
+                                              if (value[index]['type'] ==
+                                                  'artist') {
+                                                Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    opaque: false,
+                                                    pageBuilder: (_, __, ___) =>
+                                                        ArtistSearchPage(
+                                                      data: value[index],
+                                                      artistId: value[index]
+                                                              ['id']
+                                                          .toString(),
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    opaque: false,
+                                                    pageBuilder: (_, __, ___) =>
+                                                        SongsListPage(
+                                                      listItem: value[index],
+                                                    ),
+                                                  ),
                                                 );
                                               }
-                                            },
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100.0),
+                                            }
+                                          },
+                                          child: SizedBox(
+                                            width: boxSize - 30,
+                                            child: HoverBox(
+                                              child: imageCard(
+                                                margin:
+                                                    const EdgeInsets.all(4.0),
+                                                borderRadius: 10.0,
+                                                imageUrl: value[index]['image']
+                                                    .toString(),
+                                                imageQuality:
+                                                    ImageQuality.medium,
+                                                placeholderImage: (value[index]
+                                                                ['type'] ==
+                                                            'playlist' ||
+                                                        value[index]['type'] ==
+                                                            'album')
+                                                    ? const AssetImage(
+                                                        'assets/album.png',
+                                                      )
+                                                    : value[index]['type'] ==
+                                                            'artist'
+                                                        ? const AssetImage(
+                                                            'assets/artist.png',
+                                                          )
+                                                        : const AssetImage(
+                                                            'assets/cover.jpg',
+                                                          ),
+                                              ),
+                                              builder: ({
+                                                required BuildContext context,
+                                                required bool isHover,
+                                                Widget? child,
+                                              }) {
+                                                return Card(
+                                                  color: isHover
+                                                      ? null
+                                                      : Colors.transparent,
+                                                  elevation: 0,
+                                                  margin: EdgeInsets.zero,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      10.0,
+                                                    ),
+                                                  ),
+                                                  clipBehavior: Clip.antiAlias,
+                                                  child: Column(
+                                                    children: [
+                                                      Stack(
+                                                        children: [
+                                                          SizedBox.square(
+                                                            dimension: isHover
+                                                                ? boxSize - 25
+                                                                : boxSize - 30,
+                                                            child: child,
+                                                          ),
+                                                          if (isHover &&
+                                                              (value[index][
+                                                                      'type'] ==
+                                                                  'song'))
+                                                            Positioned.fill(
+                                                              child: Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                  4.0,
+                                                                ),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black54,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    10.0,
+                                                                  ),
+                                                                ),
+                                                                child: Center(
+                                                                  child:
+                                                                      DecoratedBox(
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        1000.0,
+                                                                      ),
+                                                                    ),
+                                                                    child:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .play_arrow_rounded,
+                                                                      size:
+                                                                          50.0,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        ],
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 10.0,
+                                                        ),
+                                                        child: Column(
+                                                          children: [
+                                                            Text(
+                                                              value[index][
+                                                                          'title']
+                                                                      ?.toString()
+                                                                      .unescape() ??
+                                                                  '',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              softWrap: false,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                            if (subTitle != '')
+                                                              Text(
+                                                                subTitle,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                softWrap: false,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 11,
+                                                                  color: Theme
+                                                                          .of(
+                                                                    context,
+                                                                  )
+                                                                      .textTheme
+                                                                      .bodySmall!
+                                                                      .color,
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         );
@@ -449,6 +698,37 @@ class _SearchPageState extends State<SearchPage> {
                                               section['title'].toString();
                                           final List? items =
                                               section['items'] as List?;
+                                          String localizedTitle = title;
+                                          if (localizedTitle == 'Top Result') {
+                                            localizedTitle =
+                                                AppLocalizations.of(context)!
+                                                    .topResult;
+                                          } else if (localizedTitle ==
+                                              'Artists') {
+                                            localizedTitle =
+                                                AppLocalizations.of(context)!
+                                                    .artists;
+                                          } else if (localizedTitle ==
+                                              'Songs') {
+                                            localizedTitle =
+                                                AppLocalizations.of(context)!
+                                                    .songs;
+                                          } else if (localizedTitle ==
+                                              'Podcasts') {
+                                            localizedTitle =
+                                                AppLocalizations.of(context)!
+                                                    .podcasts;
+                                          } else if (localizedTitle ==
+                                              'Albums') {
+                                            localizedTitle =
+                                                AppLocalizations.of(context)!
+                                                    .albums;
+                                          } else if (localizedTitle ==
+                                              'Playlists') {
+                                            localizedTitle =
+                                                AppLocalizations.of(context)!
+                                                    .playlists;
+                                          }
 
                                           if (items == null || items.isEmpty) {
                                             return const SizedBox();
@@ -467,7 +747,7 @@ class _SearchPageState extends State<SearchPage> {
                                                           .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      title,
+                                                      localizedTitle,
                                                       style: TextStyle(
                                                         color: Theme.of(context)
                                                             .colorScheme
@@ -569,7 +849,9 @@ class _SearchPageState extends State<SearchPage> {
                                                                           );
                                                                         }
                                                                         if (title ==
-                                                                            'Songs') {
+                                                                                'Songs' ||
+                                                                            title ==
+                                                                                'Podcasts') {
                                                                           Navigator
                                                                               .push(
                                                                             context,
@@ -584,7 +866,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                                 listItem: {
                                                                                   'id': query == '' ? widget.query : query,
                                                                                   'title': title,
-                                                                                  'type': 'songs',
+                                                                                  'type': title == 'Songs' ? 'songs' : 'shows',
                                                                                 },
                                                                               ),
                                                                             ),
@@ -859,6 +1141,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                               (title == 'Top Result' && items[0]['type'] == 'artist')
                                                                           ? ArtistSearchPage(
                                                                               data: items[index] as Map,
+                                                                              artistId: items[index]['id'] as String,
                                                                             )
                                                                           : SongsListPage(
                                                                               listItem: items[index] as Map,
@@ -916,6 +1199,7 @@ class _SearchPageState extends State<SearchPage> {
         child: ChoiceChip(
           label: Text(element['label']!),
           selectedColor:
+              // ignore: deprecated_member_use
               Theme.of(context).colorScheme.secondary.withOpacity(0.2),
           labelStyle: TextStyle(
             color: searchType == element['key']
@@ -939,9 +1223,6 @@ class _SearchPageState extends State<SearchPage> {
               setState(() {});
             }
           },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100.0),
-          ),
         ),
       );
     }).toList();

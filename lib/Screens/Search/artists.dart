@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,10 +22,12 @@ import 'package:xmusic/Services/player_service.dart';
 
 class ArtistSearchPage extends StatefulWidget {
   final Map data;
+  final String artistId;
 
   const ArtistSearchPage({
     super.key,
     required this.data,
+    required this.artistId,
   });
 
   @override
@@ -51,7 +54,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
       status = true;
       SaavnAPI()
           .fetchArtistSongs(
-        artistToken: widget.data['artistToken'].toString(),
+        artistToken: widget.data['id'].toString(),
         category: category,
         sortOrder: sortOrder,
       )
@@ -335,15 +338,72 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          entry.key,
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w800,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              entry.key,
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            if (entry.key == 'Top Songs')
+                                              GestureDetector(
+                                                onTap: () => Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    opaque: false,
+                                                    pageBuilder: (
+                                                      _,
+                                                      __,
+                                                      ___,
+                                                    ) =>
+                                                        SongsListPage(
+                                                      listItem: {
+                                                        'id': widget.artistId,
+                                                        'title': 'Top Songs',
+                                                        'type': 'top-songs',
+                                                        'category': category,
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                        context,
+                                                      )!
+                                                          .viewAll,
+                                                      style: TextStyle(
+                                                        color: Theme.of(
+                                                          context,
+                                                        )
+                                                            .textTheme
+                                                            .bodySmall!
+                                                            .color,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                      ),
+                                                    ),
+                                                    Icon(
+                                                      Icons
+                                                          .chevron_right_rounded,
+                                                      color: Theme.of(
+                                                        context,
+                                                      )
+                                                          .textTheme
+                                                          .bodySmall!
+                                                          .color,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                          ],
                                         ),
                                         if (entry.key ==
                                             'Top Songs') ...<Widget>[
@@ -511,6 +571,9 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                       ? ArtistSearchPage(
                                                           data: entry.value[idx]
                                                               as Map,
+                                                          artistId: entry
+                                                              .value[idx]['id']
+                                                              .toString(),
                                                         )
                                                       : SongsListPage(
                                                           listItem:
