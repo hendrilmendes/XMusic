@@ -836,23 +836,24 @@ class ControlButtons extends StatelessWidget {
             );
           case 'Play/Pause':
             return SizedBox(
-              height: miniplayer ? 40.0 : 65.0,
-              width: miniplayer ? 40.0 : 65.0,
+              height: miniplayer ? 60.0 : 90.0,
+              width: miniplayer ? 60.0 : 90.0,
               child: StreamBuilder<PlaybackState>(
                 stream: audioHandler.playbackState,
                 builder: (context, snapshot) {
                   final playbackState = snapshot.data;
                   final processingState = playbackState?.processingState;
                   final playing = playbackState?.playing ?? true;
+
                   return Stack(
                     children: [
                       if (processingState == AudioProcessingState.loading ||
                           processingState == AudioProcessingState.buffering)
                         Center(
                           child: SizedBox(
-                            height: miniplayer ? 40.0 : 65.0,
-                            width: miniplayer ? 40.0 : 65.0,
-                            child: CircularProgressIndicator.adaptive(
+                            height: miniplayer ? 60.0 : 90.0,
+                            width: miniplayer ? 60.0 : 90.0,
+                            child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 buttonsColor ??
                                     Theme.of(context).iconTheme.color!,
@@ -885,41 +886,37 @@ class ControlButtons extends StatelessWidget {
                       else
                         Center(
                           child: SizedBox(
-                            height: 59,
-                            width: 59,
+                            height: 80,
+                            width: 80,
                             child: Center(
                               child: playing
-                                  ? FloatingActionButton(
+                                  ? RawMaterialButton(
                                       elevation: 10,
-                                      tooltip:
-                                          AppLocalizations.of(context)!.pause,
-                                      backgroundColor:
-                                          buttonsColor ?? Colors.white,
+                                      fillColor: buttonsColor ?? Colors.white,
+                                      shape: const CircleBorder(),
                                       onPressed: audioHandler.pause,
                                       child: Icon(
                                         Icons.pause_rounded,
-                                        size: 40.0,
+                                        size: 60.0,
                                         color: buttonsColor != null
-                                            ? HSLColor.fromColor(
-                                                buttonsColor!,
-                                              ).withLightness(0.3).toColor()
+                                            ? HSLColor.fromColor(buttonsColor!)
+                                                .withLightness(0.3)
+                                                .toColor()
                                             : Colors.black,
                                       ),
                                     )
-                                  : FloatingActionButton(
+                                  : RawMaterialButton(
                                       elevation: 10,
-                                      tooltip:
-                                          AppLocalizations.of(context)!.play,
-                                      backgroundColor:
-                                          buttonsColor ?? Colors.white,
+                                      fillColor: buttonsColor ?? Colors.white,
+                                      shape: const CircleBorder(),
                                       onPressed: audioHandler.play,
                                       child: Icon(
                                         Icons.play_arrow_rounded,
-                                        size: 40.0,
+                                        size: 60.0,
                                         color: buttonsColor != null
-                                            ? HSLColor.fromColor(
-                                                buttonsColor!,
-                                              ).withLightness(0.3).toColor()
+                                            ? HSLColor.fromColor(buttonsColor!)
+                                                .withLightness(0.3)
+                                                .toColor()
                                             : Colors.black,
                                       ),
                                     ),

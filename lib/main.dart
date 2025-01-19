@@ -26,7 +26,6 @@ import 'package:xmusic/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Paint.enableDithering = true; No longer needed
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await Hive.initFlutter('XMusic/Database');
@@ -35,12 +34,14 @@ Future<void> main() async {
   } else {
     await Hive.initFlutter();
   }
+
   for (final box in hiveBoxes) {
     await openHiveBox(
       box['name'].toString(),
       limit: box['limit'] as bool? ?? false,
     );
   }
+
   await startService();
   runApp(MyApp());
 }
@@ -71,7 +72,7 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
     await Hive.openBox(boxName);
     throw 'Failed to open $boxName Box\nError: $error';
   });
-  // clear box if it grows large
+
   if (limit && box.length > 500) {
     box.clear();
   }
@@ -129,6 +130,11 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     HomeWidget.setAppGroupId('com.github.hendrilmendes.music');
     HomeWidget.registerInteractivityCallback(backgroundCallback);
+    _initializeLocale();
+    _initializeSharingIntent();
+  }
+
+  void _initializeLocale() {
     final String systemLangCode = Platform.localeName.substring(0, 2);
     final String? lang = Hive.box('settings').get('lang') as String?;
     if (lang == null &&
@@ -142,7 +148,9 @@ class _MyAppState extends State<MyApp> {
     AppTheme.currentTheme.addListener(() {
       setState(() {});
     });
+  }
 
+  void _initializeSharingIntent() {
     if (Platform.isAndroid || Platform.isIOS) {
       // For sharing or opening urls/text/files coming from outside the app while the app is in the memory
       _intentDataStreamSubscription =
