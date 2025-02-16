@@ -1,7 +1,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:xmusic/Screens/Library/liked.dart';
 import 'package:xmusic/Screens/LocalMusic/downed_songs.dart';
 import 'package:xmusic/Screens/LocalMusic/downed_songs_desktop.dart';

@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:xmusic/APIs/api.dart';
 import 'package:xmusic/CustomWidgets/artist_like_button.dart';

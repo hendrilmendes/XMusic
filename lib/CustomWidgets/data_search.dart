@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:xmusic/CustomWidgets/download_button.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';

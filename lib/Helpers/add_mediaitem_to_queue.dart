@@ -1,7 +1,7 @@
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Screens/Player/audioplayer.dart';

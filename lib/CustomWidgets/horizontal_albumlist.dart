@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:xmusic/APIs/api.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';
 import 'package:xmusic/CustomWidgets/like_button.dart';

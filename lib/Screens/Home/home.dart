@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -21,6 +20,7 @@ import 'package:xmusic/Screens/Settings/settings_page.dart';
 import 'package:xmusic/Screens/Top Charts/top.dart';
 import 'package:xmusic/Screens/YouTube/youtube_home.dart';
 import 'package:xmusic/Services/ext_storage_provider.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   @override
