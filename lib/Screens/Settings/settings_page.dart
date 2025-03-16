@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
@@ -11,6 +10,7 @@ import 'package:xmusic/Screens/Settings/download.dart';
 import 'package:xmusic/Screens/Settings/music_playback.dart';
 import 'package:xmusic/Screens/Settings/others.dart';
 import 'package:xmusic/Screens/Settings/theme.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   final Function? callback;
@@ -24,10 +24,12 @@ class _SettingsPageState extends State<SettingsPage>
     with AutomaticKeepAliveClientMixin<SettingsPage> {
   final TextEditingController controller = TextEditingController();
   final ValueNotifier<String> searchQuery = ValueNotifier<String>('');
-  final List sectionsToShow = Hive.box('settings').get(
-    'sectionsToShow',
-    defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
-  ) as List;
+  final List sectionsToShow =
+      Hive.box('settings').get(
+            'sectionsToShow',
+            defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
+          )
+          as List;
 
   @override
   void dispose() {
@@ -52,13 +54,9 @@ class _SettingsPageState extends State<SettingsPage>
           centerTitle: true,
           title: Text(
             AppLocalizations.of(context)!.settings,
-            style: TextStyle(
-              color: Theme.of(context).iconTheme.color,
-            ),
+            style: TextStyle(color: Theme.of(context).iconTheme.color),
           ),
-          iconTheme: IconThemeData(
-            color: Theme.of(context).iconTheme.color,
-          ),
+          iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         ),
         body: Column(
           children: [
@@ -74,11 +72,7 @@ class _SettingsPageState extends State<SettingsPage>
     return Card(
       color: Theme.of(context).cardColor,
       margin: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          100.0,
-        ),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
       elevation: 2.0,
       child: SizedBox(
         height: 55.0,
@@ -101,15 +95,16 @@ class _SettingsPageState extends State<SettingsPage>
                     CupertinoIcons.search,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
-                  suffixIcon: query.trim() != ''
-                      ? IconButton(
-                          onPressed: () {
-                            controller.clear();
-                            searchQuery.value = '';
-                          },
-                          icon: const Icon(Icons.close_rounded),
-                        )
-                      : null,
+                  suffixIcon:
+                      query.trim() != ''
+                          ? IconButton(
+                            onPressed: () {
+                              controller.clear();
+                              searchQuery.value = '';
+                            },
+                            icon: const Icon(Icons.close_rounded),
+                          )
+                          : null,
                   border: InputBorder.none,
                   hintText: AppLocalizations.of(context)!.search,
                 ),
@@ -129,14 +124,9 @@ class _SettingsPageState extends State<SettingsPage>
   Widget _settingsItem(BuildContext context) {
     final List<Map<String, dynamic>> settingsList = [
       {
-        'title': AppLocalizations.of(
-          context,
-        )!
-            .theme,
+        'title': AppLocalizations.of(context)!.theme,
         'icon': MdiIcons.themeLightDark,
-        'onTap': ThemePage(
-          callback: widget.callback,
-        ),
+        'onTap': ThemePage(callback: widget.callback),
         'isThreeLine': true,
         'items': [
           AppLocalizations.of(context)!.darkMode,
@@ -152,14 +142,9 @@ class _SettingsPageState extends State<SettingsPage>
         ],
       },
       {
-        'title': AppLocalizations.of(
-          context,
-        )!
-            .ui,
+        'title': AppLocalizations.of(context)!.ui,
         'icon': Icons.design_services_rounded,
-        'onTap': AppUIPage(
-          callback: widget.callback,
-        ),
+        'onTap': AppUIPage(callback: widget.callback),
         'isThreeLine': true,
         'items': [
           AppLocalizations.of(context)!.playerScreenBackground,
@@ -176,14 +161,9 @@ class _SettingsPageState extends State<SettingsPage>
         ],
       },
       {
-        'title': AppLocalizations.of(
-          context,
-        )!
-            .musicPlayback,
+        'title': AppLocalizations.of(context)!.musicPlayback,
         'icon': Icons.music_note_rounded,
-        'onTap': MusicPlaybackPage(
-          callback: widget.callback,
-        ),
+        'onTap': MusicPlaybackPage(callback: widget.callback),
         'isThreeLine': true,
         'items': [
           AppLocalizations.of(context)!.musicLang,
@@ -199,10 +179,7 @@ class _SettingsPageState extends State<SettingsPage>
         ],
       },
       {
-        'title': AppLocalizations.of(
-          context,
-        )!
-            .down,
+        'title': AppLocalizations.of(context)!.down,
         'icon': Icons.download_done_rounded,
         'onTap': const DownloadPage(),
         'isThreeLine': true,
@@ -217,10 +194,7 @@ class _SettingsPageState extends State<SettingsPage>
         ],
       },
       {
-        'title': AppLocalizations.of(
-          context,
-        )!
-            .others,
+        'title': AppLocalizations.of(context)!.others,
         'icon': Icons.miscellaneous_services_rounded,
         'onTap': const OthersPage(),
         'isThreeLine': true,
@@ -241,10 +215,7 @@ class _SettingsPageState extends State<SettingsPage>
         ],
       },
       {
-        'title': AppLocalizations.of(
-          context,
-        )!
-            .backNRest,
+        'title': AppLocalizations.of(context)!.backNRest,
         'icon': Icons.settings_backup_restore_rounded,
         'onTap': const BackupAndRestorePage(),
         'isThreeLine': false,
@@ -256,10 +227,7 @@ class _SettingsPageState extends State<SettingsPage>
         ],
       },
       {
-        'title': AppLocalizations.of(
-          context,
-        )!
-            .about,
+        'title': AppLocalizations.of(context)!.about,
         'icon': Icons.info_outline_rounded,
         'onTap': const AboutPage(),
         'isThreeLine': false,
@@ -288,10 +256,7 @@ class _SettingsPageState extends State<SettingsPage>
     return Stack(
       children: [
         ListView.builder(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10.0,
-            vertical: 15.0,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
           physics: const BouncingScrollPhysics(),
           itemCount: settingsList.length,
           itemBuilder: (context, index) {
@@ -306,7 +271,8 @@ class _SettingsPageState extends State<SettingsPage>
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              isThreeLine: !isRotated &&
+              isThreeLine:
+                  !isRotated &&
                   (settingsList[index]['isThreeLine'] as bool? ?? false),
               onTap: () {
                 searchQuery.value = '';
@@ -314,8 +280,8 @@ class _SettingsPageState extends State<SettingsPage>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        settingsList[index]['onTap'] as Widget,
+                    builder:
+                        (context) => settingsList[index]['onTap'] as Widget,
                   ),
                 );
               },
@@ -336,36 +302,24 @@ class _SettingsPageState extends State<SettingsPage>
     );
   }
 
-  List<Map> _getSearchResults(
-    List<Map> searchOptions,
-    String query,
-  ) {
-    final List<Map> options = query != ''
-        ? searchOptions
-            .where(
-              (element) =>
-                  element['title'].toString().toLowerCase().contains(query),
-            )
-            .toList()
-        : List.empty();
+  List<Map> _getSearchResults(List<Map> searchOptions, String query) {
+    final List<Map> options =
+        query != ''
+            ? searchOptions
+                .where(
+                  (element) =>
+                      element['title'].toString().toLowerCase().contains(query),
+                )
+                .toList()
+            : List.empty();
     return options;
   }
 
-  Widget _searchSuggestions(
-    BuildContext context,
-    List<Map> options,
-  ) {
+  Widget _searchSuggestions(BuildContext context, List<Map> options) {
     return Card(
       color: Theme.of(context).listTileTheme.tileColor,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 18.0,
-        vertical: 10,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          10.0,
-        ),
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       elevation: 8.0,
       child: SizedBox(
         height: options.length * 70,
@@ -384,9 +338,7 @@ class _SettingsPageState extends State<SettingsPage>
                   context,
                   MaterialPageRoute(
                     builder: (context) => options[index]['route'] as Widget,
-                    settings: RouteSettings(
-                      arguments: options[index]['title'],
-                    ),
+                    settings: RouteSettings(arguments: options[index]['title']),
                   ),
                 );
               },

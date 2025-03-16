@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';
 import 'package:xmusic/Services/player_service.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class SongsList extends StatefulWidget {
   final List data;
@@ -45,45 +45,39 @@ class _SongsListState extends State<SongsList> {
     switch (sortVal) {
       case 0:
         _songs.sort(
-          (a, b) => a['title']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['title'].toString().toUpperCase()),
+          (a, b) => a['title'].toString().toUpperCase().compareTo(
+            b['title'].toString().toUpperCase(),
+          ),
         );
       case 1:
         _songs.sort(
-          (a, b) => a['dateAdded']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['dateAdded'].toString().toUpperCase()),
+          (a, b) => a['dateAdded'].toString().toUpperCase().compareTo(
+            b['dateAdded'].toString().toUpperCase(),
+          ),
         );
       case 2:
         _songs.sort(
-          (a, b) => a['album']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['album'].toString().toUpperCase()),
+          (a, b) => a['album'].toString().toUpperCase().compareTo(
+            b['album'].toString().toUpperCase(),
+          ),
         );
       case 3:
         _songs.sort(
-          (a, b) => a['artist']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['artist'].toString().toUpperCase()),
+          (a, b) => a['artist'].toString().toUpperCase().compareTo(
+            b['artist'].toString().toUpperCase(),
+          ),
         );
       case 4:
         _songs.sort(
-          (a, b) => a['duration']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['duration'].toString().toUpperCase()),
+          (a, b) => a['duration'].toString().toUpperCase().compareTo(
+            b['duration'].toString().toUpperCase(),
+          ),
         );
       default:
         _songs.sort(
-          (b, a) => a['dateAdded']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['dateAdded'].toString().toUpperCase()),
+          (b, a) => a['dateAdded'].toString().toUpperCase().compareTo(
+            b['dateAdded'].toString().toUpperCase(),
+          ),
         );
     }
 
@@ -142,10 +136,11 @@ class _SongsListState extends State<SongsList> {
                               if (sortValue == sortTypes.indexOf(e))
                                 Icon(
                                   Icons.check_rounded,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.grey[700],
+                                  color:
+                                      Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.grey[700],
                                 )
                               else
                                 const SizedBox(),
@@ -162,11 +157,7 @@ class _SongsListState extends State<SongsList> {
                       )
                       .toList(),
                 );
-                menuList.add(
-                  const PopupMenuDivider(
-                    height: 10,
-                  ),
-                );
+                menuList.add(const PopupMenuDivider(height: 10));
                 menuList.addAll(
                   orderTypes
                       .map(
@@ -177,10 +168,11 @@ class _SongsListState extends State<SongsList> {
                               if (orderValue == orderTypes.indexOf(e))
                                 Icon(
                                   Icons.check_rounded,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.grey[700],
+                                  color:
+                                      Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.grey[700],
                                 )
                               else
                                 const SizedBox(),
@@ -204,25 +196,25 @@ class _SongsListState extends State<SongsList> {
           centerTitle: true,
           elevation: 0,
         ),
-        body: !processStatus
-            ? const Center(
-                child: CircularProgressIndicator.adaptive(),
-              )
-            : ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                shrinkWrap: true,
-                itemCount: _songs.length,
-                itemExtent: 70.0,
-                itemBuilder: (context, index) {
-                  return _songs.isEmpty
-                      ? const SizedBox()
-                      : ListTile(
+        body:
+            !processStatus
+                ? const Center(child: CircularProgressIndicator.adaptive())
+                : ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  shrinkWrap: true,
+                  itemCount: _songs.length,
+                  itemExtent: 70.0,
+                  itemBuilder: (context, index) {
+                    return _songs.isEmpty
+                        ? const SizedBox()
+                        : ListTile(
                           leading: imageCard(
                             localImage: offline,
-                            imageUrl: offline
-                                ? _songs[index]['image'].toString()
-                                : _songs[index]['image'].toString(),
+                            imageUrl:
+                                offline
+                                    ? _songs[index]['image'].toString()
+                                    : _songs[index]['image'].toString(),
                           ),
                           title: Text(
                             '${_songs[index]['title']}',
@@ -242,8 +234,8 @@ class _SongsListState extends State<SongsList> {
                             );
                           },
                         );
-                },
-              ),
+                  },
+                ),
       ),
     );
   }

@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:math';
 
@@ -32,32 +31,25 @@ class BouncyImageSliverScrollView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget image = imageUrl == null
-        ? Image(
-            fit: BoxFit.cover,
-            image: AssetImage(placeholderImage),
-          )
-        : localImage
-            ? Image(
-                image: FileImage(
-                  File(
-                    imageUrl!,
-                  ),
-                ),
-                fit: BoxFit.cover,
-              )
+    final Widget image =
+        imageUrl == null
+            ? Image(fit: BoxFit.cover, image: AssetImage(placeholderImage))
+            : localImage
+            ? Image(image: FileImage(File(imageUrl!)), fit: BoxFit.cover)
             : CachedNetworkImage(
-                fit: BoxFit.cover,
-                errorWidget: (context, _, __) => Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage(placeholderImage),
-                ),
-                imageUrl: imageUrl!,
-                placeholder: (context, url) => Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage(placeholderImage),
-                ),
-              );
+              fit: BoxFit.cover,
+              errorWidget:
+                  (context, _, __) => Image(
+                    fit: BoxFit.cover,
+                    image: AssetImage(placeholderImage),
+                  ),
+              imageUrl: imageUrl!,
+              placeholder:
+                  (context, url) => Image(
+                    fit: BoxFit.cover,
+                    image: AssetImage(placeholderImage),
+                  ),
+            );
     // final bool rotated =
     // MediaQuery.sizeOf(context).height < MediaQuery.sizeOf(context).width;
     final double expandedHeight =
@@ -76,18 +68,8 @@ class BouncyImageSliverScrollView extends StatelessWidget {
                 return const LinearGradient(
                   begin: Alignment.center,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black,
-                    Colors.transparent,
-                  ],
-                ).createShader(
-                  Rect.fromLTRB(
-                    0,
-                    0,
-                    rect.width,
-                    rect.height,
-                  ),
-                );
+                  colors: [Colors.black, Colors.transparent],
+                ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
               },
               blendMode: BlendMode.dstIn,
               child: image,
@@ -99,7 +81,8 @@ class BouncyImageSliverScrollView extends StatelessWidget {
             } else {
               scrollController.offset.roundToDouble() / (expandedHeight - 80) >
                       0
-                  ? _opacity.value = scrollController.offset.roundToDouble() /
+                  ? _opacity.value =
+                      scrollController.offset.roundToDouble() /
                       (expandedHeight - 80)
                   : _opacity.value = 0;
             }

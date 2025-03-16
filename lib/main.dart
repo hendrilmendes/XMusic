@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -21,6 +21,7 @@ import 'package:xmusic/Screens/Common/routes.dart';
 import 'package:xmusic/Screens/Player/audioplayer.dart';
 import 'package:xmusic/constants/constants.dart';
 import 'package:xmusic/constants/languagecodes.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:xmusic/providers/audio_service_provider.dart';
 import 'package:xmusic/theme/app_theme.dart';
 
@@ -141,8 +142,9 @@ class _MyAppState extends State<MyApp> {
         LanguageCodes.languageCodes.values.contains(systemLangCode)) {
       _locale = Locale(systemLangCode);
     } else {
-      _locale =
-          Locale(LanguageCodes.languageCodes[lang ?? 'Portuguese'] ?? 'pt');
+      _locale = Locale(
+        LanguageCodes.languageCodes[lang ?? 'Portuguese'] ?? 'pt',
+      );
     }
 
     AppTheme.currentTheme.addListener(() {
@@ -153,74 +155,77 @@ class _MyAppState extends State<MyApp> {
   void _initializeSharingIntent() {
     if (Platform.isAndroid || Platform.isIOS) {
       // For sharing or opening urls/text/files coming from outside the app while the app is in the memory
-      _intentDataStreamSubscription =
-          ReceiveSharingIntent.instance.getMediaStream().listen(
-        (List<SharedMediaFile> value) {
-          if (value.isNotEmpty) {
-            Logger.root.info('Received intent on stream: $value');
-            for (final file in value) {
-              if (file.type == SharedMediaType.text ||
-                  file.type == SharedMediaType.url) {
-                handleSharedText(file.path, navigatorKey);
-              }
-              if (file.type == SharedMediaType.file) {
-                if (file.path.endsWith('.json')) {
-                  final List playlistNames = Hive.box('settings')
-                          .get('playlistNames')
-                          ?.toList() as List? ??
-                      ['Favorite Songs'];
-                  importFilePlaylist(
-                    null,
-                    playlistNames,
-                    path: file.path,
-                    pickFile: false,
-                  ).then(
-                    (value) =>
-                        navigatorKey.currentState?.pushNamed('/playlists'),
-                  );
+      _intentDataStreamSubscription = ReceiveSharingIntent.instance
+          .getMediaStream()
+          .listen(
+            (List<SharedMediaFile> value) {
+              if (value.isNotEmpty) {
+                Logger.root.info('Received intent on stream: $value');
+                for (final file in value) {
+                  if (file.type == SharedMediaType.text ||
+                      file.type == SharedMediaType.url) {
+                    handleSharedText(file.path, navigatorKey);
+                  }
+                  if (file.type == SharedMediaType.file) {
+                    if (file.path.endsWith('.json')) {
+                      final List playlistNames =
+                          Hive.box('settings').get('playlistNames')?.toList()
+                              as List? ??
+                          ['Favorite Songs'];
+                      importFilePlaylist(
+                        null,
+                        playlistNames,
+                        path: file.path,
+                        pickFile: false,
+                      ).then(
+                        (value) =>
+                            navigatorKey.currentState?.pushNamed('/playlists'),
+                      );
+                    }
+                  }
                 }
               }
-            }
-          }
-        },
-        onError: (err) {
-          Logger.root.severe('ERROR in getMediaStream', err);
-        },
-      );
+            },
+            onError: (err) {
+              Logger.root.severe('ERROR in getMediaStream', err);
+            },
+          );
 
       // For sharing files coming from outside the app while the app is closed
       ReceiveSharingIntent.instance
           .getInitialMedia()
           .then((List<SharedMediaFile> value) {
-        if (value.isNotEmpty) {
-          Logger.root.info('Received Intent initially: $value');
-          for (final file in value) {
-            if (file.type == SharedMediaType.text ||
-                file.type == SharedMediaType.url) {
-              handleSharedText(file.path, navigatorKey);
-            }
-            if (file.type == SharedMediaType.file) {
-              if (file.path.endsWith('.json')) {
-                final List playlistNames = Hive.box('settings')
-                        .get('playlistNames')
-                        ?.toList() as List? ??
-                    ['Favorite Songs'];
-                importFilePlaylist(
-                  null,
-                  playlistNames,
-                  path: file.path,
-                  pickFile: false,
-                ).then(
-                  (value) => navigatorKey.currentState?.pushNamed('/playlists'),
-                );
+            if (value.isNotEmpty) {
+              Logger.root.info('Received Intent initially: $value');
+              for (final file in value) {
+                if (file.type == SharedMediaType.text ||
+                    file.type == SharedMediaType.url) {
+                  handleSharedText(file.path, navigatorKey);
+                }
+                if (file.type == SharedMediaType.file) {
+                  if (file.path.endsWith('.json')) {
+                    final List playlistNames =
+                        Hive.box('settings').get('playlistNames')?.toList()
+                            as List? ??
+                        ['Favorite Songs'];
+                    importFilePlaylist(
+                      null,
+                      playlistNames,
+                      path: file.path,
+                      pickFile: false,
+                    ).then(
+                      (value) =>
+                          navigatorKey.currentState?.pushNamed('/playlists'),
+                    );
+                  }
+                }
               }
+              ReceiveSharingIntent.instance.reset();
             }
-          }
-          ReceiveSharingIntent.instance.reset();
-        }
-      }).onError((error, stackTrace) {
-        Logger.root.severe('ERROR in getInitialMedia', error);
-      });
+          })
+          .onError((error, stackTrace) {
+            Logger.root.severe('ERROR in getInitialMedia', error);
+          });
     }
   }
 
@@ -249,12 +254,8 @@ class _MyAppState extends State<MyApp> {
               restorationScopeId: 'XMusic',
               debugShowCheckedModeBanner: false,
               themeMode: AppTheme.themeMode,
-              theme: AppTheme.lightTheme(
-                context: context,
-              ),
-              darkTheme: AppTheme.darkTheme(
-                context: context,
-              ),
+              theme: AppTheme.lightTheme(context: context),
+              darkTheme: AppTheme.darkTheme(context: context),
               locale: _locale,
               localizationsDelegates: const [
                 AppLocalizations.delegate,
@@ -262,9 +263,10 @@ class _MyAppState extends State<MyApp> {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              supportedLocales: LanguageCodes.languageCodes.entries
-                  .map((languageCode) => Locale(languageCode.value, ''))
-                  .toList(),
+              supportedLocales:
+                  LanguageCodes.languageCodes.entries
+                      .map((languageCode) => Locale(languageCode.value, ''))
+                      .toList(),
               routes: namedRoutes,
               navigatorKey: navigatorKey,
               onGenerateRoute: (RouteSettings settings) {

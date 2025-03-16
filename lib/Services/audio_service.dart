@@ -57,19 +57,24 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   final BehaviorSubject<double> speed = BehaviorSubject.seeded(1.0);
   final _mediaItemExpando = Expando<MediaItem>();
 
-  Stream<List<IndexedAudioSource>> get _effectiveSequence => Rx.combineLatest3<
-              List<IndexedAudioSource>?,
-              List<int>?,
-              bool,
-              List<IndexedAudioSource>?>(_player!.sequenceStream,
-          _player!.shuffleIndicesStream, _player!.shuffleModeEnabledStream,
-          (sequence, shuffleIndices, shuffleModeEnabled) {
-        if (sequence == null) return [];
-        if (!shuffleModeEnabled) return sequence;
-        if (shuffleIndices == null) return null;
-        if (shuffleIndices.length != sequence.length) return null;
-        return shuffleIndices.map((i) => sequence[i]).toList();
-      }).whereType<List<IndexedAudioSource>>();
+  Stream<List<IndexedAudioSource>> get _effectiveSequence =>
+      Rx.combineLatest3<
+        List<IndexedAudioSource>?,
+        List<int>?,
+        bool,
+        List<IndexedAudioSource>?
+      >(
+        _player!.sequenceStream,
+        _player!.shuffleIndicesStream,
+        _player!.shuffleModeEnabledStream,
+        (sequence, shuffleIndices, shuffleModeEnabled) {
+          if (sequence == null) return [];
+          if (!shuffleModeEnabled) return sequence;
+          if (shuffleIndices == null) return null;
+          if (shuffleIndices.length != sequence.length) return null;
+          return shuffleIndices.map((i) => sequence[i]).toList();
+        },
+      ).whereType<List<IndexedAudioSource>>();
 
   int? getQueueIndex(
     int? currentIndex,
@@ -114,10 +119,12 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   Future<void> _init() async {
     Logger.root.info('starting audio service');
     if (Hive.isBoxOpen('settings')) {
-      preferredCompactNotificationButtons = Hive.box('settings').get(
-        'preferredCompactNotificationButtons',
-        defaultValue: [1, 2, 3],
-      ) as List<int>;
+      preferredCompactNotificationButtons =
+          Hive.box('settings').get(
+                'preferredCompactNotificationButtons',
+                defaultValue: [1, 2, 3],
+              )
+              as List<int>;
       if (preferredCompactNotificationButtons.length > 3) {
         preferredCompactNotificationButtons = [1, 2, 3];
       }
@@ -135,9 +142,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
     Logger.root.info('checking connectivity & setting quality');
 
-    Connectivity()
-        .onConnectivityChanged
-        .listen((List<ConnectivityResult> results) {
+    Connectivity().onConnectivityChanged.listen((
+      List<ConnectivityResult> results,
+    ) {
       final ConnectivityResult result =
           results.isNotEmpty ? results[0] : ConnectivityResult.none;
 
@@ -154,25 +161,24 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         );
         preferredQuality = preferredWifiQuality;
       } else if (result == ConnectivityResult.none) {
-        Logger.root.severe(
-          'player | internet connection not available',
-        );
+        Logger.root.severe('player | internet connection not available');
       } else {
-        Logger.root.info(
-          'player | unidentified network connection',
-        );
+        Logger.root.info('player | unidentified network connection');
       }
     });
 
-    preferredMobileQuality = Hive.box('settings')
-        .get('streamingQuality', defaultValue: '96 kbps')
-        .toString();
-    preferredWifiQuality = Hive.box('settings')
-        .get('streamingWifiQuality', defaultValue: '320 kbps')
-        .toString();
-    preferredQuality = connectionType == 'wifi'
-        ? preferredWifiQuality
-        : preferredMobileQuality;
+    preferredMobileQuality =
+        Hive.box(
+          'settings',
+        ).get('streamingQuality', defaultValue: '96 kbps').toString();
+    preferredWifiQuality =
+        Hive.box(
+          'settings',
+        ).get('streamingWifiQuality', defaultValue: '320 kbps').toString();
+    preferredQuality =
+        connectionType == 'wifi'
+            ? preferredWifiQuality
+            : preferredMobileQuality;
     resetOnSkip =
         Hive.box('settings').get('resetOnSkip', defaultValue: false) as bool;
     cacheSong =
@@ -241,30 +247,35 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     });
 
     Rx.combineLatest4<int?, List<MediaItem>, bool, List<int>?, MediaItem?>(
-        _player!.currentIndexStream,
-        queue,
-        _player!.shuffleModeEnabledStream,
-        _player!.shuffleIndicesStream,
-        (index, queue, shuffleModeEnabled, shuffleIndices) {
-      final queueIndex = getQueueIndex(
-        index,
-        shuffleIndices,
-        shuffleModeEnabled: shuffleModeEnabled,
-      );
-      return (queueIndex != null && queueIndex < queue.length)
-          ? queue[queueIndex]
-          : null;
-    }).whereType<MediaItem>().distinct().listen(mediaItem.add);
+      _player!.currentIndexStream,
+      queue,
+      _player!.shuffleModeEnabledStream,
+      _player!.shuffleIndicesStream,
+      (index, queue, shuffleModeEnabled, shuffleIndices) {
+        final queueIndex = getQueueIndex(
+          index,
+          shuffleIndices,
+          shuffleModeEnabled: shuffleModeEnabled,
+        );
+        return (queueIndex != null && queueIndex < queue.length)
+            ? queue[queueIndex]
+            : null;
+      },
+    ).whereType<MediaItem>().distinct().listen(mediaItem.add);
 
     // Propagate all events from the audio player to AudioService clients.
-    _player!.playbackEventStream
-        .listen(_broadcastState, onError: _playbackError);
+    _player!.playbackEventStream.listen(
+      _broadcastState,
+      onError: _playbackError,
+    );
 
-    _player!.shuffleModeEnabledStream
-        .listen((enabled) => _broadcastState(_player!.playbackEvent));
+    _player!.shuffleModeEnabledStream.listen(
+      (enabled) => _broadcastState(_player!.playbackEvent),
+    );
 
-    _player!.loopModeStream
-        .listen((event) => _broadcastState(_player!.playbackEvent));
+    _player!.loopModeStream.listen(
+      (event) => _broadcastState(_player!.playbackEvent),
+    );
 
     _player!.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) {
@@ -293,8 +304,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
     try {
       if (loadStart) {
-        final List lastQueueList = await Hive.box('cache')
-            .get('lastQueue', defaultValue: [])?.toList() as List;
+        final List lastQueueList =
+            await Hive.box('cache').get('lastQueue', defaultValue: [])?.toList()
+                as List;
 
         final int lastIndex =
             await Hive.box('cache').get('lastIndex', defaultValue: 0) as int;
@@ -304,13 +316,15 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
         if (lastQueueList.isNotEmpty &&
             lastQueueList.first['genre'] != 'YouTube') {
-          final List<MediaItem> lastQueue = lastQueueList
-              .map((e) => MediaItemConverter.mapToMediaItem(e as Map))
-              .toList();
+          final List<MediaItem> lastQueue =
+              lastQueueList
+                  .map((e) => MediaItemConverter.mapToMediaItem(e as Map))
+                  .toList();
           if (lastQueue.isEmpty) {
-            await _player!
-                .setAudioSource(_playlist, preload: false)
-                .onError((error, stackTrace) {
+            await _player!.setAudioSource(_playlist, preload: false).onError((
+              error,
+              stackTrace,
+            ) {
               _onError(error, stackTrace, stopService: true);
               return null;
             });
@@ -320,52 +334,58 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             try {
               await _player!
                   .setAudioSource(
-                _playlist,
-                // commented out due to some bug in audio_service which causes app to freeze
-                // instead manually seeking after audiosource initialised
+                    _playlist,
+                    // commented out due to some bug in audio_service which causes app to freeze
+                    // instead manually seeking after audiosource initialised
 
-                // initialIndex: lastIndex,
-                // initialPosition: Duration(seconds: lastPos),
-              )
+                    // initialIndex: lastIndex,
+                    // initialPosition: Duration(seconds: lastPos),
+                  )
                   .onError((error, stackTrace) {
-                _onError(error, stackTrace, stopService: true);
-                return null;
-              });
+                    _onError(error, stackTrace, stopService: true);
+                    return null;
+                  });
               if (lastIndex != 0 || lastPos > 0) {
-                await _player!
-                    .seek(Duration(seconds: lastPos), index: lastIndex);
+                await _player!.seek(
+                  Duration(seconds: lastPos),
+                  index: lastIndex,
+                );
               }
             } catch (e) {
               Logger.root.severe('Error while setting last audiosource', e);
-              await _player!
-                  .setAudioSource(_playlist, preload: false)
-                  .onError((error, stackTrace) {
+              await _player!.setAudioSource(_playlist, preload: false).onError((
+                error,
+                stackTrace,
+              ) {
                 _onError(error, stackTrace, stopService: true);
                 return null;
               });
             }
           }
         } else {
-          await _player!
-              .setAudioSource(_playlist, preload: false)
-              .onError((error, stackTrace) {
+          await _player!.setAudioSource(_playlist, preload: false).onError((
+            error,
+            stackTrace,
+          ) {
             _onError(error, stackTrace, stopService: true);
             return null;
           });
         }
       } else {
-        await _player!
-            .setAudioSource(_playlist, preload: false)
-            .onError((error, stackTrace) {
+        await _player!.setAudioSource(_playlist, preload: false).onError((
+          error,
+          stackTrace,
+        ) {
           _onError(error, stackTrace, stopService: true);
           return null;
         });
       }
     } catch (e) {
       Logger.root.severe('Error while loading last queue', e);
-      await _player!
-          .setAudioSource(_playlist, preload: false)
-          .onError((error, stackTrace) {
+      await _player!.setAudioSource(_playlist, preload: false).onError((
+        error,
+        stackTrace,
+      ) {
         _onError(error, stackTrace, stopService: true);
         return null;
       });
@@ -433,8 +453,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     AudioSource? audioSource;
     try {
       if (mediaItem.artUri.toString().startsWith('file:')) {
-        audioSource =
-            AudioSource.uri(Uri.file(mediaItem.extras!['url'].toString()));
+        audioSource = AudioSource.uri(
+          Uri.file(mediaItem.extras!['url'].toString()),
+        );
       } else {
         if (downloadsBox != null &&
             downloadsBox!.containsKey(mediaItem.id) &&
@@ -448,8 +469,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           );
         } else {
           if (mediaItem.genre == 'YouTube') {
-            final int expiredAt =
-                int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
+            final int expiredAt = int.parse(
+              (mediaItem.extras!['expire_at'] ?? '0').toString(),
+            );
             if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
                 expiredAt) {
               // Logger.root.info(
@@ -460,8 +482,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                 if (cachedData is List) {
                   int minExpiredAt = 0;
                   for (final e in cachedData) {
-                    final int cachedExpiredAt =
-                        int.parse(e['expireAt'].toString());
+                    final int cachedExpiredAt = int.parse(
+                      e['expireAt'].toString(),
+                    );
                     if (minExpiredAt == 0 || cachedExpiredAt < minExpiredAt) {
                       minExpiredAt = cachedExpiredAt;
                     }
@@ -531,18 +554,18 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               audioSource = LockCachingAudioSource(
                 Uri.parse(
                   mediaItem.extras!['url'].toString().replaceAll(
-                        '_96.',
-                        "_${preferredQuality.replaceAll(' kbps', '')}.",
-                      ),
+                    '_96.',
+                    "_${preferredQuality.replaceAll(' kbps', '')}.",
+                  ),
                 ),
               );
             } else {
               audioSource = AudioSource.uri(
                 Uri.parse(
                   mediaItem.extras!['url'].toString().replaceAll(
-                        '_96.',
-                        "_${preferredQuality.replaceAll(' kbps', '')}.",
-                      ),
+                    '_96.',
+                    "_${preferredQuality.replaceAll(' kbps', '')}.",
+                  ),
                 ),
               );
             }
@@ -559,15 +582,18 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   List<AudioSource> _itemsToSources(List<MediaItem> mediaItems) {
-    preferredMobileQuality = Hive.box('settings')
-        .get('streamingQuality', defaultValue: '96 kbps')
-        .toString();
-    preferredWifiQuality = Hive.box('settings')
-        .get('streamingWifiQuality', defaultValue: '320 kbps')
-        .toString();
-    preferredQuality = connectionType == 'wifi'
-        ? preferredWifiQuality
-        : preferredMobileQuality;
+    preferredMobileQuality =
+        Hive.box(
+          'settings',
+        ).get('streamingQuality', defaultValue: '96 kbps').toString();
+    preferredWifiQuality =
+        Hive.box(
+          'settings',
+        ).get('streamingWifiQuality', defaultValue: '320 kbps').toString();
+    preferredQuality =
+        connectionType == 'wifi'
+            ? preferredWifiQuality
+            : preferredMobileQuality;
     cacheSong =
         Hive.box('settings').get('cacheSong', defaultValue: false) as bool;
     useDown = Hive.box('settings').get('useDown', defaultValue: true) as bool;
@@ -576,8 +602,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> onTaskRemoved() async {
-    final bool stopForegroundService = Hive.box('settings')
-        .get('stopForegroundService', defaultValue: true) as bool;
+    final bool stopForegroundService =
+        Hive.box('settings').get('stopForegroundService', defaultValue: true)
+            as bool;
     if (stopForegroundService) {
       await stop();
     }
@@ -605,9 +632,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             ? stream.shareValueSeeded(<String, dynamic>{})
             : stream.shareValue();
       default:
-        return Stream.value(queue.value)
-            .map((_) => <String, dynamic>{})
-            .shareValue();
+        return Stream.value(
+          queue.value,
+        ).map((_) => <String, dynamic>{}).shareValue();
     }
   }
 
@@ -620,9 +647,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     if (withPipeline && Platform.isAndroid) {
       Logger.root.info('starting with eq pipeline');
       final AudioPipeline pipeline = AudioPipeline(
-        androidAudioEffects: [
-          _equalizer,
-        ],
+        androidAudioEffects: [_equalizer],
       );
       _player = AudioPlayer(audioPipeline: pipeline);
 
@@ -638,13 +663,14 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         _equalizerParams ??= value;
 
         final List<AndroidEqualizerBand> bands = _equalizerParams!.bands;
-        bands.map(
-          (e) {
-            final gain = Hive.box('settings')
-                .get('equalizerBand${e.index}', defaultValue: 0.5) as double;
-            _equalizerParams!.bands[e.index].setGain(gain);
-          },
-        );
+        bands.map((e) {
+          final gain =
+              Hive.box(
+                    'settings',
+                  ).get('equalizerBand${e.index}', defaultValue: 0.5)
+                  as double;
+          _equalizerParams!.bands[e.index].setGain(gain);
+        });
       });
     } else {
       Logger.root.info('starting without eq pipeline');
@@ -654,8 +680,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   Future<void> addRecentlyPlayed(MediaItem mediaitem) async {
     Logger.root.info('adding ${mediaitem.id} to recently played');
-    List recentList = await Hive.box('cache')
-        .get('recentSongs', defaultValue: [])?.toList() as List;
+    List recentList =
+        await Hive.box('cache').get('recentSongs', defaultValue: [])?.toList()
+            as List;
 
     final Map songStats =
         await Hive.box('stats').get(mediaitem.id, defaultValue: {}) as Map;
@@ -706,9 +733,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     if (index != -1) {
       _player!.seek(
         Duration.zero,
-        index: _player!.shuffleModeEnabled
-            ? _player!.shuffleIndices![index]
-            : index,
+        index:
+            _player!.shuffleModeEnabled
+                ? _player!.shuffleIndices![index]
+                : index,
       );
     } else {
       Logger.root.severe('skipToMediaItem: MediaItem not found');
@@ -942,15 +970,16 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   Future<Map> getEqParms() async {
     _equalizerParams ??= await _equalizer.parameters;
     final List<AndroidEqualizerBand> bands = _equalizerParams!.bands;
-    final List<Map> bandList = bands
-        .map(
-          (e) => {
-            'centerFrequency': e.centerFrequency,
-            'gain': e.gain,
-            'index': e.index,
-          },
-        )
-        .toList();
+    final List<Map> bandList =
+        bands
+            .map(
+              (e) => {
+                'centerFrequency': e.centerFrequency,
+                'gain': e.gain,
+                'index': e.index,
+              },
+            )
+            .toList();
 
     return {
       'maxDecibels': _equalizerParams!.maxDecibels,
@@ -1075,13 +1104,14 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           MediaAction.seekBackward,
         },
         androidCompactActionIndices: preferredCompactNotificationButtons,
-        processingState: const {
-          ProcessingState.idle: AudioProcessingState.idle,
-          ProcessingState.loading: AudioProcessingState.loading,
-          ProcessingState.buffering: AudioProcessingState.buffering,
-          ProcessingState.ready: AudioProcessingState.ready,
-          ProcessingState.completed: AudioProcessingState.completed,
-        }[_player!.processingState]!,
+        processingState:
+            const {
+              ProcessingState.idle: AudioProcessingState.idle,
+              ProcessingState.loading: AudioProcessingState.loading,
+              ProcessingState.buffering: AudioProcessingState.buffering,
+              ProcessingState.ready: AudioProcessingState.ready,
+              ProcessingState.completed: AudioProcessingState.completed,
+            }[_player!.processingState]!,
         playing: playing,
         updatePosition: _player!.position,
         bufferedPosition: _player!.bufferedPosition,

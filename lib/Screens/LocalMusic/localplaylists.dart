@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
 import 'package:xmusic/Helpers/audio_query.dart';
 import 'package:xmusic/Screens/LocalMusic/downed_songs.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class LocalPlaylists extends StatefulWidget {
   final List<PlaylistModel> playlistDetails;
@@ -54,9 +54,7 @@ class _LocalPlaylistsState extends State<LocalPlaylists> {
                 onSubmitted: (String value, BuildContext context) async {
                   if (value.trim() != '') {
                     Navigator.pop(context);
-                    await widget.offlineAudioQuery.createPlaylist(
-                      name: value,
-                    );
+                    await widget.offlineAudioQuery.createPlaylist(name: value);
                     widget.offlineAudioQuery.getPlaylists().then((value) {
                       playlistDetails = value;
                       setState(() {});
@@ -109,9 +107,7 @@ class _LocalPlaylistsState extends State<LocalPlaylists> {
                   trailing: PopupMenuButton(
                     icon: const Icon(Icons.more_vert_rounded),
                     shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15.0),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
                     ),
                     onSelected: (int? value) async {
                       if (value == 0) {
@@ -155,48 +151,48 @@ class _LocalPlaylistsState extends State<LocalPlaylists> {
                       //       });
                       // }
                     },
-                    itemBuilder: (context) => [
-                      // PopupMenuItem(
-                      //   value: 3,
-                      //   child: Row(
-                      //     children: [
-                      //       const Icon(Icons.edit_rounded),
-                      //       const SizedBox(width: 10.0),
-                      //       Text(AppLocalizations.of(context)!
-                      //           .rename),
-                      //     ],
-                      //   ),
-                      // ),
-                      PopupMenuItem(
-                        value: 0,
-                        child: Row(
-                          children: [
-                            const Icon(Icons.delete_rounded),
-                            const SizedBox(width: 10.0),
-                            Text(
-                              AppLocalizations.of(context)!.delete,
-                              style: TextStyle(
-                                color: Theme.of(context).iconTheme.color,
-                              ),
+                    itemBuilder:
+                        (context) => [
+                          // PopupMenuItem(
+                          //   value: 3,
+                          //   child: Row(
+                          //     children: [
+                          //       const Icon(Icons.edit_rounded),
+                          //       const SizedBox(width: 10.0),
+                          //       Text(AppLocalizations.of(context)!
+                          //           .rename),
+                          //     ],
+                          //   ),
+                          // ),
+                          PopupMenuItem(
+                            value: 0,
+                            child: Row(
+                              children: [
+                                const Icon(Icons.delete_rounded),
+                                const SizedBox(width: 10.0),
+                                Text(
+                                  AppLocalizations.of(context)!.delete,
+                                  style: TextStyle(
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
+                          ),
+                        ],
                   ),
                   onTap: () async {
-                    final songs =
-                        await widget.offlineAudioQuery.getPlaylistSongs(
-                      playlistDetails[index].id,
-                    );
+                    final songs = await widget.offlineAudioQuery
+                        .getPlaylistSongs(playlistDetails[index].id);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DownloadedSongs(
-                          title: playlistDetails[index].playlist,
-                          cachedSongs: songs,
-                          playlistId: playlistDetails[index].id,
-                        ),
+                        builder:
+                            (context) => DownloadedSongs(
+                              title: playlistDetails[index].playlist,
+                              cachedSongs: songs,
+                              playlistId: playlistDetails[index].id,
+                            ),
                       ),
                     );
                   },

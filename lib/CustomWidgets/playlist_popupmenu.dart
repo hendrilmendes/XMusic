@@ -1,20 +1,16 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Helpers/mediaitem_converter.dart';
 import 'package:xmusic/Helpers/playlist.dart';
 import 'package:xmusic/Screens/Player/audioplayer.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class PlaylistPopupMenu extends StatefulWidget {
   final List data;
   final String title;
-  const PlaylistPopupMenu({
-    super.key,
-    required this.data,
-    required this.title,
-  });
+  const PlaylistPopupMenu({super.key, required this.data, required this.title});
 
   @override
   _PlaylistPopupMenuState createState() => _PlaylistPopupMenuState();
@@ -24,50 +20,45 @@ class _PlaylistPopupMenuState extends State<PlaylistPopupMenu> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      icon: const Icon(
-        Icons.more_vert_rounded,
-      ),
+      icon: const Icon(Icons.more_vert_rounded),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
       ),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 0,
-          child: Row(
-            children: [
-              Icon(
-                Icons.queue_music_rounded,
-                color: Theme.of(context).iconTheme.color,
+      itemBuilder:
+          (context) => [
+            PopupMenuItem(
+              value: 0,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.queue_music_rounded,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  const SizedBox(width: 10.0),
+                  Text(
+                    AppLocalizations.of(context)!.addToQueue,
+                    style: TextStyle(color: Theme.of(context).iconTheme.color),
+                  ),
+                ],
               ),
-              const SizedBox(width: 10.0),
-              Text(
-                AppLocalizations.of(context)!.addToQueue,
-                style: TextStyle(
-                  color: Theme.of(context).iconTheme.color,
-                ),
+            ),
+            PopupMenuItem(
+              value: 1,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.favorite_border_rounded,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  const SizedBox(width: 10.0),
+                  Text(
+                    AppLocalizations.of(context)!.savePlaylist,
+                    style: TextStyle(color: Theme.of(context).iconTheme.color),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 1,
-          child: Row(
-            children: [
-              Icon(
-                Icons.favorite_border_rounded,
-                color: Theme.of(context).iconTheme.color,
-              ),
-              const SizedBox(width: 10.0),
-              Text(
-                AppLocalizations.of(context)!.savePlaylist,
-                style: TextStyle(
-                  color: Theme.of(context).iconTheme.color,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
       onSelected: (int? value) {
         if (value == 1) {
           addPlaylist(widget.title, widget.data).then(

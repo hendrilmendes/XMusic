@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:isolate';
 
@@ -50,8 +49,9 @@ Future<void> _backgroundProcess(SendPort sendPort) async {
       hiveInit = true;
       continue;
     }
-    final newData =
-        await YouTubeServices.instance.refreshLink(message.toString());
+    final newData = await YouTubeServices.instance.refreshLink(
+      message.toString(),
+    );
     sendPort.send(newData);
   }
 }

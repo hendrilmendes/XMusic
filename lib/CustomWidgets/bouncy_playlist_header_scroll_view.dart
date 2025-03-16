@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -39,40 +38,35 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget image = imageUrl == null
-        ? Image(
-            fit: BoxFit.cover,
-            image: AssetImage(placeholderImage),
-          )
-        : localImage
-            ? Image(
-                image: FileImage(
-                  File(
-                    imageUrl!,
-                  ),
-                ),
-                fit: BoxFit.cover,
-              )
+    final Widget image =
+        imageUrl == null
+            ? Image(fit: BoxFit.cover, image: AssetImage(placeholderImage))
+            : localImage
+            ? Image(image: FileImage(File(imageUrl!)), fit: BoxFit.cover)
             : CachedNetworkImage(
-                fit: BoxFit.cover,
-                errorWidget: (context, _, __) => Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage(placeholderImage),
-                ),
-                imageUrl: imageUrl!,
-                placeholder: (context, url) => Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage(placeholderImage),
-                ),
-              );
+              fit: BoxFit.cover,
+              errorWidget:
+                  (context, _, __) => Image(
+                    fit: BoxFit.cover,
+                    image: AssetImage(placeholderImage),
+                  ),
+              imageUrl: imageUrl!,
+              placeholder:
+                  (context, url) => Image(
+                    fit: BoxFit.cover,
+                    image: AssetImage(placeholderImage),
+                  ),
+            );
     final bool rotated =
         MediaQuery.sizeOf(context).height < MediaQuery.sizeOf(context).width;
-    final double expandedHeight = rotated
-        ? MediaQuery.sizeOf(context).width * 0.35
-        : MediaQuery.sizeOf(context).width * 0.6;
-    final double screenWidth = rotated
-        ? MediaQuery.sizeOf(context).width * 0.3
-        : MediaQuery.sizeOf(context).width * 0.5;
+    final double expandedHeight =
+        rotated
+            ? MediaQuery.sizeOf(context).width * 0.35
+            : MediaQuery.sizeOf(context).width * 0.6;
+    final double screenWidth =
+        rotated
+            ? MediaQuery.sizeOf(context).width * 0.3
+            : MediaQuery.sizeOf(context).width * 0.5;
 
     return CustomScrollView(
       controller: scrollController,
@@ -95,9 +89,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                         child: Card(
                           elevation: 5,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              10.0,
-                            ),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                           clipBehavior: Clip.antiAlias,
                           child: image,
@@ -113,11 +105,12 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                           top: 10.0,
                         ),
                         child: Align(
-                          alignment: Alignment.lerp(
-                            Alignment.topCenter,
-                            Alignment.center,
-                            0.5,
-                          )!,
+                          alignment:
+                              Alignment.lerp(
+                                Alignment.topCenter,
+                                Alignment.center,
+                                0.5,
+                              )!,
                           child: SingleChildScrollView(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -134,9 +127,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                 ),
                                 if (subtitle != null && subtitle!.isNotEmpty)
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                      bottom: 3.0,
-                                    ),
+                                    padding: const EdgeInsets.only(bottom: 3.0),
                                     child: Text(
                                       subtitle!,
                                       softWrap: false,
@@ -144,33 +135,32 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                       maxLines: 3,
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .color,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.bodySmall!.color,
                                       ),
                                     ),
                                   ),
                                 if (secondarySubtitle != null &&
                                     secondarySubtitle!.isNotEmpty)
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                      bottom: 3.0,
-                                    ),
+                                    padding: const EdgeInsets.only(bottom: 3.0),
                                     child: Text(
                                       secondarySubtitle!,
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,
-                                      maxLines: onShuffleTap == null &&
-                                              onPlayTap == null
-                                          ? 10
-                                          : 2,
+                                      maxLines:
+                                          onShuffleTap == null &&
+                                                  onPlayTap == null
+                                              ? 10
+                                              : 2,
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .color,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.bodySmall!.color,
                                       ),
                                       textAlign: TextAlign.justify,
                                     ),
@@ -194,9 +184,10 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(100.0),
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
+                                              color:
+                                                  Theme.of(
+                                                    context,
+                                                  ).colorScheme.secondary,
                                               // color: Colors.white,
                                               boxShadow: const [
                                                 BoxShadow(
@@ -209,38 +200,39 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                vertical: 10.0,
-                                              ),
+                                                    vertical: 10.0,
+                                                  ),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
                                                     Icons.play_arrow_rounded,
-                                                    color: Theme.of(context)
-                                                                .colorScheme
-                                                                .secondary ==
-                                                            Colors.white
-                                                        ? Colors.black
-                                                        : Colors.white,
+                                                    color:
+                                                        Theme.of(context)
+                                                                    .colorScheme
+                                                                    .secondary ==
+                                                                Colors.white
+                                                            ? Colors.black
+                                                            : Colors.white,
                                                     size: 26.0,
                                                   ),
                                                   const SizedBox(width: 5.0),
                                                   Text(
                                                     AppLocalizations.of(
                                                       context,
-                                                    )!
-                                                        .play,
+                                                    )!.play,
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 18.0,
-                                                      color: Theme.of(context)
-                                                                  .colorScheme
-                                                                  .secondary ==
-                                                              Colors.white
-                                                          ? Colors.black
-                                                          : Colors.white,
+                                                      color:
+                                                          Theme.of(context)
+                                                                      .colorScheme
+                                                                      .secondary ==
+                                                                  Colors.white
+                                                              ? Colors.black
+                                                              : Colors.white,
                                                     ),
                                                     textAlign: TextAlign.center,
                                                   ),
@@ -267,23 +259,28 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(100.0),
                                               border: Border.all(
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black,
+                                                color:
+                                                    Theme.of(
+                                                              context,
+                                                            ).brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                               ),
                                             ),
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
+                                              padding: const EdgeInsets.all(
+                                                10.0,
+                                              ),
                                               child: Icon(
                                                 Icons.shuffle_rounded,
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black,
+                                                color:
+                                                    Theme.of(
+                                                              context,
+                                                            ).brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                                 size: 24.0,
                                               ),
                                             ),

@@ -35,7 +35,8 @@ class BoxSwitchTile extends StatelessWidget {
             contentPadding: contentPadding,
             trailing: Switch.adaptive(
               activeColor: Theme.of(context).colorScheme.secondary,
-              value: box.get(keyName, defaultValue: defaultValue) as bool? ??
+              value:
+                  box.get(keyName, defaultValue: defaultValue) as bool? ??
                   defaultValue,
               onChanged: (val) {
                 box.put(keyName, val);
@@ -45,7 +46,7 @@ class BoxSwitchTile extends StatelessWidget {
             onTap: () {
               final bool currentValue =
                   box.get(keyName, defaultValue: defaultValue) as bool? ??
-                      defaultValue;
+                  defaultValue;
               box.put(keyName, !currentValue);
               onChanged?.call(val: !currentValue, box: box);
             },

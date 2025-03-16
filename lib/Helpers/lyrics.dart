@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:audiotagger/audiotagger.dart';
@@ -57,17 +56,23 @@ class Lyrics {
           result['source'] = res['source']!;
         }
       } else {
-        Logger.root
-            .info('Lyrics not available on Saavn, finding on Musixmatch');
-        result['lyrics'] =
-            await getMusixMatchLyrics(title: title, artist: artist);
+        Logger.root.info(
+          'Lyrics not available on Saavn, finding on Musixmatch',
+        );
+        result['lyrics'] = await getMusixMatchLyrics(
+          title: title,
+          artist: artist,
+        );
         result['type'] = 'text';
         result['source'] = 'Musixmatch';
         if (result['lyrics'] == '') {
-          Logger.root
-              .info('Lyrics not found on Musixmatch, searching on Google');
-          result['lyrics'] =
-              await getGoogleLyrics(title: title, artist: artist);
+          Logger.root.info(
+            'Lyrics not found on Musixmatch, searching on Google',
+          );
+          result['lyrics'] = await getGoogleLyrics(
+            title: title,
+            artist: artist,
+          );
           result['type'] = 'text';
           result['source'] = 'Google';
         }
@@ -82,8 +87,10 @@ class Lyrics {
         'www.jiosaavn.com',
         '/api.php?__call=lyrics.getLyrics&lyrics_id=$id&ctx=web6dot0&api_version=4&_format=json',
       );
-      final Response res =
-          await get(lyricsUrl, headers: {'Accept': 'application/json'});
+      final Response res = await get(
+        lyricsUrl,
+        headers: {'Accept': 'application/json'},
+      );
 
       final List<String> rawLyrics = res.body.split('-->');
       Map fetchedLyrics = {};
@@ -92,7 +99,8 @@ class Lyrics {
       } else {
         fetchedLyrics = json.decode(rawLyrics[0]) as Map;
       }
-      final String lyrics = fetchedLyrics['lyrics']
+      final String lyrics =
+          fetchedLyrics['lyrics']
               ?.toString()
               .replaceAll('<br>', '\n')
               .replaceAll(RegExp('[ ]{2,}'), ' ') ??
@@ -122,8 +130,10 @@ class Lyrics {
       'album_name': album,
       'duration': duration,
     });
-    final Response res =
-        await get(lyricsUrl, headers: {'Accept': 'application/json'});
+    final Response res = await get(
+      lyricsUrl,
+      headers: {'Accept': 'application/json'},
+    );
     if (res.statusCode == 200) {
       final Map lyricsData = await json.decode(res.body) as Map;
       if (lyricsData['error'] == null) {
@@ -131,9 +141,11 @@ class Lyrics {
             lyricsData['syncedLyrics'] != '') {
           result['lyrics'] = lyricsData['syncedLyrics'].toString();
         } else {
-          result['lyrics'] = lyricsData['plainLyrics']
-                  ?.toString()
-                  .replaceAll(RegExp('[ ]{2,}'), ' ') ??
+          result['lyrics'] =
+              lyricsData['plainLyrics']?.toString().replaceAll(
+                RegExp('[ ]{2,}'),
+                ' ',
+              ) ??
               '';
           result['type'] = 'text';
         }
@@ -191,8 +203,9 @@ class Lyrics {
             title2: title2,
             artist2: artist2,
           ).matched) {
-            final Map<String, String> res =
-                await getSpotifyLyricsFromId(trackId);
+            final Map<String, String> res = await getSpotifyLyricsFromId(
+              trackId,
+            );
             result['lyrics'] = res['lyrics']!;
             result['type'] = res['type']!;
             result['source'] = res['source']!;
@@ -217,13 +230,15 @@ class Lyrics {
       'source': 'Spotify',
     };
     try {
-      final Uri lyricsUrl =
-          Uri.https('spotify-lyric-api-984e7b4face0.herokuapp.com', '/', {
-        'trackid': trackId,
-        'format': 'lrc',
-      });
-      final Response res =
-          await get(lyricsUrl, headers: {'Accept': 'application/json'});
+      final Uri lyricsUrl = Uri.https(
+        'spotify-lyric-api-984e7b4face0.herokuapp.com',
+        '/',
+        {'trackid': trackId, 'format': 'lrc'},
+      );
+      final Response res = await get(
+        lyricsUrl,
+        headers: {'Accept': 'application/json'},
+      );
 
       if (res.statusCode == 200) {
         final Map lyricsData = await json.decode(res.body) as Map;
@@ -265,34 +280,32 @@ class Lyrics {
         '</div></div></div></div></div><div><span class="hwc"><div class="BNeawe uEec3 AP7Wnd">';
     String lyrics = '';
     try {
-      lyrics = (await get(
-        Uri.parse(Uri.encodeFull('$url$title by $artist lyrics')),
-      ))
-          .body;
+      lyrics =
+          (await get(
+            Uri.parse(Uri.encodeFull('$url$title by $artist lyrics')),
+          )).body;
       lyrics = lyrics.split(delimiter1).last;
       lyrics = lyrics.split(delimiter2).first;
       if (lyrics.contains('<meta charset="UTF-8">')) throw Error();
     } catch (_) {
       try {
-        lyrics = (await get(
-          Uri.parse(
-            Uri.encodeFull('$url$title by $artist song lyrics'),
-          ),
-        ))
-            .body;
+        lyrics =
+            (await get(
+              Uri.parse(Uri.encodeFull('$url$title by $artist song lyrics')),
+            )).body;
         lyrics = lyrics.split(delimiter1).last;
         lyrics = lyrics.split(delimiter2).first;
         if (lyrics.contains('<meta charset="UTF-8">')) throw Error();
       } catch (_) {
         try {
-          lyrics = (await get(
-            Uri.parse(
-              Uri.encodeFull(
-                '$url${title.split("-").first} by $artist lyrics',
-              ),
-            ),
-          ))
-              .body;
+          lyrics =
+              (await get(
+                Uri.parse(
+                  Uri.encodeFull(
+                    '$url${title.split("-").first} by $artist lyrics',
+                  ),
+                ),
+              )).body;
           lyrics = lyrics.split(delimiter1).last;
           lyrics = lyrics.split(delimiter2).first;
           if (lyrics.contains('<meta charset="UTF-8">')) throw Error();
@@ -319,8 +332,9 @@ class Lyrics {
     final String unencodedPath = '/search/$song $artist';
     final Response res = await get(Uri.https(authority, unencodedPath));
     if (res.statusCode != 200) return '';
-    final RegExpMatch? result =
-        RegExp(r'href=\"(\/lyrics\/.*?)\"').firstMatch(res.body);
+    final RegExpMatch? result = RegExp(
+      r'href=\"(\/lyrics\/.*?)\"',
+    ).firstMatch(res.body);
     return result == null ? '' : result[1]!;
   }
 
@@ -329,10 +343,11 @@ class Lyrics {
     const String authority = 'www.musixmatch.com';
     final Response res = await get(Uri.https(authority, unencodedPath));
     if (res.statusCode != 200) return '';
-    final List<String?> lyrics = RegExp(
-      r'<span class=\"lyrics__content__ok\">(.*?)<\/span>',
-      dotAll: true,
-    ).allMatches(res.body).map((m) => m[1]).toList();
+    final List<String?> lyrics =
+        RegExp(
+          r'<span class=\"lyrics__content__ok\">(.*?)<\/span>',
+          dotAll: true,
+        ).allMatches(res.body).map((m) => m[1]).toList();
 
     return lyrics.isEmpty ? '' : lyrics.join('\n');
   }

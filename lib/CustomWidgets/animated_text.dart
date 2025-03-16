@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart' as wrapped;
 
@@ -53,10 +52,7 @@ class AnimatedText extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final span = TextSpan(
-          text: text,
-          style: style,
-        );
+        final span = TextSpan(text: text, style: style);
 
         final tp = TextPainter(
           maxLines: 1,
@@ -97,11 +93,7 @@ class AnimatedText extends StatelessWidget {
         } else {
           return SizedBox(
             width: constraints.maxWidth,
-            child: Text(
-              text,
-              style: style,
-              textAlign: defaultAlignment,
-            ),
+            child: Text(text, style: style, textAlign: defaultAlignment),
           );
         }
       },

@@ -9,9 +9,7 @@ class AppTheme {
   static MyTheme get currentTheme => GetIt.I<MyTheme>();
   static ThemeMode get themeMode => GetIt.I<MyTheme>().currentTheme();
 
-  static ThemeData lightTheme({
-    required BuildContext context,
-  }) {
+  static ThemeData lightTheme({required BuildContext context}) {
     return ThemeData(
       useMaterial3: true,
       textSelectionTheme: TextSelectionThemeData(
@@ -21,14 +19,14 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         focusedBorder: UnderlineInputBorder(
-          borderSide:
-              BorderSide(width: 1.5, color: currentTheme.currentColor()),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: currentTheme.currentColor(),
+          ),
         ),
       ),
       listTileTheme: ListTileThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7.0),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       appBarTheme: const AppBarTheme(
@@ -39,40 +37,37 @@ class AppTheme {
       cardTheme: CardTheme(
         clipBehavior: Clip.antiAlias,
         elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7.0),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
       ),
       disabledColor: Colors.grey[600],
       brightness: Brightness.light,
       indicatorColor: currentTheme.currentColor(),
-      progressIndicatorTheme: const ProgressIndicatorThemeData()
-          .copyWith(color: currentTheme.currentColor()),
+      progressIndicatorTheme: const ProgressIndicatorThemeData().copyWith(
+        color: currentTheme.currentColor(),
+      ),
       iconTheme: IconThemeData(
         color: Colors.grey[800],
         opacity: 1.0,
         size: 24.0,
       ),
       colorScheme: Theme.of(context).colorScheme.copyWith(
-            primary: Colors.grey[800],
-            brightness: Brightness.light,
-            secondary: currentTheme.currentColor(),
-          ),
-      textTheme: Typography()
-          .black
-          .apply(fontFamily: GoogleFonts.openSans().fontFamily),
+        primary: Colors.grey[800],
+        brightness: Brightness.light,
+        secondary: currentTheme.currentColor(),
+      ),
+      textTheme: Typography().black.apply(
+        fontFamily: GoogleFonts.openSans().fontFamily,
+      ),
     );
   }
 
-  static ThemeData darkTheme({
-    required BuildContext context,
-  }) {
+  static ThemeData darkTheme({required BuildContext context}) {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.black,
-      textTheme: Typography()
-          .white
-          .apply(fontFamily: GoogleFonts.openSans().fontFamily),
+      textTheme: Typography().white.apply(
+        fontFamily: GoogleFonts.openSans().fontFamily,
+      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
@@ -89,17 +84,17 @@ class AppTheme {
         hintStyle: const TextStyle(color: Colors.white),
         labelStyle: const TextStyle(color: Colors.white),
         focusedBorder: UnderlineInputBorder(
-          borderSide:
-              BorderSide(width: 1.5, color: currentTheme.currentColor()),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: currentTheme.currentColor(),
+          ),
         ),
       ),
       listTileTheme: ListTileThemeData(
         tileColor: Colors.black,
         iconColor: Colors.white,
         textColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7.0),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       brightness: Brightness.dark,
@@ -113,13 +108,11 @@ class AppTheme {
       cardTheme: CardTheme(
         clipBehavior: Clip.antiAlias,
         elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7.0),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
       ),
-      dialogBackgroundColor: Colors.black,
-      progressIndicatorTheme: const ProgressIndicatorThemeData()
-          .copyWith(color: currentTheme.currentColor()),
+      progressIndicatorTheme: const ProgressIndicatorThemeData().copyWith(
+        color: currentTheme.currentColor(),
+      ),
       iconTheme: const IconThemeData(
         color: Colors.white,
         opacity: 1.0,
@@ -127,13 +120,11 @@ class AppTheme {
       ),
       indicatorColor: currentTheme.currentColor(),
       colorScheme: Theme.of(context).colorScheme.copyWith(
-            primary: Colors.white,
-            secondary: currentTheme.currentColor(),
-            brightness: Brightness.dark,
-          ),
-      popupMenuTheme: const PopupMenuThemeData(
-        color: Colors.black,
+        primary: Colors.white,
+        secondary: currentTheme.currentColor(),
+        brightness: Brightness.dark,
       ),
+      popupMenuTheme: const PopupMenuThemeData(color: Colors.black),
       dialogTheme: const DialogTheme(
         backgroundColor: Colors.black,
         titleTextStyle: TextStyle(
@@ -141,10 +132,7 @@ class AppTheme {
           fontWeight: FontWeight.bold,
           color: Colors.black,
         ),
-        contentTextStyle: TextStyle(
-          fontSize: 16.0,
-          color: Colors.white,
-        ),
+        contentTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
       ),
     );
   }

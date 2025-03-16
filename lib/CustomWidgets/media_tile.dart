@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:xmusic/CustomWidgets/copy_clipboard.dart';
 
@@ -28,25 +27,18 @@ class MediaTile extends StatelessWidget {
       contentPadding: contentPadding,
       title: Text(
         title,
-        style: const TextStyle(
-          fontWeight: FontWeight.w500,
-        ),
+        style: const TextStyle(fontWeight: FontWeight.w500),
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: subtitle == null
-          ? null
-          : Text(
-              subtitle!,
-              overflow: TextOverflow.ellipsis,
-            ),
+      subtitle:
+          subtitle == null
+              ? null
+              : Text(subtitle!, overflow: TextOverflow.ellipsis),
       isThreeLine: isThreeLine,
       leading: leadingWidget,
       trailing: trailingWidget,
       onLongPress: () {
-        copyToClipboard(
-          context: context,
-          text: title,
-        );
+        copyToClipboard(context: context, text: title);
       },
       onTap: onTap,
     );

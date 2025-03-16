@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,9 +12,7 @@ Widget imageCard({
   EdgeInsetsGeometry margin = EdgeInsets.zero,
   double borderRadius = 7.0,
   double? boxDimension = 55.0,
-  ImageProvider placeholderImage = const AssetImage(
-    'assets/cover.jpg',
-  ),
+  ImageProvider placeholderImage = const AssetImage('assets/cover.jpg'),
   bool selected = false,
   ImageQuality imageQuality = ImageQuality.low,
   Function(Object, StackTrace?)? localErrorFunction,
@@ -39,41 +36,27 @@ Widget imageCard({
                 if (localErrorFunction != null) {
                   localErrorFunction(error, stacktrace);
                 }
-                return Image(
-                  fit: BoxFit.cover,
-                  image: placeholderImage,
-                );
+                return Image(fit: BoxFit.cover, image: placeholderImage);
               },
-              image: FileImage(
-                File(
-                  imageUrl,
-                ),
-              ),
+              image: FileImage(File(imageUrl)),
             )
           else
             CachedNetworkImage(
               fit: BoxFit.cover,
-              errorWidget: (context, _, __) => Image(
-                fit: BoxFit.cover,
-                image: placeholderImage,
-              ),
-              imageUrl:
-                  UrlImageGetter([imageUrl]).getImageUrl(quality: imageQuality),
-              placeholder: (context, url) => Image(
-                fit: BoxFit.cover,
-                image: placeholderImage,
-              ),
+              errorWidget:
+                  (context, _, __) =>
+                      Image(fit: BoxFit.cover, image: placeholderImage),
+              imageUrl: UrlImageGetter([
+                imageUrl,
+              ]).getImageUrl(quality: imageQuality),
+              placeholder:
+                  (context, url) =>
+                      Image(fit: BoxFit.cover, image: placeholderImage),
             ),
           if (selected)
             Container(
-              decoration: const BoxDecoration(
-                color: Colors.black54,
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.check_rounded,
-                ),
-              ),
+              decoration: const BoxDecoration(color: Colors.black54),
+              child: const Center(child: Icon(Icons.check_rounded)),
             ),
         ],
       ),

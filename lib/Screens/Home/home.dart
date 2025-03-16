@@ -36,30 +36,42 @@ class _HomePageState extends State<HomePage> {
       Hive.box('settings').get('checkUpdate', defaultValue: true) as bool;
   bool autoBackup =
       Hive.box('settings').get('autoBackup', defaultValue: false) as bool;
-  List sectionsToShow = Hive.box('settings').get(
-    'sectionsToShow',
-    defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library', 'Settings'],
-  ) as List;
+  List sectionsToShow =
+      Hive.box('settings').get(
+            'sectionsToShow',
+            defaultValue: [
+              'Home',
+              'Top Charts',
+              'YouTube',
+              'Library',
+              'Settings',
+            ],
+          )
+          as List;
   DateTime? backButtonPressTime;
-  final bool useDense = Hive.box('settings').get(
-    'useDenseMini',
-    defaultValue: false,
-  ) as bool;
+  final bool useDense =
+      Hive.box('settings').get('useDenseMini', defaultValue: false) as bool;
 
   void callback() {
-    sectionsToShow = Hive.box('settings').get(
-      'sectionsToShow',
-      defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library', 'Settings'],
-    ) as List;
+    sectionsToShow =
+        Hive.box('settings').get(
+              'sectionsToShow',
+              defaultValue: [
+                'Home',
+                'Top Charts',
+                'YouTube',
+                'Library',
+                'Settings',
+              ],
+            )
+            as List;
     onItemTapped(0);
     setState(() {});
   }
 
   void onItemTapped(int index) {
     _selectedIndex.value = index;
-    _controller.jumpToTab(
-      index,
-    );
+    _controller.jumpToTab(index);
   }
 
   Future<bool> handleWillPop(BuildContext? context) async {
@@ -67,7 +79,7 @@ class _HomePageState extends State<HomePage> {
     final now = DateTime.now();
     final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
         backButtonPressTime == null ||
-            now.difference(backButtonPressTime!) > const Duration(seconds: 3);
+        now.difference(backButtonPressTime!) > const Duration(seconds: 3);
 
     if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
       backButtonPressTime = now;
@@ -89,10 +101,7 @@ class _HomePageState extends State<HomePage> {
       if (checkUpdate) {
         Logger.root.info('Checking for update');
         GitHub.getLatestVersion().then((String version) async {
-          if (compareVersion(
-            version,
-            appVersion!,
-          )) {
+          if (compareVersion(version, appVersion!)) {
             Logger.root.info('Update available');
             ShowSnackBar().showSnackBar(
               context,
@@ -119,45 +128,24 @@ class _HomePageState extends State<HomePage> {
       }
       if (autoBackup) {
         final List<String> checked = [
-          AppLocalizations.of(
-            context,
-          )!
-              .settings,
-          AppLocalizations.of(
-            context,
-          )!
-              .downs,
-          AppLocalizations.of(
-            context,
-          )!
-              .playlists,
+          AppLocalizations.of(context)!.settings,
+          AppLocalizations.of(context)!.downs,
+          AppLocalizations.of(context)!.playlists,
         ];
-        final List playlistNames = Hive.box('settings').get(
-          'playlistNames',
-          defaultValue: ['Favorite Songs'],
-        ) as List;
+        final List playlistNames =
+            Hive.box(
+                  'settings',
+                ).get('playlistNames', defaultValue: ['Favorite Songs'])
+                as List;
         final Map<String, List> boxNames = {
-          AppLocalizations.of(
-            context,
-          )!
-              .settings: ['settings'],
-          AppLocalizations.of(
-            context,
-          )!
-              .cache: ['cache'],
-          AppLocalizations.of(
-            context,
-          )!
-              .downs: ['downloads'],
-          AppLocalizations.of(
-            context,
-          )!
-              .playlists: playlistNames,
+          AppLocalizations.of(context)!.settings: ['settings'],
+          AppLocalizations.of(context)!.cache: ['cache'],
+          AppLocalizations.of(context)!.downs: ['downloads'],
+          AppLocalizations.of(context)!.playlists: playlistNames,
         };
-        final String autoBackPath = Hive.box('settings').get(
-          'autoBackPath',
-          defaultValue: '',
-        ) as String;
+        final String autoBackPath =
+            Hive.box('settings').get('autoBackPath', defaultValue: '')
+                as String;
         if (autoBackPath == '') {
           ExtStorageProvider.getExtStorage(
             dirName: 'XMusic/Backups',
@@ -188,18 +176,16 @@ class _HomePageState extends State<HomePage> {
                   ExtStorageProvider.getExtStorage(
                     dirName: 'XMusic/Backups',
                     writeAccess: true,
-                  ).then(
-                    (value) {
-                      Hive.box('settings').put('autoBackPath', value);
-                      createBackup(
-                        context,
-                        checked,
-                        boxNames,
-                        path: value,
-                        fileName: 'XMusic_AutoBackup',
-                      );
-                    },
-                  ),
+                  ).then((value) {
+                    Hive.box('settings').put('autoBackPath', value);
+                    createBackup(
+                      context,
+                      checked,
+                      boxNames,
+                      path: value,
+                      fileName: 'XMusic_AutoBackup',
+                    );
+                  }),
                 },
             },
           );
@@ -256,9 +242,10 @@ class _HomePageState extends State<HomePage> {
                     onDestinationSelected: (int index) {
                       onItemTapped(index);
                     },
-                    labelType: screenWidth > 1050
-                        ? NavigationRailLabelType.selected
-                        : NavigationRailLabelType.none,
+                    labelType:
+                        screenWidth > 1050
+                            ? NavigationRailLabelType.selected
+                            : NavigationRailLabelType.none,
                     selectedLabelTextStyle: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.w600,
@@ -267,47 +254,52 @@ class _HomePageState extends State<HomePage> {
                       color: Theme.of(context).iconTheme.color,
                     ),
                     selectedIconTheme: Theme.of(context).iconTheme.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                     unselectedIconTheme: Theme.of(context).iconTheme,
                     useIndicator: screenWidth < 1050,
-                    indicatorColor: Theme.of(context)
-                        .colorScheme
-                        .secondary
-                        .withValues(),
-                    destinations: sectionsToShow.map((e) {
-                      switch (e) {
-                        case 'Home':
-                          return NavigationRailDestination(
-                            icon: const Icon(Icons.home_rounded),
-                            label: Text(AppLocalizations.of(context)!.home),
-                          );
-                        case 'Top Charts':
-                          return NavigationRailDestination(
-                            icon: const Icon(Icons.trending_up_rounded),
-                            label: Text(
-                              AppLocalizations.of(context)!.topCharts,
-                            ),
-                          );
-                        case 'YouTube':
-                          return NavigationRailDestination(
-                            icon: const Icon(MdiIcons.youtube),
-                            label: Text(AppLocalizations.of(context)!.youTube),
-                          );
-                        case 'Library':
-                          return NavigationRailDestination(
-                            icon: const Icon(Icons.my_library_music_rounded),
-                            label: Text(AppLocalizations.of(context)!.library),
-                          );
-                        default:
-                          return NavigationRailDestination(
-                            icon: const Icon(Icons.settings_rounded),
-                            label: Text(
-                              AppLocalizations.of(context)!.settings,
-                            ),
-                          );
-                      }
-                    }).toList(),
+                    indicatorColor:
+                        Theme.of(context).colorScheme.secondary.withValues(),
+                    destinations:
+                        sectionsToShow.map((e) {
+                          switch (e) {
+                            case 'Home':
+                              return NavigationRailDestination(
+                                icon: const Icon(Icons.home_rounded),
+                                label: Text(AppLocalizations.of(context)!.home),
+                              );
+                            case 'Top Charts':
+                              return NavigationRailDestination(
+                                icon: const Icon(Icons.trending_up_rounded),
+                                label: Text(
+                                  AppLocalizations.of(context)!.topCharts,
+                                ),
+                              );
+                            case 'YouTube':
+                              return NavigationRailDestination(
+                                icon: const Icon(MdiIcons.youtube),
+                                label: Text(
+                                  AppLocalizations.of(context)!.youTube,
+                                ),
+                              );
+                            case 'Library':
+                              return NavigationRailDestination(
+                                icon: const Icon(
+                                  Icons.my_library_music_rounded,
+                                ),
+                                label: Text(
+                                  AppLocalizations.of(context)!.library,
+                                ),
+                              );
+                            default:
+                              return NavigationRailDestination(
+                                icon: const Icon(Icons.settings_rounded),
+                                label: Text(
+                                  AppLocalizations.of(context)!.settings,
+                                ),
+                              );
+                          }
+                        }).toList(),
                   );
                 },
               ),
@@ -317,49 +309,48 @@ class _HomePageState extends State<HomePage> {
                 controller: _controller,
                 itemCount: sectionsToShow.length,
                 onWillPop: (context) => handleWillPop(context),
-                navBarHeight: 60 +
+                navBarHeight:
+                    60 +
                     (rotated ? 0 : 70) +
                     (useDense ? 0 : 10) +
                     (rotated && useDense ? 10 : 0),
-                backgroundColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.black
-                    : Colors.white,
-                screens: sectionsToShow.map((section) {
-                  switch (section) {
-                    case 'Home':
-                      return CustomNavBarScreen(
-                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-                          routes: namedRoutes,
-                        ),
-                        screen: const HomeScreen(),
-                      );
-                    case 'Top Charts':
-                      return CustomNavBarScreen(
-                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-                          routes: namedRoutes,
-                        ),
-                        screen: TopCharts(pageController: _pageController),
-                      );
-                    case 'YouTube':
-                      return CustomNavBarScreen(
-                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-                          routes: namedRoutes,
-                        ),
-                        screen: const YouTube(),
-                      );
-                    case 'Library':
-                      return CustomNavBarScreen(
-                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-                          routes: namedRoutes,
-                        ),
-                        screen: const LibraryPage(),
-                      );
-                    default:
-                      return CustomNavBarScreen(
-                        screen: SettingsPage(callback: callback),
-                      );
-                  }
-                }).toList(),
+                backgroundColor:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black
+                        : Colors.white,
+                screens:
+                    sectionsToShow.map((section) {
+                      switch (section) {
+                        case 'Home':
+                          return CustomNavBarScreen(
+                            routeAndNavigatorSettings:
+                                RouteAndNavigatorSettings(routes: namedRoutes),
+                            screen: const HomeScreen(),
+                          );
+                        case 'Top Charts':
+                          return CustomNavBarScreen(
+                            routeAndNavigatorSettings:
+                                RouteAndNavigatorSettings(routes: namedRoutes),
+                            screen: TopCharts(pageController: _pageController),
+                          );
+                        case 'YouTube':
+                          return CustomNavBarScreen(
+                            routeAndNavigatorSettings:
+                                RouteAndNavigatorSettings(routes: namedRoutes),
+                            screen: const YouTube(),
+                          );
+                        case 'Library':
+                          return CustomNavBarScreen(
+                            routeAndNavigatorSettings:
+                                RouteAndNavigatorSettings(routes: namedRoutes),
+                            screen: const LibraryPage(),
+                          );
+                        default:
+                          return CustomNavBarScreen(
+                            screen: SettingsPage(callback: callback),
+                          );
+                      }
+                    }).toList(),
                 customWidget: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -373,10 +364,11 @@ class _HomePageState extends State<HomePage> {
                             height: 60,
                             child: CustomBottomNavBar(
                               currentIndex: indexValue,
-                              backgroundColor: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.black.withValues()
-                                  : Colors.white.withValues(),
+                              backgroundColor:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.black.withValues()
+                                      : Colors.white.withValues(),
                               onTap: (index) {
                                 onItemTapped(index);
                               },

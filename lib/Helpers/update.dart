@@ -1,4 +1,3 @@
-
 import 'package:logging/logging.dart';
 
 bool compareVersion(String latestVersion, String currentVersion) {

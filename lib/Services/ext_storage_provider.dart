@@ -23,7 +23,8 @@ class ExtStorageProvider {
   }
 
   static Future<bool> requestManageExternalStoragePermission() async {
-    if (Platform.isAndroid && int.tryParse(Platform.version.split('.')[0])! >= 30) {
+    if (Platform.isAndroid &&
+        int.tryParse(Platform.version.split('.')[0])! >= 30) {
       // Android 11 or higher, use MANAGE_EXTERNAL_STORAGE permission
       return requestPermission(Permission.manageExternalStorage);
     } else {
@@ -42,7 +43,8 @@ class ExtStorageProvider {
       // checking platform
       if (Platform.isAndroid) {
         // Request storage permission
-        final bool storagePermissionGranted = await requestManageExternalStoragePermission();
+        final bool storagePermissionGranted =
+            await requestManageExternalStoragePermission();
         if (kDebugMode) {
           print('Storage permission granted: $storagePermissionGranted');
         }

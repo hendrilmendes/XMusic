@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
@@ -8,6 +7,7 @@ import 'package:xmusic/CustomWidgets/popup.dart';
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
 import 'package:xmusic/Helpers/config.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class ThemePage extends StatefulWidget {
   final Function? callback;
@@ -47,51 +47,28 @@ class _ThemePageState extends State<ThemePage> {
           centerTitle: true,
           backgroundColor: Colors.transparent,
           title: Text(
-            AppLocalizations.of(
-              context,
-            )!
-                .theme,
+            AppLocalizations.of(context)!.theme,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).iconTheme.color,
-            ),
+            style: TextStyle(color: Theme.of(context).iconTheme.color),
           ),
-          iconTheme: IconThemeData(
-            color: Theme.of(context).iconTheme.color,
-          ),
+          iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         ),
         body: ListView(
           padding: const EdgeInsets.all(10.0),
           physics: const BouncingScrollPhysics(),
           children: [
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .darkMode,
-              ),
+              title: Text(AppLocalizations.of(context)!.darkMode),
               keyName: 'darkMode',
               defaultValue: true,
               onChanged: ({required bool val, required Box box}) {
-                box.put(
-                  'useSystemTheme',
-                  false,
-                );
-                currentTheme.switchTheme(
-                  isDark: val,
-                  useSystemTheme: false,
-                );
+                box.put('useSystemTheme', false);
+                currentTheme.switchTheme(isDark: val, useSystemTheme: false);
                 switchToCustomTheme();
               },
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .useSystemTheme,
-              ),
+              title: Text(AppLocalizations.of(context)!.useSystemTheme),
               keyName: 'useSystemTheme',
               defaultValue: true,
               onChanged: ({required bool val, required Box box}) {
@@ -100,33 +77,21 @@ class _ThemePageState extends State<ThemePage> {
               },
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .accent,
-              ),
+              title: Text(AppLocalizations.of(context)!.accent),
               subtitle: Text('$themeColor, $colorHue'),
               trailing: Padding(
-                padding: const EdgeInsets.all(
-                  10.0,
-                ),
+                padding: const EdgeInsets.all(10.0),
                 child: Container(
                   height: 25,
                   width: 25,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      100.0,
-                    ),
+                    borderRadius: BorderRadius.circular(100.0),
                     color: Theme.of(context).colorScheme.secondary,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey[900]!,
                         blurRadius: 5.0,
-                        offset: const Offset(
-                          0.0,
-                          3.0,
-                        ),
+                        offset: const Offset(0.0, 3.0),
                       ),
                     ],
                   ),
@@ -157,24 +122,15 @@ class _ThemePageState extends State<ThemePage> {
                       'White',
                     ];
                     return BottomGradientContainer(
-                      borderRadius: BorderRadius.circular(
-                        20.0,
-                      ),
+                      borderRadius: BorderRadius.circular(20.0),
                       child: ListView.builder(
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.fromLTRB(
-                          0,
-                          10,
-                          0,
-                          10,
-                        ),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         itemCount: colors.length,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 15.0,
-                            ),
+                            padding: const EdgeInsets.only(bottom: 15.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -187,16 +143,16 @@ class _ThemePageState extends State<ThemePage> {
                                         colors[index],
                                         colorHue,
                                       );
-                                      setState(
-                                        () {},
-                                      );
+                                      setState(() {});
                                       switchToCustomTheme();
                                       Navigator.pop(context);
                                     },
                                     child: Container(
-                                      width: MediaQuery.sizeOf(context).width *
+                                      width:
+                                          MediaQuery.sizeOf(context).width *
                                           0.125,
-                                      height: MediaQuery.sizeOf(context).width *
+                                      height:
+                                          MediaQuery.sizeOf(context).width *
                                           0.125,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(
@@ -210,19 +166,15 @@ class _ThemePageState extends State<ThemePage> {
                                           BoxShadow(
                                             color: Colors.grey[900]!,
                                             blurRadius: 5.0,
-                                            offset: const Offset(
-                                              0.0,
-                                              3.0,
-                                            ),
+                                            offset: const Offset(0.0, 3.0),
                                           ),
                                         ],
                                       ),
-                                      child: (themeColor == colors[index] &&
-                                              colorHue == hue)
-                                          ? const Icon(
-                                              Icons.done_rounded,
-                                            )
-                                          : const SizedBox(),
+                                      child:
+                                          (themeColor == colors[index] &&
+                                                  colorHue == hue)
+                                              ? const Icon(Icons.done_rounded)
+                                              : const SizedBox(),
                                     ),
                                   ),
                               ],
@@ -241,29 +193,15 @@ class _ThemePageState extends State<ThemePage> {
               child: Column(
                 children: [
                   ListTile(
-                    title: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .bgGrad,
-                    ),
-                    subtitle: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .bgGradSub,
-                    ),
+                    title: Text(AppLocalizations.of(context)!.bgGrad),
+                    subtitle: Text(AppLocalizations.of(context)!.bgGradSub),
                     trailing: Padding(
-                      padding: const EdgeInsets.all(
-                        10.0,
-                      ),
+                      padding: const EdgeInsets.all(10.0),
                       child: Container(
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            100.0,
-                          ),
+                          borderRadius: BorderRadius.circular(100.0),
                           color: Theme.of(context).colorScheme.secondary,
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
@@ -272,18 +210,15 @@ class _ThemePageState extends State<ThemePage> {
                                 Theme.of(context).brightness == Brightness.dark
                                     ? currentTheme.getBackGradient()
                                     : [
-                                        Colors.white,
-                                        Theme.of(context).canvasColor,
-                                      ],
+                                      Colors.white,
+                                      Theme.of(context).canvasColor,
+                                    ],
                           ),
                           boxShadow: const [
                             BoxShadow(
                               color: Colors.white24,
                               blurRadius: 5.0,
-                              offset: Offset(
-                                0.0,
-                                3.0,
-                              ),
+                              offset: Offset(0.0, 3.0),
                             ),
                           ],
                         ),
@@ -298,12 +233,7 @@ class _ThemePageState extends State<ThemePage> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.fromLTRB(
-                              0,
-                              30,
-                              0,
-                              10,
-                            ),
+                            padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
                             itemCount: gradients.length,
                             itemBuilder: (context, index) {
                               return Padding(
@@ -314,39 +244,33 @@ class _ThemePageState extends State<ThemePage> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    settingsBox.put(
-                                      'backGrad',
-                                      index,
-                                    );
+                                    settingsBox.put('backGrad', index);
                                     currentTheme.backGrad = index;
                                     widget.callback!();
                                     switchToCustomTheme();
                                     Navigator.pop(context);
-                                    setState(
-                                      () {},
-                                    );
+                                    setState(() {});
                                   },
                                   child: Container(
-                                    width: MediaQuery.sizeOf(context).width *
+                                    width:
+                                        MediaQuery.sizeOf(context).width *
                                         0.125,
-                                    height: MediaQuery.sizeOf(context).width *
+                                    height:
+                                        MediaQuery.sizeOf(context).width *
                                         0.125,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                        15.0,
-                                      ),
+                                      borderRadius: BorderRadius.circular(15.0),
                                       gradient: LinearGradient(
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: gradients[index],
                                       ),
                                     ),
-                                    child: (currentTheme.getBackGradient() ==
-                                            gradients[index])
-                                        ? const Icon(
-                                            Icons.done_rounded,
-                                          )
-                                        : const SizedBox(),
+                                    child:
+                                        (currentTheme.getBackGradient() ==
+                                                gradients[index])
+                                            ? const Icon(Icons.done_rounded)
+                                            : const SizedBox(),
                                   ),
                                 ),
                               );
@@ -358,29 +282,15 @@ class _ThemePageState extends State<ThemePage> {
                     dense: true,
                   ),
                   ListTile(
-                    title: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .cardGrad,
-                    ),
-                    subtitle: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .cardGradSub,
-                    ),
+                    title: Text(AppLocalizations.of(context)!.cardGrad),
+                    subtitle: Text(AppLocalizations.of(context)!.cardGradSub),
                     trailing: Padding(
-                      padding: const EdgeInsets.all(
-                        10.0,
-                      ),
+                      padding: const EdgeInsets.all(10.0),
                       child: Container(
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            100.0,
-                          ),
+                          borderRadius: BorderRadius.circular(100.0),
                           color: Theme.of(context).colorScheme.secondary,
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
@@ -389,18 +299,15 @@ class _ThemePageState extends State<ThemePage> {
                                 Theme.of(context).brightness == Brightness.dark
                                     ? currentTheme.getCardGradient()
                                     : [
-                                        Colors.white,
-                                        Theme.of(context).canvasColor,
-                                      ],
+                                      Colors.white,
+                                      Theme.of(context).canvasColor,
+                                    ],
                           ),
                           boxShadow: const [
                             BoxShadow(
                               color: Colors.white24,
                               blurRadius: 5.0,
-                              offset: Offset(
-                                0.0,
-                                3.0,
-                              ),
+                              offset: Offset(0.0, 3.0),
                             ),
                           ],
                         ),
@@ -415,12 +322,7 @@ class _ThemePageState extends State<ThemePage> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.fromLTRB(
-                              0,
-                              30,
-                              0,
-                              10,
-                            ),
+                            padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
                             itemCount: gradients.length,
                             itemBuilder: (context, index) {
                               return Padding(
@@ -431,39 +333,33 @@ class _ThemePageState extends State<ThemePage> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    settingsBox.put(
-                                      'cardGrad',
-                                      index,
-                                    );
+                                    settingsBox.put('cardGrad', index);
                                     currentTheme.cardGrad = index;
                                     widget.callback!();
                                     switchToCustomTheme();
                                     Navigator.pop(context);
-                                    setState(
-                                      () {},
-                                    );
+                                    setState(() {});
                                   },
                                   child: Container(
-                                    width: MediaQuery.sizeOf(context).width *
+                                    width:
+                                        MediaQuery.sizeOf(context).width *
                                         0.125,
-                                    height: MediaQuery.sizeOf(context).width *
+                                    height:
+                                        MediaQuery.sizeOf(context).width *
                                         0.125,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                        15.0,
-                                      ),
+                                      borderRadius: BorderRadius.circular(15.0),
                                       gradient: LinearGradient(
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: gradients[index],
                                       ),
                                     ),
-                                    child: (currentTheme.getCardGradient() ==
-                                            gradients[index])
-                                        ? const Icon(
-                                            Icons.done_rounded,
-                                          )
-                                        : const SizedBox(),
+                                    child:
+                                        (currentTheme.getCardGradient() ==
+                                                gradients[index])
+                                            ? const Icon(Icons.done_rounded)
+                                            : const SizedBox(),
                                   ),
                                 ),
                               );
@@ -475,29 +371,15 @@ class _ThemePageState extends State<ThemePage> {
                     dense: true,
                   ),
                   ListTile(
-                    title: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .bottomGrad,
-                    ),
-                    subtitle: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .bottomGradSub,
-                    ),
+                    title: Text(AppLocalizations.of(context)!.bottomGrad),
+                    subtitle: Text(AppLocalizations.of(context)!.bottomGradSub),
                     trailing: Padding(
-                      padding: const EdgeInsets.all(
-                        10.0,
-                      ),
+                      padding: const EdgeInsets.all(10.0),
                       child: Container(
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            100.0,
-                          ),
+                          borderRadius: BorderRadius.circular(100.0),
                           color: Theme.of(context).colorScheme.secondary,
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
@@ -506,18 +388,15 @@ class _ThemePageState extends State<ThemePage> {
                                 Theme.of(context).brightness == Brightness.dark
                                     ? currentTheme.getBottomGradient()
                                     : [
-                                        Colors.white,
-                                        Theme.of(context).canvasColor,
-                                      ],
+                                      Colors.white,
+                                      Theme.of(context).canvasColor,
+                                    ],
                           ),
                           boxShadow: const [
                             BoxShadow(
                               color: Colors.white24,
                               blurRadius: 5.0,
-                              offset: Offset(
-                                0.0,
-                                3.0,
-                              ),
+                              offset: Offset(0.0, 3.0),
                             ),
                           ],
                         ),
@@ -532,12 +411,7 @@ class _ThemePageState extends State<ThemePage> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.fromLTRB(
-                              0,
-                              30,
-                              0,
-                              10,
-                            ),
+                            padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
                             itemCount: gradients.length,
                             itemBuilder: (context, index) {
                               return Padding(
@@ -548,38 +422,32 @@ class _ThemePageState extends State<ThemePage> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    settingsBox.put(
-                                      'bottomGrad',
-                                      index,
-                                    );
+                                    settingsBox.put('bottomGrad', index);
                                     currentTheme.bottomGrad = index;
                                     switchToCustomTheme();
                                     Navigator.pop(context);
-                                    setState(
-                                      () {},
-                                    );
+                                    setState(() {});
                                   },
                                   child: Container(
-                                    width: MediaQuery.sizeOf(context).width *
+                                    width:
+                                        MediaQuery.sizeOf(context).width *
                                         0.125,
-                                    height: MediaQuery.sizeOf(context).width *
+                                    height:
+                                        MediaQuery.sizeOf(context).width *
                                         0.125,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                        15.0,
-                                      ),
+                                      borderRadius: BorderRadius.circular(15.0),
                                       gradient: LinearGradient(
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: gradients[index],
                                       ),
                                     ),
-                                    child: (currentTheme.getBottomGradient() ==
-                                            gradients[index])
-                                        ? const Icon(
-                                            Icons.done_rounded,
-                                          )
-                                        : const SizedBox(),
+                                    child:
+                                        (currentTheme.getBottomGradient() ==
+                                                gradients[index])
+                                            ? const Icon(Icons.done_rounded)
+                                            : const SizedBox(),
                                   ),
                                 ),
                               );
@@ -591,17 +459,9 @@ class _ThemePageState extends State<ThemePage> {
                     dense: true,
                   ),
                   ListTile(
-                    title: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .canvasColor,
-                    ),
+                    title: Text(AppLocalizations.of(context)!.canvasColor),
                     subtitle: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .canvasColorSub,
+                      AppLocalizations.of(context)!.canvasColorSub,
                     ),
                     onTap: () {},
                     trailing: DropdownButton(
@@ -614,37 +474,28 @@ class _ThemePageState extends State<ThemePage> {
                       onChanged: (String? newValue) {
                         if (newValue != null) {
                           switchToCustomTheme();
-                          setState(
-                            () {
-                              currentTheme.switchCanvasColor(newValue);
-                              canvasColor = newValue;
-                            },
-                          );
+                          setState(() {
+                            currentTheme.switchCanvasColor(newValue);
+                            canvasColor = newValue;
+                          });
                         }
                       },
-                      items: <String>['Grey', 'Black']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      items:
+                          <String>[
+                            'Grey',
+                            'Black',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
                     ),
                     dense: true,
                   ),
                   ListTile(
-                    title: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .cardColor,
-                    ),
-                    subtitle: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .cardColorSub,
-                    ),
+                    title: Text(AppLocalizations.of(context)!.cardColor),
+                    subtitle: Text(AppLocalizations.of(context)!.cardColorSub),
                     onTap: () {},
                     trailing: DropdownButton(
                       value: cardColor,
@@ -656,21 +507,24 @@ class _ThemePageState extends State<ThemePage> {
                       onChanged: (String? newValue) {
                         if (newValue != null) {
                           switchToCustomTheme();
-                          setState(
-                            () {
-                              currentTheme.switchCardColor(newValue);
-                              cardColor = newValue;
-                            },
-                          );
+                          setState(() {
+                            currentTheme.switchCardColor(newValue);
+                            cardColor = newValue;
+                          });
                         }
                       },
-                      items: <String>['Grey800', 'Grey850', 'Grey900', 'Black']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      items:
+                          <String>[
+                            'Grey800',
+                            'Grey850',
+                            'Grey900',
+                            'Black',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
                     ),
                     dense: true,
                   ),
@@ -678,12 +532,7 @@ class _ThemePageState extends State<ThemePage> {
               ),
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .currentTheme,
-              ),
+              title: Text(AppLocalizations.of(context)!.currentTheme),
               trailing: DropdownButton(
                 value: theme,
                 style: TextStyle(
@@ -697,79 +546,84 @@ class _ThemePageState extends State<ThemePage> {
 
                     currentTheme.setInitialTheme(themeChoice);
 
-                    setState(
-                      () {
-                        theme = themeChoice;
-                        if (themeChoice == 'Custom') return;
-                        final selectedTheme = userThemes[themeChoice];
+                    setState(() {
+                      theme = themeChoice;
+                      if (themeChoice == 'Custom') return;
+                      final selectedTheme = userThemes[themeChoice];
 
-                        settingsBox.put(
-                          'backGrad',
-                          themeChoice == deflt ? 4 : selectedTheme['backGrad'],
-                        );
-                        currentTheme.backGrad = themeChoice == deflt
-                            ? 4
-                            : selectedTheme['backGrad'] as int;
-
-                        settingsBox.put(
-                          'cardGrad',
-                          themeChoice == deflt ? 6 : selectedTheme['cardGrad'],
-                        );
-                        currentTheme.cardGrad = themeChoice == deflt
-                            ? 6
-                            : selectedTheme['cardGrad'] as int;
-
-                        settingsBox.put(
-                          'bottomGrad',
+                      settingsBox.put(
+                        'backGrad',
+                        themeChoice == deflt ? 4 : selectedTheme['backGrad'],
+                      );
+                      currentTheme.backGrad =
                           themeChoice == deflt
                               ? 4
-                              : selectedTheme['bottomGrad'],
-                        );
-                        currentTheme.bottomGrad = themeChoice == deflt
-                            ? 4
-                            : selectedTheme['bottomGrad'] as int;
+                              : selectedTheme['backGrad'] as int;
 
-                        currentTheme.switchCanvasColor(
+                      settingsBox.put(
+                        'cardGrad',
+                        themeChoice == deflt ? 6 : selectedTheme['cardGrad'],
+                      );
+                      currentTheme.cardGrad =
+                          themeChoice == deflt
+                              ? 6
+                              : selectedTheme['cardGrad'] as int;
+
+                      settingsBox.put(
+                        'bottomGrad',
+                        themeChoice == deflt ? 4 : selectedTheme['bottomGrad'],
+                      );
+                      currentTheme.bottomGrad =
+                          themeChoice == deflt
+                              ? 4
+                              : selectedTheme['bottomGrad'] as int;
+
+                      currentTheme.switchCanvasColor(
+                        themeChoice == deflt
+                            ? 'Black'
+                            : selectedTheme['canvasColor'] as String,
+                        notify: false,
+                      );
+                      canvasColor =
                           themeChoice == deflt
                               ? 'Black'
-                              : selectedTheme['canvasColor'] as String,
-                          notify: false,
-                        );
-                        canvasColor = themeChoice == deflt
-                            ? 'Black'
-                            : selectedTheme['canvasColor'] as String;
+                              : selectedTheme['canvasColor'] as String;
 
-                        currentTheme.switchCardColor(
+                      currentTheme.switchCardColor(
+                        themeChoice == deflt
+                            ? 'Grey900'
+                            : selectedTheme['cardColor'] as String,
+                        notify: false,
+                      );
+                      cardColor =
                           themeChoice == deflt
                               ? 'Grey900'
-                              : selectedTheme['cardColor'] as String,
-                          notify: false,
-                        );
-                        cardColor = themeChoice == deflt
-                            ? 'Grey900'
-                            : selectedTheme['cardColor'] as String;
+                              : selectedTheme['cardColor'] as String;
 
-                        themeColor = themeChoice == deflt
-                            ? 'Blue'
-                            : selectedTheme['accentColor'] as String;
-                        colorHue = themeChoice == deflt
-                            ? 400
-                            : selectedTheme['colorHue'] as int;
+                      themeColor =
+                          themeChoice == deflt
+                              ? 'Blue'
+                              : selectedTheme['accentColor'] as String;
+                      colorHue =
+                          themeChoice == deflt
+                              ? 400
+                              : selectedTheme['colorHue'] as int;
 
-                        currentTheme.switchColor(
-                          themeColor,
-                          colorHue,
-                          notify: false,
-                        );
+                      currentTheme.switchColor(
+                        themeColor,
+                        colorHue,
+                        notify: false,
+                      );
 
-                        currentTheme.switchTheme(
-                          useSystemTheme: !(themeChoice == deflt) &&
-                              selectedTheme['useSystemTheme'] as bool,
-                          isDark: themeChoice == deflt ||
-                              selectedTheme['isDark'] as bool,
-                        );
-                      },
-                    );
+                      currentTheme.switchTheme(
+                        useSystemTheme:
+                            !(themeChoice == deflt) &&
+                            selectedTheme['useSystemTheme'] as bool,
+                        isDark:
+                            themeChoice == deflt ||
+                            selectedTheme['isDark'] as bool,
+                      );
+                    });
                   }
                 },
                 selectedItemBuilder: (BuildContext context) {
@@ -777,123 +631,120 @@ class _ThemePageState extends State<ThemePage> {
                     return Text(item);
                   }).toList();
                 },
-                items: userThemesList.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: Text(
-                            value,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        if (value != 'Default' && value != 'Custom')
-                          Flexible(
-                            child: IconButton(
-                              //padding: EdgeInsets.zero,
-                              iconSize: 18,
-                              splashRadius: 18,
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        10.0,
-                                      ),
-                                    ),
-                                    title: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!
-                                          .deleteTheme,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                    ),
-                                    content: Text(
-                                      '${AppLocalizations.of(
-                                        context,
-                                      )!.deleteThemeSubtitle} $value?',
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: Navigator.of(context).pop,
-                                        child: Text(
-                                          AppLocalizations.of(
-                                            context,
-                                          )!
-                                              .cancel,
-                                        ),
-                                      ),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor: Theme.of(
-                                                    context,
-                                                  ).colorScheme.secondary ==
-                                                  Colors.white
-                                              ? Colors.black
-                                              : null,
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                        ),
-                                        onPressed: () {
-                                          currentTheme.deleteTheme(value);
-                                          if (currentTheme.getInitialTheme() ==
-                                              value) {
-                                            currentTheme.setInitialTheme(
-                                              'Custom',
-                                            );
-                                            theme = 'Custom';
-                                          }
-                                          setState(
-                                            () {
-                                              userThemes =
-                                                  currentTheme.getThemes();
-                                            },
-                                          );
-                                          ShowSnackBar().showSnackBar(
-                                            context,
-                                            AppLocalizations.of(
-                                              context,
-                                            )!
-                                                .themeDeleted,
-                                          );
-                                          return Navigator.of(
-                                            context,
-                                          ).pop();
-                                        },
-                                        child: Text(
-                                          AppLocalizations.of(
-                                            context,
-                                          )!
-                                              .delete,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.delete_rounded,
+                items:
+                    userThemesList.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              flex: 2,
+                              child: Text(
+                                value,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                          ),
-                      ],
-                    ),
-                  );
-                }).toList(),
+                            if (value != 'Default' && value != 'Custom')
+                              Flexible(
+                                child: IconButton(
+                                  //padding: EdgeInsets.zero,
+                                  iconSize: 18,
+                                  splashRadius: 18,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    showDialog(
+                                      context: context,
+                                      builder:
+                                          (BuildContext context) => AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            title: Text(
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.deleteTheme,
+                                              style: TextStyle(
+                                                color:
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.secondary,
+                                              ),
+                                            ),
+                                            content: Text(
+                                              '${AppLocalizations.of(context)!.deleteThemeSubtitle} $value?',
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed:
+                                                    Navigator.of(context).pop,
+                                                child: Text(
+                                                  AppLocalizations.of(
+                                                    context,
+                                                  )!.cancel,
+                                                ),
+                                              ),
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor:
+                                                      Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary ==
+                                                              Colors.white
+                                                          ? Colors.black
+                                                          : null,
+                                                  backgroundColor:
+                                                      Theme.of(
+                                                        context,
+                                                      ).colorScheme.secondary,
+                                                ),
+                                                onPressed: () {
+                                                  currentTheme.deleteTheme(
+                                                    value,
+                                                  );
+                                                  if (currentTheme
+                                                          .getInitialTheme() ==
+                                                      value) {
+                                                    currentTheme
+                                                        .setInitialTheme(
+                                                          'Custom',
+                                                        );
+                                                    theme = 'Custom';
+                                                  }
+                                                  setState(() {
+                                                    userThemes =
+                                                        currentTheme
+                                                            .getThemes();
+                                                  });
+                                                  ShowSnackBar().showSnackBar(
+                                                    context,
+                                                    AppLocalizations.of(
+                                                      context,
+                                                    )!.themeDeleted,
+                                                  );
+                                                  return Navigator.of(
+                                                    context,
+                                                  ).pop();
+                                                },
+                                                child: Text(
+                                                  AppLocalizations.of(
+                                                    context,
+                                                  )!.delete,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 5.0),
+                                            ],
+                                          ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.delete_rounded),
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                 isDense: true,
               ),
               dense: true,
@@ -901,38 +752,24 @@ class _ThemePageState extends State<ThemePage> {
             Visibility(
               visible: theme == 'Custom',
               child: ListTile(
-                title: Text(
-                  AppLocalizations.of(
-                    context,
-                  )!
-                      .saveTheme,
-                ),
+                title: Text(AppLocalizations.of(context)!.saveTheme),
                 onTap: () {
-                  final initialThemeName = '${AppLocalizations.of(
-                    context,
-                  )!.theme} ${userThemes.length + 1}';
+                  final initialThemeName =
+                      '${AppLocalizations.of(context)!.theme} ${userThemes.length + 1}';
                   showTextInputDialog(
                     context: context,
-                    title: AppLocalizations.of(
-                      context,
-                    )!
-                        .enterThemeName,
+                    title: AppLocalizations.of(context)!.enterThemeName,
                     onSubmitted: (String value, BuildContext context) {
                       if (value == '') return;
                       currentTheme.saveTheme(value);
                       currentTheme.setInitialTheme(value);
-                      setState(
-                        () {
-                          userThemes = currentTheme.getThemes();
-                          theme = value;
-                        },
-                      );
+                      setState(() {
+                        userThemes = currentTheme.getThemes();
+                        theme = value;
+                      });
                       ShowSnackBar().showSnackBar(
                         context,
-                        AppLocalizations.of(
-                          context,
-                        )!
-                            .themeSaved,
+                        AppLocalizations.of(context)!.themeSaved,
                       );
                       Navigator.of(context).pop();
                     },
@@ -953,11 +790,9 @@ class _ThemePageState extends State<ThemePage> {
     const custom = 'Custom';
     if (theme != custom) {
       currentTheme.setInitialTheme(custom);
-      setState(
-        () {
-          theme = custom;
-        },
-      );
+      setState(() {
+        theme = custom;
+      });
     }
   }
 }

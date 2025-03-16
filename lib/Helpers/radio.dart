@@ -1,4 +1,3 @@
-
 import 'package:logging/logging.dart';
 import 'package:xmusic/APIs/api.dart';
 import 'package:xmusic/Services/player_service.dart';
@@ -8,11 +7,14 @@ Future<void> createRadioItems({
   String stationType = 'entity',
   int count = 20,
 }) async {
-  Logger.root
-      .info('Creating Radio Station of type $stationType with $stationNames');
+  Logger.root.info(
+    'Creating Radio Station of type $stationType with $stationNames',
+  );
   String stationId = '';
-  final String? value = await SaavnAPI()
-      .createRadio(names: stationNames, stationType: stationType);
+  final String? value = await SaavnAPI().createRadio(
+    names: stationNames,
+    stationType: stationType,
+  );
 
   if (value == null) return;
 

@@ -1,11 +1,10 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/Screens/Player/audioplayer.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class Equalizer extends StatefulWidget {
   const Equalizer({super.key});
@@ -22,9 +21,7 @@ class _EqualizerState extends State<Equalizer> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       content: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -44,9 +41,7 @@ class _EqualizerState extends State<Equalizer> {
             if (enabled)
               SizedBox(
                 height: MediaQuery.sizeOf(context).height / 2,
-                child: EqualizerControls(
-                  audioHandler: audioHandler,
-                ),
+                child: EqualizerControls(audioHandler: audioHandler),
               ),
           ],
         ),
@@ -133,8 +128,10 @@ class _VerticalSliderState extends State<VerticalSlider> {
 
   void setGain(int bandIndex, double gain) {
     Hive.box('settings').put('equalizerBand$bandIndex', gain);
-    widget.audioHandler
-        .customAction('setBandGain', {'band': bandIndex, 'gain': gain});
+    widget.audioHandler.customAction('setBandGain', {
+      'band': bandIndex,
+      'gain': gain,
+    });
   }
 
   @override
@@ -151,8 +148,8 @@ class _VerticalSliderState extends State<VerticalSlider> {
           child: Slider(
             activeColor: Theme.of(context).colorScheme.secondary,
             inactiveColor:
-                // ignore: deprecated_member_use
-                Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+            // ignore: deprecated_member_use
+            Theme.of(context).colorScheme.secondary.withOpacity(0.4),
             value: sliderValue ?? widget.value!,
             min: widget.min!,
             max: widget.max!,

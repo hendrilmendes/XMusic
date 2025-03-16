@@ -1,4 +1,3 @@
-
 String getImageUrl(String? imageUrl, {String quality = 'high'}) {
   if (imageUrl == null) return '';
   switch (quality) {

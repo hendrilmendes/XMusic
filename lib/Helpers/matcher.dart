@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:logging/logging.dart';
@@ -42,8 +41,10 @@ MatchResponse matchSongs({
   Logger.root.info('Matching $title by $artist with $title2 by $artist2');
   final names1 = artist.replaceAll('&', ',').replaceAll('-', ',').split(',');
   final names2 = artist2.replaceAll('&', ',').replaceAll('-', ',').split(',');
-  MatchResponse artistMatchResponse =
-      MatchResponse(matched: false, accuracy: 0);
+  MatchResponse artistMatchResponse = MatchResponse(
+    matched: false,
+    accuracy: 0,
+  );
   MatchResponse titleMatchResponse = MatchResponse(matched: false, accuracy: 0);
 
   // Check if at least one artist name matches
@@ -99,7 +100,8 @@ MatchResponse flexibleMatch({
   } else if (text1.contains(text2) || text2.contains(text1)) {
     return MatchResponse(
       matched: true,
-      accuracy: 0.9 -
+      accuracy:
+          0.9 -
           0.1 *
               (1 -
                   (min(text1.length, text2.length) /
@@ -131,10 +133,7 @@ MatchResponse flexibleMatch({
     }
   }
 
-  return MatchResponse(
-    matched: false,
-    accuracy: 0,
-  );
+  return MatchResponse(matched: false, accuracy: 0);
 }
 
 MatchResponse accuracyCheck({
@@ -165,8 +164,5 @@ MatchResponse accuracyCheck({
 class MatchResponse {
   final bool matched;
   final double accuracy;
-  MatchResponse({
-    required this.matched,
-    required this.accuracy,
-  });
+  MatchResponse({required this.matched, required this.accuracy});
 }

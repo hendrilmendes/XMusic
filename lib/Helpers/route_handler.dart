@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -33,20 +32,14 @@ class HandleRoute {
 
       if (query != null) {
         if (autoplay) {
-          SaavnAPI()
-              .fetchSongSearchResults(
-            searchQuery: query,
-            count: 3,
-          )
-              .then((Map data) {
+          SaavnAPI().fetchSongSearchResults(searchQuery: query, count: 3).then((
+            Map data,
+          ) {
             final List result = data['songs'] as List;
-            final index = findBestMatch(
-              result,
-              {
-                'title': title,
-                'artist': artist ?? '',
-              },
-            );
+            final index = findBestMatch(result, {
+              'title': title,
+              'artist': artist ?? '',
+            });
             if (index != -1) {
               // found a song
               PlayerInvoke.init(
@@ -56,32 +49,29 @@ class HandleRoute {
               );
             } else {
               return PageRouteBuilder(
-                pageBuilder: (_, __, ___) => SearchPage(
-                  query: query,
-                  fromDirectSearch: true,
-                ),
+                pageBuilder:
+                    (_, __, ___) =>
+                        SearchPage(query: query, fromDirectSearch: true),
               );
             }
           });
         }
         return PageRouteBuilder(
-          pageBuilder: (_, __, ___) => SearchPage(
-            query: query,
-            fromDirectSearch: true,
-          ),
+          pageBuilder:
+              (_, __, ___) => SearchPage(query: query, fromDirectSearch: true),
         );
       }
     }
     if (url.contains('saavn')) {
-      final RegExpMatch? songResult =
-          RegExp(r'.*saavn.com.*?\/(song)\/.*?\/(.*)').firstMatch('$url?');
+      final RegExpMatch? songResult = RegExp(
+        r'.*saavn.com.*?\/(song)\/.*?\/(.*)',
+      ).firstMatch('$url?');
       if (songResult != null) {
         return PageRouteBuilder(
           opaque: false,
-          pageBuilder: (_, __, ___) => SaavnUrlHandler(
-            token: songResult[2]!,
-            type: songResult[1]!,
-          ),
+          pageBuilder:
+              (_, __, ___) =>
+                  SaavnUrlHandler(token: songResult[2]!, type: songResult[1]!),
         );
       } else {
         final RegExpMatch? playlistResult = RegExp(
@@ -90,50 +80,49 @@ class HandleRoute {
         if (playlistResult != null) {
           return PageRouteBuilder(
             opaque: false,
-            pageBuilder: (_, __, ___) => SaavnUrlHandler(
-              token: playlistResult[2]!,
-              type: playlistResult[1]!,
-            ),
+            pageBuilder:
+                (_, __, ___) => SaavnUrlHandler(
+                  token: playlistResult[2]!,
+                  type: playlistResult[1]!,
+                ),
           );
         }
       }
     } else if (url.contains('spotify')) {
       // TODO: Add support for spotify links
       Logger.root.info('received spotify link');
-      final RegExpMatch? songResult =
-          RegExp(r'.*spotify.com.*?\/(track)\/(.*?)[/?]').firstMatch('$url/');
+      final RegExpMatch? songResult = RegExp(
+        r'.*spotify.com.*?\/(track)\/(.*?)[/?]',
+      ).firstMatch('$url/');
       if (songResult != null) {
         return PageRouteBuilder(
           opaque: false,
-          pageBuilder: (_, __, ___) => SpotifyUrlHandler(
-            id: songResult[2]!,
-            type: songResult[1]!,
-          ),
+          pageBuilder:
+              (_, __, ___) =>
+                  SpotifyUrlHandler(id: songResult[2]!, type: songResult[1]!),
         );
       }
     } else if (url.contains('youtube') || url.contains('youtu.be')) {
       // TODO: Add support for youtube links
       Logger.root.info('received youtube link');
-      final RegExpMatch? videoId =
-          RegExp(r'.*[\?\/](v|list)[=\/](.*?)[\/\?&#]').firstMatch('$url/');
+      final RegExpMatch? videoId = RegExp(
+        r'.*[\?\/](v|list)[=\/](.*?)[\/\?&#]',
+      ).firstMatch('$url/');
       if (videoId != null) {
         return PageRouteBuilder(
           opaque: false,
-          pageBuilder: (_, __, ___) => YtUrlHandler(
-            id: videoId[2]!,
-            type: videoId[1]!,
-          ),
+          pageBuilder:
+              (_, __, ___) => YtUrlHandler(id: videoId[2]!, type: videoId[1]!),
         );
       }
     } else {
-      final RegExpMatch? fileResult =
-          RegExp(r'\/[0-9]+\/([0-9]+)\/').firstMatch('$url/');
+      final RegExpMatch? fileResult = RegExp(
+        r'\/[0-9]+\/([0-9]+)\/',
+      ).firstMatch('$url/');
       if (fileResult != null) {
         return PageRouteBuilder(
           opaque: false,
-          pageBuilder: (_, __, ___) => OfflinePlayHandler(
-            id: fileResult[1]!,
-          ),
+          pageBuilder: (_, __, ___) => OfflinePlayHandler(id: fileResult[1]!),
         );
       }
     }
@@ -168,9 +157,7 @@ class SaavnUrlHandler extends StatelessWidget {
           context,
           PageRouteBuilder(
             opaque: false,
-            pageBuilder: (_, __, ___) => SongsListPage(
-              listItem: value,
-            ),
+            pageBuilder: (_, __, ___) => SongsListPage(listItem: value),
           ),
         );
       }
@@ -194,12 +181,14 @@ class SpotifyUrlHandler extends StatelessWidget {
               context,
               PageRouteBuilder(
                 opaque: false,
-                pageBuilder: (_, __, ___) => SearchPage(
-                  query: (value['artists'] != null &&
-                          (value['artists'] as List).isNotEmpty)
-                      ? '${value["name"]} by ${value["artists"][0]["name"]}'
-                      : value['name'].toString(),
-                ),
+                pageBuilder:
+                    (_, __, ___) => SearchPage(
+                      query:
+                          (value['artists'] != null &&
+                                  (value['artists'] as List).isNotEmpty)
+                              ? '${value["name"]} by ${value["artists"][0]["name"]}'
+                              : value['name'].toString(),
+                    ),
               ),
             );
           });
@@ -218,9 +207,9 @@ class YtUrlHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == 'v') {
-      YouTubeServices.instance
-          .formatVideoFromId(id: id)
-          .then((Map? response) async {
+      YouTubeServices.instance.formatVideoFromId(id: id).then((
+        Map? response,
+      ) async {
         if (response != null) {
           PlayerInvoke.init(
             songsList: [response],
@@ -242,13 +231,14 @@ class YtUrlHandler extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => YouTubePlaylist(
-              playlistId: id,
-              // playlistImage: '',
-              // playlistName: '',
-              // playlistSubtitle: '',
-              // playlistSecondarySubtitle: '',
-            ),
+            builder:
+                (context) => YouTubePlaylist(
+                  playlistId: id,
+                  // playlistImage: '',
+                  // playlistName: '',
+                  // playlistSubtitle: '',
+                  // playlistSecondarySubtitle: '',
+                ),
           ),
         );
       });

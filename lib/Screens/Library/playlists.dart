@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -10,6 +9,7 @@ import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
 import 'package:xmusic/Helpers/import_export_playlist.dart';
 import 'package:xmusic/Screens/Library/import.dart';
 import 'package:xmusic/Screens/Library/liked.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class PlaylistScreen extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   final Box settingsBox = Hive.box('settings');
   final List playlistNames =
       Hive.box('settings').get('playlistNames')?.toList() as List? ??
-          ['Favorite Songs'];
+      ['Favorite Songs'];
   Map playlistDetails =
       Hive.box('settings').get('playlistDetails', defaultValue: {}) as Map;
   @override
@@ -34,9 +34,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context)!.playlists,
-          ),
+          title: Text(AppLocalizations.of(context)!.playlists),
           centerTitle: true,
           elevation: 0,
         ),
@@ -95,9 +93,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 onTap: () async {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => ImportPlaylist(),
-                    ),
+                    MaterialPageRoute(builder: (context) => ImportPlaylist()),
                   );
                 },
               ),
@@ -118,15 +114,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     context: context,
                     builder: (BuildContext context) {
                       return StatefulBuilder(
-                        builder: (
-                          BuildContext context,
-                          StateSetter setStt,
-                        ) {
+                        builder: (BuildContext context, StateSetter setStt) {
                           return AlertDialog(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                10.0,
-                              ),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             content: SizedBox(
                               width: 500,
@@ -152,12 +143,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   return CheckboxListTile(
                                     activeColor:
                                         Theme.of(context).colorScheme.secondary,
-                                    checkColor: Theme.of(context)
-                                                .colorScheme
-                                                .secondary ==
-                                            Colors.white
-                                        ? Colors.black
-                                        : null,
+                                    checkColor:
+                                        Theme.of(
+                                                  context,
+                                                ).colorScheme.secondary ==
+                                                Colors.white
+                                            ? Colors.black
+                                            : null,
                                     value: checked.contains(index),
                                     onChanged: (value) {
                                       if (value ?? false) {
@@ -171,54 +163,56 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       showName,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    subtitle: playlistDetails[name] == null ||
-                                            playlistDetails[name]['count'] ==
-                                                null ||
-                                            playlistDetails[name]['count'] == 0
-                                        ? null
-                                        : Text(
-                                            '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}',
-                                          ),
-                                    secondary: (playlistDetails[name] == null ||
-                                            playlistDetails[name]
-                                                    ['imagesList'] ==
-                                                null ||
-                                            (playlistDetails[name]['imagesList']
-                                                    as List)
-                                                .isEmpty)
-                                        ? Card(
-                                            elevation: 5,
-                                            color: Colors.transparent,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                7.0,
+                                    subtitle:
+                                        playlistDetails[name] == null ||
+                                                playlistDetails[name]['count'] ==
+                                                    null ||
+                                                playlistDetails[name]['count'] ==
+                                                    0
+                                            ? null
+                                            : Text(
+                                              '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}',
+                                            ),
+                                    secondary:
+                                        (playlistDetails[name] == null ||
+                                                playlistDetails[name]['imagesList'] ==
+                                                    null ||
+                                                (playlistDetails[name]['imagesList']
+                                                        as List)
+                                                    .isEmpty)
+                                            ? Card(
+                                              elevation: 5,
+                                              color: Colors.transparent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(7.0),
                                               ),
+                                              clipBehavior: Clip.antiAlias,
+                                              child: SizedBox(
+                                                height: 50,
+                                                width: 50,
+                                                child:
+                                                    name == 'Favorite Songs'
+                                                        ? const Image(
+                                                          image: AssetImage(
+                                                            'assets/cover.jpg',
+                                                          ),
+                                                        )
+                                                        : const Image(
+                                                          image: AssetImage(
+                                                            'assets/album.png',
+                                                          ),
+                                                        ),
+                                              ),
+                                            )
+                                            : Collage(
+                                              imageList:
+                                                  playlistDetails[name]['imagesList']
+                                                      as List,
+                                              showGrid: true,
+                                              placeholderImage:
+                                                  'assets/cover.jpg',
                                             ),
-                                            clipBehavior: Clip.antiAlias,
-                                            child: SizedBox(
-                                              height: 50,
-                                              width: 50,
-                                              child: name == 'Favorite Songs'
-                                                  ? const Image(
-                                                      image: AssetImage(
-                                                        'assets/cover.jpg',
-                                                      ),
-                                                    )
-                                                  : const Image(
-                                                      image: AssetImage(
-                                                        'assets/album.png',
-                                                      ),
-                                                    ),
-                                            ),
-                                          )
-                                        : Collage(
-                                            imageList: playlistDetails[name]
-                                                ['imagesList'] as List,
-                                            showGrid: true,
-                                            placeholderImage:
-                                                'assets/cover.jpg',
-                                          ),
                                   );
                                 },
                               ),
@@ -236,10 +230,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   Navigator.pop(context);
                                 },
                                 child: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!
-                                      .cancel,
+                                  AppLocalizations.of(context)!.cancel,
                                 ),
                               ),
                               TextButton(
@@ -261,8 +252,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                   playlistNames[e].toString(),
                                             )
                                             .toList();
-                                    if (playlistsToMerge
-                                        .contains('Favorite Songs')) {
+                                    if (playlistsToMerge.contains(
+                                      'Favorite Songs',
+                                    )) {
                                       playlistsToMerge.remove('Favorite Songs');
                                       playlistsToMerge.insert(
                                         0,
@@ -275,14 +267,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                           in playlistsToMerge.sublist(1)) {
                                         try {
                                           final Box playlistBox =
-                                              await Hive.openBox(
-                                            playlistName,
-                                          );
+                                              await Hive.openBox(playlistName);
                                           final Map songsMap =
                                               playlistBox.toMap();
                                           finalMap.addAll(songsMap);
-                                          await playlistDetails
-                                              .remove(playlistName);
+                                          await playlistDetails.remove(
+                                            playlistName,
+                                          );
                                           playlistNames.remove(playlistName);
                                           await playlistBox.deleteFromDisk();
                                         } catch (e) {
@@ -297,8 +288,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       }
                                       final Box finalPlaylistBox =
                                           await Hive.openBox(
-                                        playlistsToMerge.first,
-                                      );
+                                            playlistsToMerge.first,
+                                          );
                                       finalPlaylistBox.putAll(finalMap);
 
                                       await settingsBox.put(
@@ -322,16 +313,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   }
                                   Navigator.pop(context);
                                 },
-                                child: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!
-                                      .ok,
-                                ),
+                                child: Text(AppLocalizations.of(context)!.ok),
                               ),
-                              const SizedBox(
-                                width: 5,
-                              ),
+                              const SizedBox(width: 5),
                             ],
                           );
                         },
@@ -342,15 +326,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               ),
               ValueListenableBuilder(
                 valueListenable: settingsBox.listenable(),
-                builder: (
-                  BuildContext context,
-                  Box box,
-                  Widget? child,
-                ) {
-                  final List playlistNamesValue = box.get(
-                        'playlistNames',
-                        defaultValue: ['Favorite Songs'],
-                      )?.toList() as List? ??
+                builder: (BuildContext context, Box box, Widget? child) {
+                  final List playlistNamesValue =
+                      box
+                              .get(
+                                'playlistNames',
+                                defaultValue: ['Favorite Songs'],
+                              )
+                              ?.toList()
+                          as List? ??
                       ['Favorite Songs'];
                   return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -358,54 +342,59 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     itemCount: playlistNamesValue.length,
                     itemBuilder: (context, index) {
                       final String name = playlistNamesValue[index].toString();
-                      final String showName = playlistDetails.containsKey(name)
-                          ? playlistDetails[name]['name']?.toString() ?? name
-                          : name;
+                      final String showName =
+                          playlistDetails.containsKey(name)
+                              ? playlistDetails[name]['name']?.toString() ??
+                                  name
+                              : name;
                       return ListTile(
-                        leading: (playlistDetails[name] == null ||
-                                playlistDetails[name]['imagesList'] == null ||
-                                (playlistDetails[name]['imagesList'] as List)
-                                    .isEmpty)
-                            ? Card(
-                                elevation: 5,
-                                color: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7.0),
+                        leading:
+                            (playlistDetails[name] == null ||
+                                    playlistDetails[name]['imagesList'] ==
+                                        null ||
+                                    (playlistDetails[name]['imagesList']
+                                            as List)
+                                        .isEmpty)
+                                ? Card(
+                                  elevation: 5,
+                                  color: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(7.0),
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child:
+                                        name == 'Favorite Songs'
+                                            ? const Image(
+                                              image: AssetImage(
+                                                'assets/cover.jpg',
+                                              ),
+                                            )
+                                            : const Image(
+                                              image: AssetImage(
+                                                'assets/album.png',
+                                              ),
+                                            ),
+                                  ),
+                                )
+                                : Collage(
+                                  imageList:
+                                      playlistDetails[name]['imagesList']
+                                          as List,
+                                  showGrid: true,
+                                  placeholderImage: 'assets/cover.jpg',
                                 ),
-                                clipBehavior: Clip.antiAlias,
-                                child: SizedBox(
-                                  height: 50,
-                                  width: 50,
-                                  child: name == 'Favorite Songs'
-                                      ? const Image(
-                                          image: AssetImage(
-                                            'assets/cover.jpg',
-                                          ),
-                                        )
-                                      : const Image(
-                                          image: AssetImage(
-                                            'assets/album.png',
-                                          ),
-                                        ),
+                        title: Text(showName, overflow: TextOverflow.ellipsis),
+                        subtitle:
+                            playlistDetails[name] == null ||
+                                    playlistDetails[name]['count'] == null ||
+                                    playlistDetails[name]['count'] == 0
+                                ? null
+                                : Text(
+                                  '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}',
                                 ),
-                              )
-                            : Collage(
-                                imageList:
-                                    playlistDetails[name]['imagesList'] as List,
-                                showGrid: true,
-                                placeholderImage: 'assets/cover.jpg',
-                              ),
-                        title: Text(
-                          showName,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        subtitle: playlistDetails[name] == null ||
-                                playlistDetails[name]['count'] == null ||
-                                playlistDetails[name]['count'] == 0
-                            ? null
-                            : Text(
-                                '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}',
-                              ),
                         trailing: PopupMenuButton(
                           icon: const Icon(Icons.more_vert_rounded),
                           shape: const RoundedRectangleBorder(
@@ -473,12 +462,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                             Text(
                                               AppLocalizations.of(
                                                 context,
-                                              )!
-                                                  .rename,
+                                              )!.rename,
                                               style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
+                                                color:
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.secondary,
                                               ),
                                             ),
                                           ],
@@ -492,13 +481,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                             Navigator.pop(context);
                                             playlistDetails[name] == null
                                                 ? playlistDetails.addAll({
-                                                    name: {
-                                                      'name': value.trim(),
-                                                    },
-                                                  })
+                                                  name: {'name': value.trim()},
+                                                })
                                                 : playlistDetails[name].addAll({
-                                                    'name': value.trim(),
-                                                  });
+                                                  'name': value.trim(),
+                                                });
 
                                             await settingsBox.put(
                                               'playlistDetails',
@@ -518,32 +505,29 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                           Navigator.pop(context);
                                         },
                                         child: Text(
-                                          AppLocalizations.of(
-                                            context,
-                                          )!
-                                              .cancel,
+                                          AppLocalizations.of(context)!.cancel,
                                         ),
                                       ),
                                       TextButton(
                                         style: TextButton.styleFrom(
                                           foregroundColor: Colors.white,
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
+                                          backgroundColor:
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.secondary,
                                         ),
                                         onPressed: () async {
                                           Navigator.pop(context);
                                           playlistDetails[name] == null
                                               ? playlistDetails.addAll({
-                                                  name: {
-                                                    'name':
-                                                        controller.text.trim(),
-                                                  },
-                                                })
-                                              : playlistDetails[name].addAll({
+                                                name: {
                                                   'name':
                                                       controller.text.trim(),
-                                                });
+                                                },
+                                              })
+                                              : playlistDetails[name].addAll({
+                                                'name': controller.text.trim(),
+                                              });
 
                                           await settingsBox.put(
                                             'playlistDetails',
@@ -551,109 +535,114 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                           );
                                         },
                                         child: Text(
-                                          AppLocalizations.of(
-                                            context,
-                                          )!
-                                              .ok,
+                                          AppLocalizations.of(context)!.ok,
                                           style: TextStyle(
-                                            color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary ==
-                                                    Colors.white
-                                                ? Colors.black
-                                                : null,
+                                            color:
+                                                Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary ==
+                                                        Colors.white
+                                                    ? Colors.black
+                                                    : null,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
+                                      const SizedBox(width: 5),
                                     ],
                                   );
                                 },
                               );
                             }
                           },
-                          itemBuilder: (context) => [
-                            if (name != 'Favorite Songs')
-                              PopupMenuItem(
-                                value: 3,
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.edit_rounded),
-                                    const SizedBox(width: 10.0),
-                                    Text(
-                                      AppLocalizations.of(context)!.rename,
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).iconTheme.color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            if (name != 'Favorite Songs')
-                              PopupMenuItem(
-                                value: 0,
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.delete_rounded),
-                                    const SizedBox(width: 10.0),
-                                    Text(
-                                      AppLocalizations.of(context)!.delete,
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).iconTheme.color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            PopupMenuItem(
-                              value: 1,
-                              child: Row(
-                                children: [
-                                  const Icon(MdiIcons.export),
-                                  const SizedBox(width: 10.0),
-                                  Text(
-                                    AppLocalizations.of(context)!.export,
-                                    style: TextStyle(
-                                      color: Theme.of(context).iconTheme.color,
+                          itemBuilder:
+                              (context) => [
+                                if (name != 'Favorite Songs')
+                                  PopupMenuItem(
+                                    value: 3,
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.edit_rounded),
+                                        const SizedBox(width: 10.0),
+                                        Text(
+                                          AppLocalizations.of(context)!.rename,
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).iconTheme.color,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            PopupMenuItem(
-                              value: 2,
-                              child: Row(
-                                children: [
-                                  const Icon(MdiIcons.share),
-                                  const SizedBox(width: 10.0),
-                                  Text(
-                                    AppLocalizations.of(context)!.share,
-                                    style: TextStyle(
-                                      color: Theme.of(context).iconTheme.color,
+                                if (name != 'Favorite Songs')
+                                  PopupMenuItem(
+                                    value: 0,
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.delete_rounded),
+                                        const SizedBox(width: 10.0),
+                                        Text(
+                                          AppLocalizations.of(context)!.delete,
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).iconTheme.color,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
+                                PopupMenuItem(
+                                  value: 1,
+                                  child: Row(
+                                    children: [
+                                      const Icon(MdiIcons.export),
+                                      const SizedBox(width: 10.0),
+                                      Text(
+                                        AppLocalizations.of(context)!.export,
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  value: 2,
+                                  child: Row(
+                                    children: [
+                                      const Icon(MdiIcons.share),
+                                      const SizedBox(width: 10.0),
+                                      Text(
+                                        AppLocalizations.of(context)!.share,
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                         ),
                         onTap: () async {
                           await Hive.openBox(name);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LikedSongs(
-                                playlistName: name,
-                                showName: playlistDetails.containsKey(name)
-                                    ? playlistDetails[name]['name']
-                                            ?.toString() ??
-                                        name
-                                    : name,
-                              ),
+                              builder:
+                                  (context) => LikedSongs(
+                                    playlistName: name,
+                                    showName:
+                                        playlistDetails.containsKey(name)
+                                            ? playlistDetails[name]['name']
+                                                    ?.toString() ??
+                                                name
+                                            : name,
+                                  ),
                             ),
                           );
                         },

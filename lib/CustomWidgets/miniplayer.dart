@@ -27,9 +27,7 @@ class MiniPlayer extends StatefulWidget {
 class _MiniPlayerState extends State<MiniPlayer> {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
   final ValueNotifier<List<Color?>?> gradientColor =
-      ValueNotifier<List<Color?>?>(
-    GetIt.I<MyTheme>().playGradientColor,
-  );
+      ValueNotifier<List<Color?>?>(GetIt.I<MyTheme>().playGradientColor);
 
   void updateBackgroundColors(List<Color?> value) {
     gradientColor.value = value;
@@ -52,35 +50,36 @@ class _MiniPlayerState extends State<MiniPlayer> {
           final MediaItem? mediaItem = snapshot.data;
           // if (mediaItem == null) return const SizedBox();
 
-          final List preferredMiniButtons = Hive.box('settings').get(
-            'preferredMiniButtons',
-            defaultValue: ['Like', 'Play/Pause', 'Next'],
-          )?.toList() as List;
+          final List preferredMiniButtons =
+              Hive.box('settings')
+                      .get(
+                        'preferredMiniButtons',
+                        defaultValue: ['Like', 'Play/Pause', 'Next'],
+                      )
+                      ?.toList()
+                  as List;
 
           final bool isLocal =
               mediaItem?.artUri?.toString().startsWith('file:') ?? false;
 
-          final bool useDense = Hive.box('settings').get(
-                'useDenseMini',
-                defaultValue: false,
-              ) as bool ||
+          final bool useDense =
+              Hive.box('settings').get('useDenseMini', defaultValue: false)
+                  as bool ||
               rotated;
 
           if (mediaItem != null) {
             if (mediaItem.artUri != null && mediaItem.artUri.toString() != '') {
               mediaItem.artUri.toString().startsWith('file')
                   ? getColors(
-                      imageProvider: FileImage(
-                        File(
-                          mediaItem.artUri!.toFilePath(),
-                        ),
-                      ),
-                    ).then((value) => updateBackgroundColors(value))
+                    imageProvider: FileImage(
+                      File(mediaItem.artUri!.toFilePath()),
+                    ),
+                  ).then((value) => updateBackgroundColors(value))
                   : getColors(
-                      imageProvider: CachedNetworkImageProvider(
-                        mediaItem.artUri.toString(),
-                      ),
-                    ).then((value) => updateBackgroundColors(value));
+                    imageProvider: CachedNetworkImageProvider(
+                      mediaItem.artUri.toString(),
+                    ),
+                  ).then((value) => updateBackgroundColors(value));
             }
           }
 
@@ -125,7 +124,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               useDense: useDense,
                               title: mediaItem?.title ?? '',
                               subtitle: mediaItem?.artist ?? '',
-                              imagePath: (isLocal
+                              imagePath:
+                                  (isLocal
                                       ? mediaItem?.artUri?.toFilePath()
                                       : mediaItem?.artUri?.toString()) ??
                                   '',
@@ -133,8 +133,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               isDummy: mediaItem == null,
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
                               child: positionSlider(
                                 mediaItem?.duration?.inSeconds.toDouble(),
                                 null,
@@ -147,9 +148,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
                   } else {
                     final Color miniplayerColor =
                         (value[0]?.computeLuminance() ?? 0) > 0.4
-                            ? HSLColor.fromColor(value[0] ?? Colors.black)
-                                .withLightness(0.4)
-                                .toColor()
+                            ? HSLColor.fromColor(
+                              value[0] ?? Colors.black,
+                            ).withLightness(0.4).toColor()
                             : value[0] ?? Colors.black;
                     return Container(
                       decoration: BoxDecoration(
@@ -158,9 +159,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         ),
                         color: miniplayerColor,
                       ),
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 2.0,
-                      ),
+                      margin: const EdgeInsets.symmetric(horizontal: 2.0),
                       child: SizedBox(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -171,24 +170,27 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               useDense: useDense,
                               title: mediaItem?.title ?? '',
                               subtitle: mediaItem?.artist ?? '',
-                              imagePath: (isLocal
+                              imagePath:
+                                  (isLocal
                                       ? mediaItem?.artUri?.toFilePath()
                                       : mediaItem?.artUri?.toString()) ??
                                   '',
                               isLocalImage: isLocal,
                               isDummy: mediaItem == null,
-                              buttonsColor: HSLColor.fromColor(miniplayerColor)
-                                  .withLightness(0.9)
-                                  .toColor(),
+                              buttonsColor:
+                                  HSLColor.fromColor(
+                                    miniplayerColor,
+                                  ).withLightness(0.9).toColor(),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
                               child: positionSlider(
                                 mediaItem?.duration?.inSeconds.toDouble(),
-                                HSLColor.fromColor(miniplayerColor)
-                                    .withLightness(0.9)
-                                    .toColor(),
+                                HSLColor.fromColor(
+                                  miniplayerColor,
+                                ).withLightness(0.9).toColor(),
                               ),
                             ),
                           ],
@@ -218,19 +220,17 @@ class _MiniPlayerState extends State<MiniPlayer> {
   }) {
     return ListTile(
       dense: useDense,
-      onTap: isDummy
-          ? null
-          : () {
-              Navigator.pushNamed(context, '/player');
-            },
+      onTap:
+          isDummy
+              ? null
+              : () {
+                Navigator.pushNamed(context, '/player');
+              },
       title: Text(
         isDummy ? 'Now Playing' : title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontSize: 15,
-          color: buttonsColor,
-        ),
+        style: TextStyle(fontSize: 15, color: buttonsColor),
       ),
       subtitle: Text(
         isDummy ? 'Unknown' : subtitle,
@@ -238,9 +238,12 @@ class _MiniPlayerState extends State<MiniPlayer> {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: 13,
-          color: buttonsColor != null
-              ? HSLColor.fromColor(buttonsColor).withLightness(0.85).toColor()
-              : null,
+          color:
+              buttonsColor != null
+                  ? HSLColor.fromColor(
+                    buttonsColor,
+                  ).withLightness(0.85).toColor()
+                  : null,
         ),
       ),
       leading: Hero(
@@ -252,16 +255,18 @@ class _MiniPlayerState extends State<MiniPlayer> {
           imageUrl: isLocalImage ? imagePath : imagePath,
         ),
       ),
-      trailing: isDummy
-          ? null
-          : ControlButtons(
-              audioHandler,
-              miniplayer: true,
-              buttons: isLocalImage
-                  ? ['Like', 'Play/Pause', 'Next']
-                  : preferredMiniButtons,
-              buttonsColor: buttonsColor,
-            ),
+      trailing:
+          isDummy
+              ? null
+              : ControlButtons(
+                audioHandler,
+                miniplayer: true,
+                buttons:
+                    isLocalImage
+                        ? ['Like', 'Play/Pause', 'Next']
+                        : preferredMiniButtons,
+                buttonsColor: buttonsColor,
+              ),
     );
   }
 
@@ -275,35 +280,29 @@ class _MiniPlayerState extends State<MiniPlayer> {
                     (maxDuration ?? 180.0)))
             ? const SizedBox()
             : SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  activeTrackColor: color ?? Colors.white,
-                  inactiveTrackColor: Colors.transparent,
-                  trackHeight: 0.5,
-                  thumbColor: color ?? Colors.white,
-                  thumbShape: const RoundSliderThumbShape(
-                    enabledThumbRadius: 1.0,
-                  ),
-                  overlayColor: Colors.transparent,
-                  overlayShape: const RoundSliderOverlayShape(
-                    overlayRadius: 2.0,
-                  ),
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: color ?? Colors.white,
+                inactiveTrackColor: Colors.transparent,
+                trackHeight: 0.5,
+                thumbColor: color ?? Colors.white,
+                thumbShape: const RoundSliderThumbShape(
+                  enabledThumbRadius: 1.0,
                 ),
-                child: Center(
-                  child: Slider(
-                    inactiveColor: Colors.transparent,
-                    // activeColor: Colors.white,
-                    value: position?.inSeconds.toDouble() ?? 0,
-                    max: maxDuration ?? 180.0,
-                    onChanged: (newPosition) {
-                      audioHandler.seek(
-                        Duration(
-                          seconds: newPosition.round(),
-                        ),
-                      );
-                    },
-                  ),
+                overlayColor: Colors.transparent,
+                overlayShape: const RoundSliderOverlayShape(overlayRadius: 2.0),
+              ),
+              child: Center(
+                child: Slider(
+                  inactiveColor: Colors.transparent,
+                  // activeColor: Colors.white,
+                  value: position?.inSeconds.toDouble() ?? 0,
+                  max: maxDuration ?? 180.0,
+                  onChanged: (newPosition) {
+                    audioHandler.seek(Duration(seconds: newPosition.round()));
+                  },
                 ),
-              );
+              ),
+            );
       },
     );
   }

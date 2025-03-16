@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
@@ -7,6 +6,7 @@ import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Screens/Home/saavn.dart' as home_screen;
 import 'package:xmusic/Screens/Top Charts/top.dart' as top_screen;
 import 'package:xmusic/constants/countrycodes.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class MusicPlaybackPage extends StatefulWidget {
   final Function? callback;
@@ -17,10 +17,12 @@ class MusicPlaybackPage extends StatefulWidget {
 }
 
 class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
-  String streamingMobileQuality = Hive.box('settings')
-      .get('streamingQuality', defaultValue: '96 kbps') as String;
-  String streamingWifiQuality = Hive.box('settings')
-      .get('streamingWifiQuality', defaultValue: '320 kbps') as String;
+  String streamingMobileQuality =
+      Hive.box('settings').get('streamingQuality', defaultValue: '96 kbps')
+          as String;
+  String streamingWifiQuality =
+      Hive.box('settings').get('streamingWifiQuality', defaultValue: '320 kbps')
+          as String;
   String ytQuality =
       Hive.box('settings').get('ytQuality', defaultValue: 'Low') as String;
   String region =
@@ -43,8 +45,11 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
     'Odia',
     'Assamese',
   ];
-  List preferredLanguage = Hive.box('settings')
-      .get('preferredLanguage', defaultValue: ['English'])?.toList() as List;
+  List preferredLanguage =
+      Hive.box(
+            'settings',
+          ).get('preferredLanguage', defaultValue: ['English'])?.toList()
+          as List;
 
   @override
   Widget build(BuildContext context) {
@@ -56,36 +61,19 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
-            AppLocalizations.of(
-              context,
-            )!
-                .musicPlayback,
+            AppLocalizations.of(context)!.musicPlayback,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).iconTheme.color,
-            ),
+            style: TextStyle(color: Theme.of(context).iconTheme.color),
           ),
-          iconTheme: IconThemeData(
-            color: Theme.of(context).iconTheme.color,
-          ),
+          iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         ),
         body: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(10.0),
           children: [
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .musicLang,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .musicLangSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.musicLang),
+              subtitle: Text(AppLocalizations.of(context)!.musicLangSub),
               trailing: SizedBox(
                 width: 150,
                 child: Text(
@@ -105,14 +93,9 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
                   builder: (BuildContext context) {
                     final List checked = List.from(preferredLanguage);
                     return StatefulBuilder(
-                      builder: (
-                        BuildContext context,
-                        StateSetter setStt,
-                      ) {
+                      builder: (BuildContext context, StateSetter setStt) {
                         return BottomGradientContainer(
-                          borderRadius: BorderRadius.circular(
-                            20.0,
-                          ),
+                          borderRadius: BorderRadius.circular(20.0),
                           child: Column(
                             children: [
                               Expanded(
@@ -128,30 +111,24 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
                                   itemCount: languages.length,
                                   itemBuilder: (context, idx) {
                                     return CheckboxListTile(
-                                      activeColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      checkColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary ==
-                                              Colors.white
-                                          ? Colors.black
-                                          : null,
-                                      value: checked.contains(
-                                        languages[idx],
-                                      ),
-                                      title: Text(
-                                        languages[idx],
-                                      ),
+                                      activeColor:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
+                                      checkColor:
+                                          Theme.of(
+                                                    context,
+                                                  ).colorScheme.secondary ==
+                                                  Colors.white
+                                              ? Colors.black
+                                              : null,
+                                      value: checked.contains(languages[idx]),
+                                      title: Text(languages[idx]),
                                       onChanged: (bool? value) {
                                         value!
                                             ? checked.add(languages[idx])
-                                            : checked.remove(
-                                                languages[idx],
-                                              );
-                                        setStt(
-                                          () {},
-                                        );
+                                            : checked.remove(languages[idx]);
+                                        setStt(() {});
                                       },
                                     );
                                   },
@@ -162,56 +139,48 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
                                 children: [
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      foregroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      foregroundColor:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                     ),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
                                     child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!
-                                          .cancel,
+                                      AppLocalizations.of(context)!.cancel,
                                     ),
                                   ),
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      foregroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      foregroundColor:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                     ),
                                     onPressed: () {
-                                      setState(
-                                        () {
-                                          preferredLanguage = checked;
-                                          Navigator.pop(context);
-                                          Hive.box('settings').put(
-                                            'preferredLanguage',
-                                            checked,
-                                          );
-                                          home_screen.fetched = false;
-                                          home_screen.preferredLanguage =
-                                              preferredLanguage;
-                                          widget.callback!();
-                                        },
-                                      );
+                                      setState(() {
+                                        preferredLanguage = checked;
+                                        Navigator.pop(context);
+                                        Hive.box(
+                                          'settings',
+                                        ).put('preferredLanguage', checked);
+                                        home_screen.fetched = false;
+                                        home_screen.preferredLanguage =
+                                            preferredLanguage;
+                                        widget.callback!();
+                                      });
                                       if (preferredLanguage.isEmpty) {
                                         ShowSnackBar().showSnackBar(
                                           context,
                                           AppLocalizations.of(
                                             context,
-                                          )!
-                                              .noLangSelected,
+                                          )!.noLangSelected,
                                         );
                                       }
                                     },
                                     child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!
-                                          .ok,
+                                      AppLocalizations.of(context)!.ok,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -229,46 +198,21 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
               },
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .chartLocation,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .chartLocationSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.chartLocation),
+              subtitle: Text(AppLocalizations.of(context)!.chartLocationSub),
               trailing: SizedBox(
                 width: 150,
-                child: Text(
-                  region,
-                  textAlign: TextAlign.end,
-                ),
+                child: Text(region, textAlign: TextAlign.end),
               ),
               dense: true,
               onTap: () async {
                 region = await SpotifyCountry().changeCountry(context: context);
-                setState(
-                  () {},
-                );
+                setState(() {});
               },
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .streamQuality,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .streamQualitySub,
-              ),
+              title: Text(AppLocalizations.of(context)!.streamQuality),
+              subtitle: Text(AppLocalizations.of(context)!.streamQualitySub),
               onTap: () {},
               trailing: DropdownButton(
                 value: streamingMobileQuality,
@@ -279,36 +223,30 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
                 underline: const SizedBox(),
                 onChanged: (String? newValue) {
                   if (newValue != null) {
-                    setState(
-                      () {
-                        streamingMobileQuality = newValue;
-                        Hive.box('settings').put('streamingQuality', newValue);
-                      },
-                    );
+                    setState(() {
+                      streamingMobileQuality = newValue;
+                      Hive.box('settings').put('streamingQuality', newValue);
+                    });
                   }
                 },
-                items: <String>['96 kbps', '160 kbps', '320 kbps']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                items:
+                    <String>[
+                      '96 kbps',
+                      '160 kbps',
+                      '320 kbps',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
               ),
               dense: true,
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .streamWifiQuality,
-              ),
+              title: Text(AppLocalizations.of(context)!.streamWifiQuality),
               subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .streamWifiQualitySub,
+                AppLocalizations.of(context)!.streamWifiQualitySub,
               ),
               onTap: () {},
               trailing: DropdownButton(
@@ -320,38 +258,31 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
                 underline: const SizedBox(),
                 onChanged: (String? newValue) {
                   if (newValue != null) {
-                    setState(
-                      () {
-                        streamingWifiQuality = newValue;
-                        Hive.box('settings')
-                            .put('streamingWifiQuality', newValue);
-                      },
-                    );
+                    setState(() {
+                      streamingWifiQuality = newValue;
+                      Hive.box(
+                        'settings',
+                      ).put('streamingWifiQuality', newValue);
+                    });
                   }
                 },
-                items: <String>['96 kbps', '160 kbps', '320 kbps']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                items:
+                    <String>[
+                      '96 kbps',
+                      '160 kbps',
+                      '320 kbps',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
               ),
               dense: true,
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .ytStreamQuality,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .ytStreamQualitySub,
-              ),
+              title: Text(AppLocalizations.of(context)!.ytStreamQuality),
+              subtitle: Text(AppLocalizations.of(context)!.ytStreamQualitySub),
               onTap: () {},
               trailing: DropdownButton(
                 value: ytQuality,
@@ -362,102 +293,52 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
                 underline: const SizedBox(),
                 onChanged: (String? newValue) {
                   if (newValue != null) {
-                    setState(
-                      () {
-                        ytQuality = newValue;
-                        Hive.box('settings').put('ytQuality', newValue);
-                      },
-                    );
+                    setState(() {
+                      ytQuality = newValue;
+                      Hive.box('settings').put('ytQuality', newValue);
+                    });
                   }
                 },
-                items: <String>['Low', 'High']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                items:
+                    <String>['Low', 'High'].map<DropdownMenuItem<String>>((
+                      String value,
+                    ) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
               ),
               dense: true,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .loadLast,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .loadLastSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.loadLast),
+              subtitle: Text(AppLocalizations.of(context)!.loadLastSub),
               keyName: 'loadStart',
               defaultValue: true,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .resetOnSkip,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .resetOnSkipSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.resetOnSkip),
+              subtitle: Text(AppLocalizations.of(context)!.resetOnSkipSub),
               keyName: 'resetOnSkip',
               defaultValue: false,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .enforceRepeat,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .enforceRepeatSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.enforceRepeat),
+              subtitle: Text(AppLocalizations.of(context)!.enforceRepeatSub),
               keyName: 'enforceRepeat',
               defaultValue: false,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .autoplay,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .autoplaySub,
-              ),
+              title: Text(AppLocalizations.of(context)!.autoplay),
+              subtitle: Text(AppLocalizations.of(context)!.autoplaySub),
               keyName: 'autoplay',
               defaultValue: true,
               isThreeLine: true,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .cacheSong,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .cacheSongSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.cacheSong),
+              subtitle: Text(AppLocalizations.of(context)!.cacheSongSub),
               keyName: 'cacheSong',
               defaultValue: false,
             ),
@@ -483,26 +364,17 @@ class SpotifyCountry {
         const Map<String, String> codes = CountryCodes.localChartCodes;
         final List<String> countries = codes.keys.toList();
         return BottomGradientContainer(
-          borderRadius: BorderRadius.circular(
-            20.0,
-          ),
+          borderRadius: BorderRadius.circular(20.0),
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
-            padding: const EdgeInsets.fromLTRB(
-              0,
-              10,
-              0,
-              10,
-            ),
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             itemCount: countries.length,
             itemBuilder: (context, idx) {
               return ListTileTheme(
                 selectedColor: Theme.of(context).colorScheme.secondary,
                 child: ListTile(
-                  title: Text(
-                    countries[idx],
-                  ),
+                  title: Text(countries[idx]),
                   leading: Radio(
                     value: countries[idx],
                     groupValue: region,

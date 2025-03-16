@@ -1,27 +1,19 @@
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:xmusic/Models/image_quality.dart';
 
 class UrlImageGetter {
   final List<String?> _imageUrls;
-  final _enableImageOptimization = Hive.box('settings').get(
-    'enableImageOptimization',
-    defaultValue: false,
-  ) as bool;
+  final _enableImageOptimization =
+      Hive.box('settings').get('enableImageOptimization', defaultValue: false)
+          as bool;
 
   UrlImageGetter(this._imageUrls);
 
-  String get lowQuality => getImageUrl(
-        quality: ImageQuality.low,
-      );
-  String get mediumQuality => getImageUrl(
-        quality: ImageQuality.medium,
-      );
+  String get lowQuality => getImageUrl(quality: ImageQuality.low);
+  String get mediumQuality => getImageUrl(quality: ImageQuality.medium);
   String get highQuality => getImageUrl();
 
-  String getImageUrl({
-    ImageQuality? quality = ImageQuality.high,
-  }) {
+  String getImageUrl({ImageQuality? quality = ImageQuality.high}) {
     if (_imageUrls.isEmpty) return '';
     final length = _imageUrls.length;
 

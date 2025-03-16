@@ -1,13 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
 import 'package:xmusic/Helpers/backup_restore.dart';
 import 'package:xmusic/Helpers/config.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -45,16 +45,11 @@ class _AuthScreenState extends State<AuthScreen> {
                   width: MediaQuery.sizeOf(context).width,
                   height: MediaQuery.sizeOf(context).width,
                   child: const Image(
-                    image: AssetImage(
-                      'assets/icon-white-trans.png',
-                    ),
+                    image: AssetImage('assets/icon-white-trans.png'),
                   ),
                 ),
               ),
-              const GradientContainer(
-                child: null,
-                opacity: true,
-              ),
+              const GradientContainer(child: null, opacity: true),
               Column(
                 children: [
                   Row(
@@ -68,9 +63,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         },
                         child: Text(
                           AppLocalizations.of(context)!.restore,
-                          style: TextStyle(
-                            color: Colors.grey.withOpacity(0.7),
-                          ),
+                          style: TextStyle(color: Colors.grey.withOpacity(0.7)),
                         ),
                       ),
                       TextButton(
@@ -82,9 +75,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         },
                         child: Text(
                           AppLocalizations.of(context)!.skip,
-                          style: TextStyle(
-                            color: Colors.grey.withOpacity(0.7),
-                          ),
+                          style: TextStyle(color: Colors.grey.withOpacity(0.7)),
                         ),
                       ),
                     ],
@@ -106,9 +97,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                       height: 0.97,
                                       fontSize: 80,
                                       fontWeight: FontWeight.bold,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      color:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                     ),
                                     children: <TextSpan>[
                                       const TextSpan(
@@ -124,9 +116,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 80,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
+                                          color:
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.secondary,
                                         ),
                                       ),
                                     ],
@@ -173,13 +166,16 @@ class _AuthScreenState extends State<AuthScreen> {
                                       ),
                                       prefixIcon: Icon(
                                         Icons.person,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
                                       ),
                                       border: InputBorder.none,
-                                      hintText: AppLocalizations.of(context)!
-                                          .enterName,
+                                      hintText:
+                                          AppLocalizations.of(
+                                            context,
+                                          )!.enterName,
                                       hintStyle: const TextStyle(
                                         color: Colors.white60,
                                       ),
@@ -199,9 +195,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     },
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
+                                const SizedBox(height: 16),
                                 GestureDetector(
                                   onTap: () async {
                                     if (controller.text.trim() == '') {
@@ -219,11 +213,13 @@ class _AuthScreenState extends State<AuthScreen> {
                                     ),
                                     height: 55.0,
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(100.0),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      borderRadius: BorderRadius.circular(
+                                        100.0,
+                                      ),
+                                      color:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                       boxShadow: const [
                                         BoxShadow(
                                           color: Colors.black26,
@@ -234,8 +230,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        AppLocalizations.of(context)!
-                                            .getStarted,
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.getStarted,
                                         style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -245,9 +242,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
+                                const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 10.0,

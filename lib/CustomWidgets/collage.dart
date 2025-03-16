@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -23,58 +22,62 @@ class Collage extends StatelessWidget {
       elevation: 5,
       color: Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          borderRadius,
-        ),
+        borderRadius: BorderRadius.circular(borderRadius),
       ),
       clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.zero,
       child: SizedBox.square(
         dimension: 50,
-        child: showGrid
-            ? GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: imageList.length < 4 ? 1 : 2,
-                children: (imageList.isEmpty
-                        ? [
-                            {
-                              'image': '',
-                            }
-                          ]
-                        : imageList)
-                    .map(
-                      (image) => CachedNetworkImage(
+        child:
+            showGrid
+                ? GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: imageList.length < 4 ? 1 : 2,
+                  children:
+                      (imageList.isEmpty
+                              ? [
+                                {'image': ''},
+                              ]
+                              : imageList)
+                          .map(
+                            (image) => CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              errorWidget:
+                                  (context, _, __) => Image(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(placeholderImage),
+                                  ),
+                              imageUrl: image['image'].toString().replaceAll(
+                                'http:',
+                                'https:',
+                              ),
+                              placeholder:
+                                  (context, _) => Image(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(placeholderImage),
+                                  ),
+                            ),
+                          )
+                          .toList(),
+                )
+                : CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  errorWidget:
+                      (context, _, __) => Image(
                         fit: BoxFit.cover,
-                        errorWidget: (context, _, __) => Image(
-                          fit: BoxFit.cover,
-                          image: AssetImage(placeholderImage),
-                        ),
-                        imageUrl: image['image']
-                            .toString()
-                            .replaceAll('http:', 'https:'),
-                        placeholder: (context, _) => Image(
-                          fit: BoxFit.cover,
-                          image: AssetImage(placeholderImage),
-                        ),
+                        image: AssetImage(placeholderImage),
                       ),
-                    )
-                    .toList(),
-              )
-            : CachedNetworkImage(
-                fit: BoxFit.cover,
-                errorWidget: (context, _, __) => Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage(placeholderImage),
+                  imageUrl: imageList[0]['image'].toString().replaceAll(
+                    'http:',
+                    'https:',
+                  ),
+                  placeholder:
+                      (context, _) => Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage(placeholderImage),
+                      ),
                 ),
-                imageUrl: imageList[0]['image']
-                    .toString()
-                    .replaceAll('http:', 'https:'),
-                placeholder: (context, _) => Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage(placeholderImage),
-                ),
-              ),
       ),
     );
   }
@@ -96,56 +99,45 @@ class OfflineCollage extends StatelessWidget {
     return Card(
       elevation: 5,
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          7.0,
-        ),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
       clipBehavior: Clip.antiAlias,
       child: SizedBox.square(
         dimension: 50,
-        child: showGrid
-            ? GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: imageList.length < 4 ? 1 : 2,
-                children: imageList.map((image) {
-                  return image == null
-                      ? Image(
-                          fit: BoxFit.cover,
-                          image: AssetImage(placeholderImage),
-                        )
-                      : Image(
-                          fit: BoxFit.cover,
-                          image: FileImage(
-                            File(
-                              image['image'].toString(),
-                            ),
-                          ),
-                          errorBuilder: (context, _, __) => Image(
-                            fit: BoxFit.cover,
-                            image: AssetImage(placeholderImage),
-                          ),
-                        );
-                }).toList(),
-              )
-            : imageList[0] == null
-                ? Image(
-                    fit: BoxFit.cover,
-                    image: AssetImage(placeholderImage),
-                  )
+        child:
+            showGrid
+                ? GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: imageList.length < 4 ? 1 : 2,
+                  children:
+                      imageList.map((image) {
+                        return image == null
+                            ? Image(
+                              fit: BoxFit.cover,
+                              image: AssetImage(placeholderImage),
+                            )
+                            : Image(
+                              fit: BoxFit.cover,
+                              image: FileImage(File(image['image'].toString())),
+                              errorBuilder:
+                                  (context, _, __) => Image(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(placeholderImage),
+                                  ),
+                            );
+                      }).toList(),
+                )
+                : imageList[0] == null
+                ? Image(fit: BoxFit.cover, image: AssetImage(placeholderImage))
                 : Image(
-                    fit: BoxFit.cover,
-                    image: FileImage(
-                      File(
-                        imageList[0]['image'].toString(),
+                  fit: BoxFit.cover,
+                  image: FileImage(File(imageList[0]['image'].toString())),
+                  errorBuilder:
+                      (context, _, __) => Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage(placeholderImage),
                       ),
-                    ),
-                    errorBuilder: (context, _, __) => Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage(placeholderImage),
-                    ),
-                  ),
+                ),
       ),
     );
   }

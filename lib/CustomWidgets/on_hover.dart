@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class HoverBox extends StatefulWidget {
@@ -7,12 +6,9 @@ class HoverBox extends StatefulWidget {
     required BuildContext context,
     required bool isHover,
     Widget? child,
-  }) builder;
-  const HoverBox({
-    super.key,
-    required this.child,
-    required this.builder,
-  });
+  })
+  builder;
+  const HoverBox({super.key, required this.child, required this.builder});
 
   @override
   _HoverBox createState() => _HoverBox();
@@ -37,11 +33,7 @@ class _HoverBox extends State<HoverBox> {
       child: ValueListenableBuilder(
         valueListenable: isInside,
         child: widget.child,
-        builder: (
-          BuildContext context,
-          bool isHover,
-          Widget? child,
-        ) {
+        builder: (BuildContext context, bool isHover, Widget? child) {
           return widget.builder(
             context: context,
             isHover: isHover,

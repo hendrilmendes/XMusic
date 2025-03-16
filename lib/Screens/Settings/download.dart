@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Helpers/picker.dart';
 import 'package:xmusic/Services/ext_storage_provider.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class DownloadPage extends StatefulWidget {
   const DownloadPage({super.key});
@@ -17,12 +16,17 @@ class DownloadPage extends StatefulWidget {
 
 class _DownloadPageState extends State<DownloadPage> {
   final Box settingsBox = Hive.box('settings');
-  String downloadPath = Hive.box('settings')
-      .get('downloadPath', defaultValue: '/storage/emulated/0/Music') as String;
-  String downloadQuality = Hive.box('settings')
-      .get('downloadQuality', defaultValue: '320 kbps') as String;
-  String ytDownloadQuality = Hive.box('settings')
-      .get('ytDownloadQuality', defaultValue: 'High') as String;
+  String downloadPath =
+      Hive.box(
+            'settings',
+          ).get('downloadPath', defaultValue: '/storage/emulated/0/Music')
+          as String;
+  String downloadQuality =
+      Hive.box('settings').get('downloadQuality', defaultValue: '320 kbps')
+          as String;
+  String ytDownloadQuality =
+      Hive.box('settings').get('ytDownloadQuality', defaultValue: 'High')
+          as String;
   int downFilename =
       Hive.box('settings').get('downFilename', defaultValue: 0) as int;
 
@@ -36,36 +40,19 @@ class _DownloadPageState extends State<DownloadPage> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
-            AppLocalizations.of(
-              context,
-            )!
-                .down,
+            AppLocalizations.of(context)!.down,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).iconTheme.color,
-            ),
+            style: TextStyle(color: Theme.of(context).iconTheme.color),
           ),
-          iconTheme: IconThemeData(
-            color: Theme.of(context).iconTheme.color,
-          ),
+          iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         ),
         body: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(10.0),
           children: [
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .downQuality,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .downQualitySub,
-              ),
+              title: Text(AppLocalizations.of(context)!.downQuality),
+              subtitle: Text(AppLocalizations.of(context)!.downQualitySub),
               onTap: () {},
               trailing: DropdownButton(
                 value: downloadQuality,
@@ -76,39 +63,29 @@ class _DownloadPageState extends State<DownloadPage> {
                 underline: const SizedBox(),
                 onChanged: (String? newValue) {
                   if (newValue != null) {
-                    setState(
-                      () {
-                        downloadQuality = newValue;
-                        Hive.box('settings').put('downloadQuality', newValue);
-                      },
-                    );
+                    setState(() {
+                      downloadQuality = newValue;
+                      Hive.box('settings').put('downloadQuality', newValue);
+                    });
                   }
                 },
-                items: <String>['96 kbps', '160 kbps', '320 kbps']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                    ),
-                  );
-                }).toList(),
+                items:
+                    <String>[
+                      '96 kbps',
+                      '160 kbps',
+                      '320 kbps',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
               ),
               dense: true,
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .ytDownQuality,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .ytDownQualitySub,
-              ),
+              title: Text(AppLocalizations.of(context)!.ytDownQuality),
+              subtitle: Text(AppLocalizations.of(context)!.ytDownQualitySub),
               onTap: () {},
               trailing: DropdownButton(
                 value: ytDownloadQuality,
@@ -119,33 +96,26 @@ class _DownloadPageState extends State<DownloadPage> {
                 underline: const SizedBox(),
                 onChanged: (String? newValue) {
                   if (newValue != null) {
-                    setState(
-                      () {
-                        ytDownloadQuality = newValue;
-                        Hive.box('settings').put('ytDownloadQuality', newValue);
-                      },
-                    );
+                    setState(() {
+                      ytDownloadQuality = newValue;
+                      Hive.box('settings').put('ytDownloadQuality', newValue);
+                    });
                   }
                 },
-                items: <String>['Low', 'High']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                    ),
-                  );
-                }).toList(),
+                items:
+                    <String>['Low', 'High'].map<DropdownMenuItem<String>>((
+                      String value,
+                    ) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
               ),
               dense: true,
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .downLocation,
-              ),
+              title: Text(AppLocalizations.of(context)!.downLocation),
               subtitle: Text(downloadPath),
               trailing: TextButton(
                 style: TextButton.styleFrom(
@@ -155,62 +125,38 @@ class _DownloadPageState extends State<DownloadPage> {
                           : Colors.grey[700],
                 ),
                 onPressed: () async {
-                  downloadPath = await ExtStorageProvider.getExtStorage(
+                  downloadPath =
+                      await ExtStorageProvider.getExtStorage(
                         dirName: 'Music',
                         writeAccess: true,
                       ) ??
                       '/storage/emulated/0/Music';
                   Hive.box('settings').put('downloadPath', downloadPath);
-                  setState(
-                    () {},
-                  );
+                  setState(() {});
                 },
-                child: Text(
-                  AppLocalizations.of(
-                    context,
-                  )!
-                      .reset,
-                ),
+                child: Text(AppLocalizations.of(context)!.reset),
               ),
               onTap: () async {
                 final String temp = await Picker.selectFolder(
                   context: context,
-                  message: AppLocalizations.of(
-                    context,
-                  )!
-                      .selectDownLocation,
+                  message: AppLocalizations.of(context)!.selectDownLocation,
                 );
                 if (temp.trim() != '') {
                   downloadPath = temp;
                   Hive.box('settings').put('downloadPath', temp);
-                  setState(
-                    () {},
-                  );
+                  setState(() {});
                 } else {
                   ShowSnackBar().showSnackBar(
                     context,
-                    AppLocalizations.of(
-                      context,
-                    )!
-                        .noFolderSelected,
+                    AppLocalizations.of(context)!.noFolderSelected,
                   );
                 }
               },
               dense: true,
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .downFilename,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .downFilenameSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.downFilename),
+              subtitle: Text(AppLocalizations.of(context)!.downFilenameSub),
               dense: true,
               onTap: () {
                 showModalBottomSheet(
@@ -218,18 +164,11 @@ class _DownloadPageState extends State<DownloadPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return BottomGradientContainer(
-                      borderRadius: BorderRadius.circular(
-                        20.0,
-                      ),
+                      borderRadius: BorderRadius.circular(20.0),
                       child: ListView(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
-                        padding: const EdgeInsets.fromLTRB(
-                          0,
-                          10,
-                          0,
-                          10,
-                        ),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         children: [
                           CheckboxListTile(
                             activeColor:
@@ -266,9 +205,7 @@ class _DownloadPageState extends State<DownloadPage> {
                           CheckboxListTile(
                             activeColor:
                                 Theme.of(context).colorScheme.secondary,
-                            title: Text(
-                              AppLocalizations.of(context)!.title,
-                            ),
+                            title: Text(AppLocalizations.of(context)!.title),
                             value: downFilename == 2,
                             selected: downFilename == 2,
                             onChanged: (val) {
@@ -287,52 +224,22 @@ class _DownloadPageState extends State<DownloadPage> {
               },
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .createAlbumFold,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .createAlbumFoldSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.createAlbumFold),
+              subtitle: Text(AppLocalizations.of(context)!.createAlbumFoldSub),
               keyName: 'createDownloadFolder',
               isThreeLine: true,
               defaultValue: false,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .createYtFold,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .createYtFoldSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.createYtFold),
+              subtitle: Text(AppLocalizations.of(context)!.createYtFoldSub),
               keyName: 'createYoutubeFolder',
               isThreeLine: true,
               defaultValue: false,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .downLyrics,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .downLyricsSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.downLyrics),
+              subtitle: Text(AppLocalizations.of(context)!.downLyricsSub),
               keyName: 'downloadLyrics',
               defaultValue: false,
               isThreeLine: true,

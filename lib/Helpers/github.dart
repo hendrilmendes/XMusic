@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart';
@@ -28,10 +27,7 @@ class GitHub {
 
     return get(url, headers: headers).onError((error, stackTrace) {
       return Response(
-        {
-          'status': false,
-          'message': error.toString(),
-        }.toString(),
+        {'status': false, 'message': error.toString()}.toString(),
         404,
       );
     });
@@ -58,7 +54,9 @@ class GitHub {
     Logger.root.info(
       'Latest release: ${(latestRelease["tag_name"] as String?) ?? "v0.0.0"}',
     );
-    return ((latestRelease['tag_name'] as String?) ?? 'v0.0.0')
-        .replaceAll('v', '');
+    return ((latestRelease['tag_name'] as String?) ?? 'v0.0.0').replaceAll(
+      'v',
+      '',
+    );
   }
 }

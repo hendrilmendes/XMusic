@@ -110,8 +110,10 @@ class YtMusicService {
     if (response.statusCode == 200) {
       return json.decode(response.body) as Map;
     } else {
-      Logger.root
-          .severe('YtMusic returned ${response.statusCode}', response.body);
+      Logger.root.severe(
+        'YtMusic returned ${response.statusCode}',
+        response.body,
+      );
       Logger.root.info('Requested endpoint: $uri');
       return {};
     }
@@ -245,14 +247,16 @@ class YtMusicService {
       if ((res['contents'] as Map).containsKey('tabbedSearchResultsRenderer')) {
         final tabIndex =
             (scope == null || filter != null) ? 0 : scopes.indexOf(scope) + 1;
-        results = NavClass.nav(res, [
-          'contents',
-          'tabbedSearchResultsRenderer',
-          'tabs',
-          tabIndex,
-          'tabRenderer',
-          'content',
-        ]) as Map<String, dynamic>;
+        results =
+            NavClass.nav(res, [
+                  'contents',
+                  'tabbedSearchResultsRenderer',
+                  'tabs',
+                  tabIndex,
+                  'tabRenderer',
+                  'content',
+                ])
+                as Map<String, dynamic>;
       } else {
         Logger.root.info('tabbedSearchResultsRenderer not found');
         results = res['contents'] as Map<String, dynamic>;
@@ -260,27 +264,30 @@ class YtMusicService {
 
       final List finalResults =
           NavClass.nav(results, ['sectionListRenderer', 'contents']) as List? ??
-              [];
+          [];
       for (final sectionItem in finalResults) {
-        final bool containsHeader =
-            (sectionItem as Map).containsKey('musicCardShelfRenderer');
+        final bool containsHeader = (sectionItem as Map).containsKey(
+          'musicCardShelfRenderer',
+        );
         final sectionSearchResults = [];
         final String sectionSelfRenderer =
             containsHeader ? 'musicCardShelfRenderer' : 'musicShelfRenderer';
 
         final String sectionTitle = NavClass.joinRunTexts(
           NavClass.nav(sectionItem, [
-            sectionSelfRenderer,
-            ...NavClass.titleRuns,
-          ]) as List?,
+                sectionSelfRenderer,
+                ...NavClass.titleRuns,
+              ])
+              as List?,
         );
 
         final String sectionHeader = NavClass.joinRunTexts(
           NavClass.nav(sectionItem, [
-            sectionSelfRenderer,
-            ...NavClass.headerCardShelf,
-            ...NavClass.titleRuns,
-          ]) as List?,
+                sectionSelfRenderer,
+                ...NavClass.headerCardShelf,
+                ...NavClass.titleRuns,
+              ])
+              as List?,
         );
 
         if (containsHeader) {
@@ -306,8 +313,8 @@ class YtMusicService {
 
         final List sectionChildItems =
             NavClass.nav(sectionItem, [sectionSelfRenderer, 'contents'])
-                    as List? ??
-                [];
+                as List? ??
+            [];
 
         for (final childItem in sectionChildItems) {
           final res = parseInfoFromSubtitle(childItem as Map);
@@ -370,14 +377,19 @@ class YtMusicService {
     try {
       final body = Map.from(context!);
       body['input'] = query;
-      final Map response =
-          await sendRequest(endpoints['search_suggestions']!, body, headers);
-      final List finalResult = NavClass.nav(response, [
-            'contents',
-            0,
-            'searchSuggestionsSectionRenderer',
-            'contents',
-          ]) as List? ??
+      final Map response = await sendRequest(
+        endpoints['search_suggestions']!,
+        body,
+        headers,
+      );
+      final List finalResult =
+          NavClass.nav(response, [
+                'contents',
+                0,
+                'searchSuggestionsSectionRenderer',
+                'contents',
+              ])
+              as List? ??
           [];
       final List<String> results = [];
       for (final item in finalResult) {
@@ -407,23 +419,36 @@ class YtMusicService {
   }) {
     final List images = NavClass.runUrls(
       NavClass.nav(
-        childItem,
-        imageNavPath ?? [NavClass.mRLIR, ...NavClass.thumbnails],
-      ) as List?,
+            childItem,
+            imageNavPath ?? [NavClass.mRLIR, ...NavClass.thumbnails],
+          )
+          as List?,
     );
     final String title = NavClass.joinRunTexts(
       NavClass.nav(
-        childItem,
-        titleNavPath ??
-            [...NavClass.mRLIRFlex, 0, NavClass.mRLIFCR, ...NavClass.textRuns],
-      ) as List?,
+            childItem,
+            titleNavPath ??
+                [
+                  ...NavClass.mRLIRFlex,
+                  0,
+                  NavClass.mRLIFCR,
+                  ...NavClass.textRuns,
+                ],
+          )
+          as List?,
     );
     final String subtitle = NavClass.joinRunTexts(
       NavClass.nav(
-        childItem,
-        subtitleNavPath ??
-            [...NavClass.mRLIRFlex, 1, NavClass.mRLIFCR, ...NavClass.textRuns],
-      ) as List?,
+            childItem,
+            subtitleNavPath ??
+                [
+                  ...NavClass.mRLIRFlex,
+                  1,
+                  NavClass.mRLIFCR,
+                  ...NavClass.textRuns,
+                ],
+          )
+          as List?,
     );
 
     if (title == '' && subtitle == '') return null;
@@ -443,12 +468,13 @@ class YtMusicService {
       subtitleList.insert(0, 'Song');
     }
 
-    final List idNav = (type == 'Song' || type == 'Video')
-        ? NavClass.mrlirPlaylistId
-        : NavClass.mrlirBrowseId;
+    final List idNav =
+        (type == 'Song' || type == 'Video')
+            ? NavClass.mrlirPlaylistId
+            : NavClass.mrlirBrowseId;
     final String? id =
         NavClass.nav(childItem, idNavPath ?? idNav)?.toString() ??
-            NavClass.nav(childItem, idNavPath2 ?? idNav)?.toString();
+        NavClass.nav(childItem, idNavPath2 ?? idNav)?.toString();
 
     if (id == null) {
       Logger.root.info('Unable to get id for $title of type $type');
@@ -514,8 +540,11 @@ class YtMusicService {
         'contentPlaybackContext': {'signatureTimestamp': signatureTimestamp},
       };
       body['video_id'] = videoId;
-      final Map response =
-          await sendRequest(endpoints['get_song']!, body, headers);
+      final Map response = await sendRequest(
+        endpoints['get_song']!,
+        body,
+        headers,
+      );
       // int maxBitrate = 0;
       // String? url;
       // final formats =
@@ -561,12 +590,14 @@ class YtMusicService {
       return {
         'id': videoDetails['videoId'],
         'title': videoDetails['title'],
-        'album': (data?['album'] ?? '') != ''
-            ? data!['album']
-            : videoDetails['album'] ?? '',
-        'artist': (data?['artist'] ?? '') != ''
-            ? data!['artist']
-            : videoDetails['author'].replaceAll('- Topic', '').trim(),
+        'album':
+            (data?['album'] ?? '') != ''
+                ? data!['album']
+                : videoDetails['album'] ?? '',
+        'artist':
+            (data?['artist'] ?? '') != ''
+                ? data!['artist']
+                : videoDetails['author'].replaceAll('- Topic', '').trim(),
         'duration': videoDetails['lengthSeconds'],
         'views': videoDetails['viewCount'],
         'image': videoDetails['thumbnail']['thumbnails'].last['url'],
@@ -581,9 +612,10 @@ class YtMusicService {
         '320kbps': 'false',
         'has_lyrics': 'false',
         'album_id': videoDetails['channelId'],
-        'subtitle': (data?['subtitle'] ?? '') != ''
-            ? data!['subtitle']
-            : videoDetails['author'],
+        'subtitle':
+            (data?['subtitle'] ?? '') != ''
+                ? data!['subtitle']
+                : videoDetails['author'],
         'perma_url': 'https://youtube.com/watch?v=$videoId',
       };
     } catch (e) {
@@ -601,92 +633,110 @@ class YtMusicService {
           playlistId.startsWith('VL') ? playlistId : 'VL$playlistId';
       final body = Map.from(context!);
       body['browseId'] = browseId;
-      final Map response =
-          await sendRequest(endpoints['browse']!, body, headers);
-      final String? heading = NavClass.nav(response, [
-        'header',
-        'musicDetailHeaderRenderer',
-        'title',
-        'runs',
-        0,
-        'text',
-      ]) as String?;
-      final String subtitle = (NavClass.nav(response, [
+      final Map response = await sendRequest(
+        endpoints['browse']!,
+        body,
+        headers,
+      );
+      final String? heading =
+          NavClass.nav(response, [
                 'header',
                 'musicDetailHeaderRenderer',
-                'subtitle',
+                'title',
                 'runs',
-              ]) as List? ??
-              [])
-          .map((e) => e['text'])
-          .toList()
-          .join();
-      final String? description = NavClass.nav(response, [
-        'header',
-        'musicDetailHeaderRenderer',
-        'description',
-        'runs',
-        0,
-        'text',
-      ]) as String?;
-      final List images = (NavClass.nav(response, [
-        'header',
-        'musicDetailHeaderRenderer',
-        'thumbnail',
-        'croppedSquareThumbnailRenderer',
-        'thumbnail',
-        'thumbnails',
-      ]) as List)
-          .map((e) => e['url'])
-          .toList();
-      final List finalResults = NavClass.nav(response, [
-            'contents',
-            'singleColumnBrowseResultsRenderer',
-            'tabs',
-            0,
-            'tabRenderer',
-            'content',
-            'sectionListRenderer',
-            'contents',
-            0,
-            'musicPlaylistShelfRenderer',
-            'contents',
-          ]) as List? ??
+                0,
+                'text',
+              ])
+              as String?;
+      final String subtitle =
+          (NavClass.nav(response, [
+                        'header',
+                        'musicDetailHeaderRenderer',
+                        'subtitle',
+                        'runs',
+                      ])
+                      as List? ??
+                  [])
+              .map((e) => e['text'])
+              .toList()
+              .join();
+      final String? description =
+          NavClass.nav(response, [
+                'header',
+                'musicDetailHeaderRenderer',
+                'description',
+                'runs',
+                0,
+                'text',
+              ])
+              as String?;
+      final List images =
+          (NavClass.nav(response, [
+                    'header',
+                    'musicDetailHeaderRenderer',
+                    'thumbnail',
+                    'croppedSquareThumbnailRenderer',
+                    'thumbnail',
+                    'thumbnails',
+                  ])
+                  as List)
+              .map((e) => e['url'])
+              .toList();
+      final List finalResults =
+          NavClass.nav(response, [
+                'contents',
+                'singleColumnBrowseResultsRenderer',
+                'tabs',
+                0,
+                'tabRenderer',
+                'content',
+                'sectionListRenderer',
+                'contents',
+                0,
+                'musicPlaylistShelfRenderer',
+                'contents',
+              ])
+              as List? ??
           [];
       final List<Map> songResults = [];
       for (final item in finalResults) {
-        final String id = NavClass.nav(item, [
-          'musicResponsiveListItemRenderer',
-          'playlistItemData',
-          'videoId',
-        ]).toString();
-        final String image = NavClass.nav(item, [
-          'musicResponsiveListItemRenderer',
-          'thumbnail',
-          'musicThumbnailRenderer',
-          'thumbnail',
-          'thumbnails',
-          0,
-          'url',
-        ]).toString();
-        final String title = NavClass.nav(item, [
-          'musicResponsiveListItemRenderer',
-          'flexColumns',
-          0,
-          'musicResponsiveListItemFlexColumnRenderer',
-          'text',
-          'runs',
-          0,
-          'text',
-        ]).toString();
-        final List subtitleList = NavClass.nav(item, [
-          'musicResponsiveListItemRenderer',
-          'flexColumns',
-          1,
-          'musicResponsiveListItemFlexColumnRenderer',
-          'text',
-          'runs',
-        ]) as List;
+        final String id =
+            NavClass.nav(item, [
+              'musicResponsiveListItemRenderer',
+              'playlistItemData',
+              'videoId',
+            ]).toString();
+        final String image =
+            NavClass.nav(item, [
+              'musicResponsiveListItemRenderer',
+              'thumbnail',
+              'musicThumbnailRenderer',
+              'thumbnail',
+              'thumbnails',
+              0,
+              'url',
+            ]).toString();
+        final String title =
+            NavClass.nav(item, [
+              'musicResponsiveListItemRenderer',
+              'flexColumns',
+              0,
+              'musicResponsiveListItemFlexColumnRenderer',
+              'text',
+              'runs',
+              0,
+              'text',
+            ]).toString();
+        final List subtitleList =
+            NavClass.nav(item, [
+                  'musicResponsiveListItemRenderer',
+                  'flexColumns',
+                  1,
+                  'musicResponsiveListItemFlexColumnRenderer',
+                  'text',
+                  'runs',
+                ])
+                as List;
         int count = 0;
         String year = '';
         String album = '';
@@ -759,64 +809,78 @@ class YtMusicService {
     try {
       final body = Map.from(context!);
       body['browseId'] = albumId;
-      final Map response =
-          await sendRequest(endpoints['browse']!, body, headers);
-      final String? heading = NavClass.nav(
-        response,
-        [...NavClass.headerDetail, ...NavClass.titleText],
-      ) as String?;
+      final Map response = await sendRequest(
+        endpoints['browse']!,
+        body,
+        headers,
+      );
+      final String? heading =
+          NavClass.nav(response, [
+                ...NavClass.headerDetail,
+                ...NavClass.titleText,
+              ])
+              as String?;
       final String subtitle = NavClass.joinRunTexts(
         NavClass.nav(response, [
-              ...NavClass.headerDetail,
-              ...NavClass.subtitleRuns,
-            ]) as List? ??
+                  ...NavClass.headerDetail,
+                  ...NavClass.subtitleRuns,
+                ])
+                as List? ??
             [],
       );
       final String description = NavClass.joinRunTexts(
         NavClass.nav(response, [
-              ...NavClass.headerDetail,
-              ...NavClass.secondSubtitleRuns,
-            ]) as List? ??
+                  ...NavClass.headerDetail,
+                  ...NavClass.secondSubtitleRuns,
+                ])
+                as List? ??
             [],
       );
       final List images = NavClass.runUrls(
         NavClass.nav(response, [
-              ...NavClass.headerDetail,
-              ...NavClass.thumbnailCropped,
-            ]) as List? ??
+                  ...NavClass.headerDetail,
+                  ...NavClass.thumbnailCropped,
+                ])
+                as List? ??
             [],
       );
-      final List finalResults = NavClass.nav(response, [
-            ...NavClass.singleColumnTab,
-            ...NavClass.sectionListItem,
-            ...NavClass.musicShelf,
-            'contents',
-          ]) as List? ??
+      final List finalResults =
+          NavClass.nav(response, [
+                ...NavClass.singleColumnTab,
+                ...NavClass.sectionListItem,
+                ...NavClass.musicShelf,
+                'contents',
+              ])
+              as List? ??
           [];
       final List<Map> songResults = [];
       for (final item in finalResults) {
         final String id =
             NavClass.nav(item, NavClass.mrlirPlaylistId).toString();
-        final String image = NavClass.nav(item, [
-          NavClass.mRLIR,
-          ...NavClass.thumbnails,
-          0,
-          'url',
-        ]).toString();
-        final String title = NavClass.nav(item, [
-          NavClass.mRLIR,
-          'flexColumns',
-          0,
-          NavClass.mRLIFCR,
-          ...NavClass.textRunText,
-        ]).toString();
-        final List subtitleList = NavClass.nav(item, [
+        final String image =
+            NavClass.nav(item, [
+              NavClass.mRLIR,
+              ...NavClass.thumbnails,
+              0,
+              'url',
+            ]).toString();
+        final String title =
+            NavClass.nav(item, [
               NavClass.mRLIR,
               'flexColumns',
-              1,
+              0,
               NavClass.mRLIFCR,
-              ...NavClass.textRuns,
-            ]) as List? ??
+              ...NavClass.textRunText,
+            ]).toString();
+        final List subtitleList =
+            NavClass.nav(item, [
+                  NavClass.mRLIR,
+                  'flexColumns',
+                  1,
+                  NavClass.mRLIFCR,
+                  ...NavClass.textRuns,
+                ])
+                as List? ??
             [];
         int count = 0;
         String year = '';
@@ -893,66 +957,80 @@ class YtMusicService {
     try {
       final body = Map.from(context!);
       body['browseId'] = artistId;
-      final Map response =
-          await sendRequest(endpoints['browse']!, body, headers);
+      final Map response = await sendRequest(
+        endpoints['browse']!,
+        body,
+        headers,
+      );
       // final header = response['header']['musicImmersiveHeaderRenderer']
-      final String? heading = NavClass.nav(response, [
-        ...NavClass.immersiveHeaderDetail,
-        ...NavClass.titleText,
-      ]) as String?;
+      final String? heading =
+          NavClass.nav(response, [
+                ...NavClass.immersiveHeaderDetail,
+                ...NavClass.titleText,
+              ])
+              as String?;
       final String subtitle = NavClass.joinRunTexts(
         NavClass.nav(response, [
-              ...NavClass.immersiveHeaderDetail,
-              ...NavClass.subtitleRuns,
-            ]) as List? ??
+                  ...NavClass.immersiveHeaderDetail,
+                  ...NavClass.subtitleRuns,
+                ])
+                as List? ??
             [],
       );
       final String description = NavClass.joinRunTexts(
         NavClass.nav(response, [
-              ...NavClass.immersiveHeaderDetail,
-              ...NavClass.secondSubtitleRuns,
-            ]) as List? ??
+                  ...NavClass.immersiveHeaderDetail,
+                  ...NavClass.secondSubtitleRuns,
+                ])
+                as List? ??
             [],
       );
       final List images = NavClass.runUrls(
         NavClass.nav(response, [
-              ...NavClass.immersiveHeaderDetail,
-              ...NavClass.thumbnails,
-            ]) as List? ??
+                  ...NavClass.immersiveHeaderDetail,
+                  ...NavClass.thumbnails,
+                ])
+                as List? ??
             [],
       );
-      final List finalResults = NavClass.nav(response, [
-            ...NavClass.singleColumnTab,
-            ...NavClass.sectionList,
-            0,
-            ...NavClass.musicShelf,
-            'contents',
-          ]) as List? ??
+      final List finalResults =
+          NavClass.nav(response, [
+                ...NavClass.singleColumnTab,
+                ...NavClass.sectionList,
+                0,
+                ...NavClass.musicShelf,
+                'contents',
+              ])
+              as List? ??
           [];
       final List<Map> songResults = [];
       for (final item in finalResults) {
         final String id =
             NavClass.nav(item, NavClass.mrlirPlaylistId).toString();
-        final String image = NavClass.nav(item, [
-          NavClass.mRLIR,
-          ...NavClass.thumbnails,
-          0,
-          'url',
-        ]).toString();
-        final String title = NavClass.nav(item, [
-          NavClass.mRLIR,
-          'flexColumns',
-          0,
-          NavClass.mRLIFCR,
-          ...NavClass.textRunText,
-        ]).toString();
-        final List subtitleList = NavClass.nav(item, [
+        final String image =
+            NavClass.nav(item, [
+              NavClass.mRLIR,
+              ...NavClass.thumbnails,
+              0,
+              'url',
+            ]).toString();
+        final String title =
+            NavClass.nav(item, [
               NavClass.mRLIR,
               'flexColumns',
-              1,
+              0,
               NavClass.mRLIFCR,
-              ...NavClass.textRuns,
-            ]) as List? ??
+              ...NavClass.textRunText,
+            ]).toString();
+        final List subtitleList =
+            NavClass.nav(item, [
+                  NavClass.mRLIR,
+                  'flexColumns',
+                  1,
+                  NavClass.mRLIFCR,
+                  ...NavClass.textRuns,
+                ])
+                as List? ??
             [];
         int count = 0;
         String year = '';
@@ -1058,19 +1136,21 @@ class YtMusicService {
       if (shuffle) body['params'] = 'wAEB8gECKAE%3D';
       if (radio) body['params'] = 'wAEB';
       final Map response = await sendRequest(endpoints['next']!, body, headers);
-      final Map results = NavClass.nav(response, [
-            'contents',
-            'singleColumnMusicWatchNextResultsRenderer',
-            'tabbedRenderer',
-            'watchNextTabbedResultsRenderer',
-            'tabs',
-            0,
-            'tabRenderer',
-            'content',
-            'musicQueueRenderer',
-            'content',
-            'playlistPanelRenderer',
-          ]) as Map? ??
+      final Map results =
+          NavClass.nav(response, [
+                'contents',
+                'singleColumnMusicWatchNextResultsRenderer',
+                'tabbedRenderer',
+                'watchNextTabbedResultsRenderer',
+                'tabs',
+                0,
+                'tabRenderer',
+                'content',
+                'musicQueueRenderer',
+                'content',
+                'playlistPanelRenderer',
+              ])
+              as Map? ??
           {};
       final playlist = (results['contents'] as List<dynamic>).where(
         (x) =>
@@ -1086,8 +1166,10 @@ class YtMusicService {
         if (count > limit) break;
         if (count > 0) {
           final String id =
-              NavClass.nav(item, ['playlistPanelVideoRenderer', 'videoId'])
-                  .toString();
+              NavClass.nav(item, [
+                'playlistPanelVideoRenderer',
+                'videoId',
+              ]).toString();
           songResults.add(id);
         }
         count++;

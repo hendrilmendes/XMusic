@@ -1,7 +1,6 @@
-
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:xmusic/APIs/api.dart';
@@ -11,6 +10,7 @@ import 'package:xmusic/Helpers/matcher.dart';
 import 'package:xmusic/Helpers/playlist.dart';
 import 'package:xmusic/Services/youtube_services.dart';
 import 'package:xmusic/Services/ytmusic/yt_music.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -36,13 +36,11 @@ class SearchAddPlaylist {
     String playlistId,
   ) async {
     try {
-      final List tracks =
-          await SpotifyApi().getAllTracksOfPlaylist(accessToken, playlistId);
-      return {
-        'title': title,
-        'count': tracks.length,
-        'tracks': tracks,
-      };
+      final List tracks = await SpotifyApi().getAllTracksOfPlaylist(
+        accessToken,
+        playlistId,
+      );
+      return {'title': title, 'count': tracks.length, 'tracks': tracks};
     } catch (e) {
       Logger.root.severe('Error while adding Spotify playlist: $e');
       return {};
@@ -64,11 +62,13 @@ class SearchAddPlaylist {
           ..followRedirects = false;
         final Client baseClient = Client();
         final StreamedResponse response = await baseClient.send(req);
-        final Uri redirectUri =
-            Uri.parse(response.headers['location'].toString());
+        final Uri redirectUri = Uri.parse(
+          response.headers['location'].toString(),
+        );
         baseClient.close();
-        final RegExpMatch? id2 =
-            RegExp(r'.*?id\=(.*)&').firstMatch('$redirectUri&');
+        final RegExpMatch? id2 = RegExp(
+          r'.*?id\=(.*)&',
+        ).firstMatch('$redirectUri&');
         if (id2 != null) {
           final List tracks = await getRessoSongs(playlistId: id2[1]!);
           return {
@@ -100,8 +100,11 @@ class SearchAddPlaylist {
     try {
       final String id = inLink.split('/').last;
       if (id != '') {
-        final Map data =
-            await SaavnAPI().getSongFromToken(id, 'playlist', n: -1);
+        final Map data = await SaavnAPI().getSongFromToken(
+          id,
+          'playlist',
+          n: -1,
+        );
         return {
           'title': data['title'],
           'count': data['songs'].length,
@@ -131,27 +134,20 @@ class SearchAddPlaylist {
           count: 3,
         );
         final List result = data['songs'] as List;
-        final index = findBestMatch(
-          result,
-          {
-            'title': trackName,
-            'artist': trackName,
-          },
-        );
+        final index = findBestMatch(result, {
+          'title': trackName,
+          'artist': trackName,
+        });
         if (index != -1) {
           addMapToPlaylist(playName, result[index] as Map);
         } else {
           YouTubeServices.instance
-              .formatVideo(
-            video: track as Video,
-            getUrl: false,
-            quality: 'low',
-          )
+              .formatVideo(video: track as Video, getUrl: false, quality: 'low')
               .then((songMap) {
-            if (songMap != null) {
-              addMapToPlaylist(playName, songMap);
-            }
-          });
+                if (songMap != null) {
+                  addMapToPlaylist(playName, songMap);
+                }
+              });
         }
       } catch (e) {
         Logger.root.severe('Error in $done: $e');
@@ -180,13 +176,10 @@ class SearchAddPlaylist {
           count: 3,
         );
         final List result = data['songs'] as List;
-        final index = findBestMatch(
-          result,
-          {
-            'title': trackName,
-            'artist': artistName,
-          },
-        );
+        final index = findBestMatch(result, {
+          'title': trackName,
+          'artist': artistName,
+        });
         if (index != -1) {
           addMapToPlaylist(playName, result[index] as Map);
         }
@@ -218,13 +211,10 @@ class SearchAddPlaylist {
           count: 3,
         );
         final List result = data['songs'] as List;
-        final index = findBestMatch(
-          result,
-          {
-            'title': trackName,
-            'artist': artistName,
-          },
-        );
+        final index = findBestMatch(result, {
+          'title': trackName,
+          'artist': artistName,
+        });
         if (index != -1) {
           addMapToPlaylist(playName, result[index] as Map);
         }
@@ -265,8 +255,9 @@ class SearchAddPlaylist {
                           Center(
                             child: Text(
                               AppLocalizations.of(context)!.convertingSongs,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w600),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -274,9 +265,7 @@ class SearchAddPlaylist {
                             width: 90,
                             child: Stack(
                               children: [
-                                Center(
-                                  child: Text('$done / $total'),
-                                ),
+                                Center(child: Text('$done / $total')),
                                 Center(
                                   child: SizedBox(
                                     height: 85,

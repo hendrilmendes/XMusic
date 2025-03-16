@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'dart:io';
 
@@ -16,7 +15,9 @@ Future<void> initializeLogging() async {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) async {
     if (record.level.name != 'INFO') {
-      log('${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n');
+      log(
+        '${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n',
+      );
       try {
         await logFile.writeAsString(
           '${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n',
@@ -26,7 +27,9 @@ Future<void> initializeLogging() async {
         log('Error writing to log file: $e');
       }
     } else {
-      log('${record.level.name}: ${record.time}: record.message: ${record.message}\n\n');
+      log(
+        '${record.level.name}: ${record.time}: record.message: ${record.message}\n\n',
+      );
       try {
         await logFile.writeAsString(
           '${record.level.name}: ${record.time}: record.message: ${record.message}\n\n',

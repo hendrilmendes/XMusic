@@ -1,15 +1,14 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_archive/flutter_archive.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Helpers/picker.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 Future<String> createBackup(
   BuildContext context,
@@ -33,7 +32,8 @@ Future<String> createBackup(
       await openAppSettings();
     }
   }
-  final String savePath = path ??
+  final String savePath =
+      path ??
       await Picker.selectFolder(
         context: context,
         message: AppLocalizations.of(context)!.selectBackLocation,
@@ -53,14 +53,14 @@ Future<String> createBackup(
       for (int i = 0; i < boxNames.length; i++) {
         await Hive.openBox(boxNames[i].toString());
         try {
-          await File(Hive.box(boxNames[i].toString()).path!)
-              .copy('$savePath/${boxNames[i]}.hive');
+          await File(
+            Hive.box(boxNames[i].toString()).path!,
+          ).copy('$savePath/${boxNames[i]}.hive');
         } catch (e) {
-          await [
-            Permission.manageExternalStorage,
-          ].request();
-          await File(Hive.box(boxNames[i].toString()).path!)
-              .copy('$savePath/${boxNames[i]}.hive');
+          await [Permission.manageExternalStorage].request();
+          await File(
+            Hive.box(boxNames[i].toString()).path!,
+          ).copy('$savePath/${boxNames[i]}.hive');
         }
 
         files.add(File('$savePath/${boxNames[i]}.hive'));
@@ -69,8 +69,9 @@ Future<String> createBackup(
       final now = DateTime.now();
       final String time =
           '${now.hour}${now.minute}_${now.day}${now.month}${now.year}';
-      final zipFile =
-          File('$savePath/${fileName ?? "xmusic_Backup_$time"}.zip');
+      final zipFile = File(
+        '$savePath/${fileName ?? "xmusic_Backup_$time"}.zip',
+      );
 
       if ((Platform.isIOS || Platform.isMacOS) && await zipFile.exists()) {
         await zipFile.delete();
@@ -108,9 +109,7 @@ Future<String> createBackup(
   }
 }
 
-Future<void> restore(
-  BuildContext context,
-) async {
+Future<void> restore(BuildContext context) async {
   Logger.root.info('Prompting for restore file selection');
   final String savePath = await Picker.selectFile(
     context: context,
@@ -139,16 +138,19 @@ Future<void> restore(
           Logger.root.info('Changing path to ${splitPath.join("/")}');
           destinationDir = Directory(splitPath.join('/'));
         }
-        final List<FileSystemEntity> files = await destinationDir
-            .list()
-            .where((element) => element.path.endsWith('.hive'))
-            .toList();
+        final List<FileSystemEntity> files =
+            await destinationDir
+                .list()
+                .where((element) => element.path.endsWith('.hive'))
+                .toList();
         Logger.root.info('Found ${files.length} backup files');
 
         for (int i = 0; i < files.length; i++) {
           final String backupPath = files[i].path;
-          final String boxName =
-              backupPath.split('/').last.replaceAll('.hive', '');
+          final String boxName = backupPath
+              .split('/')
+              .last
+              .replaceAll('.hive', '');
           final Box box = await Hive.openBox(boxName);
           final String boxPath = box.path!;
           await box.close();
@@ -162,8 +164,10 @@ Future<void> restore(
         if (isZip) {
           await destinationDir.delete(recursive: true);
         }
-        ShowSnackBar()
-            .showSnackBar(context, AppLocalizations.of(context)!.importSuccess);
+        ShowSnackBar().showSnackBar(
+          context,
+          AppLocalizations.of(context)!.importSuccess,
+        );
       } catch (e) {
         Logger.root.severe('Error in restoring backup', e);
         ShowSnackBar().showSnackBar(

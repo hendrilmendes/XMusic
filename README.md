@@ -5,7 +5,6 @@
 Um reprodutor de música incrível para todas as suas necessidades!
 
 [![made-with-flutter](https://img.shields.io/badge/Made%20with-Flutter-1f425f.svg)](https://flutter.dev/) ![Release](https://img.shields.io/github/v/release/hendrilmendes/XMusic) ![Downloads](https://img.shields.io/github/downloads/hendrilmendes/XMusic/total)
-[![Build](https://github.com/hendrilmendes/XMusic/actions/workflows/flutter.yml/badge.svg)](https://github.com/hendrilmendes/XMusic/actions/workflows/flutter.yml)
 
 ### Não esqueça de :star: esse repositório
 
@@ -72,3 +71,7 @@ Olhe alguns dos [problemas](https://github.com/hendrilmendes/XMusic/wiki/Common-
 ## O que há de novo
 
 Veja as novidades no [Changelog](Changelog.md)
+
+## Créditos
+
+Projeto construido sobre o [BlackHole](https://github.com/BrightDV/BlackHole)

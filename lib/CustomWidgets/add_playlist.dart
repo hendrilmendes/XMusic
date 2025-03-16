@@ -1,7 +1,5 @@
-
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:xmusic/CustomWidgets/collage.dart';
@@ -10,6 +8,7 @@ import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
 import 'package:xmusic/Helpers/audio_query.dart';
 import 'package:xmusic/Helpers/playlist.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class AddToOffPlaylist {
   OfflineAudioQuery offlineAudioQuery = OfflineAudioQuery();
@@ -36,9 +35,10 @@ class AddToOffPlaylist {
                       child: Center(
                         child: Icon(
                           Icons.add_rounded,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? null
-                              : Colors.grey[700],
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? null
+                                  : Colors.grey[700],
                         ),
                       ),
                     ),
@@ -89,9 +89,7 @@ class AddToOffPlaylist {
                             ),
                           ),
                         ),
-                        title: Text(
-                          playlistDetails[index].playlist,
-                        ),
+                        title: Text(playlistDetails[index].playlist),
                         subtitle: Text(
                           '${playlistDetails[index].numOfSongs} Songs',
                         ),
@@ -120,8 +118,11 @@ class AddToOffPlaylist {
 
 class AddToPlaylist {
   Box settingsBox = Hive.box('settings');
-  List playlistNames = Hive.box('settings')
-      .get('playlistNames', defaultValue: ['Favorite Songs']) as List;
+  List playlistNames =
+      Hive.box(
+            'settings',
+          ).get('playlistNames', defaultValue: ['Favorite Songs'])
+          as List;
   Map playlistDetails =
       Hive.box('settings').get('playlistDetails', defaultValue: {}) as Map;
 
@@ -145,9 +146,10 @@ class AddToPlaylist {
                       child: Center(
                         child: Icon(
                           Icons.add_rounded,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? null
-                              : Colors.grey[700],
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? null
+                                  : Colors.grey[700],
                         ),
                       ),
                     ),
@@ -183,32 +185,30 @@ class AddToPlaylist {
                     itemCount: playlistNames.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: playlistDetails[playlistNames[index]] ==
-                                    null ||
-                                playlistDetails[playlistNames[index]]
-                                        ['imagesList'] ==
-                                    null
-                            ? Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7.0),
-                                ),
-                                clipBehavior: Clip.antiAlias,
-                                child: const SizedBox.square(
-                                  dimension: 50,
-                                  child: Image(
-                                    image: AssetImage(
-                                      'assets/album.png',
+                        leading:
+                            playlistDetails[playlistNames[index]] == null ||
+                                    playlistDetails[playlistNames[index]]['imagesList'] ==
+                                        null
+                                ? Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(7.0),
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: const SizedBox.square(
+                                    dimension: 50,
+                                    child: Image(
+                                      image: AssetImage('assets/album.png'),
                                     ),
                                   ),
+                                )
+                                : Collage(
+                                  imageList:
+                                      playlistDetails[playlistNames[index]]['imagesList']
+                                          as List,
+                                  showGrid: true,
+                                  placeholderImage: 'assets/cover.jpg',
                                 ),
-                              )
-                            : Collage(
-                                imageList: playlistDetails[playlistNames[index]]
-                                    ['imagesList'] as List,
-                                showGrid: true,
-                                placeholderImage: 'assets/cover.jpg',
-                              ),
                         title: Text(
                           '${playlistDetails.containsKey(playlistNames[index]) ? playlistDetails[playlistNames[index]]["name"] ?? playlistNames[index] : playlistNames[index]}',
                         ),

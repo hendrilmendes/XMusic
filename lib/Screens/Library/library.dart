@@ -1,10 +1,10 @@
-
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:xmusic/Screens/Library/liked.dart';
 import 'package:xmusic/Screens/LocalMusic/downed_songs.dart';
 import 'package:xmusic/Screens/LocalMusic/downed_songs_desktop.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -22,9 +22,7 @@ class _LibraryPageState extends State<LibraryPage> {
         AppBar(
           title: Text(
             AppLocalizations.of(context)!.library,
-            style: TextStyle(
-              color: Theme.of(context).iconTheme.color,
-            ),
+            style: TextStyle(color: Theme.of(context).iconTheme.color),
           ),
           centerTitle: true,
           backgroundColor: Colors.transparent,
@@ -52,10 +50,11 @@ class _LibraryPageState extends State<LibraryPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => LikedSongs(
-                  playlistName: 'Favorite Songs',
-                  showName: AppLocalizations.of(context)!.favSongs,
-                ),
+                builder:
+                    (context) => LikedSongs(
+                      playlistName: 'Favorite Songs',
+                      showName: AppLocalizations.of(context)!.favSongs,
+                    ),
               ),
             );
           },
@@ -67,12 +66,13 @@ class _LibraryPageState extends State<LibraryPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
-                        ? const DownloadedSongsDesktop()
-                        : const DownloadedSongs(
-                            showPlaylists: true,
-                          ),
+                builder:
+                    (context) =>
+                        (Platform.isWindows ||
+                                Platform.isLinux ||
+                                Platform.isMacOS)
+                            ? const DownloadedSongsDesktop()
+                            : const DownloadedSongs(showPlaylists: true),
               ),
             );
           },
@@ -122,22 +122,16 @@ class LibraryTile extends StatelessWidget {
     return ListTile(
       title: Text(
         title,
-        style: TextStyle(
-          color: Theme.of(context).iconTheme.color,
-        ),
+        style: TextStyle(color: Theme.of(context).iconTheme.color),
       ),
-      subtitle: subtitle != null
-          ? Text(
-              subtitle!,
-              style: TextStyle(
-                color: Theme.of(context).iconTheme.color,
-              ),
-            )
-          : null,
-      leading: Icon(
-        icon,
-        color: Theme.of(context).iconTheme.color,
-      ),
+      subtitle:
+          subtitle != null
+              ? Text(
+                subtitle!,
+                style: TextStyle(color: Theme.of(context).iconTheme.color),
+              )
+              : null,
+      leading: Icon(icon, color: Theme.of(context).iconTheme.color),
       onTap: onTap,
     );
   }

@@ -173,11 +173,31 @@ class OfflineAudioQuery {
         if (item.data != null && item.data!.isNotEmpty) {
           return queueView
               ? Image(
-                  image: FileImage(
-                    File(
-                      item.data!,
-                    ),
-                  ),
+                image: FileImage(File(item.data!)),
+                gaplessPlayback: gaplessPlayback,
+                repeat: imageRepeat,
+                width: width,
+                height: height,
+                fit: fit,
+                filterQuality: filterQuality,
+                errorBuilder: (context, exception, stackTrace) {
+                  return errorWidget ??
+                      Image(
+                        fit: BoxFit.cover,
+                        height: height,
+                        width: width,
+                        image: const AssetImage('assets/cover.jpg'),
+                      );
+                },
+              )
+              : Card(
+                elevation: elevation,
+                shape: RoundedRectangleBorder(
+                  borderRadius: borderRadius ?? BorderRadius.circular(7.0),
+                ),
+                clipBehavior: clipBehavior,
+                child: Image(
+                  image: FileImage(File(item.data!)),
                   gaplessPlayback: gaplessPlayback,
                   repeat: imageRepeat,
                   width: width,
@@ -193,36 +213,8 @@ class OfflineAudioQuery {
                           image: const AssetImage('assets/cover.jpg'),
                         );
                   },
-                )
-              : Card(
-                  elevation: elevation,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: borderRadius ?? BorderRadius.circular(7.0),
-                  ),
-                  clipBehavior: clipBehavior,
-                  child: Image(
-                    image: FileImage(
-                      File(
-                        item.data!,
-                      ),
-                    ),
-                    gaplessPlayback: gaplessPlayback,
-                    repeat: imageRepeat,
-                    width: width,
-                    height: height,
-                    fit: fit,
-                    filterQuality: filterQuality,
-                    errorBuilder: (context, exception, stackTrace) {
-                      return errorWidget ??
-                          Image(
-                            fit: BoxFit.cover,
-                            height: height,
-                            width: width,
-                            image: const AssetImage('assets/cover.jpg'),
-                          );
-                    },
-                  ),
-                );
+                ),
+              );
         }
         return queueView
             ? placeholder ??
@@ -233,19 +225,20 @@ class OfflineAudioQuery {
                   image: const AssetImage('assets/cover.jpg'),
                 )
             : Card(
-                elevation: elevation,
-                shape: RoundedRectangleBorder(
-                  borderRadius: borderRadius ?? BorderRadius.circular(7.0),
-                ),
-                clipBehavior: clipBehavior,
-                child: placeholder ??
-                    Image(
-                      fit: BoxFit.cover,
-                      height: height,
-                      width: width,
-                      image: const AssetImage('assets/cover.jpg'),
-                    ),
-              );
+              elevation: elevation,
+              shape: RoundedRectangleBorder(
+                borderRadius: borderRadius ?? BorderRadius.circular(7.0),
+              ),
+              clipBehavior: clipBehavior,
+              child:
+                  placeholder ??
+                  Image(
+                    fit: BoxFit.cover,
+                    height: height,
+                    width: width,
+                    image: const AssetImage('assets/cover.jpg'),
+                  ),
+            );
       },
     );
   }

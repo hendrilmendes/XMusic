@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -102,9 +101,7 @@ class _SongsListViewPageState extends State<SongsListViewPage> {
         fetched = true;
         loading = false;
       });
-      Logger.root.severe(
-        'Error in song_list_view loadInitial: $e',
-      );
+      Logger.root.severe('Error in song_list_view loadInitial: $e');
     }
   }
 
@@ -124,9 +121,7 @@ class _SongsListViewPageState extends State<SongsListViewPage> {
         fetched = true;
         loading = false;
       });
-      Logger.root.severe(
-        'Error in song_list_view loadMore: $e',
-      );
+      Logger.root.severe('Error in song_list_view loadMore: $e');
     }
   }
 
@@ -135,92 +130,91 @@ class _SongsListViewPageState extends State<SongsListViewPage> {
     return GradientContainer(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: !fetched
-            ? const Center(
-                child: CircularProgressIndicator.adaptive(),
-              )
-            : BouncyPlaylistHeaderScrollView(
-                scrollController: _scrollController,
-                actions: widget.actions,
-                title: widget.title,
-                subtitle: widget.subtitle,
-                secondarySubtitle: widget.secondarySubtitle,
-                onPlayTap: widget.onPlay,
-                onShuffleTap: widget.onShuffle,
-                placeholderImage:
-                    widget.placeholderImageUrl ?? 'assets/cover.jpg',
-                imageUrl: UrlImageGetter([widget.imageUrl]).mediumQuality,
-                sliverList: SliverList(
-                  delegate: SliverChildListDelegate([
-                    if (itemsList.isNotEmpty && widget.listItemsTitle != null)
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          top: 5.0,
-                          bottom: 5.0,
-                        ),
-                        child: Text(
-                          widget.listItemsTitle!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                            color: Theme.of(context).colorScheme.secondary,
+        body:
+            !fetched
+                ? const Center(child: CircularProgressIndicator.adaptive())
+                : BouncyPlaylistHeaderScrollView(
+                  scrollController: _scrollController,
+                  actions: widget.actions,
+                  title: widget.title,
+                  subtitle: widget.subtitle,
+                  secondarySubtitle: widget.secondarySubtitle,
+                  onPlayTap: widget.onPlay,
+                  onShuffleTap: widget.onShuffle,
+                  placeholderImage:
+                      widget.placeholderImageUrl ?? 'assets/cover.jpg',
+                  imageUrl: UrlImageGetter([widget.imageUrl]).mediumQuality,
+                  sliverList: SliverList(
+                    delegate: SliverChildListDelegate([
+                      if (itemsList.isNotEmpty && widget.listItemsTitle != null)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20.0,
+                            top: 5.0,
+                            bottom: 5.0,
+                          ),
+                          child: Text(
+                            widget.listItemsTitle!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
                           ),
                         ),
-                      ),
-                    ...itemsList.map((entry) {
-                      return ListTile(
-                        contentPadding: widget.listItemsPadding ??
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: Text(
-                          entry.title,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
+                      ...itemsList.map((entry) {
+                        return ListTile(
+                          contentPadding:
+                              widget.listItemsPadding ??
+                              const EdgeInsets.symmetric(horizontal: 20.0),
+                          title: Text(
+                            entry.title,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
-                        ),
-                        onLongPress: () {
-                          copyToClipboard(
-                            context: context,
-                            text: entry.title,
-                          );
-                        },
-                        subtitle: entry.subtitle != null
-                            ? Text(
-                                entry.subtitle!,
-                                overflow: TextOverflow.ellipsis,
-                              )
-                            : null,
-                        leading: imageCard(
-                          elevation: 8,
-                          imageUrl: entry.image,
-                        ),
-                        // trailing: Row(
-                        //   mainAxisSize: MainAxisSize.min,
-                        //   children: [
-                        //     DownloadButton(
-                        //       data: entry as Map,
-                        //       icon: 'download',
-                        //     ),
-                        //     LikeButton(
-                        //       mediaItem: null,
-                        //       data: entry.mapData,
-                        //     ),
-                        //     if (entry.mapData != null)
-                        //       SongTileTrailingMenu(data: entry.mapData!),
-                        //   ],
-                        // ),
-                        onTap: () {
-                          final idx = itemsList.indexWhere(
-                            (element) => element == entry,
-                          );
-                          widget.onTap?.call(idx, itemsList);
-                        },
-                      );
-                    }),
-                  ]),
+                          onLongPress: () {
+                            copyToClipboard(
+                              context: context,
+                              text: entry.title,
+                            );
+                          },
+                          subtitle:
+                              entry.subtitle != null
+                                  ? Text(
+                                    entry.subtitle!,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                  : null,
+                          leading: imageCard(
+                            elevation: 8,
+                            imageUrl: entry.image,
+                          ),
+                          // trailing: Row(
+                          //   mainAxisSize: MainAxisSize.min,
+                          //   children: [
+                          //     DownloadButton(
+                          //       data: entry as Map,
+                          //       icon: 'download',
+                          //     ),
+                          //     LikeButton(
+                          //       mediaItem: null,
+                          //       data: entry.mapData,
+                          //     ),
+                          //     if (entry.mapData != null)
+                          //       SongTileTrailingMenu(data: entry.mapData!),
+                          //   ],
+                          // ),
+                          onTap: () {
+                            final idx = itemsList.indexWhere(
+                              (element) => element == entry,
+                            );
+                            widget.onTap?.call(idx, itemsList);
+                          },
+                        );
+                      }),
+                    ]),
+                  ),
                 ),
-              ),
       ),
     );
   }

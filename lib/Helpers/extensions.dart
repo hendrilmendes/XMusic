@@ -1,4 +1,3 @@
-
 extension StringExtension on String {
   String capitalize() {
     if (this != '') {
@@ -9,10 +8,10 @@ extension StringExtension on String {
   }
 
   String unescape() {
-    return replaceAll('&amp;', '&')
-        .replaceAll('&#039;', "'")
-        .replaceAll('&quot;', '"')
-        .trim();
+    return replaceAll(
+      '&amp;',
+      '&',
+    ).replaceAll('&#039;', "'").replaceAll('&quot;', '"').trim();
   }
 
   String formatToHHMMSS() {
@@ -36,9 +35,9 @@ extension StringExtension on String {
   }
 
   String get yearFromEpoch =>
-      DateTime.fromMillisecondsSinceEpoch(int.parse(this) * 1000)
-          .year
-          .toString();
+      DateTime.fromMillisecondsSinceEpoch(
+        int.parse(this) * 1000,
+      ).year.toString();
 
   String get dateFromEpoch {
     final time = DateTime.fromMillisecondsSinceEpoch(int.parse(this) * 1000);

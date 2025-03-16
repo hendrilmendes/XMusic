@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class Stats extends StatelessWidget {
   const Stats({super.key});
@@ -28,9 +28,7 @@ class Stats extends StatelessWidget {
               Card(
                 color: Theme.of(context).cardColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    10.0,
-                  ),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 elevation: 10.0,
                 child: Padding(
@@ -53,9 +51,7 @@ class Stats extends StatelessWidget {
               Card(
                 color: Theme.of(context).cardColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    10.0,
-                  ),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 elevation: 10.0,
                 child: Padding(
@@ -64,9 +60,7 @@ class Stats extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(AppLocalizations.of(context)!.mostPlayedSong),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       Text(
                         mostPlayed['title']?.toString() ??
                             AppLocalizations.of(context)!.unknown,

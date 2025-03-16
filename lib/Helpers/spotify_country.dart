@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
@@ -8,9 +7,9 @@ import 'package:xmusic/constants/countrycodes.dart';
 class SpotifyCountry {
   Future<String> changeCountry({required BuildContext context}) async {
     String region =
-        Hive.box('settings').get('region', defaultValue: 'India') as String;
+        Hive.box('settings').get('region', defaultValue: 'Brazil') as String;
     if (!CountryCodes.localChartCodes.containsKey(region)) {
-      region = 'India';
+      region = 'Brazil';
     }
 
     await showModalBottomSheet(
@@ -20,26 +19,17 @@ class SpotifyCountry {
         const Map<String, String> codes = CountryCodes.localChartCodes;
         final List<String> countries = codes.keys.toList();
         return BottomGradientContainer(
-          borderRadius: BorderRadius.circular(
-            20.0,
-          ),
+          borderRadius: BorderRadius.circular(20.0),
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
-            padding: const EdgeInsets.fromLTRB(
-              0,
-              10,
-              0,
-              10,
-            ),
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             itemCount: countries.length,
             itemBuilder: (context, idx) {
               return ListTileTheme(
                 selectedColor: Theme.of(context).colorScheme.secondary,
                 child: ListTile(
-                  title: Text(
-                    countries[idx],
-                  ),
+                  title: Text(countries[idx]),
                   leading: Radio(
                     value: countries[idx],
                     groupValue: region,

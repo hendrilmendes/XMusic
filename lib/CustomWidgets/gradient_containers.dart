@@ -25,26 +25,22 @@ class _GradientContainerState extends State<GradientContainer> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: Theme.of(context).brightness == Brightness.dark
-              ? ((widget.opacity == true)
-                  ? currentTheme.getTransBackGradient()
-                  : currentTheme.getBackGradient())
-              : [
-                  const Color(0xfff5f9ff),
-                  Colors.white,
-                ],
+          colors:
+              Theme.of(context).brightness == Brightness.dark
+                  ? ((widget.opacity == true)
+                      ? currentTheme.getTransBackGradient()
+                      : currentTheme.getBackGradient())
+                  : [const Color(0xfff5f9ff), Colors.white],
         ),
-        borderRadius: widget.borderRadius ?? false
-            ? const BorderRadius.all(
-                Radius.circular(15),
-              )
-            : null,
+        borderRadius:
+            widget.borderRadius ?? false
+                ? const BorderRadius.all(Radius.circular(15))
+                : null,
       ),
-      margin: widget.borderRadius ?? false
-          ? const EdgeInsets.symmetric(
-              horizontal: 2.0,
-            )
-          : null,
+      margin:
+          widget.borderRadius ?? false
+              ? const EdgeInsets.symmetric(horizontal: 2.0)
+              : null,
       child: widget.child,
     );
   }
@@ -74,17 +70,16 @@ class _BottomGradientContainerState extends State<BottomGradientContainer> {
       margin: widget.margin ?? const EdgeInsets.fromLTRB(25, 0, 25, 25),
       padding: widget.padding ?? const EdgeInsets.fromLTRB(10, 15, 10, 15),
       decoration: BoxDecoration(
-        borderRadius: widget.borderRadius ??
+        borderRadius:
+            widget.borderRadius ??
             const BorderRadius.all(Radius.circular(15.0)),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: Theme.of(context).brightness == Brightness.dark
-              ? currentTheme.getBottomGradient()
-              : [
-                  Colors.white,
-                  Theme.of(context).canvasColor,
-                ],
+          colors:
+              Theme.of(context).brightness == Brightness.dark
+                  ? currentTheme.getBottomGradient()
+                  : [Colors.white, Theme.of(context).canvasColor],
         ),
       ),
       child: widget.child,
@@ -127,27 +122,26 @@ class _GradientCardState extends State<GradientCard> {
       clipBehavior: Clip.antiAlias,
       margin: widget.margin ?? EdgeInsets.zero,
       color: Colors.transparent,
-      child: widget.elevation == 0
-          ? widget.child
-          : DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: widget.gradientBegin ?? Alignment.topLeft,
-                  end: widget.gradientEnd ?? Alignment.bottomRight,
-                  colors: widget.gradientColors ??
-                      (Theme.of(context).brightness == Brightness.dark
-                          ? currentTheme.getCardGradient()
-                          : [
-                              Colors.white,
-                              Theme.of(context).canvasColor,
-                            ]),
+      child:
+          widget.elevation == 0
+              ? widget.child
+              : DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: widget.gradientBegin ?? Alignment.topLeft,
+                    end: widget.gradientEnd ?? Alignment.bottomRight,
+                    colors:
+                        widget.gradientColors ??
+                        (Theme.of(context).brightness == Brightness.dark
+                            ? currentTheme.getCardGradient()
+                            : [Colors.white, Theme.of(context).canvasColor]),
+                  ),
+                ),
+                child: Padding(
+                  padding: widget.padding ?? EdgeInsets.zero,
+                  child: widget.child,
                 ),
               ),
-              child: Padding(
-                padding: widget.padding ?? EdgeInsets.zero,
-                child: widget.child,
-              ),
-            ),
     );
   }
 }

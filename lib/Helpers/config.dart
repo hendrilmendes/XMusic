@@ -1,4 +1,3 @@
-
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
@@ -30,65 +29,21 @@ class MyTheme with ChangeNotifier {
   List<List<Color>> get cardOpt => _cardOpt;
 
   final List<List<Color>> _backOpt = [
-    [
-      Colors.grey[850]!,
-      Colors.grey[900]!,
-      Colors.black,
-    ],
-    [
-      Colors.grey[900]!,
-      Colors.grey[900]!,
-      Colors.black,
-    ],
-    [
-      Colors.grey[900]!,
-      Colors.black,
-    ],
-    [
-      Colors.grey[900]!,
-      Colors.black,
-      Colors.black,
-    ],
-    [
-      Colors.black,
-      Colors.black,
-    ]
+    [Colors.grey[850]!, Colors.grey[900]!, Colors.black],
+    [Colors.grey[900]!, Colors.grey[900]!, Colors.black],
+    [Colors.grey[900]!, Colors.black],
+    [Colors.grey[900]!, Colors.black, Colors.black],
+    [Colors.black, Colors.black],
   ];
 
   final List<List<Color>> _cardOpt = [
-    [
-      Colors.grey[850]!,
-      Colors.grey[850]!,
-      Colors.grey[900]!,
-    ],
-    [
-      Colors.grey[850]!,
-      Colors.grey[900]!,
-      Colors.grey[900]!,
-    ],
-    [
-      Colors.grey[850]!,
-      Colors.grey[900]!,
-      Colors.black,
-    ],
-    [
-      Colors.grey[900]!,
-      Colors.grey[900]!,
-      Colors.black,
-    ],
-    [
-      Colors.grey[900]!,
-      Colors.black,
-    ],
-    [
-      Colors.grey[900]!,
-      Colors.black,
-      Colors.black,
-    ],
-    [
-      Colors.black,
-      Colors.black,
-    ]
+    [Colors.grey[850]!, Colors.grey[850]!, Colors.grey[900]!],
+    [Colors.grey[850]!, Colors.grey[900]!, Colors.grey[900]!],
+    [Colors.grey[850]!, Colors.grey[900]!, Colors.black],
+    [Colors.grey[900]!, Colors.grey[900]!, Colors.black],
+    [Colors.grey[900]!, Colors.black],
+    [Colors.grey[900]!, Colors.black, Colors.black],
+    [Colors.black, Colors.black],
   ];
 
   final List<List<Color>> _transOpt = [
@@ -102,19 +57,13 @@ class MyTheme with ChangeNotifier {
       Colors.grey[900]!.withOpacity(0.9),
       Colors.black.withOpacity(1),
     ],
-    [
-      Colors.grey[900]!.withOpacity(0.9),
-      Colors.black.withOpacity(1),
-    ],
+    [Colors.grey[900]!.withOpacity(0.9), Colors.black.withOpacity(1)],
     [
       Colors.grey[900]!.withOpacity(0.9),
       Colors.black.withOpacity(0.9),
       Colors.black.withOpacity(1),
     ],
-    [
-      Colors.black.withOpacity(0.9),
-      Colors.black.withOpacity(1),
-    ]
+    [Colors.black.withOpacity(0.9), Colors.black.withOpacity(1)],
   ];
 
   void refresh() {
@@ -302,23 +251,20 @@ class MyTheme with ChangeNotifier {
   void saveTheme(String themeName) {
     final userThemes =
         Hive.box('settings').get('userThemes', defaultValue: {}) as Map;
-    Hive.box('settings').put(
-      'userThemes',
-      {
-        ...userThemes,
-        themeName: {
-          'isDark': _isDark,
-          'useSystemTheme': _useSystemTheme,
-          'accentColor': accentColor,
-          'canvasColor': canvasColor,
-          'cardColor': cardColor,
-          'backGrad': backGrad,
-          'cardGrad': cardGrad,
-          'bottomGrad': bottomGrad,
-          'colorHue': colorHue,
-        },
+    Hive.box('settings').put('userThemes', {
+      ...userThemes,
+      themeName: {
+        'isDark': _isDark,
+        'useSystemTheme': _useSystemTheme,
+        'accentColor': accentColor,
+        'canvasColor': canvasColor,
+        'cardColor': cardColor,
+        'backGrad': backGrad,
+        'cardGrad': cardGrad,
+        'bottomGrad': bottomGrad,
+        'colorHue': colorHue,
       },
-    );
+    });
   }
 
   void deleteTheme(String themeName) {

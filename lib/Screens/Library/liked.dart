@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/collage.dart';
 import 'package:xmusic/CustomWidgets/custom_physics.dart';
@@ -16,6 +15,7 @@ import 'package:xmusic/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:xmusic/Helpers/songs_count.dart' as songs_count;
 import 'package:xmusic/Screens/Library/show_songs.dart';
 import 'package:xmusic/Services/player_service.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 // import 'package:path_provider/path_provider.dart';
 
 final ValueNotifier<bool> selectMode = ValueNotifier<bool>(false);
@@ -171,8 +171,11 @@ class _LikedSongsState extends State<LikedSongs>
   void sortSongs({required int sortVal, required int order}) {
     switch (sortVal) {
       case -1:
-        final List order = Hive.box('settings')
-            .get('order_${widget.playlistName}', defaultValue: []) as List;
+        final List order =
+            Hive.box(
+                  'settings',
+                ).get('order_${widget.playlistName}', defaultValue: [])
+                as List;
         final keyIndices = Map.fromIterables(
           order,
           List.generate(order.length, (index) => index),
@@ -194,45 +197,39 @@ class _LikedSongsState extends State<LikedSongs>
         });
       case 0:
         _songs.sort(
-          (a, b) => a['title']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['title'].toString().toUpperCase()),
+          (a, b) => a['title'].toString().toUpperCase().compareTo(
+            b['title'].toString().toUpperCase(),
+          ),
         );
       case 1:
         _songs.sort(
-          (a, b) => a['dateAdded']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['dateAdded'].toString().toUpperCase()),
+          (a, b) => a['dateAdded'].toString().toUpperCase().compareTo(
+            b['dateAdded'].toString().toUpperCase(),
+          ),
         );
       case 2:
         _songs.sort(
-          (a, b) => a['album']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['album'].toString().toUpperCase()),
+          (a, b) => a['album'].toString().toUpperCase().compareTo(
+            b['album'].toString().toUpperCase(),
+          ),
         );
       case 3:
         _songs.sort(
-          (a, b) => a['artist']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['artist'].toString().toUpperCase()),
+          (a, b) => a['artist'].toString().toUpperCase().compareTo(
+            b['artist'].toString().toUpperCase(),
+          ),
         );
       case 4:
         _songs.sort(
-          (a, b) => a['duration']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['duration'].toString().toUpperCase()),
+          (a, b) => a['duration'].toString().toUpperCase().compareTo(
+            b['duration'].toString().toUpperCase(),
+          ),
         );
       default:
         _songs.sort(
-          (b, a) => a['dateAdded']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['dateAdded'].toString().toUpperCase()),
+          (b, a) => a['dateAdded'].toString().toUpperCase().compareTo(
+            b['dateAdded'].toString().toUpperCase(),
+          ),
         );
     }
 
@@ -271,20 +268,26 @@ class _LikedSongsState extends State<LikedSongs>
       );
     }
     if (albumSortValue == 2) {
-      _sortedAlbumKeysList
-          .sort((b, a) => _albums[a]!.length.compareTo(_albums[b]!.length));
-      _sortedArtistKeysList
-          .sort((b, a) => _artists[a]!.length.compareTo(_artists[b]!.length));
-      _sortedGenreKeysList
-          .sort((b, a) => _genres[a]!.length.compareTo(_genres[b]!.length));
+      _sortedAlbumKeysList.sort(
+        (b, a) => _albums[a]!.length.compareTo(_albums[b]!.length),
+      );
+      _sortedArtistKeysList.sort(
+        (b, a) => _artists[a]!.length.compareTo(_artists[b]!.length),
+      );
+      _sortedGenreKeysList.sort(
+        (b, a) => _genres[a]!.length.compareTo(_genres[b]!.length),
+      );
     }
     if (albumSortValue == 3) {
-      _sortedAlbumKeysList
-          .sort((a, b) => _albums[a]!.length.compareTo(_albums[b]!.length));
-      _sortedArtistKeysList
-          .sort((a, b) => _artists[a]!.length.compareTo(_artists[b]!.length));
-      _sortedGenreKeysList
-          .sort((a, b) => _genres[a]!.length.compareTo(_genres[b]!.length));
+      _sortedAlbumKeysList.sort(
+        (a, b) => _albums[a]!.length.compareTo(_albums[b]!.length),
+      );
+      _sortedArtistKeysList.sort(
+        (a, b) => _artists[a]!.length.compareTo(_artists[b]!.length),
+      );
+      _sortedGenreKeysList.sort(
+        (a, b) => _genres[a]!.length.compareTo(_genres[b]!.length),
+      );
     }
     if (albumSortValue == 4) {
       _sortedAlbumKeysList.shuffle();
@@ -347,18 +350,10 @@ class _LikedSongsState extends State<LikedSongs>
               controller: _tcontroller,
               indicatorSize: TabBarIndicatorSize.label,
               tabs: [
-                Tab(
-                  text: AppLocalizations.of(context)!.songs,
-                ),
-                Tab(
-                  text: AppLocalizations.of(context)!.albums,
-                ),
-                Tab(
-                  text: AppLocalizations.of(context)!.artists,
-                ),
-                Tab(
-                  text: AppLocalizations.of(context)!.genres,
-                ),
+                Tab(text: AppLocalizations.of(context)!.songs),
+                Tab(text: AppLocalizations.of(context)!.albums),
+                Tab(text: AppLocalizations.of(context)!.artists),
+                Tab(text: AppLocalizations.of(context)!.genres),
               ],
             ),
             actions: [
@@ -369,11 +364,12 @@ class _LikedSongsState extends State<LikedSongs>
                     if (_songs.isNotEmpty)
                       MultiDownloadButton(
                         data: _songs,
-                        playlistName: widget.showName == null
-                            ? widget.playlistName[0].toUpperCase() +
-                                widget.playlistName.substring(1)
-                            : widget.showName![0].toUpperCase() +
-                                widget.showName!.substring(1),
+                        playlistName:
+                            widget.showName == null
+                                ? widget.playlistName[0].toUpperCase() +
+                                    widget.playlistName.substring(1)
+                                : widget.showName![0].toUpperCase() +
+                                    widget.showName!.substring(1),
                       ),
                     IconButton(
                       icon: const Icon(CupertinoIcons.search),
@@ -398,8 +394,8 @@ class _LikedSongsState extends State<LikedSongs>
                           borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         ),
                         onSelected:
-                            // (currentIndex == 0) ?
-                            (int value) {
+                        // (currentIndex == 0) ?
+                        (int value) {
                           if (value < 5) {
                             sortValue = value;
                             Hive.box('settings').put('sortValue', value);
@@ -407,10 +403,7 @@ class _LikedSongsState extends State<LikedSongs>
                             orderValue = value - 5;
                             Hive.box('settings').put('orderValue', orderValue);
                           }
-                          sortSongs(
-                            sortVal: sortValue,
-                            order: orderValue,
-                          );
+                          sortSongs(sortVal: sortValue, order: orderValue);
                           setState(() {});
                         },
                         // : (int value) {
@@ -420,9 +413,9 @@ class _LikedSongsState extends State<LikedSongs>
                         //     setState(() {});
                         //   },
                         itemBuilder:
-                            // (currentIndex == 0)
-                            // ?
-                            (context) {
+                        // (currentIndex == 0)
+                        // ?
+                        (context) {
                           final List<String> sortTypes = [
                             AppLocalizations.of(context)!.displayName,
                             AppLocalizations.of(context)!.dateAdded,
@@ -457,9 +450,10 @@ class _LikedSongsState extends State<LikedSongs>
                                         Text(
                                           e,
                                           style: TextStyle(
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).iconTheme.color,
                                           ),
                                         ),
                                       ],
@@ -468,16 +462,13 @@ class _LikedSongsState extends State<LikedSongs>
                                 )
                                 .toList(),
                           );
-                          menuList.add(
-                            const PopupMenuDivider(
-                              height: 10,
-                            ),
-                          );
+                          menuList.add(const PopupMenuDivider(height: 10));
                           menuList.addAll(
                             orderTypes
                                 .map(
                                   (e) => PopupMenuItem(
-                                    value: sortTypes.length +
+                                    value:
+                                        sortTypes.length +
                                         orderTypes.indexOf(e),
                                     child: Row(
                                       children: [
@@ -496,9 +487,10 @@ class _LikedSongsState extends State<LikedSongs>
                                         Text(
                                           e,
                                           style: TextStyle(
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).iconTheme.color,
                                           ),
                                         ),
                                       ],
@@ -512,101 +504,99 @@ class _LikedSongsState extends State<LikedSongs>
                       ),
                   ],
                 ),
-                builder: (
-                  BuildContext context,
-                  bool showValue,
-                  Widget? child,
-                ) {
+                builder: (BuildContext context, bool showValue, Widget? child) {
                   return showValue
                       ? Row(
-                          children: [
-                            MultiDownloadButton(
-                              data: _songs
-                                  .where(
-                                    (element) =>
-                                        selectedItems.contains(element['id']),
-                                  )
-                                  .toList(),
-                              playlistName: widget.showName == null
-                                  ? widget.playlistName[0].toUpperCase() +
-                                      widget.playlistName.substring(1)
-                                  : widget.showName![0].toUpperCase() +
-                                      widget.showName!.substring(1),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                selectedItems.clear();
-                                selectMode.value = false;
-                              },
-                              icon: const Icon(Icons.clear_rounded),
-                            ),
-                          ],
-                        )
+                        children: [
+                          MultiDownloadButton(
+                            data:
+                                _songs
+                                    .where(
+                                      (element) =>
+                                          selectedItems.contains(element['id']),
+                                    )
+                                    .toList(),
+                            playlistName:
+                                widget.showName == null
+                                    ? widget.playlistName[0].toUpperCase() +
+                                        widget.playlistName.substring(1)
+                                    : widget.showName![0].toUpperCase() +
+                                        widget.showName!.substring(1),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              selectedItems.clear();
+                              selectMode.value = false;
+                            },
+                            icon: const Icon(Icons.clear_rounded),
+                          ),
+                        ],
+                      )
                       : child!;
                 },
               ),
             ],
           ),
-          body: !added
-              ? const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                )
-              : TabBarView(
-                  physics: const CustomPhysics(),
-                  controller: _tcontroller,
-                  children: [
-                    SongsTab(
-                      songs: _songs,
-                      onDelete: (Map item) {
-                        deleteLiked(item);
-                      },
-                      sortSongs: (int sortVal, int? orderVal) {
-                        sortValue = sortVal;
-                        Hive.box('settings').put('sortValue', sortVal);
-                        if (orderVal != null && orderVal != orderValue) {
-                          orderValue = orderVal;
-                          Hive.box('settings').put('orderValue', orderVal);
-                        }
-                        sortSongs(
-                          sortVal: sortVal,
-                          order: orderVal ?? orderValue,
-                        );
-                      },
-                      playlistName: widget.playlistName,
-                      scrollController: _scrollController,
-                    ),
-                    AlbumsTab(
-                      albums: _albums,
-                      type: 'album',
-                      offline: false,
-                      playlistName: widget.playlistName,
-                      sortedAlbumKeysList: _sortedAlbumKeysList,
-                    ),
-                    AlbumsTab(
-                      albums: _artists,
-                      type: 'artist',
-                      offline: false,
-                      playlistName: widget.playlistName,
-                      sortedAlbumKeysList: _sortedArtistKeysList,
-                    ),
-                    AlbumsTab(
-                      albums: _genres,
-                      type: 'genre',
-                      offline: false,
-                      playlistName: widget.playlistName,
-                      sortedAlbumKeysList: _sortedGenreKeysList,
-                    ),
-                  ],
-                ),
+          body:
+              !added
+                  ? const Center(child: CircularProgressIndicator.adaptive())
+                  : TabBarView(
+                    physics: const CustomPhysics(),
+                    controller: _tcontroller,
+                    children: [
+                      SongsTab(
+                        songs: _songs,
+                        onDelete: (Map item) {
+                          deleteLiked(item);
+                        },
+                        sortSongs: (int sortVal, int? orderVal) {
+                          sortValue = sortVal;
+                          Hive.box('settings').put('sortValue', sortVal);
+                          if (orderVal != null && orderVal != orderValue) {
+                            orderValue = orderVal;
+                            Hive.box('settings').put('orderValue', orderVal);
+                          }
+                          sortSongs(
+                            sortVal: sortVal,
+                            order: orderVal ?? orderValue,
+                          );
+                        },
+                        playlistName: widget.playlistName,
+                        scrollController: _scrollController,
+                      ),
+                      AlbumsTab(
+                        albums: _albums,
+                        type: 'album',
+                        offline: false,
+                        playlistName: widget.playlistName,
+                        sortedAlbumKeysList: _sortedAlbumKeysList,
+                      ),
+                      AlbumsTab(
+                        albums: _artists,
+                        type: 'artist',
+                        offline: false,
+                        playlistName: widget.playlistName,
+                        sortedAlbumKeysList: _sortedArtistKeysList,
+                      ),
+                      AlbumsTab(
+                        albums: _genres,
+                        type: 'genre',
+                        offline: false,
+                        playlistName: widget.playlistName,
+                        sortedAlbumKeysList: _sortedGenreKeysList,
+                      ),
+                    ],
+                  ),
           floatingActionButton: ValueListenableBuilder(
             valueListenable: _showShuffle,
             child: FloatingActionButton(
               backgroundColor: Theme.of(context).cardColor,
               child: Icon(
                 Icons.shuffle_rounded,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black,
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
                 size: 24.0,
               ),
               onPressed: () {
@@ -621,11 +611,7 @@ class _LikedSongsState extends State<LikedSongs>
                 }
               },
             ),
-            builder: (
-              BuildContext context,
-              bool showShuffle,
-              Widget? child,
-            ) {
+            builder: (BuildContext context, bool showShuffle, Widget? child) {
               return AnimatedSlide(
                 duration: const Duration(milliseconds: 300),
                 offset: showShuffle ? Offset.zero : const Offset(0, 2),
@@ -678,132 +664,134 @@ class _SongsTabState extends State<SongsTab>
     super.build(context);
     return (widget.songs.isEmpty)
         ? emptyScreen(
-            context,
-            3,
-            AppLocalizations.of(context)!.nothingTo,
-            15.0,
-            AppLocalizations.of(context)!.showHere,
-            50,
-            AppLocalizations.of(context)!.addSomething,
-            23.0,
-          )
+          context,
+          3,
+          AppLocalizations.of(context)!.nothingTo,
+          15.0,
+          AppLocalizations.of(context)!.showHere,
+          50,
+          AppLocalizations.of(context)!.addSomething,
+          23.0,
+        )
         : Column(
-            children: [
-              PlaylistHead(
-                songsList: widget.songs,
-                offline: false,
-                fromDownloads: false,
-              ),
-              Expanded(
-                child: ReorderableListView.builder(
-                  onReorder: (oldIndex, newIndex) {
-                    if (newIndex > oldIndex) {
-                      newIndex -= 1;
-                    }
-                    final item = widget.songs.removeAt(oldIndex);
-                    widget.songs.insert(newIndex, item);
-                    _saveItems();
-                  },
-                  // controller: widget.scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(bottom: 10),
-                  shrinkWrap: true,
-                  itemCount: widget.songs.length,
-                  itemExtent: 70.0,
-                  itemBuilder: (context, index) {
-                    return ValueListenableBuilder(
-                      key: Key(widget.songs[index]['id'].toString()),
-                      valueListenable: selectMode,
-                      builder: (context, value, child) {
-                        final bool selected =
-                            selectedItems.contains(widget.songs[index]['id']);
-                        return ListTile(
-                          leading: imageCard(
-                            imageUrl: widget.songs[index]['image'].toString(),
-                            selected: selected,
-                          ),
-                          onTap: () {
-                            if (selectMode.value) {
-                              selectMode.value = false;
-                              if (selected) {
-                                selectedItems.remove(
-                                  widget.songs[index]['id'].toString(),
-                                );
-                                selectMode.value = true;
-                                if (selectedItems.isEmpty) {
-                                  selectMode.value = false;
-                                }
-                              } else {
-                                selectedItems
-                                    .add(widget.songs[index]['id'].toString());
-                                selectMode.value = true;
-                              }
-                              setState(() {});
-                            } else {
-                              PlayerInvoke.init(
-                                songsList: widget.songs,
-                                index: index,
-                                isOffline: false,
-                                recommend: false,
-                                playlistBox: widget.playlistName,
-                              );
-                            }
-                          },
-                          // onLongPress: () {
-                          //   selectMode.value = false;
-                          //   if (selected) {
-                          //     selectedItems
-                          //         .remove(widget.songs[index]['id'].toString());
-                          //     selectMode.value = true;
-                          //     if (selectedItems.isEmpty) {
-                          //       selectMode.value = false;
-                          //     }
-                          //   } else {
-                          //     selectedItems
-                          //         .add(widget.songs[index]['id'].toString());
-                          //     selectMode.value = true;
-                          //   }
-                          //   setState(() {});
-                          // },
+          children: [
+            PlaylistHead(
+              songsList: widget.songs,
+              offline: false,
+              fromDownloads: false,
+            ),
+            Expanded(
+              child: ReorderableListView.builder(
+                onReorder: (oldIndex, newIndex) {
+                  if (newIndex > oldIndex) {
+                    newIndex -= 1;
+                  }
+                  final item = widget.songs.removeAt(oldIndex);
+                  widget.songs.insert(newIndex, item);
+                  _saveItems();
+                },
+                // controller: widget.scrollController,
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 10),
+                shrinkWrap: true,
+                itemCount: widget.songs.length,
+                itemExtent: 70.0,
+                itemBuilder: (context, index) {
+                  return ValueListenableBuilder(
+                    key: Key(widget.songs[index]['id'].toString()),
+                    valueListenable: selectMode,
+                    builder: (context, value, child) {
+                      final bool selected = selectedItems.contains(
+                        widget.songs[index]['id'],
+                      );
+                      return ListTile(
+                        leading: imageCard(
+                          imageUrl: widget.songs[index]['image'].toString(),
                           selected: selected,
-                          selectedTileColor: Colors.white10,
-                          title: Text(
-                            '${widget.songs[index]['title']}',
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          subtitle: Text(
-                            (widget.songs[index]['album'] ?? '') == ''
-                                ? '${widget.songs[index]['artist'] ?? 'Unknown'}'
-                                : '${widget.songs[index]['artist'] ?? 'Unknown'} - ${widget.songs[index]['album']}',
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (widget.playlistName != 'Favorite Songs')
-                                LikeButton(
-                                  mediaItem: null,
-                                  data: widget.songs[index] as Map,
-                                ),
-                              DownloadButton(
+                        ),
+                        onTap: () {
+                          if (selectMode.value) {
+                            selectMode.value = false;
+                            if (selected) {
+                              selectedItems.remove(
+                                widget.songs[index]['id'].toString(),
+                              );
+                              selectMode.value = true;
+                              if (selectedItems.isEmpty) {
+                                selectMode.value = false;
+                              }
+                            } else {
+                              selectedItems.add(
+                                widget.songs[index]['id'].toString(),
+                              );
+                              selectMode.value = true;
+                            }
+                            setState(() {});
+                          } else {
+                            PlayerInvoke.init(
+                              songsList: widget.songs,
+                              index: index,
+                              isOffline: false,
+                              recommend: false,
+                              playlistBox: widget.playlistName,
+                            );
+                          }
+                        },
+                        // onLongPress: () {
+                        //   selectMode.value = false;
+                        //   if (selected) {
+                        //     selectedItems
+                        //         .remove(widget.songs[index]['id'].toString());
+                        //     selectMode.value = true;
+                        //     if (selectedItems.isEmpty) {
+                        //       selectMode.value = false;
+                        //     }
+                        //   } else {
+                        //     selectedItems
+                        //         .add(widget.songs[index]['id'].toString());
+                        //     selectMode.value = true;
+                        //   }
+                        //   setState(() {});
+                        // },
+                        selected: selected,
+                        selectedTileColor: Colors.white10,
+                        title: Text(
+                          '${widget.songs[index]['title']}',
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          (widget.songs[index]['album'] ?? '') == ''
+                              ? '${widget.songs[index]['artist'] ?? 'Unknown'}'
+                              : '${widget.songs[index]['artist'] ?? 'Unknown'} - ${widget.songs[index]['album']}',
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (widget.playlistName != 'Favorite Songs')
+                              LikeButton(
+                                mediaItem: null,
                                 data: widget.songs[index] as Map,
-                                icon: 'download',
                               ),
-                              SongTileTrailingMenu(
-                                data: widget.songs[index] as Map,
-                                isPlaylist: true,
-                                deleteLiked: widget.onDelete,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                            DownloadButton(
+                              data: widget.songs[index] as Map,
+                              icon: 'download',
+                            ),
+                            SongTileTrailingMenu(
+                              data: widget.songs[index] as Map,
+                              isPlaylist: true,
+                              deleteLiked: widget.onDelete,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
-            ],
-          );
+            ),
+          ],
+        );
   }
 }
 
@@ -838,82 +826,91 @@ class _AlbumsTabState extends State<AlbumsTab>
     super.build(context);
     return widget.sortedAlbumKeysList.isEmpty
         ? emptyScreen(
-            context,
-            3,
-            AppLocalizations.of(context)!.nothingTo,
-            15.0,
-            AppLocalizations.of(context)!.showHere,
-            50,
-            AppLocalizations.of(context)!.addSomething,
-            23.0,
-          )
+          context,
+          3,
+          AppLocalizations.of(context)!.nothingTo,
+          15.0,
+          AppLocalizations.of(context)!.showHere,
+          50,
+          AppLocalizations.of(context)!.addSomething,
+          23.0,
+        )
         : ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.only(bottom: 10.0),
-            shrinkWrap: true,
-            itemExtent: 70.0,
-            itemCount: widget.sortedAlbumKeysList.length,
-            itemBuilder: (context, index) {
-              final List imageList = widget
-                          .albums[widget.sortedAlbumKeysList[index]]!.length >=
-                      4
-                  ? widget.albums[widget.sortedAlbumKeysList[index]]!
-                      .sublist(0, 4)
-                  : widget.albums[widget.sortedAlbumKeysList[index]]!.sublist(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 10.0),
+          shrinkWrap: true,
+          itemExtent: 70.0,
+          itemCount: widget.sortedAlbumKeysList.length,
+          itemBuilder: (context, index) {
+            final List imageList =
+                widget.albums[widget.sortedAlbumKeysList[index]]!.length >= 4
+                    ? widget.albums[widget.sortedAlbumKeysList[index]]!.sublist(
+                      0,
+                      4,
+                    )
+                    : widget.albums[widget.sortedAlbumKeysList[index]]!.sublist(
                       0,
                       widget.albums[widget.sortedAlbumKeysList[index]]!.length,
                     );
-              return ListTile(
-                leading: (widget.offline)
-                    ? OfflineCollage(
+            return ListTile(
+              leading:
+                  (widget.offline)
+                      ? OfflineCollage(
                         imageList: imageList,
                         showGrid: widget.type == 'genre',
-                        placeholderImage: widget.type == 'artist'
-                            ? 'assets/artist.png'
-                            : 'assets/album.png',
+                        placeholderImage:
+                            widget.type == 'artist'
+                                ? 'assets/artist.png'
+                                : 'assets/album.png',
                       )
-                    : Collage(
+                      : Collage(
                         imageList: imageList,
                         showGrid: widget.type == 'genre',
-                        placeholderImage: widget.type == 'artist'
-                            ? 'assets/artist.png'
-                            : 'assets/album.png',
+                        placeholderImage:
+                            widget.type == 'artist'
+                                ? 'assets/artist.png'
+                                : 'assets/album.png',
                       ),
-                title: Text(
-                  '${widget.sortedAlbumKeysList[index]}',
-                  overflow: TextOverflow.ellipsis,
+              title: Text(
+                '${widget.sortedAlbumKeysList[index]}',
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(
+                widget.albums[widget.sortedAlbumKeysList[index]]!.length == 1
+                    ? '${widget.albums[widget.sortedAlbumKeysList[index]]!.length} ${AppLocalizations.of(context)!.song}'
+                    : '${widget.albums[widget.sortedAlbumKeysList[index]]!.length} ${AppLocalizations.of(context)!.songs}',
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodySmall!.color,
                 ),
-                subtitle: Text(
-                  widget.albums[widget.sortedAlbumKeysList[index]]!.length == 1
-                      ? '${widget.albums[widget.sortedAlbumKeysList[index]]!.length} ${AppLocalizations.of(context)!.song}'
-                      : '${widget.albums[widget.sortedAlbumKeysList[index]]!.length} ${AppLocalizations.of(context)!.songs}',
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.bodySmall!.color,
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    opaque: false,
+                    pageBuilder:
+                        (_, __, ___) =>
+                            widget.offline
+                                ? SongsList(
+                                  data:
+                                      widget.albums[widget
+                                          .sortedAlbumKeysList[index]]!,
+                                  offline: widget.offline,
+                                )
+                                : LikedSongs(
+                                  playlistName: widget.playlistName!,
+                                  fromPlaylist: true,
+                                  showName:
+                                      widget.sortedAlbumKeysList[index]
+                                          .toString(),
+                                  songs:
+                                      widget.albums[widget
+                                          .sortedAlbumKeysList[index]],
+                                ),
                   ),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      opaque: false,
-                      pageBuilder: (_, __, ___) => widget.offline
-                          ? SongsList(
-                              data: widget
-                                  .albums[widget.sortedAlbumKeysList[index]]!,
-                              offline: widget.offline,
-                            )
-                          : LikedSongs(
-                              playlistName: widget.playlistName!,
-                              fromPlaylist: true,
-                              showName:
-                                  widget.sortedAlbumKeysList[index].toString(),
-                              songs: widget
-                                  .albums[widget.sortedAlbumKeysList[index]],
-                            ),
-                    ),
-                  );
-                },
-              );
-            },
-          );
+                );
+              },
+            );
+          },
+        );
   }
 }

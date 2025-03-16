@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 class SongItem {
@@ -74,15 +73,15 @@ class SongItem {
       final songItem = SongItem(
         id: map['id'].toString(),
         album: map['album']?.toString() ?? '',
-        artists: map['artists'] as List<String>? ??
+        artists:
+            map['artists'] as List<String>? ??
             map['artist']?.split(',') as List<String>? ??
             [],
-        duration: Duration(
-          seconds: dur,
-        ),
+        duration: Duration(seconds: dur),
         genre: map['genre'].toString(),
         image: map['image'].toString(),
-        allImages: map['allImages'] as List? ??
+        allImages:
+            map['allImages'] as List? ??
             map['allImages'] as List? ??
             (map['image']?.toString() != null
                 ? [map['image']?.toString()]
@@ -92,7 +91,8 @@ class SongItem {
         subtitle: map['subtitle']?.toString(),
         title: map['title'].toString(),
         url: map['url']?.toString(),
-        allUrls: map['allUrls'] as List<String>? ??
+        allUrls:
+            map['allUrls'] as List<String>? ??
             ((map['url'] != null && map['url'] != '')
                 ? [map['url'].toString()]
                 : []),

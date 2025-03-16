@@ -5,8 +5,6 @@ import 'package:audiotagger/models/tag.dart';
 // import 'package:ffmpeg_kit_flutter_audio/ffmpeg_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -17,6 +15,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:xmusic/Helpers/lyrics.dart';
 import 'package:xmusic/Services/ext_storage_provider.dart';
 import 'package:xmusic/Services/youtube_services.dart';
+// import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class Download with ChangeNotifier {
@@ -37,17 +37,22 @@ class Download with ChangeNotifier {
 
   int? rememberOption;
   final ValueNotifier<bool> remember = ValueNotifier<bool>(false);
-  String preferredDownloadQuality = Hive.box('settings')
-      .get('downloadQuality', defaultValue: '320 kbps') as String;
-  String preferredYtDownloadQuality = Hive.box('settings')
-      .get('ytDownloadQuality', defaultValue: 'High') as String;
-  String downloadFormat = Hive.box('settings')
-      .get('downloadFormat', defaultValue: 'm4a')
-      .toString();
-  bool createDownloadFolder = Hive.box('settings')
-      .get('createDownloadFolder', defaultValue: false) as bool;
-  bool createYoutubeFolder = Hive.box('settings')
-      .get('createYoutubeFolder', defaultValue: false) as bool;
+  String preferredDownloadQuality =
+      Hive.box('settings').get('downloadQuality', defaultValue: '320 kbps')
+          as String;
+  String preferredYtDownloadQuality =
+      Hive.box('settings').get('ytDownloadQuality', defaultValue: 'High')
+          as String;
+  String downloadFormat =
+      Hive.box(
+        'settings',
+      ).get('downloadFormat', defaultValue: 'm4a').toString();
+  bool createDownloadFolder =
+      Hive.box('settings').get('createDownloadFolder', defaultValue: false)
+          as bool;
+  bool createYoutubeFolder =
+      Hive.box('settings').get('createYoutubeFolder', defaultValue: false)
+          as bool;
   double? progress = 0.0;
   String lastDownloadId = '';
   bool downloadLyrics =
@@ -158,8 +163,9 @@ class Download with ChangeNotifier {
               ),
               title: Text(
                 AppLocalizations.of(context)!.alreadyExists,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -168,9 +174,7 @@ class Download with ChangeNotifier {
                     '"${data['title']}" ${AppLocalizations.of(context)!.downAgain}',
                     softWrap: true,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
               actions: [
@@ -210,10 +214,11 @@ class Download with ChangeNotifier {
                         children: [
                           TextButton(
                             style: TextButton.styleFrom(
-                              foregroundColor: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.white
-                                  : Colors.grey[700],
+                              foregroundColor:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.grey[700],
                             ),
                             onPressed: () {
                               lastDownloadId = data['id'].toString();
@@ -227,10 +232,11 @@ class Download with ChangeNotifier {
                           ),
                           TextButton(
                             style: TextButton.styleFrom(
-                              foregroundColor: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.white
-                                  : Colors.grey[700],
+                              foregroundColor:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.grey[700],
                             ),
                             onPressed: () async {
                               Navigator.pop(context);
@@ -238,8 +244,9 @@ class Download with ChangeNotifier {
                               downloadSong(dlPath, filename, data);
                               rememberOption = 1;
                             },
-                            child:
-                                Text(AppLocalizations.of(context)!.yesReplace),
+                            child: Text(
+                              AppLocalizations.of(context)!.yesReplace,
+                            ),
                           ),
                           const SizedBox(width: 5.0),
                           TextButton(
@@ -251,8 +258,10 @@ class Download with ChangeNotifier {
                             onPressed: () async {
                               Navigator.pop(context);
                               while (await File('$dlPath/$filename').exists()) {
-                                filename =
-                                    filename.replaceAll('.m4a', ' (1).m4a');
+                                filename = filename.replaceAll(
+                                  '.m4a',
+                                  ' (1).m4a',
+                                );
                               }
                               rememberOption = 2;
                               downloadSong(dlPath, filename, data);
@@ -285,11 +294,7 @@ class Download with ChangeNotifier {
     }
   }
 
-  Future<void> downloadSong(
-    String? dlPath,
-    String fileName,
-    Map data,
-  ) async {
+  Future<void> downloadSong(String? dlPath, String fileName, Map data) async {
     Logger.root.info('processing download');
     progress = null;
     notifyListeners();
@@ -310,25 +315,24 @@ class Download with ChangeNotifier {
 
     try {
       Logger.root.info('Creating audio file $dlPath/$fileName');
-      await File('$dlPath/$fileName')
-          .create(recursive: true)
-          .then((value) => filepath = value.path);
+      await File(
+        '$dlPath/$fileName',
+      ).create(recursive: true).then((value) => filepath = value.path);
       Logger.root.info('Creating image file $appPath/$artname');
-      await File('$appPath/$artname')
-          .create(recursive: true)
-          .then((value) => filepath2 = value.path);
+      await File(
+        '$appPath/$artname',
+      ).create(recursive: true).then((value) => filepath2 = value.path);
     } catch (e) {
-      Logger.root
-          .info('Error creating files, requesting additional permission');
+      Logger.root.info(
+        'Error creating files, requesting additional permission',
+      );
       if (Platform.isAndroid) {
         PermissionStatus status = await Permission.manageExternalStorage.status;
         if (status.isDenied) {
           Logger.root.info(
             'ManageExternalStorage permission is denied, requesting permission',
           );
-          await [
-            Permission.manageExternalStorage,
-          ].request();
+          await [Permission.manageExternalStorage].request();
         }
         status = await Permission.manageExternalStorage.status;
         if (status.isPermanentlyDenied) {
@@ -340,14 +344,14 @@ class Download with ChangeNotifier {
       }
 
       Logger.root.info('Retrying to create audio file');
-      await File('$dlPath/$fileName')
-          .create(recursive: true)
-          .then((value) => filepath = value.path);
+      await File(
+        '$dlPath/$fileName',
+      ).create(recursive: true).then((value) => filepath = value.path);
 
       Logger.root.info('Retrying to create image file');
-      await File('$appPath/$artname')
-          .create(recursive: true)
-          .then((value) => filepath2 = value.path);
+      await File(
+        '$appPath/$artname',
+      ).create(recursive: true).then((value) => filepath2 = value.path);
     }
     String kUrl = data['url'].toString();
 
@@ -367,8 +371,9 @@ class Download with ChangeNotifier {
     if (data['url'].toString().contains('google')) {
       // Use preferredYtDownloadQuality to check for quality first
       final AudioOnlyStreamInfo streamInfo =
-          (await YouTubeServices.instance.getStreamInfo(data['id'].toString()))
-              .last;
+          (await YouTubeServices.instance.getStreamInfo(
+            data['id'].toString(),
+          )).last;
       total = streamInfo.size.totalBytes;
       // Get the actual stream
       stream = YouTubeServices.instance.getStreamClient(streamInfo);
@@ -380,197 +385,198 @@ class Download with ChangeNotifier {
       stream = response.stream.asBroadcastStream();
     }
     Logger.root.info('Client connected, Starting download');
-    stream.listen((value) {
-      bytes.addAll(value);
-      try {
-        recieved += value.length;
-        progress = recieved / total;
-        notifyListeners();
-        if (!download && client != null) {
-          client.close();
-          // need to add for yt as well
-        }
-      } catch (e) {
-        Logger.root.severe('Error in download: $e');
-      }
-    }).onDone(() async {
-      if (download) {
-        Logger.root.info('Download complete, modifying file');
-        final file = File(filepath!);
-        await file.writeAsBytes(bytes);
-
-        final client = HttpClient();
-        final HttpClientRequest request2 =
-            await client.getUrl(Uri.parse(data['image'].toString()));
-        final HttpClientResponse response2 = await request2.close();
-        final bytes2 = await consolidateHttpClientResponseBytes(response2);
-        final File file2 = File(filepath2);
-
-        file2.writeAsBytesSync(bytes2);
-        try {
-          Logger.root.info('Checking if lyrics required');
-          if (downloadLyrics) {
-            Logger.root.info('downloading lyrics');
-            final Map res = await Lyrics.getLyrics(
-              id: data['id'].toString(),
-              title: data['title'].toString(),
-              artist: data['artist']?.toString() ?? '',
-              album: data['album']?.toString() ?? '',
-              duration: data['duration']?.toString() ?? '180',
-              saavnHas: data['has_lyrics'] == 'true',
-            );
-            lyrics = res['lyrics'].toString();
-          }
-        } catch (e) {
-          Logger.root.severe('Error fetching lyrics: $e');
-          lyrics = '';
-        }
-        // commented out not to use FFmpeg as it increases the size of the app
-        // can uncomment this if you want to use FFmpeg to convert the audio format
-        // to any desired codec instead of the default m4a one.
-
-        // final List<String> availableFormats = ['m4a'];
-        // if (downloadFormat != 'm4a' &&
-        //     availableFormats.contains(downloadFormat)) {
-        //   List<String>? argsList;
-        //   if (downloadFormat == 'mp3') {
-        //     argsList = [
-        //       '-y',
-        //       '-i',
-        //       '$filepath',
-        //       '-c:a',
-        //       'libmp3lame',
-        //       '-b:a',
-        //       '320k',
-        //       filepath!.replaceAll('.m4a', '.mp3'),
-        //     ];
-        //   }
-        //   if (downloadFormat == 'm4a') {
-        //     argsList = [
-        //       '-y',
-        //       '-i',
-        //       filepath!,
-        //       '-c:a',
-        //       'aac',
-        //       '-b:a',
-        //       '320k',
-        //       filepath!.replaceAll('.m4a', '.m4a'),
-        //     ];
-        //   }
-        //   if (argsList != null) {
-        //     Logger.root.info('Converting audio to $downloadFormat');
-        //     await FFmpegKit.executeWithArguments(argsList);
-        //     Logger.root.info('Conversion complete, deleting old file');
-        //     await File(filepath!).delete();
-        //     filepath = filepath!.replaceAll('.m4a', '.$downloadFormat');
-        //   }
-        // }
-        Logger.root.info('Getting audio tags');
-        if (Platform.isAndroid) {
+    stream
+        .listen((value) {
+          bytes.addAll(value);
           try {
-            final Tag tag = Tag(
-              title: data['title'].toString(),
-              artist: data['artist'].toString(),
-              albumArtist: data['album_artist']?.toString() ??
-                  data['artist']?.toString().split(', ')[0] ??
-                  '',
-              artwork: filepath2,
-              album: data['album'].toString(),
-              genre: data['language'].toString(),
-              year: data['year'].toString(),
-              lyrics: lyrics,
-              comment: 'xmusic',
-            );
-            Logger.root.info('Started tag editing');
-            final tagger = Audiotagger();
-            await tagger.writeTags(
-              path: filepath!,
-              tag: tag,
-            );
-            // await Future.delayed(const Duration(seconds: 1), () async {
-            //   if (await file2.exists()) {
-            //     await file2.delete();
-            //   }
-            // });
+            recieved += value.length;
+            progress = recieved / total;
+            notifyListeners();
+            if (!download && client != null) {
+              client.close();
+              // need to add for yt as well
+            }
           } catch (e) {
-            Logger.root.severe('Error editing tags: $e');
+            Logger.root.severe('Error in download: $e');
           }
-        } else {
-          // Set metadata to file
-          if (data['language'].toString() == 'YouTube') {
-            Logger.root.info('Started tag editing');
-            // skipping metadata for saavn for the time being as it corrupts the file
-            await MetadataGod.writeMetadata(
-              file: filepath!,
-              metadata: Metadata(
-                title: data['title'].toString(),
-                artist: data['artist'].toString(),
-                albumArtist: data['album_artist']?.toString() ??
-                    data['artist']?.toString().split(', ')[0] ??
-                    '',
-                album: data['album'].toString(),
-                genre: data['language'].toString(),
-                year: ['', 'null'].contains(data['year'].toString())
-                    ? null
-                    : int.parse(data['year'].toString()),
-                // lyrics: lyrics,
-                // comment: 'xmusic',
-                // trackNumber: 1,
-                // trackTotal: 12,
-                // discNumber: 1,
-                // discTotal: 5,
-                durationMs: int.parse(data['duration'].toString()) * 1000,
-                fileSize: file.lengthSync(),
-                picture: Picture(
-                  data: bytes2,
-                  mimeType: 'image/jpeg',
-                ),
-              ),
+        })
+        .onDone(() async {
+          if (download) {
+            Logger.root.info('Download complete, modifying file');
+            final file = File(filepath!);
+            await file.writeAsBytes(bytes);
+
+            final client = HttpClient();
+            final HttpClientRequest request2 = await client.getUrl(
+              Uri.parse(data['image'].toString()),
             );
+            final HttpClientResponse response2 = await request2.close();
+            final bytes2 = await consolidateHttpClientResponseBytes(response2);
+            final File file2 = File(filepath2);
+
+            file2.writeAsBytesSync(bytes2);
+            try {
+              Logger.root.info('Checking if lyrics required');
+              if (downloadLyrics) {
+                Logger.root.info('downloading lyrics');
+                final Map res = await Lyrics.getLyrics(
+                  id: data['id'].toString(),
+                  title: data['title'].toString(),
+                  artist: data['artist']?.toString() ?? '',
+                  album: data['album']?.toString() ?? '',
+                  duration: data['duration']?.toString() ?? '180',
+                  saavnHas: data['has_lyrics'] == 'true',
+                );
+                lyrics = res['lyrics'].toString();
+              }
+            } catch (e) {
+              Logger.root.severe('Error fetching lyrics: $e');
+              lyrics = '';
+            }
+            // commented out not to use FFmpeg as it increases the size of the app
+            // can uncomment this if you want to use FFmpeg to convert the audio format
+            // to any desired codec instead of the default m4a one.
+
+            // final List<String> availableFormats = ['m4a'];
+            // if (downloadFormat != 'm4a' &&
+            //     availableFormats.contains(downloadFormat)) {
+            //   List<String>? argsList;
+            //   if (downloadFormat == 'mp3') {
+            //     argsList = [
+            //       '-y',
+            //       '-i',
+            //       '$filepath',
+            //       '-c:a',
+            //       'libmp3lame',
+            //       '-b:a',
+            //       '320k',
+            //       filepath!.replaceAll('.m4a', '.mp3'),
+            //     ];
+            //   }
+            //   if (downloadFormat == 'm4a') {
+            //     argsList = [
+            //       '-y',
+            //       '-i',
+            //       filepath!,
+            //       '-c:a',
+            //       'aac',
+            //       '-b:a',
+            //       '320k',
+            //       filepath!.replaceAll('.m4a', '.m4a'),
+            //     ];
+            //   }
+            //   if (argsList != null) {
+            //     Logger.root.info('Converting audio to $downloadFormat');
+            //     await FFmpegKit.executeWithArguments(argsList);
+            //     Logger.root.info('Conversion complete, deleting old file');
+            //     await File(filepath!).delete();
+            //     filepath = filepath!.replaceAll('.m4a', '.$downloadFormat');
+            //   }
+            // }
+            Logger.root.info('Getting audio tags');
+            if (Platform.isAndroid) {
+              try {
+                final Tag tag = Tag(
+                  title: data['title'].toString(),
+                  artist: data['artist'].toString(),
+                  albumArtist:
+                      data['album_artist']?.toString() ??
+                      data['artist']?.toString().split(', ')[0] ??
+                      '',
+                  artwork: filepath2,
+                  album: data['album'].toString(),
+                  genre: data['language'].toString(),
+                  year: data['year'].toString(),
+                  lyrics: lyrics,
+                  comment: 'xmusic',
+                );
+                Logger.root.info('Started tag editing');
+                final tagger = Audiotagger();
+                await tagger.writeTags(path: filepath!, tag: tag);
+                // await Future.delayed(const Duration(seconds: 1), () async {
+                //   if (await file2.exists()) {
+                //     await file2.delete();
+                //   }
+                // });
+              } catch (e) {
+                Logger.root.severe('Error editing tags: $e');
+              }
+            } else {
+              // Set metadata to file
+              if (data['language'].toString() == 'YouTube') {
+                Logger.root.info('Started tag editing');
+                // skipping metadata for saavn for the time being as it corrupts the file
+                await MetadataGod.writeMetadata(
+                  file: filepath!,
+                  metadata: Metadata(
+                    title: data['title'].toString(),
+                    artist: data['artist'].toString(),
+                    albumArtist:
+                        data['album_artist']?.toString() ??
+                        data['artist']?.toString().split(', ')[0] ??
+                        '',
+                    album: data['album'].toString(),
+                    genre: data['language'].toString(),
+                    year:
+                        ['', 'null'].contains(data['year'].toString())
+                            ? null
+                            : int.parse(data['year'].toString()),
+                    // lyrics: lyrics,
+                    // comment: 'xmusic',
+                    // trackNumber: 1,
+                    // trackTotal: 12,
+                    // discNumber: 1,
+                    // discTotal: 5,
+                    durationMs: int.parse(data['duration'].toString()) * 1000,
+                    fileSize: file.lengthSync(),
+                    picture: Picture(data: bytes2, mimeType: 'image/jpeg'),
+                  ),
+                );
+              }
+            }
+            Logger.root.info('Closing connection & notifying listeners');
+            client.close();
+            lastDownloadId = data['id'].toString();
+            progress = 0.0;
+            notifyListeners();
+
+            Logger.root.info('Putting data to downloads database');
+            final songData = {
+              'id': data['id'].toString(),
+              'title': data['title'].toString(),
+              'subtitle': data['subtitle'].toString(),
+              'artist': data['artist'].toString(),
+              'albumArtist':
+                  data['album_artist']?.toString() ??
+                  data['artist']?.toString().split(', ')[0],
+              'album': data['album'].toString(),
+              'genre': data['language'].toString(),
+              'year': data['year'].toString(),
+              'lyrics': lyrics,
+              'duration': data['duration'],
+              'release_date': data['release_date'].toString(),
+              'album_id': data['album_id'].toString(),
+              'perma_url': data['perma_url'].toString(),
+              'quality': preferredDownloadQuality,
+              'path': filepath,
+              'image': filepath2,
+              'image_url': data['image'].toString(),
+              'from_yt': data['language'].toString() == 'YouTube',
+              'dateAdded': DateTime.now().toString(),
+            };
+            Hive.box('downloads').put(songData['id'].toString(), songData);
+
+            Logger.root.info('Everything Done!');
+            // ShowSnackBar().showSnackBar(
+            //   context,
+            //   '"${data['title']}" ${AppLocalizations.of(context)!.downed}',
+            // );
+          } else {
+            download = true;
+            progress = 0.0;
+            File(filepath!).delete();
+            File(filepath2).delete();
           }
-        }
-        Logger.root.info('Closing connection & notifying listeners');
-        client.close();
-        lastDownloadId = data['id'].toString();
-        progress = 0.0;
-        notifyListeners();
-
-        Logger.root.info('Putting data to downloads database');
-        final songData = {
-          'id': data['id'].toString(),
-          'title': data['title'].toString(),
-          'subtitle': data['subtitle'].toString(),
-          'artist': data['artist'].toString(),
-          'albumArtist': data['album_artist']?.toString() ??
-              data['artist']?.toString().split(', ')[0],
-          'album': data['album'].toString(),
-          'genre': data['language'].toString(),
-          'year': data['year'].toString(),
-          'lyrics': lyrics,
-          'duration': data['duration'],
-          'release_date': data['release_date'].toString(),
-          'album_id': data['album_id'].toString(),
-          'perma_url': data['perma_url'].toString(),
-          'quality': preferredDownloadQuality,
-          'path': filepath,
-          'image': filepath2,
-          'image_url': data['image'].toString(),
-          'from_yt': data['language'].toString() == 'YouTube',
-          'dateAdded': DateTime.now().toString(),
-        };
-        Hive.box('downloads').put(songData['id'].toString(), songData);
-
-        Logger.root.info('Everything Done!');
-        // ShowSnackBar().showSnackBar(
-        //   context,
-        //   '"${data['title']}" ${AppLocalizations.of(context)!.downed}',
-        // );
-      } else {
-        download = true;
-        progress = 0.0;
-        File(filepath!).delete();
-        File(filepath2).delete();
-      }
-    });
+        });
   }
 }

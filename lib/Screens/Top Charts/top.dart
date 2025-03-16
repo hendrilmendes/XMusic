@@ -1,6 +1,5 @@
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xmusic/APIs/spotify_api.dart';
@@ -12,6 +11,7 @@ import 'package:xmusic/Helpers/spotify_helper.dart';
 // import 'package:xmusic/Helpers/countrycodes.dart';
 import 'package:xmusic/Screens/Search/search.dart';
 import 'package:xmusic/constants/countrycodes.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 List localSongs = [];
 List globalSongs = [];
@@ -123,14 +123,17 @@ class _TopChartsState extends State<TopCharts>
 
 Future<List> getChartDetails(String accessToken, String type) async {
   final String globalPlaylistId = CountryCodes.localChartCodes['Global']!;
-  final String localPlaylistId = CountryCodes.localChartCodes.containsKey(type)
-      ? CountryCodes.localChartCodes[type]!
-      : CountryCodes.localChartCodes['Brazil']!;
+  final String localPlaylistId =
+      CountryCodes.localChartCodes.containsKey(type)
+          ? CountryCodes.localChartCodes[type]!
+          : CountryCodes.localChartCodes['Brazil']!;
   final String playlistId =
       type == 'Global' ? globalPlaylistId : localPlaylistId;
   final List data = [];
-  final List tracks =
-      await SpotifyApi().getAllTracksOfPlaylist(accessToken, playlistId);
+  final List tracks = await SpotifyApi().getAllTracksOfPlaylist(
+    accessToken,
+    playlistId,
+  );
   for (final track in tracks) {
     final trackName = track['track']['name'];
     final imageUrlSmall = track['track']['album']['images'].last['url'];
@@ -158,46 +161,42 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
   final String? accessToken = await retriveAccessToken();
   if (accessToken == null) {
     launchUrl(
-      Uri.parse(
-        SpotifyApi().requestAuthorization(),
-      ),
+      Uri.parse(SpotifyApi().requestAuthorization()),
       mode: LaunchMode.externalApplication,
     );
     final appLinks = AppLinks();
-    appLinks.uriLinkStream.listen(
-      (uri) async {
-        final link = uri.toString();
-        if (link.contains('code=')) {
-          final code = link.split('code=')[1];
-          Hive.box('settings').put('spotifyAppCode', code);
-          final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
-          final List<String> data =
-              await SpotifyApi().getAccessToken(code: code);
-          if (data.isNotEmpty) {
-            Hive.box('settings').put('spotifyAccessToken', data[0]);
-            Hive.box('settings').put('spotifyRefreshToken', data[1]);
-            Hive.box('settings').put('spotifySigned', true);
-            Hive.box('settings')
-                .put('spotifyTokenExpireAt', currentTime + int.parse(data[2]));
-          }
+    appLinks.uriLinkStream.listen((uri) async {
+      final link = uri.toString();
+      if (link.contains('code=')) {
+        final code = link.split('code=')[1];
+        Hive.box('settings').put('spotifyAppCode', code);
+        final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
+        final List<String> data = await SpotifyApi().getAccessToken(code: code);
+        if (data.isNotEmpty) {
+          Hive.box('settings').put('spotifyAccessToken', data[0]);
+          Hive.box('settings').put('spotifyRefreshToken', data[1]);
+          Hive.box('settings').put('spotifySigned', true);
+          Hive.box(
+            'settings',
+          ).put('spotifyTokenExpireAt', currentTime + int.parse(data[2]));
+        }
 
-          final temp = await getChartDetails(data[0], type);
-          if (temp.isNotEmpty) {
-            Hive.box('cache').put('${type}_chart', temp);
-            if (type == 'Global') {
-              globalSongs = temp;
-            } else {
-              localSongs = temp;
-            }
-          }
+        final temp = await getChartDetails(data[0], type);
+        if (temp.isNotEmpty) {
+          Hive.box('cache').put('${type}_chart', temp);
           if (type == 'Global') {
-            globalFetchFinished.value = true;
+            globalSongs = temp;
           } else {
-            localFetchFinished.value = true;
+            localSongs = temp;
           }
         }
-      },
-    );
+        if (type == 'Global') {
+          globalFetchFinished.value = true;
+        } else {
+          localFetchFinished.value = true;
+        }
+      }
+    });
   } else {
     final temp = await getChartDetails(accessToken, type);
     if (temp.isNotEmpty) {
@@ -232,11 +231,13 @@ class _TopPageState extends State<TopPage>
       localFetched = true;
     }
     if (type == 'Global') {
-      globalSongs = await Hive.box('cache')
-          .get('${type}_chart', defaultValue: []) as List;
+      globalSongs =
+          await Hive.box('cache').get('${type}_chart', defaultValue: [])
+              as List;
     } else {
-      localSongs = await Hive.box('cache')
-          .get('${type}_chart', defaultValue: []) as List;
+      localSongs =
+          await Hive.box('cache').get('${type}_chart', defaultValue: [])
+              as List;
     }
     setState(() {});
   }
@@ -283,23 +284,22 @@ class _TopPageState extends State<TopPage>
               )
             else if (showList.isEmpty)
               Expanded(
-                child: value
-                    ? emptyScreen(
-                        context,
-                        0,
-                        ':( ',
-                        100,
-                        'ERROR',
-                        60,
-                        'Service Unavailable',
-                        20,
-                      )
-                    : const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator.adaptive(),
-                        ],
-                      ),
+                child:
+                    value
+                        ? emptyScreen(
+                          context,
+                          0,
+                          ':( ',
+                          100,
+                          'ERROR',
+                          60,
+                          'Service Unavailable',
+                          20,
+                        )
+                        : const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [CircularProgressIndicator.adaptive()],
+                        ),
               )
             else
               Expanded(
@@ -323,9 +323,7 @@ class _TopPageState extends State<TopPage>
                       trailing: PopupMenuButton(
                         icon: const Icon(Icons.more_vert_rounded),
                         shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15.0),
-                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         ),
                         onSelected: (int? value) async {
                           if (value == 0) {
@@ -337,33 +335,38 @@ class _TopPageState extends State<TopPage>
                             );
                           }
                         },
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 0,
-                            child: Row(
-                              children: [
-                                const Icon(Icons.open_in_new_rounded),
-                                const SizedBox(width: 10.0),
-                                Text(
-                                  AppLocalizations.of(context)!.openInSpotify,
-                                  style: TextStyle(
-                                    color: Theme.of(context).iconTheme.color,
-                                  ),
+                        itemBuilder:
+                            (context) => [
+                              PopupMenuItem(
+                                value: 0,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.open_in_new_rounded),
+                                    const SizedBox(width: 10.0),
+                                    Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.openInSpotify,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
+                              ),
+                            ],
                       ),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SearchPage(
-                              query:
-                                  '${showList[index]["name"]} - ${showList[index]["artist"]}',
-                              fromDirectSearch: true,
-                            ),
+                            builder:
+                                (context) => SearchPage(
+                                  query:
+                                      '${showList[index]["name"]} - ${showList[index]["artist"]}',
+                                  fromDirectSearch: true,
+                                ),
                           ),
                         );
                       },

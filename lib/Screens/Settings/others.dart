@@ -1,11 +1,9 @@
-
 // ignore_for_file: deprecated_member_use
 
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -15,6 +13,7 @@ import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
 import 'package:xmusic/Helpers/picker.dart';
 import 'package:xmusic/constants/languagecodes.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:xmusic/main.dart';
 
 class OthersPage extends StatefulWidget {
@@ -29,8 +28,9 @@ class _OthersPageState extends State<OthersPage> {
   final ValueNotifier<bool> includeOrExclude = ValueNotifier<bool>(
     Hive.box('settings').get('includeOrExclude', defaultValue: false) as bool,
   );
-  List includedExcludedPaths = Hive.box('settings')
-      .get('includedExcludedPaths', defaultValue: []) as List;
+  List includedExcludedPaths =
+      Hive.box('settings').get('includedExcludedPaths', defaultValue: [])
+          as List;
   String lang =
       Hive.box('settings').get('lang', defaultValue: 'Portuguese') as String;
   bool useProxy =
@@ -46,36 +46,19 @@ class _OthersPageState extends State<OthersPage> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
-            AppLocalizations.of(
-              context,
-            )!
-                .others,
+            AppLocalizations.of(context)!.others,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).iconTheme.color,
-            ),
+            style: TextStyle(color: Theme.of(context).iconTheme.color),
           ),
-          iconTheme: IconThemeData(
-            color: Theme.of(context).iconTheme.color,
-          ),
+          iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         ),
         body: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(10.0),
           children: [
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .lang,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .langSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.lang),
+              subtitle: Text(AppLocalizations.of(context)!.langSub),
               onTap: () {},
               trailing: DropdownButton(
                 value: lang,
@@ -86,44 +69,34 @@ class _OthersPageState extends State<OthersPage> {
                 underline: const SizedBox(),
                 onChanged: (String? newValue) {
                   if (newValue != null) {
-                    setState(
-                      () {
-                        lang = newValue;
-                        MyApp.of(context).setLocale(
-                          Locale.fromSubtags(
-                            languageCode:
-                                LanguageCodes.languageCodes[newValue] ?? 'en',
-                          ),
-                        );
-                        Hive.box('settings').put('lang', newValue);
-                      },
-                    );
+                    setState(() {
+                      lang = newValue;
+                      MyApp.of(context).setLocale(
+                        Locale.fromSubtags(
+                          languageCode:
+                              LanguageCodes.languageCodes[newValue] ?? 'en',
+                        ),
+                      );
+                      Hive.box('settings').put('lang', newValue);
+                    });
                   }
                 },
-                items: LanguageCodes.languageCodes.keys
-                    .map<DropdownMenuItem<String>>((language) {
-                  return DropdownMenuItem<String>(
-                    value: language,
-                    child: Text(
-                      language,
-                    ),
-                  );
-                }).toList(),
+                items:
+                    LanguageCodes.languageCodes.keys
+                        .map<DropdownMenuItem<String>>((language) {
+                          return DropdownMenuItem<String>(
+                            value: language,
+                            child: Text(language),
+                          );
+                        })
+                        .toList(),
               ),
               dense: true,
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .includeExcludeFolder,
-              ),
+              title: Text(AppLocalizations.of(context)!.includeExcludeFolder),
               subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .includeExcludeFolderSub,
+                AppLocalizations.of(context)!.includeExcludeFolderSub,
               ),
               dense: true,
               onTap: () {
@@ -134,18 +107,11 @@ class _OthersPageState extends State<OthersPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return BottomGradientContainer(
-                      borderRadius: BorderRadius.circular(
-                        20.0,
-                      ),
+                      borderRadius: BorderRadius.circular(20.0),
                       child: AnimatedList(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
-                        padding: const EdgeInsets.fromLTRB(
-                          0,
-                          10,
-                          0,
-                          10,
-                        ),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         key: listKey,
                         initialItemCount: includedExcludedPaths.length + 2,
                         itemBuilder: (cntxt, idx, animation) {
@@ -166,25 +132,26 @@ class _OthersPageState extends State<OthersPage> {
                                           label: Text(
                                             AppLocalizations.of(
                                               context,
-                                            )!
-                                                .excluded,
+                                            )!.excluded,
                                           ),
                                           selectedColor: Theme.of(context)
                                               .colorScheme
                                               .secondary
                                               .withOpacity(0.2),
                                           labelStyle: TextStyle(
-                                            color: !value
-                                                ? Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary
-                                                : Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge!
-                                                    .color,
-                                            fontWeight: !value
-                                                ? FontWeight.w600
-                                                : FontWeight.normal,
+                                            color:
+                                                !value
+                                                    ? Theme.of(
+                                                      context,
+                                                    ).colorScheme.secondary
+                                                    : Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge!
+                                                        .color,
+                                            fontWeight:
+                                                !value
+                                                    ? FontWeight.w600
+                                                    : FontWeight.normal,
                                           ),
                                           selected: !value,
                                           onSelected: (bool selected) {
@@ -195,32 +162,31 @@ class _OthersPageState extends State<OthersPage> {
                                             );
                                           },
                                         ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
+                                        const SizedBox(width: 5),
                                         ChoiceChip(
                                           label: Text(
                                             AppLocalizations.of(
                                               context,
-                                            )!
-                                                .included,
+                                            )!.included,
                                           ),
                                           selectedColor: Theme.of(context)
                                               .colorScheme
                                               .secondary
                                               .withOpacity(0.2),
                                           labelStyle: TextStyle(
-                                            color: value
-                                                ? Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary
-                                                : Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge!
-                                                    .color,
-                                            fontWeight: value
-                                                ? FontWeight.w600
-                                                : FontWeight.normal,
+                                            color:
+                                                value
+                                                    ? Theme.of(
+                                                      context,
+                                                    ).colorScheme.secondary
+                                                    : Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge!
+                                                        .color,
+                                            fontWeight:
+                                                value
+                                                    ? FontWeight.w600
+                                                    : FontWeight.normal,
                                           ),
                                           selected: value,
                                           onSelected: (bool selected) {
@@ -242,13 +208,11 @@ class _OthersPageState extends State<OthersPage> {
                                       child: Text(
                                         value
                                             ? AppLocalizations.of(
-                                                context,
-                                              )!
-                                                .includedDetails
+                                              context,
+                                            )!.includedDetails
                                             : AppLocalizations.of(
-                                                context,
-                                              )!
-                                                .excludedDetails,
+                                              context,
+                                            )!.excludedDetails,
                                         textAlign: TextAlign.start,
                                       ),
                                     ),
@@ -259,12 +223,8 @@ class _OthersPageState extends State<OthersPage> {
                           }
                           if (idx == 1) {
                             return ListTile(
-                              title: Text(
-                                AppLocalizations.of(context)!.addNew,
-                              ),
-                              leading: const Icon(
-                                CupertinoIcons.add,
-                              ),
+                              title: Text(AppLocalizations.of(context)!.addNew),
+                              leading: const Icon(CupertinoIcons.add),
                               onTap: () async {
                                 final String temp = await Picker.selectFolder(
                                   context: context,
@@ -297,9 +257,7 @@ class _OthersPageState extends State<OthersPage> {
                           return SizeTransition(
                             sizeFactor: animation,
                             child: ListTile(
-                              leading: const Icon(
-                                CupertinoIcons.folder,
-                              ),
+                              leading: const Icon(CupertinoIcons.folder),
                               title: Text(
                                 includedExcludedPaths[idx - 2].toString(),
                               ),
@@ -331,29 +289,17 @@ class _OthersPageState extends State<OthersPage> {
               },
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .minAudioLen,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .minAudioLenSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.minAudioLen),
+              subtitle: Text(AppLocalizations.of(context)!.minAudioLenSub),
               dense: true,
               onTap: () {
                 showTextInputDialog(
                   context: context,
-                  title: AppLocalizations.of(
-                    context,
-                  )!
-                      .minAudioAlert,
-                  initialText: (Hive.box('settings')
-                          .get('minDuration', defaultValue: 10) as int)
-                      .toString(),
+                  title: AppLocalizations.of(context)!.minAudioAlert,
+                  initialText:
+                      (Hive.box('settings').get('minDuration', defaultValue: 10)
+                              as int)
+                          .toString(),
                   keyboardType: TextInputType.number,
                   onSubmitted: (String value, BuildContext context) {
                     if (value.trim() == '') {
@@ -366,86 +312,36 @@ class _OthersPageState extends State<OthersPage> {
               },
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .liveSearch,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .liveSearchSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.liveSearch),
+              subtitle: Text(AppLocalizations.of(context)!.liveSearchSub),
               keyName: 'liveSearch',
               isThreeLine: false,
               defaultValue: true,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .useDown,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .useDownSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.useDown),
+              subtitle: Text(AppLocalizations.of(context)!.useDownSub),
               keyName: 'useDown',
               isThreeLine: true,
               defaultValue: true,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .getLyricsOnline,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .getLyricsOnlineSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.getLyricsOnline),
+              subtitle: Text(AppLocalizations.of(context)!.getLyricsOnlineSub),
               keyName: 'getLyricsOnline',
               isThreeLine: true,
               defaultValue: true,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .supportEq,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .supportEqSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.supportEq),
+              subtitle: Text(AppLocalizations.of(context)!.supportEqSub),
               keyName: 'supportEq',
               isThreeLine: true,
               defaultValue: false,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .stopOnClose,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .stopOnCloseSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.stopOnClose),
+              subtitle: Text(AppLocalizations.of(context)!.stopOnCloseSub),
               isThreeLine: true,
               keyName: 'stopForegroundService',
               defaultValue: true,
@@ -459,60 +355,28 @@ class _OthersPageState extends State<OthersPage> {
             //   defaultValue: true,
             // ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .checkUpdate,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .checkUpdateSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.checkUpdate),
+              subtitle: Text(AppLocalizations.of(context)!.checkUpdateSub),
               keyName: 'checkUpdate',
               isThreeLine: true,
               defaultValue: true,
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .useProxy,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .useProxySub,
-              ),
+              title: Text(AppLocalizations.of(context)!.useProxy),
+              subtitle: Text(AppLocalizations.of(context)!.useProxySub),
               keyName: 'useProxy',
               defaultValue: true,
               isThreeLine: true,
               onChanged: ({required bool val, required Box box}) {
                 useProxy = val;
-                setState(
-                  () {},
-                );
+                setState(() {});
               },
             ),
             Visibility(
               visible: useProxy,
               child: ListTile(
-                title: Text(
-                  AppLocalizations.of(
-                    context,
-                  )!
-                      .proxySet,
-                ),
-                subtitle: Text(
-                  AppLocalizations.of(
-                    context,
-                  )!
-                      .proxySetSub,
-                ),
+                title: Text(AppLocalizations.of(context)!.proxySet),
+                subtitle: Text(AppLocalizations.of(context)!.proxySetSub),
                 dense: true,
                 trailing: Text(
                   '${Hive.box('settings').get("proxyIp", defaultValue: "103.47.67.134")}:${Hive.box('settings').get("proxyPort", defaultValue: 8080)}',
@@ -523,20 +387,20 @@ class _OthersPageState extends State<OthersPage> {
                     context: context,
                     builder: (BuildContext context) {
                       final controller = TextEditingController(
-                        text: settingsBox
-                            .get('proxyIp', defaultValue: '103.47.67.134')
-                            .toString(),
+                        text:
+                            settingsBox
+                                .get('proxyIp', defaultValue: '103.47.67.134')
+                                .toString(),
                       );
                       final controller2 = TextEditingController(
-                        text: settingsBox
-                            .get('proxyPort', defaultValue: 8080)
-                            .toString(),
+                        text:
+                            settingsBox
+                                .get('proxyPort', defaultValue: 8080)
+                                .toString(),
                       );
                       return AlertDialog(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10.0,
-                          ),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -544,10 +408,7 @@ class _OthersPageState extends State<OthersPage> {
                             Row(
                               children: [
                                 Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!
-                                      .ipAdd,
+                                  AppLocalizations.of(context)!.ipAdd,
                                   style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.secondary,
@@ -555,20 +416,12 @@ class _OthersPageState extends State<OthersPage> {
                                 ),
                               ],
                             ),
-                            TextField(
-                              autofocus: true,
-                              controller: controller,
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
+                            TextField(autofocus: true, controller: controller),
+                            const SizedBox(height: 30),
                             Row(
                               children: [
                                 Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!
-                                      .port,
+                                  AppLocalizations.of(context)!.port,
                                   style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.secondary,
@@ -576,29 +429,22 @@ class _OthersPageState extends State<OthersPage> {
                                 ),
                               ],
                             ),
-                            TextField(
-                              autofocus: true,
-                              controller: controller2,
-                            ),
+                            TextField(autofocus: true, controller: controller2),
                           ],
                         ),
                         actions: [
                           TextButton(
                             style: TextButton.styleFrom(
-                              foregroundColor: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.white
-                                  : Colors.grey[700],
+                              foregroundColor:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.grey[700],
                             ),
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text(
-                              AppLocalizations.of(
-                                context,
-                              )!
-                                  .cancel,
-                            ),
+                            child: Text(AppLocalizations.of(context)!.cancel),
                           ),
                           TextButton(
                             style: TextButton.styleFrom(
@@ -617,25 +463,14 @@ class _OthersPageState extends State<OthersPage> {
                               );
                               settingsBox.put(
                                 'proxyPort',
-                                int.parse(
-                                  controller2.text.trim(),
-                                ),
+                                int.parse(controller2.text.trim()),
                               );
                               Navigator.pop(context);
-                              setState(
-                                () {},
-                              );
+                              setState(() {});
                             },
-                            child: Text(
-                              AppLocalizations.of(
-                                context,
-                              )!
-                                  .ok,
-                            ),
+                            child: Text(AppLocalizations.of(context)!.ok),
                           ),
-                          const SizedBox(
-                            width: 5,
-                          ),
+                          const SizedBox(width: 5),
                         ],
                       );
                     },
@@ -644,18 +479,8 @@ class _OthersPageState extends State<OthersPage> {
               ),
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .clearCache,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .clearCacheSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.clearCache),
+              subtitle: Text(AppLocalizations.of(context)!.clearCacheSub),
               trailing: SizedBox(
                 height: 70.0,
                 width: 70.0,
@@ -680,24 +505,12 @@ class _OthersPageState extends State<OthersPage> {
               isThreeLine: true,
               onTap: () async {
                 Hive.box('cache').clear();
-                setState(
-                  () {},
-                );
+                setState(() {});
               },
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .shareLogs,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .shareLogsSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.shareLogs),
+              subtitle: Text(AppLocalizations.of(context)!.shareLogsSub),
               onTap: () async {
                 final Directory tempDir = await getTemporaryDirectory();
                 final files = <XFile>[XFile('${tempDir.path}/logs/logs.txt')];

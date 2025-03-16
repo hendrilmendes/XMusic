@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
@@ -48,8 +47,8 @@ class PlayerInvoke {
         fromDownloads
             ? setDownValues(finalList, globalIndex)
             : (Platform.isWindows || Platform.isLinux)
-                ? setOffDesktopValues(finalList, globalIndex)
-                : setOffValues(finalList, globalIndex);
+            ? setOffDesktopValues(finalList, globalIndex)
+            : setOffValues(finalList, globalIndex);
       } else {
         setValues(
           finalList,
@@ -103,8 +102,10 @@ class PlayerInvoke {
       if (!await file.exists()) {
         final byteData = await rootBundle.load('assets/cover.jpg');
         await file.writeAsBytes(
-          byteData.buffer
-              .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+          byteData.buffer.asUint8List(
+            byteData.offsetInBytes,
+            byteData.lengthInBytes,
+          ),
         );
       }
       final List<MediaItem> queue = [];
@@ -142,15 +143,15 @@ class PlayerInvoke {
       if (!await file.exists()) {
         final byteData = await rootBundle.load('assets/cover.jpg');
         await file.writeAsBytes(
-          byteData.buffer
-              .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+          byteData.buffer.asUint8List(
+            byteData.offsetInBytes,
+            byteData.lengthInBytes,
+          ),
         );
       }
       final List<MediaItem> queue = [];
       for (int i = 0; i < response.length; i++) {
-        queue.add(
-          await setTags(response[i] as SongModel, tempDir),
-        );
+        queue.add(await setTags(response[i] as SongModel, tempDir));
       }
       updateNplay(queue, index);
     });
@@ -188,10 +189,12 @@ class PlayerInvoke {
           if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
               minExpiredAt) {
             // cache expired
-            Logger.root
-                .info('youtube link expired in cache for ${playItem["title"]}');
-            final newData = await YouTubeServices.instance
-                .refreshLink(playItem['id'].toString());
+            Logger.root.info(
+              'youtube link expired in cache for ${playItem["title"]}',
+            );
+            final newData = await YouTubeServices.instance.refreshLink(
+              playItem['id'].toString(),
+            );
             Logger.root.info(
               'before service | received new link for ${playItem["title"]}',
             );
@@ -202,14 +205,16 @@ class PlayerInvoke {
             }
           } else {
             // giving cache link
-            Logger.root
-                .info('youtube link found in cache for ${playItem["title"]}');
+            Logger.root.info(
+              'youtube link found in cache for ${playItem["title"]}',
+            );
             playItem['url'] = cache.last['url'];
             playItem['expire_at'] = cache.last['expireAt'];
           }
         } else {
-          final newData = await YouTubeServices.instance
-              .refreshLink(playItem['id'].toString());
+          final newData = await YouTubeServices.instance.refreshLink(
+            playItem['id'].toString(),
+          );
           Logger.root.info(
             'before service | received new link for ${playItem["title"]}',
           );
@@ -220,8 +225,9 @@ class PlayerInvoke {
           }
         }
       } else {
-        final newData = await YouTubeServices.instance
-            .refreshLink(playItem['id'].toString());
+        final newData = await YouTubeServices.instance.refreshLink(
+          playItem['id'].toString(),
+        );
         Logger.root.info(
           'before service | received new link for ${playItem["title"]}',
         );

@@ -1,4 +1,3 @@
-
 import 'package:audio_service/audio_service.dart';
 import 'package:xmusic/Models/song_item.dart';
 import 'package:xmusic/Models/url_image_generator.dart';
@@ -50,9 +49,7 @@ class MediaItemConverter {
         ),
       ),
       title: song['title'].toString(),
-      artUri: Uri.parse(
-        UrlImageGetter([song['image'].toString()]).highQuality,
-      ),
+      artUri: Uri.parse(UrlImageGetter([song['image'].toString()]).highQuality),
       genre: song['language'].toString(),
       extras: {
         'url': song['url'],
@@ -115,9 +112,7 @@ class MediaItemConverter {
       artist: songItem.artists.join(', '),
       duration: songItem.duration,
       title: songItem.title,
-      artUri: Uri.parse(
-        UrlImageGetter([songItem.image]).highQuality,
-      ),
+      artUri: Uri.parse(UrlImageGetter([songItem.image]).highQuality),
       genre: songItem.genre,
       extras: {
         'url': songItem.url,

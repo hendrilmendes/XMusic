@@ -7,10 +7,10 @@ class FadeTransitionPageRoute extends PageRouteBuilder {
     required this.child,
     this.duration = const Duration(milliseconds: 250),
   }) : super(
-          transitionDuration: duration,
-          reverseTransitionDuration: duration,
-          pageBuilder: (context, animation, secondaryAnimation) => child,
-        );
+         transitionDuration: duration,
+         reverseTransitionDuration: duration,
+         pageBuilder: (context, animation, secondaryAnimation) => child,
+       );
 
   @override
   Widget buildTransitions(
@@ -19,10 +19,7 @@ class FadeTransitionPageRoute extends PageRouteBuilder {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    return FadeTransition(
-      opacity: animation,
-      child: child,
-    );
+    return FadeTransition(opacity: animation, child: child);
   }
 }
 
@@ -35,10 +32,10 @@ class SlideTransitionPageRoute extends PageRouteBuilder {
     this.direction = AxisDirection.right,
     this.duration = const Duration(milliseconds: 250),
   }) : super(
-          transitionDuration: duration,
-          reverseTransitionDuration: duration,
-          pageBuilder: (context, animation, secondaryAnimation) => child,
-        );
+         transitionDuration: duration,
+         reverseTransitionDuration: duration,
+         pageBuilder: (context, animation, secondaryAnimation) => child,
+       );
 
   Offset getBeginOffset() {
     switch (direction) {
@@ -61,8 +58,10 @@ class SlideTransitionPageRoute extends PageRouteBuilder {
     Widget child,
   ) {
     return SlideTransition(
-      position: Tween<Offset>(begin: getBeginOffset(), end: Offset.zero)
-          .animate(animation),
+      position: Tween<Offset>(
+        begin: getBeginOffset(),
+        end: Offset.zero,
+      ).animate(animation),
       child: child,
     );
   }

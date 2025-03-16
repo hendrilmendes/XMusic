@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -80,8 +79,9 @@ class FormatResponse {
             }
           } else {
             try {
-              response['more_info']['artistMap']['artists'][0]['id']
-                  .forEach((element) {
+              response['more_info']['artistMap']['artists'][0]['id'].forEach((
+                element,
+              ) {
                 artistNames.add(element['name']);
               });
             } catch (e) {
@@ -91,14 +91,16 @@ class FormatResponse {
             }
           }
         } else {
-          response['more_info']['artistMap']['featured_artists']
-              .forEach((element) {
+          response['more_info']['artistMap']['featured_artists'].forEach((
+            element,
+          ) {
             artistNames.add(element['name']);
           });
         }
       } else {
-        response['more_info']['artistMap']['primary_artists']
-            .forEach((element) {
+        response['more_info']['artistMap']['primary_artists'].forEach((
+          element,
+        ) {
           artistNames.add(element['name']);
         });
       }
@@ -120,9 +122,10 @@ class FormatResponse {
         'subtitle': response['subtitle'].toString().unescape(),
         'title': response['title'].toString().unescape(),
         'artist': artistNames.join(', ').unescape(),
-        'album_artist': response['more_info'] == null
-            ? response['music']
-            : response['more_info']['music'],
+        'album_artist':
+            response['more_info'] == null
+                ? response['music']
+                : response['more_info']['music'],
         'image': getImageUrl(response['image'].toString()),
         'perma_url': response['perma_url'],
         'url': decode(response['more_info']['encrypted_media_url'].toString()),
@@ -150,10 +153,9 @@ class FormatResponse {
             artistNames.add('Unknown');
           }
         } else {
-          response['featured_artists']
-              .toString()
-              .split(', ')
-              .forEach((element) {
+          response['featured_artists'].toString().split(', ').forEach((
+            element,
+          ) {
             artistNames.add(element);
           });
         }
@@ -186,9 +188,10 @@ class FormatResponse {
         // .split('(')
         // .first
         'artist': artistNames.join(', ').unescape(),
-        'album_artist': response['more_info'] == null
-            ? response['music']
-            : response['more_info']['music'],
+        'album_artist':
+            response['more_info'] == null
+                ? response['music']
+                : response['more_info']['music'],
         'image': getImageUrl(response['image'].toString()),
         'perma_url': response['perma_url'],
         'url': decode(response['encrypted_media_url'].toString()),
@@ -234,38 +237,46 @@ class FormatResponse {
         'type': response['type'],
         'album': response['title'].toString().unescape(),
         'year': response['more_info']?['year'] ?? response['year'],
-        'language': response['more_info']?['language'] == null
-            ? response['language'].toString().capitalize()
-            : response['more_info']['language'].toString().capitalize(),
-        'genre': response['more_info']?['language'] == null
-            ? response['language'].toString().capitalize()
-            : response['more_info']['language'].toString().capitalize(),
+        'language':
+            response['more_info']?['language'] == null
+                ? response['language'].toString().capitalize()
+                : response['more_info']['language'].toString().capitalize(),
+        'genre':
+            response['more_info']?['language'] == null
+                ? response['language'].toString().capitalize()
+                : response['more_info']['language'].toString().capitalize(),
         'album_id': response['id'],
-        'subtitle': response['description'] == null
-            ? response['subtitle'].toString().unescape()
-            : response['description'].toString().unescape(),
+        'subtitle':
+            response['description'] == null
+                ? response['subtitle'].toString().unescape()
+                : response['description'].toString().unescape(),
         'title': response['title'].toString().unescape(),
-        'artist': response['music'] == null
-            ? (response['more_info']?['music'] == null)
-                ? (response['more_info']?['artistMap']?['primary_artists'] ==
-                            null ||
-                        (response['more_info']?['artistMap']?['primary_artists']
-                                as List)
-                            .isEmpty)
-                    ? ''
-                    : response['more_info']['artistMap']['primary_artists'][0]
-                            ['name']
-                        .toString()
-                        .unescape()
-                : response['more_info']['music'].toString().unescape()
-            : response['music'].toString().unescape(),
-        'album_artist': response['more_info'] == null
-            ? response['music']
-            : response['more_info']['music'],
+        'artist':
+            response['music'] == null
+                ? (response['more_info']?['music'] == null)
+                    ? (response['more_info']?['artistMap']?['primary_artists'] ==
+                                null ||
+                            (response['more_info']?['artistMap']?['primary_artists']
+                                    as List)
+                                .isEmpty)
+                        ? ''
+                        : response['more_info']['artistMap']['primary_artists'][0]['name']
+                            .toString()
+                            .unescape()
+                    : response['more_info']['music'].toString().unescape()
+                : response['music'].toString().unescape(),
+        'album_artist':
+            response['more_info'] == null
+                ? response['music']
+                : response['more_info']['music'],
         'image': getImageUrl(response['image'].toString()),
-        'count': response['more_info']?['song_pids'] == null
-            ? 0
-            : response['more_info']['song_pids'].toString().split(', ').length,
+        'count':
+            response['more_info']?['song_pids'] == null
+                ? 0
+                : response['more_info']['song_pids']
+                    .toString()
+                    .split(', ')
+                    .length,
         'songs_pids': response['more_info']['song_pids'].toString().split(', '),
         'perma_url': response['url'].toString(),
       };
@@ -281,21 +292,25 @@ class FormatResponse {
         'id': response['id'],
         'type': response['type'],
         'album': response['title'].toString().unescape(),
-        'language': response['language'] == null
-            ? response['more_info']['language'].toString().capitalize()
-            : response['language'].toString().capitalize(),
-        'genre': response['language'] == null
-            ? response['more_info']['language'].toString().capitalize()
-            : response['language'].toString().capitalize(),
+        'language':
+            response['language'] == null
+                ? response['more_info']['language'].toString().capitalize()
+                : response['language'].toString().capitalize(),
+        'genre':
+            response['language'] == null
+                ? response['more_info']['language'].toString().capitalize()
+                : response['language'].toString().capitalize(),
         'playlistId': response['id'],
-        'subtitle': response['description'] == null
-            ? response['subtitle'].toString().unescape()
-            : response['description'].toString().unescape(),
+        'subtitle':
+            response['description'] == null
+                ? response['subtitle'].toString().unescape()
+                : response['description'].toString().unescape(),
         'title': response['title'].toString().unescape(),
         'artist': response['extra'].toString().unescape(),
-        'album_artist': response['more_info'] == null
-            ? response['music']
-            : response['more_info']['music'],
+        'album_artist':
+            response['more_info'] == null
+                ? response['music']
+                : response['more_info']['music'],
         'image': getImageUrl(response['image'].toString()),
         'perma_url': response['url'].toString(),
       };
@@ -310,28 +325,33 @@ class FormatResponse {
       return {
         'id': response['id'],
         'type': response['type'],
-        'album': response['title'] == null
-            ? response['name'].toString().unescape()
-            : response['title'].toString().unescape(),
+        'album':
+            response['title'] == null
+                ? response['name'].toString().unescape()
+                : response['title'].toString().unescape(),
         'language': response['language'].toString().capitalize(),
         'genre': response['language'].toString().capitalize(),
         'artistId': response['id'],
-        'artistToken': response['url'] == null
-            ? response['perma_url'].toString().split('/').last
-            : response['url'].toString().split('/').last,
-        'subtitle': response['description'] == null
-            ? response['role'].toString().capitalize()
-            : response['description'].toString().unescape(),
-        'title': response['title'] == null
-            ? response['name'].toString().unescape()
-            : response['title'].toString().unescape(),
+        'artistToken':
+            response['url'] == null
+                ? response['perma_url'].toString().split('/').last
+                : response['url'].toString().split('/').last,
+        'subtitle':
+            response['description'] == null
+                ? response['role'].toString().capitalize()
+                : response['description'].toString().unescape(),
+        'title':
+            response['title'] == null
+                ? response['name'].toString().unescape()
+                : response['title'].toString().unescape(),
         // .split('(')
         // .first
         'perma_url': response['url'].toString(),
         'artist': response['title'].toString().unescape(),
-        'album_artist': response['more_info'] == null
-            ? response['music']
-            : response['more_info']['music'],
+        'album_artist':
+            response['more_info'] == null
+                ? response['music']
+                : response['more_info']['music'],
         'image': getImageUrl(response['image'].toString()),
       };
     } catch (e) {
@@ -343,8 +363,9 @@ class FormatResponse {
   static Future<List> formatArtistTopAlbumsResponse(List responseList) async {
     final List result = [];
     for (int i = 0; i < responseList.length; i++) {
-      final Map response =
-          await formatSingleArtistTopAlbumSongResponse(responseList[i] as Map);
+      final Map response = await formatSingleArtistTopAlbumSongResponse(
+        responseList[i] as Map,
+      );
       if (response.containsKey('Error')) {
         Logger.root.severe(
           'Error at index $i inside FormatArtistTopAlbumsResponse: ${response["Error"]}',
@@ -375,14 +396,16 @@ class FormatResponse {
             });
           }
         } else {
-          response['more_info']['artistMap']['featured_artists']
-              .forEach((element) {
+          response['more_info']['artistMap']['featured_artists'].forEach((
+            element,
+          ) {
             artistNames.add(element['name']);
           });
         }
       } else {
-        response['more_info']['artistMap']['primary_artists']
-            .forEach((element) {
+        response['more_info']['artistMap']['primary_artists'].forEach((
+          element,
+        ) {
           artistNames.add(element['name']);
         });
       }
@@ -402,14 +425,16 @@ class FormatResponse {
         // .split('(')
         // .first
         'artist': artistNames.join(', ').unescape(),
-        'album_artist': response['more_info'] == null
-            ? response['music']
-            : response['more_info']['music'],
+        'album_artist':
+            response['more_info'] == null
+                ? response['music']
+                : response['more_info']['music'],
         'image': getImageUrl(response['image'].toString()),
       };
     } catch (e) {
-      Logger.root
-          .severe('Error inside formatSingleArtistTopAlbumSongResponse: $e');
+      Logger.root.severe(
+        'Error inside formatSingleArtistTopAlbumSongResponse: $e',
+      );
       return {'Error': e};
     }
   }
@@ -417,8 +442,9 @@ class FormatResponse {
   static Future<List> formatSimilarArtistsResponse(List responseList) async {
     final List result = [];
     for (int i = 0; i < responseList.length; i++) {
-      final Map response =
-          await formatSingleSimilarArtistResponse(responseList[i] as Map);
+      final Map response = await formatSingleSimilarArtistResponse(
+        responseList[i] as Map,
+      );
       if (response.containsKey('Error')) {
         Logger.root.severe(
           'Error at index $i inside FormatSimilarArtistsResponse: ${response["Error"]}',
@@ -454,9 +480,10 @@ class FormatResponse {
         'id': response['id'],
         'type': response['type'],
         'album': response['title'].toString().unescape(),
-        'subtitle': response['description'] == null
-            ? response['subtitle'].toString().unescape()
-            : response['description'].toString().unescape(),
+        'subtitle':
+            response['description'] == null
+                ? response['subtitle'].toString().unescape()
+                : response['description'].toString().unescape(),
         'title': response['title'].toString().unescape(),
         'image': getImageUrl(response['image'].toString()),
       };
@@ -469,12 +496,14 @@ class FormatResponse {
   static Future<Map> formatHomePageData(Map data) async {
     try {
       if (data['new_trending'] != null) {
-        data['new_trending'] =
-            await formatSongsInList(data['new_trending'] as List);
+        data['new_trending'] = await formatSongsInList(
+          data['new_trending'] as List,
+        );
       }
       if (data['new_albums'] != null) {
-        data['new_albums'] =
-            await formatSongsInList(data['new_albums'] as List);
+        data['new_albums'] = await formatSongsInList(
+          data['new_albums'] as List,
+        );
       }
       if (data['city_mod'] != null) {
         data['city_mod'] = await formatSongsInList(data['city_mod'] as List);
@@ -492,8 +521,9 @@ class FormatResponse {
         }
       });
       for (int i = 0; i < promoList.length; i++) {
-        data[promoList[i]] =
-            await formatSongsInList(data[promoList[i]] as List);
+        data[promoList[i]] = await formatSongsInList(
+          data[promoList[i]] as List,
+        );
       }
       data['collections'] = [
         'new_trending',
@@ -518,8 +548,9 @@ class FormatResponse {
       if (data.isNotEmpty) {
         final List promoList = data['collections_temp'] as List? ?? [];
         for (int i = 0; i < promoList.length; i++) {
-          data[promoList[i]] =
-              await formatSongsInList(data[promoList[i]] as List);
+          data[promoList[i]] = await formatSongsInList(
+            data[promoList[i]] as List,
+          );
         }
         data['collections'].addAll(promoList);
         data['collections_temp'] = [];
@@ -536,13 +567,16 @@ class FormatResponse {
         final Map item = list[i] as Map;
         if (item['type'] == 'song') {
           if (item['mini_obj'] as bool? ?? false) {
-            Map cachedDetails = Hive.box('cache')
-                .get(item['id'].toString(), defaultValue: {}) as Map;
+            Map cachedDetails =
+                Hive.box('cache').get(item['id'].toString(), defaultValue: {})
+                    as Map;
             if (cachedDetails.isEmpty) {
-              cachedDetails =
-                  await SaavnAPI().fetchSongDetails(item['id'].toString());
-              Hive.box('cache')
-                  .put(cachedDetails['id'].toString(), cachedDetails);
+              cachedDetails = await SaavnAPI().fetchSongDetails(
+                item['id'].toString(),
+              );
+              Hive.box(
+                'cache',
+              ).put(cachedDetails['id'].toString(), cachedDetails);
             }
             list[i] = cachedDetails;
             continue;

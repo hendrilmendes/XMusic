@@ -18,9 +18,7 @@ class TextInputDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = TextEditingController(text: initialText);
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -48,9 +46,10 @@ class TextInputDialog extends StatelessWidget {
       actions: [
         TextButton(
           style: TextButton.styleFrom(
-            foregroundColor: Theme.of(context).brightness == Brightness.dark
-                ? Colors.white
-                : Colors.grey[700],
+            foregroundColor:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.grey[700],
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -68,13 +67,9 @@ class TextInputDialog extends StatelessWidget {
           onPressed: () {
             onSubmitted(controller.text.trim(), context);
           },
-          child: Text(
-            AppLocalizations.of(context)!.ok,
-          ),
+          child: Text(AppLocalizations.of(context)!.ok),
         ),
-        const SizedBox(
-          width: 5,
-        ),
+        const SizedBox(width: 5),
       ],
     );
   }

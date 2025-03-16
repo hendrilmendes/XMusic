@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/on_hover.dart';
 import 'package:xmusic/Screens/Search/search.dart';
 import 'package:xmusic/Screens/YouTube/youtube_playlist.dart';
 import 'package:xmusic/Services/youtube_services.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 bool status = false;
 List searchedList = Hive.box('cache').get('ytHome', defaultValue: []) as List;
@@ -87,9 +87,10 @@ class _YouTubeState extends State<YouTube>
     super.build(context);
     final double screenWidth = MediaQuery.sizeOf(context).width;
     final bool rotated = MediaQuery.sizeOf(context).height < screenWidth;
-    double boxSize = !rotated
-        ? MediaQuery.sizeOf(context).width / 2
-        : MediaQuery.sizeOf(context).height / 2.5;
+    double boxSize =
+        !rotated
+            ? MediaQuery.sizeOf(context).width / 2
+            : MediaQuery.sizeOf(context).height / 2.5;
     if (boxSize > 250) boxSize = 250;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -98,9 +99,7 @@ class _YouTubeState extends State<YouTube>
         child: Stack(
           children: [
             if (searchedList.isEmpty)
-              const Center(
-                child: CircularProgressIndicator.adaptive(),
-              )
+              const Center(child: CircularProgressIndicator.adaptive())
             else
               SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -116,52 +115,57 @@ class _YouTubeState extends State<YouTube>
                           autoPlay: true,
                           enlargeCenterPage: true,
                         ),
-                        itemBuilder: (
-                          BuildContext context,
-                          int index,
-                          int pageViewIndex,
-                        ) =>
-                            GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => SearchPage(
-                                  query: headList[index]['title'].toString(),
-                                  searchType: Hive.box('settings').get(
-                                    'searchYtMusic',
-                                    defaultValue: true,
-                                  ) as bool
-                                      ? 'ytm'
-                                      : 'yt',
-                                  fromDirectSearch: true,
+                        itemBuilder:
+                            (
+                              BuildContext context,
+                              int index,
+                              int pageViewIndex,
+                            ) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder:
+                                        (_, __, ___) => SearchPage(
+                                          query:
+                                              headList[index]['title']
+                                                  .toString(),
+                                          searchType:
+                                              Hive.box('settings').get(
+                                                        'searchYtMusic',
+                                                        defaultValue: true,
+                                                      )
+                                                      as bool
+                                                  ? 'ytm'
+                                                  : 'yt',
+                                          fromDirectSearch: true,
+                                        ),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                clipBehavior: Clip.antiAlias,
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  errorWidget:
+                                      (context, _, __) => const Image(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage('assets/ytCover.png'),
+                                      ),
+                                  imageUrl: headList[index]['image'].toString(),
+                                  placeholder:
+                                      (context, url) => const Image(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage('assets/ytCover.png'),
+                                      ),
                                 ),
                               ),
-                            );
-                          },
-                          child: Card(
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            clipBehavior: Clip.antiAlias,
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              errorWidget: (context, _, __) => const Image(
-                                fit: BoxFit.cover,
-                                image: AssetImage(
-                                  'assets/ytCover.png',
-                                ),
-                              ),
-                              imageUrl: headList[index]['image'].toString(),
-                              placeholder: (context, url) => const Image(
-                                fit: BoxFit.cover,
-                                image: AssetImage('assets/ytCover.png'),
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ListView.builder(
                       itemCount: searchedList.length,
@@ -178,14 +182,19 @@ class _YouTubeState extends State<YouTube>
                               child: Row(
                                 children: [
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(10, 10, 0, 5),
+                                    padding: const EdgeInsets.fromLTRB(
+                                      10,
+                                      10,
+                                      0,
+                                      5,
+                                    ),
                                     child: Text(
                                       '${searchedList[index]["title"]}',
                                       style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w800,
                                       ),
@@ -200,65 +209,78 @@ class _YouTubeState extends State<YouTube>
                               child: ListView.builder(
                                 physics: const BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                ),
                                 itemCount:
                                     (searchedList[index]['playlists'] as List)
                                         .length,
                                 itemBuilder: (context, idx) {
                                   final item =
                                       searchedList[index]['playlists'][idx];
-                                  item['subtitle'] = item['type'] != 'video'
-                                      ? '${item["count"]} Tracks | ${item["description"]}'
-                                      : '${item["count"]} | ${item["description"]}';
+                                  item['subtitle'] =
+                                      item['type'] != 'video'
+                                          ? '${item["count"]} Tracks | ${item["description"]}'
+                                          : '${item["count"]} | ${item["description"]}';
                                   return GestureDetector(
                                     onTap: () {
                                       item['type'] == 'video'
                                           ? Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                opaque: false,
-                                                pageBuilder: (_, __, ___) =>
-                                                    SearchPage(
-                                                  query:
-                                                      item['title'].toString(),
-                                                  searchType:
-                                                      Hive.box('settings').get(
-                                                    'searchYtMusic',
-                                                    defaultValue: true,
-                                                  ) as bool
-                                                          ? 'ytm'
-                                                          : 'yt',
-                                                  fromDirectSearch: true,
-                                                ),
-                                              ),
-                                            )
+                                            context,
+                                            PageRouteBuilder(
+                                              opaque: false,
+                                              pageBuilder:
+                                                  (_, __, ___) => SearchPage(
+                                                    query:
+                                                        item['title']
+                                                            .toString(),
+                                                    searchType:
+                                                        Hive.box(
+                                                                  'settings',
+                                                                ).get(
+                                                                  'searchYtMusic',
+                                                                  defaultValue:
+                                                                      true,
+                                                                )
+                                                                as bool
+                                                            ? 'ytm'
+                                                            : 'yt',
+                                                    fromDirectSearch: true,
+                                                  ),
+                                            ),
+                                          )
                                           : Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                opaque: false,
-                                                pageBuilder: (_, __, ___) =>
-                                                    YouTubePlaylist(
-                                                  playlistId: item['playlistId']
-                                                      .toString(),
-                                                  // playlistImage:
-                                                  //     item['imageStandard']
-                                                  //         .toString(),
-                                                  // playlistName:
-                                                  //     item['title'].toString(),
-                                                  // playlistSubtitle:
-                                                  //     '${item['count']} Songs',
-                                                  // playlistSecondarySubtitle:
-                                                  //     item['description']
-                                                  //         ?.toString(),
-                                                ),
-                                              ),
-                                            );
+                                            context,
+                                            PageRouteBuilder(
+                                              opaque: false,
+                                              pageBuilder:
+                                                  (
+                                                    _,
+                                                    __,
+                                                    ___,
+                                                  ) => YouTubePlaylist(
+                                                    playlistId:
+                                                        item['playlistId']
+                                                            .toString(),
+                                                    // playlistImage:
+                                                    //     item['imageStandard']
+                                                    //         .toString(),
+                                                    // playlistName:
+                                                    //     item['title'].toString(),
+                                                    // playlistSubtitle:
+                                                    //     '${item['count']} Songs',
+                                                    // playlistSecondarySubtitle:
+                                                    //     item['description']
+                                                    //         ?.toString(),
+                                                  ),
+                                            ),
+                                          );
                                     },
                                     child: SizedBox(
-                                      width: item['type'] != 'playlist'
-                                          ? (boxSize - 30) * (16 / 9)
-                                          : boxSize - 30,
+                                      width:
+                                          item['type'] != 'playlist'
+                                              ? (boxSize - 30) * (16 / 9)
+                                              : boxSize - 30,
                                       child: HoverBox(
                                         child: Column(
                                           children: [
@@ -268,46 +290,52 @@ class _YouTubeState extends State<YouTube>
                                                   Positioned.fill(
                                                     child: Card(
                                                       elevation: 5,
-                                                      shape:
-                                                          RoundedRectangleBorder(
+                                                      shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          10.0,
-                                                        ),
+                                                            BorderRadius.circular(
+                                                              10.0,
+                                                            ),
                                                       ),
                                                       clipBehavior:
                                                           Clip.antiAlias,
                                                       child: CachedNetworkImage(
                                                         fit: BoxFit.cover,
                                                         errorWidget:
-                                                            (context, _, __) =>
-                                                                Image(
-                                                          fit: BoxFit.cover,
-                                                          image: item['type'] !=
-                                                                  'playlist'
-                                                              ? const AssetImage(
-                                                                  'assets/ytCover.png',
-                                                                )
-                                                              : const AssetImage(
-                                                                  'assets/cover.jpg',
-                                                                ),
-                                                        ),
-                                                        imageUrl: item['image']
-                                                            .toString(),
+                                                            (
+                                                              context,
+                                                              _,
+                                                              __,
+                                                            ) => Image(
+                                                              fit: BoxFit.cover,
+                                                              image:
+                                                                  item['type'] !=
+                                                                          'playlist'
+                                                                      ? const AssetImage(
+                                                                        'assets/ytCover.png',
+                                                                      )
+                                                                      : const AssetImage(
+                                                                        'assets/cover.jpg',
+                                                                      ),
+                                                            ),
+                                                        imageUrl:
+                                                            item['image']
+                                                                .toString(),
                                                         placeholder:
-                                                            (context, url) =>
-                                                                Image(
-                                                          fit: BoxFit.cover,
-                                                          image: item['type'] !=
-                                                                  'playlist'
-                                                              ? const AssetImage(
-                                                                  'assets/ytCover.png',
-                                                                )
-                                                              : const AssetImage(
-                                                                  'assets/cover.jpg',
-                                                                ),
-                                                        ),
+                                                            (
+                                                              context,
+                                                              url,
+                                                            ) => Image(
+                                                              fit: BoxFit.cover,
+                                                              image:
+                                                                  item['type'] !=
+                                                                          'playlist'
+                                                                      ? const AssetImage(
+                                                                        'assets/ytCover.png',
+                                                                      )
+                                                                      : const AssetImage(
+                                                                        'assets/cover.jpg',
+                                                                      ),
+                                                            ),
                                                       ),
                                                     ),
                                                   ),
@@ -317,15 +345,16 @@ class _YouTubeState extends State<YouTube>
                                                           Alignment.centerRight,
                                                       child: Container(
                                                         color: Colors.black
-                                                            // ignore: deprecated_member_use
-                                                            .withOpacity(0.75),
-                                                        width: (boxSize - 30) *
+                                                        // ignore: deprecated_member_use
+                                                        .withOpacity(0.75),
+                                                        width:
+                                                            (boxSize - 30) *
                                                             (16 / 9) /
                                                             2.5,
-                                                        margin: const EdgeInsets
-                                                            .all(
-                                                          4.0,
-                                                        ),
+                                                        margin:
+                                                            const EdgeInsets.all(
+                                                              4.0,
+                                                            ),
                                                         child: Column(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -334,8 +363,7 @@ class _YouTubeState extends State<YouTube>
                                                             Text(
                                                               item['count']
                                                                   .toString(),
-                                                              style:
-                                                                  const TextStyle(
+                                                              style: const TextStyle(
                                                                 fontSize: 20,
                                                                 fontWeight:
                                                                     FontWeight
@@ -364,8 +392,8 @@ class _YouTubeState extends State<YouTube>
                                             Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                horizontal: 10.0,
-                                              ),
+                                                    horizontal: 10.0,
+                                                  ),
                                               child: Column(
                                                 children: [
                                                   Text(
@@ -383,15 +411,14 @@ class _YouTubeState extends State<YouTube>
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 11,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall!
-                                                          .color,
+                                                      color:
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .bodySmall!
+                                                              .color,
                                                     ),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 5.0,
-                                                  ),
+                                                  const SizedBox(height: 5.0),
                                                 ],
                                               ),
                                             ),
@@ -403,16 +430,15 @@ class _YouTubeState extends State<YouTube>
                                           Widget? child,
                                         }) {
                                           return Card(
-                                            color: isHover
-                                                ? null
-                                                : Colors.transparent,
+                                            color:
+                                                isHover
+                                                    ? null
+                                                    : Colors.transparent,
                                             elevation: 0,
                                             margin: EdgeInsets.zero,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(
-                                                10.0,
-                                              ),
+                                                  BorderRadius.circular(10.0),
                                             ),
                                             clipBehavior: Clip.antiAlias,
                                             child: child,
@@ -436,13 +462,13 @@ class _YouTubeState extends State<YouTube>
                 width: MediaQuery.sizeOf(context).width,
                 height: 55.0,
                 padding: const EdgeInsets.all(5.0),
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 5.0,
+                ),
                 // margin: EdgeInsets.zero,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    100.0,
-                  ),
+                  borderRadius: BorderRadius.circular(100.0),
                   color: Theme.of(context).cardColor,
                   boxShadow: const [
                     BoxShadow(
@@ -460,33 +486,36 @@ class _YouTubeState extends State<YouTube>
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     Text(
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .searchYt,
+                      AppLocalizations.of(context)!.searchYt,
                       style: TextStyle(
                         fontSize: 16.0,
-                        color: Theme.of(context).textTheme.bodySmall!.color,
+                        color: Theme.of(context).iconTheme.color,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
                 ),
               ),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchPage(
-                    query: '',
-                    fromHome: true,
-                    searchType: Hive.box('settings')
-                            .get('searchYtMusic', defaultValue: true) as bool
-                        ? 'ytm'
-                        : 'yt',
-                    autofocus: true,
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => SearchPage(
+                            query: '',
+                            fromHome: true,
+                            searchType:
+                                Hive.box('settings').get(
+                                          'searchYtMusic',
+                                          defaultValue: true,
+                                        )
+                                        as bool
+                                    ? 'ytm'
+                                    : 'yt',
+                            autofocus: true,
+                          ),
+                    ),
                   ),
-                ),
-              ),
             ),
           ],
         ),

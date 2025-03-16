@@ -1,10 +1,9 @@
-
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Screens/Player/audioplayer.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 void addToNowPlaying({
   required BuildContext context,
@@ -42,10 +41,7 @@ void addToNowPlaying({
   }
 }
 
-void playNext(
-  MediaItem mediaItem,
-  BuildContext context,
-) {
+void playNext(MediaItem mediaItem, BuildContext context) {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
   final MediaItem? currentMediaItem = audioHandler.mediaItem.value;
   if (currentMediaItem != null &&
@@ -57,7 +53,9 @@ void playNext(
         queue.indexOf(currentMediaItem) + 1,
       );
     } else {
-      audioHandler.addQueueItem(mediaItem).then(
+      audioHandler
+          .addQueueItem(mediaItem)
+          .then(
             (value) => audioHandler.moveQueueItem(
               queue.length,
               queue.indexOf(currentMediaItem) + 1,

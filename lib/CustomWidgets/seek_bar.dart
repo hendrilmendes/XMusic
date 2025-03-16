@@ -4,8 +4,8 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:xmusic/Screens/Player/audioplayer.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class SeekBar extends StatefulWidget {
   final AudioPlayerHandler audioHandler;
@@ -45,9 +45,7 @@ class _SeekBarState extends State<SeekBar> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _sliderThemeData = SliderTheme.of(context).copyWith(
-      trackHeight: 4.0,
-    );
+    _sliderThemeData = SliderTheme.of(context).copyWith(trackHeight: 4.0);
   }
 
   @override
@@ -89,9 +87,10 @@ class _SeekBarState extends State<SeekBar> {
                         speedValue,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: speedValue == '1.0x'
-                              ? Theme.of(context).disabledColor
-                              : null,
+                          color:
+                              speedValue == '1.0x'
+                                  ? Theme.of(context).disabledColor
+                                  : null,
                         ),
                       ),
                       onTap: () {
@@ -126,10 +125,12 @@ class _SeekBarState extends State<SeekBar> {
                     data: _sliderThemeData.copyWith(
                       thumbShape: HiddenThumbComponentShape(),
                       overlayShape: SliderComponentShape.noThumb,
-                      activeTrackColor:
-                          Theme.of(context).iconTheme.color!.withOpacity(0.5),
-                      inactiveTrackColor:
-                          Theme.of(context).iconTheme.color!.withOpacity(0.3),
+                      activeTrackColor: Theme.of(
+                        context,
+                      ).iconTheme.color!.withOpacity(0.5),
+                      inactiveTrackColor: Theme.of(
+                        context,
+                      ).iconTheme.color!.withOpacity(0.3),
                       // trackShape: RoundedRectSliderTrackShape(),
                       trackShape: const RectangularSliderTrackShape(),
                     ),
@@ -167,12 +168,14 @@ class _SeekBarState extends State<SeekBar> {
                       setState(() {
                         _dragValue = value;
                       });
-                      widget.onChanged
-                          ?.call(Duration(milliseconds: value.round()));
+                      widget.onChanged?.call(
+                        Duration(milliseconds: value.round()),
+                      );
                     },
                     onChangeEnd: (value) {
-                      widget.onChangeEnd
-                          ?.call(Duration(milliseconds: value.round()));
+                      widget.onChangeEnd?.call(
+                        Duration(milliseconds: value.round()),
+                      );
                       _dragging = false;
                     },
                   ),
@@ -186,15 +189,15 @@ class _SeekBarState extends State<SeekBar> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                          .firstMatch('$_position')
-                          ?.group(1) ??
+                  RegExp(
+                        r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$',
+                      ).firstMatch('$_position')?.group(1) ??
                       '$_position',
                 ),
                 Text(
-                  RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                          .firstMatch('$_duration')
-                          ?.group(1) ??
+                  RegExp(
+                        r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$',
+                      ).firstMatch('$_duration')?.group(1) ??
                       '$_duration',
                   // style: Theme.of(context).textTheme.caption!.copyWith(
                   //       color: Theme.of(context).iconTheme.color,
@@ -244,71 +247,77 @@ void showSliderDialog({
 }) {
   showDialog<void>(
     context: context,
-    builder: (context) => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      title: Text(title, textAlign: TextAlign.center),
-      content: StreamBuilder<double>(
-        stream: audioHandler.speed,
-        builder: (context, snapshot) {
-          double value = snapshot.data ?? audioHandler.speed.value;
-          if (value > max) {
-            value = max;
-          }
-          if (value < min) {
-            value = min;
-          }
-          return SizedBox(
-            height: 100.0,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    builder:
+        (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          title: Text(title, textAlign: TextAlign.center),
+          content: StreamBuilder<double>(
+            stream: audioHandler.speed,
+            builder: (context, snapshot) {
+              double value = snapshot.data ?? audioHandler.speed.value;
+              if (value > max) {
+                value = max;
+              }
+              if (value < min) {
+                value = min;
+              }
+              return SizedBox(
+                height: 100.0,
+                child: Column(
                   children: [
-                    IconButton(
-                      icon: const Icon(CupertinoIcons.minus),
-                      onPressed: audioHandler.speed.value > min
-                          ? () {
-                              audioHandler
-                                  .setSpeed(audioHandler.speed.value - 0.1);
-                            }
-                          : null,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(CupertinoIcons.minus),
+                          onPressed:
+                              audioHandler.speed.value > min
+                                  ? () {
+                                    audioHandler.setSpeed(
+                                      audioHandler.speed.value - 0.1,
+                                    );
+                                  }
+                                  : null,
+                        ),
+                        Text(
+                          '${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
+                          style: const TextStyle(
+                            fontFamily: 'Fixed',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.0,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(CupertinoIcons.plus),
+                          onPressed:
+                              audioHandler.speed.value < max
+                                  ? () {
+                                    audioHandler.setSpeed(
+                                      audioHandler.speed.value + 0.1,
+                                    );
+                                  }
+                                  : null,
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
-                      style: const TextStyle(
-                        fontFamily: 'Fixed',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(CupertinoIcons.plus),
-                      onPressed: audioHandler.speed.value < max
-                          ? () {
-                              audioHandler
-                                  .setSpeed(audioHandler.speed.value + 0.1);
-                            }
-                          : null,
+                    Slider(
+                      inactiveColor: Theme.of(
+                        context,
+                      ).iconTheme.color!.withOpacity(0.4),
+                      activeColor: Theme.of(context).iconTheme.color,
+                      divisions: divisions,
+                      min: min,
+                      max: max,
+                      value: value,
+                      onChanged: audioHandler.setSpeed,
                     ),
                   ],
                 ),
-                Slider(
-                  inactiveColor:
-                      Theme.of(context).iconTheme.color!.withOpacity(0.4),
-                  activeColor: Theme.of(context).iconTheme.color,
-                  divisions: divisions,
-                  min: min,
-                  max: max,
-                  value: value,
-                  onChanged: audioHandler.setSpeed,
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    ),
+              );
+            },
+          ),
+        ),
   );
 }

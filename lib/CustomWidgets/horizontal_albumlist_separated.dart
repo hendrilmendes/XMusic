@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:xmusic/CustomWidgets/custom_physics.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';
@@ -35,9 +34,10 @@ class HorizontalAlbumsListSeparated extends StatelessWidget {
       if (item['subtitle'] != null) {
         return formatString(item['subtitle']?.toString());
       }
-      final artists = item['more_info']?['artistMap']?['artists']
-          .map((artist) => artist['name'])
-          .toList();
+      final artists =
+          item['more_info']?['artistMap']?['artists']
+              .map((artist) => artist['name'])
+              .toList();
       if (artists != null) {
         return formatString(artists?.join(', ')?.toString());
       }
@@ -54,11 +54,12 @@ class HorizontalAlbumsListSeparated extends StatelessWidget {
         MediaQuery.sizeOf(context).height < MediaQuery.sizeOf(context).width;
     final bool biggerScreen = MediaQuery.sizeOf(context).width > 1050;
     final double portion = (songsList.length <= 4) ? 1.0 : 0.875;
-    final double listSize = rotated
-        ? biggerScreen
-            ? MediaQuery.sizeOf(context).width * portion / 3
-            : MediaQuery.sizeOf(context).width * portion / 2
-        : MediaQuery.sizeOf(context).width * portion;
+    final double listSize =
+        rotated
+            ? biggerScreen
+                ? MediaQuery.sizeOf(context).width * portion / 3
+                : MediaQuery.sizeOf(context).width * portion / 2
+            : MediaQuery.sizeOf(context).width * portion;
     return SizedBox(
       height: songsList.length < 4 ? songsList.length * 74 : 74 * 4,
       child: Align(
@@ -76,38 +77,32 @@ class HorizontalAlbumsListSeparated extends StatelessWidget {
               width: listSize,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: itemGroup.map((item) {
-                  final subTitle = getSubTitle(item as Map);
-                  return ListTile(
-                    title: Text(
-                      formatString(item['title']?.toString()),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(
-                      subTitle,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    leading: imageCard(
-                      imageUrl: item['image'].toString(),
-                      placeholderImage: (item['type'] == 'playlist' ||
-                              item['type'] == 'album')
-                          ? const AssetImage(
-                              'assets/album.png',
-                            )
-                          : item['type'] == 'artist'
-                              ? const AssetImage(
-                                  'assets/artist.png',
-                                )
-                              : const AssetImage(
-                                  'assets/cover.jpg',
-                                ),
-                    ),
-                    trailing: SongTileTrailingMenu(
-                      data: item,
-                    ),
-                    onTap: () => onTap(songsList.indexOf(item)),
-                  );
-                }).toList(),
+                children:
+                    itemGroup.map((item) {
+                      final subTitle = getSubTitle(item as Map);
+                      return ListTile(
+                        title: Text(
+                          formatString(item['title']?.toString()),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          subTitle,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        leading: imageCard(
+                          imageUrl: item['image'].toString(),
+                          placeholderImage:
+                              (item['type'] == 'playlist' ||
+                                      item['type'] == 'album')
+                                  ? const AssetImage('assets/album.png')
+                                  : item['type'] == 'artist'
+                                  ? const AssetImage('assets/artist.png')
+                                  : const AssetImage('assets/cover.jpg'),
+                        ),
+                        trailing: SongTileTrailingMenu(data: item),
+                        onTap: () => onTap(songsList.indexOf(item)),
+                      );
+                    }).toList(),
               ),
             );
           },

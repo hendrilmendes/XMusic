@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 // import 'package:path_provider/path_provider.dart';
@@ -21,6 +20,7 @@ import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Helpers/picker.dart';
 import 'package:xmusic/Screens/Library/liked.dart';
 import 'package:xmusic/Services/player_service.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class Downloads extends StatefulWidget {
   const Downloads({super.key});
@@ -102,8 +102,9 @@ class _DownloadsState extends State<Downloads>
         if (_albums.containsKey(element['album'])) {
           final List<Map> tempAlbum = _albums[element['album']]!;
           tempAlbum.add(element as Map);
-          _albums
-              .addEntries([MapEntry(element['album'].toString(), tempAlbum)]);
+          _albums.addEntries([
+            MapEntry(element['album'].toString(), tempAlbum),
+          ]);
         } else {
           _albums.addEntries([
             MapEntry(element['album'].toString(), [element as Map]),
@@ -113,8 +114,9 @@ class _DownloadsState extends State<Downloads>
         if (_artists.containsKey(element['artist'])) {
           final List<Map> tempArtist = _artists[element['artist']]!;
           tempArtist.add(element);
-          _artists
-              .addEntries([MapEntry(element['artist'].toString(), tempArtist)]);
+          _artists.addEntries([
+            MapEntry(element['artist'].toString(), tempArtist),
+          ]);
         } else {
           _artists.addEntries([
             MapEntry(element['artist'].toString(), [element]),
@@ -124,8 +126,9 @@ class _DownloadsState extends State<Downloads>
         if (_genres.containsKey(element['genre'])) {
           final List<Map> tempGenre = _genres[element['genre']]!;
           tempGenre.add(element);
-          _genres
-              .addEntries([MapEntry(element['genre'].toString(), tempGenre)]);
+          _genres.addEntries([
+            MapEntry(element['genre'].toString(), tempGenre),
+          ]);
         } else {
           _genres.addEntries([
             MapEntry(element['genre'].toString(), [element]),
@@ -156,45 +159,39 @@ class _DownloadsState extends State<Downloads>
     switch (sortVal) {
       case 0:
         _songs.sort(
-          (a, b) => a['title']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['title'].toString().toUpperCase()),
+          (a, b) => a['title'].toString().toUpperCase().compareTo(
+            b['title'].toString().toUpperCase(),
+          ),
         );
       case 1:
         _songs.sort(
-          (a, b) => a['dateAdded']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['dateAdded'].toString().toUpperCase()),
+          (a, b) => a['dateAdded'].toString().toUpperCase().compareTo(
+            b['dateAdded'].toString().toUpperCase(),
+          ),
         );
       case 2:
         _songs.sort(
-          (a, b) => a['album']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['album'].toString().toUpperCase()),
+          (a, b) => a['album'].toString().toUpperCase().compareTo(
+            b['album'].toString().toUpperCase(),
+          ),
         );
       case 3:
         _songs.sort(
-          (a, b) => a['artist']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['artist'].toString().toUpperCase()),
+          (a, b) => a['artist'].toString().toUpperCase().compareTo(
+            b['artist'].toString().toUpperCase(),
+          ),
         );
       case 4:
         _songs.sort(
-          (a, b) => a['duration']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['duration'].toString().toUpperCase()),
+          (a, b) => a['duration'].toString().toUpperCase().compareTo(
+            b['duration'].toString().toUpperCase(),
+          ),
         );
       default:
         _songs.sort(
-          (b, a) => a['dateAdded']
-              .toString()
-              .toUpperCase()
-              .compareTo(b['dateAdded'].toString().toUpperCase()),
+          (b, a) => a['dateAdded'].toString().toUpperCase().compareTo(
+            b['dateAdded'].toString().toUpperCase(),
+          ),
         );
     }
 
@@ -232,26 +229,35 @@ class _DownloadsState extends State<Downloads>
               a.toString().toUpperCase().compareTo(b.toString().toUpperCase()),
         );
       case 2:
-        _sortedAlbumKeysList
-            .sort((b, a) => _albums[a]!.length.compareTo(_albums[b]!.length));
-        _sortedArtistKeysList
-            .sort((b, a) => _artists[a]!.length.compareTo(_artists[b]!.length));
-        _sortedGenreKeysList
-            .sort((b, a) => _genres[a]!.length.compareTo(_genres[b]!.length));
+        _sortedAlbumKeysList.sort(
+          (b, a) => _albums[a]!.length.compareTo(_albums[b]!.length),
+        );
+        _sortedArtistKeysList.sort(
+          (b, a) => _artists[a]!.length.compareTo(_artists[b]!.length),
+        );
+        _sortedGenreKeysList.sort(
+          (b, a) => _genres[a]!.length.compareTo(_genres[b]!.length),
+        );
       case 3:
-        _sortedAlbumKeysList
-            .sort((a, b) => _albums[a]!.length.compareTo(_albums[b]!.length));
-        _sortedArtistKeysList
-            .sort((a, b) => _artists[a]!.length.compareTo(_artists[b]!.length));
-        _sortedGenreKeysList
-            .sort((a, b) => _genres[a]!.length.compareTo(_genres[b]!.length));
+        _sortedAlbumKeysList.sort(
+          (a, b) => _albums[a]!.length.compareTo(_albums[b]!.length),
+        );
+        _sortedArtistKeysList.sort(
+          (a, b) => _artists[a]!.length.compareTo(_artists[b]!.length),
+        );
+        _sortedGenreKeysList.sort(
+          (a, b) => _genres[a]!.length.compareTo(_genres[b]!.length),
+        );
       default:
-        _sortedAlbumKeysList
-            .sort((b, a) => _albums[a]!.length.compareTo(_albums[b]!.length));
-        _sortedArtistKeysList
-            .sort((b, a) => _artists[a]!.length.compareTo(_artists[b]!.length));
-        _sortedGenreKeysList
-            .sort((b, a) => _genres[a]!.length.compareTo(_genres[b]!.length));
+        _sortedAlbumKeysList.sort(
+          (b, a) => _albums[a]!.length.compareTo(_albums[b]!.length),
+        );
+        _sortedArtistKeysList.sort(
+          (b, a) => _artists[a]!.length.compareTo(_artists[b]!.length),
+        );
+        _sortedGenreKeysList.sort(
+          (b, a) => _genres[a]!.length.compareTo(_genres[b]!.length),
+        );
     }
   }
 
@@ -308,18 +314,10 @@ class _DownloadsState extends State<Downloads>
               controller: _tcontroller,
               indicatorSize: TabBarIndicatorSize.label,
               tabs: [
-                Tab(
-                  text: AppLocalizations.of(context)!.songs,
-                ),
-                Tab(
-                  text: AppLocalizations.of(context)!.albums,
-                ),
-                Tab(
-                  text: AppLocalizations.of(context)!.artists,
-                ),
-                Tab(
-                  text: AppLocalizations.of(context)!.genres,
-                ),
+                Tab(text: AppLocalizations.of(context)!.songs),
+                Tab(text: AppLocalizations.of(context)!.albums),
+                Tab(text: AppLocalizations.of(context)!.artists),
+                Tab(text: AppLocalizations.of(context)!.genres),
               ],
             ),
             actions: [
@@ -329,10 +327,7 @@ class _DownloadsState extends State<Downloads>
                 onPressed: () {
                   showSearch(
                     context: context,
-                    delegate: DownloadsSearch(
-                      data: _songs,
-                      isDowns: true,
-                    ),
+                    delegate: DownloadsSearch(data: _songs, isDowns: true),
                   );
                 },
               ),
@@ -343,9 +338,9 @@ class _DownloadsState extends State<Downloads>
                     borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
                   onSelected:
-                      // (currentIndex == 0)
-                      // ?
-                      (int value) {
+                  // (currentIndex == 0)
+                  // ?
+                  (int value) {
                     if (value < 5) {
                       sortValue = value;
                       Hive.box('settings').put('sortValue', value);
@@ -364,9 +359,9 @@ class _DownloadsState extends State<Downloads>
                     //     setState(() {});
                   },
                   itemBuilder:
-                      // (currentIndex == 0)
-                      // ?
-                      (context) {
+                  // (currentIndex == 0)
+                  // ?
+                  (context) {
                     final List<String> sortTypes = [
                       AppLocalizations.of(context)!.displayName,
                       AppLocalizations.of(context)!.dateAdded,
@@ -389,10 +384,11 @@ class _DownloadsState extends State<Downloads>
                                   if (sortValue == sortTypes.indexOf(e))
                                     Icon(
                                       Icons.check_rounded,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Colors.grey[700],
+                                      color:
+                                          Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.grey[700],
                                     )
                                   else
                                     const SizedBox(),
@@ -409,11 +405,7 @@ class _DownloadsState extends State<Downloads>
                           )
                           .toList(),
                     );
-                    menuList.add(
-                      const PopupMenuDivider(
-                        height: 10,
-                      ),
-                    );
+                    menuList.add(const PopupMenuDivider(height: 10));
                     menuList.addAll(
                       orderTypes
                           .map(
@@ -426,17 +418,16 @@ class _DownloadsState extends State<Downloads>
                                   if (orderValue == orderTypes.indexOf(e))
                                     Icon(
                                       Icons.check_rounded,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Colors.grey[700],
+                                      color:
+                                          Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.grey[700],
                                     )
                                   else
                                     const SizedBox(),
                                   const SizedBox(width: 10),
-                                  Text(
-                                    e,
-                                  ),
+                                  Text(e),
                                 ],
                               ),
                             ),
@@ -448,51 +439,51 @@ class _DownloadsState extends State<Downloads>
                 ),
             ],
           ),
-          body: !added
-              ? const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                )
-              : TabBarView(
-                  physics: const CustomPhysics(),
-                  controller: _tcontroller,
-                  children: [
-                    DownSongsTab(
-                      onDelete: (Map item) {
-                        deleteSong(item);
-                      },
-                      songs: _songs,
-                      scrollController: _scrollController,
-                    ),
-                    AlbumsTab(
-                      albums: _albums,
-                      offline: true,
-                      type: 'album',
-                      sortedAlbumKeysList: _sortedAlbumKeysList,
-                    ),
-                    AlbumsTab(
-                      albums: _artists,
-                      type: 'artist',
-                      // tempPath: tempPath,
-                      offline: true,
-                      sortedAlbumKeysList: _sortedArtistKeysList,
-                    ),
-                    AlbumsTab(
-                      albums: _genres,
-                      type: 'genre',
-                      offline: true,
-                      sortedAlbumKeysList: _sortedGenreKeysList,
-                    ),
-                  ],
-                ),
+          body:
+              !added
+                  ? const Center(child: CircularProgressIndicator.adaptive())
+                  : TabBarView(
+                    physics: const CustomPhysics(),
+                    controller: _tcontroller,
+                    children: [
+                      DownSongsTab(
+                        onDelete: (Map item) {
+                          deleteSong(item);
+                        },
+                        songs: _songs,
+                        scrollController: _scrollController,
+                      ),
+                      AlbumsTab(
+                        albums: _albums,
+                        offline: true,
+                        type: 'album',
+                        sortedAlbumKeysList: _sortedAlbumKeysList,
+                      ),
+                      AlbumsTab(
+                        albums: _artists,
+                        type: 'artist',
+                        // tempPath: tempPath,
+                        offline: true,
+                        sortedAlbumKeysList: _sortedArtistKeysList,
+                      ),
+                      AlbumsTab(
+                        albums: _genres,
+                        type: 'genre',
+                        offline: true,
+                        sortedAlbumKeysList: _sortedGenreKeysList,
+                      ),
+                    ],
+                  ),
           floatingActionButton: ValueListenableBuilder(
             valueListenable: _showShuffle,
             child: FloatingActionButton(
               backgroundColor: Theme.of(context).cardColor,
               child: Icon(
                 Icons.shuffle_rounded,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black,
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
                 size: 24.0,
               ),
               onPressed: () {
@@ -508,11 +499,7 @@ class _DownloadsState extends State<Downloads>
                 }
               },
             ),
-            builder: (
-              BuildContext context,
-              bool showShuffle,
-              Widget? child,
-            ) {
+            builder: (BuildContext context, bool showShuffle, Widget? child) {
               return AnimatedSlide(
                 duration: const Duration(milliseconds: 300),
                 offset: showShuffle ? Offset.zero : const Offset(0, 2),
@@ -538,20 +525,27 @@ Future<Map> editTags(Map song, BuildContext context) async {
 
       FileImage songImage = FileImage(File(song['image'].toString()));
 
-      final titlecontroller =
-          TextEditingController(text: song['title'].toString());
-      final albumcontroller =
-          TextEditingController(text: song['album'].toString());
-      final artistcontroller =
-          TextEditingController(text: song['artist'].toString());
-      final albumArtistController =
-          TextEditingController(text: song['albumArtist'].toString());
-      final genrecontroller =
-          TextEditingController(text: song['genre'].toString());
-      final yearcontroller =
-          TextEditingController(text: song['year'].toString());
-      final pathcontroller =
-          TextEditingController(text: song['path'].toString());
+      final titlecontroller = TextEditingController(
+        text: song['title'].toString(),
+      );
+      final albumcontroller = TextEditingController(
+        text: song['album'].toString(),
+      );
+      final artistcontroller = TextEditingController(
+        text: song['artist'].toString(),
+      );
+      final albumArtistController = TextEditingController(
+        text: song['albumArtist'].toString(),
+      );
+      final genrecontroller = TextEditingController(
+        text: song['genre'].toString(),
+      );
+      final yearcontroller = TextEditingController(
+        text: song['year'].toString(),
+      );
+      final pathcontroller = TextEditingController(
+        text: song['path'].toString(),
+      );
 
       return AlertDialog(
         shape: RoundedRectangleBorder(
@@ -578,13 +572,9 @@ Future<Map> editTags(Map song, BuildContext context) async {
 
                       songImage = FileImage(File(imagePath));
 
-                      final Tag tag = Tag(
-                        artwork: imagePath,
-                      );
+                      final Tag tag = Tag(artwork: imagePath);
                       try {
-                        await [
-                          Permission.manageExternalStorage,
-                        ].request();
+                        await [Permission.manageExternalStorage].request();
                         await tagger.writeTags(
                           path: song['path'].toString(),
                           tag: tag,
@@ -606,10 +596,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                     child: SizedBox(
                       height: MediaQuery.sizeOf(context).width / 2,
                       width: MediaQuery.sizeOf(context).width / 2,
-                      child: Image(
-                        fit: BoxFit.cover,
-                        image: songImage,
-                      ),
+                      child: Image(fit: BoxFit.cover, image: songImage),
                     ),
                   ),
                 ),
@@ -629,9 +616,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                   controller: titlecontroller,
                   onSubmitted: (value) {},
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Text(
@@ -647,9 +632,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                   controller: artistcontroller,
                   onSubmitted: (value) {},
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Text(
@@ -665,9 +648,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                   controller: albumArtistController,
                   onSubmitted: (value) {},
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Text(
@@ -683,9 +664,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                   controller: albumcontroller,
                   onSubmitted: (value) {},
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Text(
@@ -701,9 +680,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                   controller: genrecontroller,
                   onSubmitted: (value) {},
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Text(
@@ -719,9 +696,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                   controller: yearcontroller,
                   onSubmitted: (value) {},
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Text(
@@ -744,9 +719,10 @@ Future<Map> editTags(Map song, BuildContext context) async {
         actions: [
           TextButton(
             style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.grey[700],
+              foregroundColor:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.grey[700],
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -777,13 +753,8 @@ Future<Map> editTags(Map song, BuildContext context) async {
               );
               try {
                 try {
-                  await [
-                    Permission.manageExternalStorage,
-                  ].request();
-                  tagger.writeTags(
-                    path: song['path'].toString(),
-                    tag: tag,
-                  );
+                  await [Permission.manageExternalStorage].request();
+                  tagger.writeTags(path: song['path'].toString(), tag: tag);
                 } catch (e) {
                   await tagger.writeTags(
                     path: song['path'].toString(),
@@ -805,15 +776,14 @@ Future<Map> editTags(Map song, BuildContext context) async {
             child: Text(
               AppLocalizations.of(context)!.ok,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary == Colors.white
-                    ? Colors.black
-                    : null,
+                color:
+                    Theme.of(context).colorScheme.secondary == Colors.white
+                        ? Colors.black
+                        : null,
               ),
             ),
           ),
-          const SizedBox(
-            width: 5,
-          ),
+          const SizedBox(width: 5),
         ],
       );
     },
@@ -852,8 +822,9 @@ class _DownSongsTabState extends State<DownSongsTab>
         file.writeAsBytesSync(image);
       }
     } catch (e) {
-      final HttpClientRequest request2 =
-          await HttpClient().getUrl(Uri.parse(url));
+      final HttpClientRequest request2 = await HttpClient().getUrl(
+        Uri.parse(url),
+      );
       final HttpClientResponse response2 = await request2.close();
       final bytes2 = await consolidateHttpClientResponseBytes(response2);
       await file.writeAsBytes(bytes2);
@@ -868,147 +839,134 @@ class _DownSongsTabState extends State<DownSongsTab>
     super.build(context);
     return (widget.songs.isEmpty)
         ? emptyScreen(
-            context,
-            3,
-            AppLocalizations.of(context)!.nothingTo,
-            15.0,
-            AppLocalizations.of(context)!.showHere,
-            50,
-            AppLocalizations.of(context)!.addSomething,
-            23.0,
-          )
+          context,
+          3,
+          AppLocalizations.of(context)!.nothingTo,
+          15.0,
+          AppLocalizations.of(context)!.showHere,
+          50,
+          AppLocalizations.of(context)!.addSomething,
+          23.0,
+        )
         : Column(
-            children: [
-              PlaylistHead(
-                songsList: widget.songs,
-                offline: true,
-                fromDownloads: true,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  controller: widget.scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(bottom: 10),
-                  shrinkWrap: true,
-                  itemCount: widget.songs.length,
-                  itemExtent: 70.0,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: imageCard(
-                        imageUrl: widget.songs[index]['image'].toString(),
-                        localImage: true,
-                        localErrorFunction: (_, __) {
-                          if (widget.songs[index]['image'] != null &&
-                              widget.songs[index]['image_url'] != null) {
-                            downImage(
-                              widget.songs[index]['image'].toString(),
-                              widget.songs[index]['path'].toString(),
-                              widget.songs[index]['image_url'].toString(),
-                            );
-                          }
-                        },
-                      ),
-                      onTap: () {
-                        PlayerInvoke.init(
-                          songsList: widget.songs,
-                          index: index,
-                          isOffline: true,
-                          fromDownloads: true,
-                          recommend: false,
-                        );
+          children: [
+            PlaylistHead(
+              songsList: widget.songs,
+              offline: true,
+              fromDownloads: true,
+            ),
+            Expanded(
+              child: ListView.builder(
+                controller: widget.scrollController,
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 10),
+                shrinkWrap: true,
+                itemCount: widget.songs.length,
+                itemExtent: 70.0,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: imageCard(
+                      imageUrl: widget.songs[index]['image'].toString(),
+                      localImage: true,
+                      localErrorFunction: (_, __) {
+                        if (widget.songs[index]['image'] != null &&
+                            widget.songs[index]['image_url'] != null) {
+                          downImage(
+                            widget.songs[index]['image'].toString(),
+                            widget.songs[index]['path'].toString(),
+                            widget.songs[index]['image_url'].toString(),
+                          );
+                        }
                       },
-                      title: Text(
-                        '${widget.songs[index]['title']}',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        '${widget.songs[index]['artist'] ?? 'Artist name'}',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          PopupMenuButton(
-                            icon: const Icon(
-                              Icons.more_vert_rounded,
+                    ),
+                    onTap: () {
+                      PlayerInvoke.init(
+                        songsList: widget.songs,
+                        index: index,
+                        isOffline: true,
+                        fromDownloads: true,
+                        recommend: false,
+                      );
+                    },
+                    title: Text(
+                      '${widget.songs[index]['title']}',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text(
+                      '${widget.songs[index]['artist'] ?? 'Artist name'}',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PopupMenuButton(
+                          icon: const Icon(Icons.more_vert_rounded),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15.0),
                             ),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
-                              ),
-                            ),
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: 0,
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.edit_rounded,
-                                    ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!
-                                          .edit,
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).iconTheme.color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem(
-                                textStyle:
-                                    Theme.of(context).popupMenuTheme.textStyle,
-                                value: 1,
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.delete_rounded,
-                                    ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!
-                                          .delete,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                            onSelected: (int? value) async {
-                              if (value == 0) {
-                                widget.songs[index] = await editTags(
-                                  widget.songs[index] as Map,
-                                  context,
-                                );
-                                Hive.box('downloads').put(
-                                  widget.songs[index]['id'],
-                                  widget.songs[index],
-                                );
-                                setState(() {});
-                              }
-                              if (value == 1) {
-                                setState(() {
-                                  widget.onDelete(widget.songs[index] as Map);
-                                });
-                              }
-                            },
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                          itemBuilder:
+                              (context) => [
+                                PopupMenuItem(
+                                  value: 0,
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.edit_rounded),
+                                      const SizedBox(width: 10.0),
+                                      Text(
+                                        AppLocalizations.of(context)!.edit,
+                                        style: TextStyle(
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  textStyle:
+                                      Theme.of(
+                                        context,
+                                      ).popupMenuTheme.textStyle,
+                                  value: 1,
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.delete_rounded),
+                                      const SizedBox(width: 10.0),
+                                      Text(
+                                        AppLocalizations.of(context)!.delete,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                          onSelected: (int? value) async {
+                            if (value == 0) {
+                              widget.songs[index] = await editTags(
+                                widget.songs[index] as Map,
+                                context,
+                              );
+                              Hive.box('downloads').put(
+                                widget.songs[index]['id'],
+                                widget.songs[index],
+                              );
+                              setState(() {});
+                            }
+                            if (value == 1) {
+                              setState(() {
+                                widget.onDelete(widget.songs[index] as Map);
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-            ],
-          );
+            ),
+          ],
+        );
   }
 }

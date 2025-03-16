@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -11,8 +10,9 @@ class Picker {
     required BuildContext context,
     String? message,
   }) async {
-    final String? temp =
-        await FilePicker.platform.getDirectoryPath(dialogTitle: message);
+    final String? temp = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: message,
+    );
     Logger.root.info('Selected folder: $temp');
     return (temp == '/' || temp == null) ? '' : temp;
   }

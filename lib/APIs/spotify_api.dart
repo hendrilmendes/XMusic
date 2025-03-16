@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -11,6 +10,7 @@ class SpotifyApi {
     'user-read-email',
     'playlist-read-private',
     'playlist-read-collaborative',
+    'playlist-read-public',
   ];
 
   /// You can signup for spotify developer account and get your own clientID and clientSecret incase you don't want to use these
@@ -64,10 +64,7 @@ class SpotifyApi {
         'redirect_uri': redirectUrl,
       };
     } else if (refreshToken != null) {
-      body = {
-        'grant_type': 'refresh_token',
-        'refresh_token': refreshToken,
-      };
+      body = {'grant_type': 'refresh_token', 'refresh_token': refreshToken};
     }
 
     if (body == null) {
@@ -104,7 +101,7 @@ class SpotifyApi {
         path,
         headers: {
           'User-Agent':
-              'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36',
+              'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
           'Accept': 'application/json',
           'App-platform': 'WebPlayer',
         },
@@ -127,8 +124,9 @@ class SpotifyApi {
 
   Future<List> getUserPlaylists(String accessToken) async {
     try {
-      final Uri path =
-          Uri.parse('$spotifyApiBaseUrl$spotifyUserPlaylistEndpoint?limit=50');
+      final Uri path = Uri.parse(
+        '$spotifyApiBaseUrl$spotifyUserPlaylistEndpoint?limit=50',
+      );
 
       final response = await get(
         path,
@@ -255,9 +253,7 @@ class SpotifyApi {
   }
 
   Future<Map> getTrackDetails(String accessToken, String trackId) async {
-    final Uri path = Uri.parse(
-      '$spotifyApiBaseUrl/tracks/$trackId',
-    );
+    final Uri path = Uri.parse('$spotifyApiBaseUrl/tracks/$trackId');
     final response = await get(
       path,
       headers: {

@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/box_switch_tile.dart';
@@ -10,6 +8,7 @@ import 'package:xmusic/Helpers/backup_restore.dart';
 import 'package:xmusic/Helpers/config.dart';
 import 'package:xmusic/Helpers/picker.dart';
 import 'package:xmusic/Services/ext_storage_provider.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class BackupAndRestorePage extends StatefulWidget {
   const BackupAndRestorePage({super.key});
@@ -21,10 +20,12 @@ class BackupAndRestorePage extends StatefulWidget {
 class _BackupAndRestorePageState extends State<BackupAndRestorePage> {
   final Box settingsBox = Hive.box('settings');
   final MyTheme currentTheme = GetIt.I<MyTheme>();
-  String autoBackPath = Hive.box('settings').get(
-    'autoBackPath',
-    defaultValue: '/storage/emulated/0/XMusic/Backups',
-  ) as String;
+  String autoBackPath =
+      Hive.box('settings').get(
+            'autoBackPath',
+            defaultValue: '/storage/emulated/0/XMusic/Backups',
+          )
+          as String;
 
   @override
   Widget build(BuildContext context) {
@@ -36,126 +37,64 @@ class _BackupAndRestorePageState extends State<BackupAndRestorePage> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
-            AppLocalizations.of(
-              context,
-            )!
-                .backNRest,
+            AppLocalizations.of(context)!.backNRest,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).iconTheme.color,
-            ),
+            style: TextStyle(color: Theme.of(context).iconTheme.color),
           ),
-          iconTheme: IconThemeData(
-            color: Theme.of(context).iconTheme.color,
-          ),
+          iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         ),
         body: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(10.0),
           children: [
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .createBack,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .createBackSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.createBack),
+              subtitle: Text(AppLocalizations.of(context)!.createBackSub),
               dense: true,
               onTap: () {
                 showModalBottomSheet(
                   backgroundColor: Colors.transparent,
                   context: context,
                   builder: (BuildContext context) {
-                    final List playlistNames = Hive.box('settings').get(
-                      'playlistNames',
-                      defaultValue: ['Favorite Songs'],
-                    ) as List;
+                    final List playlistNames =
+                        Hive.box('settings').get(
+                              'playlistNames',
+                              defaultValue: ['Favorite Songs'],
+                            )
+                            as List;
                     if (!playlistNames.contains('Favorite Songs')) {
                       playlistNames.insert(0, 'Favorite Songs');
-                      settingsBox.put(
-                        'playlistNames',
-                        playlistNames,
-                      );
+                      settingsBox.put('playlistNames', playlistNames);
                     }
 
                     final List<String> persist = [
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .settings,
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .playlists,
+                      AppLocalizations.of(context)!.settings,
+                      AppLocalizations.of(context)!.playlists,
                     ];
 
                     final List<String> checked = [
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .settings,
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .downs,
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .playlists,
+                      AppLocalizations.of(context)!.settings,
+                      AppLocalizations.of(context)!.downs,
+                      AppLocalizations.of(context)!.playlists,
                     ];
 
                     final List<String> items = [
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .settings,
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .playlists,
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .downs,
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .cache,
+                      AppLocalizations.of(context)!.settings,
+                      AppLocalizations.of(context)!.playlists,
+                      AppLocalizations.of(context)!.downs,
+                      AppLocalizations.of(context)!.cache,
                     ];
 
                     final Map<String, List> boxNames = {
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .settings: ['settings'],
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .cache: ['cache'],
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .downs: ['downloads'],
-                      AppLocalizations.of(
-                        context,
-                      )!
-                          .playlists: playlistNames,
+                      AppLocalizations.of(context)!.settings: ['settings'],
+                      AppLocalizations.of(context)!.cache: ['cache'],
+                      AppLocalizations.of(context)!.downs: ['downloads'],
+                      AppLocalizations.of(context)!.playlists: playlistNames,
                     };
                     return StatefulBuilder(
-                      builder: (
-                        BuildContext context,
-                        StateSetter setStt,
-                      ) {
+                      builder: (BuildContext context, StateSetter setStt) {
                         return BottomGradientContainer(
-                          borderRadius: BorderRadius.circular(
-                            20.0,
-                          ),
+                          borderRadius: BorderRadius.circular(20.0),
                           child: Column(
                             children: [
                               Expanded(
@@ -171,35 +110,30 @@ class _BackupAndRestorePageState extends State<BackupAndRestorePage> {
                                   itemCount: items.length,
                                   itemBuilder: (context, idx) {
                                     return CheckboxListTile(
-                                      activeColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      checkColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary ==
-                                              Colors.white
-                                          ? Colors.black
-                                          : null,
-                                      value: checked.contains(
-                                        items[idx],
-                                      ),
-                                      title: Text(
-                                        items[idx],
-                                      ),
-                                      onChanged: persist.contains(items[idx])
-                                          ? null
-                                          : (bool? value) {
-                                              value!
-                                                  ? checked.add(
-                                                      items[idx],
-                                                    )
-                                                  : checked.remove(
+                                      activeColor:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
+                                      checkColor:
+                                          Theme.of(
+                                                    context,
+                                                  ).colorScheme.secondary ==
+                                                  Colors.white
+                                              ? Colors.black
+                                              : null,
+                                      value: checked.contains(items[idx]),
+                                      title: Text(items[idx]),
+                                      onChanged:
+                                          persist.contains(items[idx])
+                                              ? null
+                                              : (bool? value) {
+                                                value!
+                                                    ? checked.add(items[idx])
+                                                    : checked.remove(
                                                       items[idx],
                                                     );
-                                              setStt(
-                                                () {},
-                                              );
-                                            },
+                                                setStt(() {});
+                                              },
                                     );
                                   },
                                 ),
@@ -209,39 +143,31 @@ class _BackupAndRestorePageState extends State<BackupAndRestorePage> {
                                 children: [
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      foregroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      foregroundColor:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                     ),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
                                     child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!
-                                          .cancel,
+                                      AppLocalizations.of(context)!.cancel,
                                     ),
                                   ),
                                   TextButton(
                                     style: TextButton.styleFrom(
-                                      foregroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      foregroundColor:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                     ),
                                     onPressed: () {
-                                      createBackup(
-                                        context,
-                                        checked,
-                                        boxNames,
-                                      );
+                                      createBackup(context, checked, boxNames);
                                       Navigator.pop(context);
                                     },
                                     child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!
-                                          .ok,
+                                      AppLocalizations.of(context)!.ok,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -259,18 +185,9 @@ class _BackupAndRestorePageState extends State<BackupAndRestorePage> {
               },
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .restore,
-              ),
+              title: Text(AppLocalizations.of(context)!.restore),
               subtitle: Text(
-                '${AppLocalizations.of(
-                  context,
-                )!.restoreSub}\n(${AppLocalizations.of(
-                  context,
-                )!.restart})',
+                '${AppLocalizations.of(context)!.restoreSub}\n(${AppLocalizations.of(context)!.restart})',
               ),
               dense: true,
               onTap: () async {
@@ -279,28 +196,13 @@ class _BackupAndRestorePageState extends State<BackupAndRestorePage> {
               },
             ),
             BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .autoBack,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .autoBackSub,
-              ),
+              title: Text(AppLocalizations.of(context)!.autoBack),
+              subtitle: Text(AppLocalizations.of(context)!.autoBackSub),
               keyName: 'autoBackup',
               defaultValue: false,
             ),
             ListTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .autoBackLocation,
-              ),
+              title: Text(AppLocalizations.of(context)!.autoBackLocation),
               subtitle: Text(autoBackPath),
               trailing: TextButton(
                 style: TextButton.styleFrom(
@@ -310,44 +212,30 @@ class _BackupAndRestorePageState extends State<BackupAndRestorePage> {
                           : Colors.grey[700],
                 ),
                 onPressed: () async {
-                  autoBackPath = await ExtStorageProvider.getExtStorage(
+                  autoBackPath =
+                      await ExtStorageProvider.getExtStorage(
                         dirName: 'XMusic/Backups',
                         writeAccess: true,
                       ) ??
                       '/storage/emulated/0/XMusic/Backups';
                   Hive.box('settings').put('autoBackPath', autoBackPath);
-                  setState(
-                    () {},
-                  );
+                  setState(() {});
                 },
-                child: Text(
-                  AppLocalizations.of(
-                    context,
-                  )!
-                      .reset,
-                ),
+                child: Text(AppLocalizations.of(context)!.reset),
               ),
               onTap: () async {
                 final String temp = await Picker.selectFolder(
                   context: context,
-                  message: AppLocalizations.of(
-                    context,
-                  )!
-                      .selectBackLocation,
+                  message: AppLocalizations.of(context)!.selectBackLocation,
                 );
                 if (temp.trim() != '') {
                   autoBackPath = temp;
                   Hive.box('settings').put('autoBackPath', temp);
-                  setState(
-                    () {},
-                  );
+                  setState(() {});
                 } else {
                   ShowSnackBar().showSnackBar(
                     context,
-                    AppLocalizations.of(
-                      context,
-                    )!
-                        .noFolderSelected,
+                    AppLocalizations.of(context)!.noFolderSelected,
                   );
                 }
               },

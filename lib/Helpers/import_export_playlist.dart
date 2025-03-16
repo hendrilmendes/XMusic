@@ -1,9 +1,7 @@
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Helpers/picker.dart';
 import 'package:xmusic/Helpers/songs_count.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 Future<void> exportPlaylist(
   BuildContext context,
@@ -41,9 +40,7 @@ Future<void> exportPlaylist(
       Logger.root.severe(
         'Error creating export playlist file. Retrying with file access permission',
       );
-      await [
-        Permission.manageExternalStorage,
-      ].request();
+      await [Permission.manageExternalStorage].request();
       file = await File('$dirPath/$showName.json').create(recursive: true);
     }
     await file.writeAsString(songs);

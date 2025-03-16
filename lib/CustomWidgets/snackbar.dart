@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class ShowSnackBar {
   void showSnackBar(
@@ -21,18 +20,16 @@ class ShowSnackBar {
             borderRadius: BorderRadius.circular(10),
           ),
           behavior: SnackBarBehavior.floating,
-          content: Text(
-            title,
-            style: const TextStyle(color: Colors.white),
-          ),
-          action: noAction
-              ? null
-              : action ??
-                  SnackBarAction(
-                    textColor: Theme.of(context).colorScheme.secondary,
-                    label: AppLocalizations.of(context)!.ok,
-                    onPressed: () {},
-                  ),
+          content: Text(title, style: const TextStyle(color: Colors.white)),
+          action:
+              noAction
+                  ? null
+                  : action ??
+                      SnackBarAction(
+                        textColor: Theme.of(context).colorScheme.secondary,
+                        label: AppLocalizations.of(context)!.ok,
+                        onPressed: () {},
+                      ),
         ),
       );
     } catch (e) {

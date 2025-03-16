@@ -2,16 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:xmusic/CustomWidgets/textinput_dialog.dart';
 import 'package:xmusic/Screens/Home/saavn.dart';
 import 'package:xmusic/Screens/Search/search.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({
-    super.key,
-  });
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -58,10 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NestedScrollView(
             physics: const BouncingScrollPhysics(),
             controller: _scrollController,
-            headerSliverBuilder: (
-              BuildContext context,
-              bool innerBoxScrolled,
-            ) {
+            headerSliverBuilder: (BuildContext context, bool innerBoxScrolled) {
               return <Widget>[
                 SliverAppBar(
                   expandedHeight: 100,
@@ -83,18 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () async {
                             showTextInputDialog(
                               context: context,
-                              title: AppLocalizations.of(
-                                context,
-                              )!
-                                  .enterName,
+                              title: AppLocalizations.of(context)!.enterName,
                               initialText: name,
                               keyboardType: TextInputType.name,
-                              onSubmitted:
-                                  (String value, BuildContext context) {
-                                Hive.box('settings').put(
-                                  'name',
-                                  value.trim(),
-                                );
+                              onSubmitted: (
+                                String value,
+                                BuildContext context,
+                              ) {
+                                Hive.box('settings').put('name', value.trim());
                                 name = value.trim();
                                 Navigator.pop(context);
                               },
@@ -104,13 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              const SizedBox(
-                                height: 40,
-                              ),
+                              const SizedBox(height: 40),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 15.0,
-                                ),
+                                padding: const EdgeInsets.only(left: 15.0),
                                 child: Row(
                                   children: [
                                     Padding(
@@ -122,33 +109,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                               text: getGreeting(context),
                                               style: TextStyle(
                                                 letterSpacing: 2,
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.secondary,
+                                                color:
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.secondary,
                                                 fontSize: 30,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             TextSpan(
-                                              text: (Hive.box(
-                                                            'settings',
-                                                          ).get('name') ==
-                                                          null ||
-                                                      Hive.box(
-                                                            'settings',
-                                                          ).get('name') ==
-                                                          '')
-                                                  ? AppLocalizations.of(
-                                                      context,
-                                                    )!
-                                                      .guest
-                                                  : ' ${Hive.box(
-                                                      'settings',
-                                                    ).get(
-                                                        'name',
-                                                      ).split(
-                                                        ' ',
-                                                      )[0]}',
+                                              text:
+                                                  (Hive.box(
+                                                                'settings',
+                                                              ).get('name') ==
+                                                              null ||
+                                                          Hive.box(
+                                                                'settings',
+                                                              ).get('name') ==
+                                                              '')
+                                                      ? AppLocalizations.of(
+                                                        context,
+                                                      )!.guest
+                                                      : ' ${Hive.box('settings').get('name').split(' ')[0]}',
                                               style: const TextStyle(
                                                 letterSpacing: 2,
                                                 fontSize: 30,
@@ -182,26 +164,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (context, child) {
                         return GestureDetector(
                           child: AnimatedContainer(
-                            width: (!_scrollController.hasClients ||
-                                    _scrollController.positions.length > 1)
-                                ? MediaQuery.sizeOf(context).width
-                                : max(
-                                    MediaQuery.sizeOf(context).width -
-                                        _scrollController.offset
-                                            .roundToDouble(),
-                                    MediaQuery.sizeOf(context).width -
-                                        (rotated ? 0 : 75),
-                                  ),
+                            width:
+                                (!_scrollController.hasClients ||
+                                        _scrollController.positions.length > 1)
+                                    ? MediaQuery.sizeOf(context).width
+                                    : max(
+                                      MediaQuery.sizeOf(context).width -
+                                          _scrollController.offset
+                                              .roundToDouble(),
+                                      MediaQuery.sizeOf(context).width -
+                                          (rotated ? 0 : 75),
+                                    ),
                             height: 55.0,
-                            duration: const Duration(
-                              milliseconds: 150,
-                            ),
+                            duration: const Duration(milliseconds: 150),
                             padding: const EdgeInsets.all(2.0),
                             // margin: EdgeInsets.zero,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                100.0,
-                              ),
+                              borderRadius: BorderRadius.circular(100.0),
                               color: Theme.of(context).cardColor,
                               boxShadow: const [
                                 BoxShadow(
@@ -214,44 +193,36 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             child: Row(
                               children: [
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
+                                const SizedBox(width: 10.0),
                                 Icon(
                                   CupertinoIcons.search,
                                   color:
                                       Theme.of(context).colorScheme.secondary,
                                 ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
+                                const SizedBox(width: 10.0),
                                 Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!
-                                      .searchText,
+                                  AppLocalizations.of(context)!.searchText,
                                   style: TextStyle(
                                     fontSize: 16.0,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .color,
+                                    color: Theme.of(context).iconTheme.color,
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SearchPage(
-                                query: '',
-                                fromHome: true,
-                                autofocus: true,
+                          onTap:
+                              () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => const SearchPage(
+                                        query: '',
+                                        fromHome: true,
+                                        autofocus: true,
+                                      ),
+                                ),
                               ),
-                            ),
-                          ),
                         );
                       },
                     ),

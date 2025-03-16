@@ -1,8 +1,6 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:xmusic/CustomWidgets/bouncy_playlist_header_scroll_view.dart';
@@ -14,6 +12,7 @@ import 'package:xmusic/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:xmusic/Services/player_service.dart';
 import 'package:xmusic/Services/youtube_services.dart';
 import 'package:xmusic/Services/ytmusic/yt_music.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class YouTubePlaylist extends StatefulWidget {
   final String playlistId;
@@ -131,9 +130,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
         body: Stack(
           children: [
             if (!fetched)
-              const Center(
-                child: CircularProgressIndicator.adaptive(),
-              )
+              const Center(child: CircularProgressIndicator.adaptive())
             else
               BouncyPlaylistHeaderScrollView(
                 scrollController: _scrollController,
@@ -159,21 +156,18 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                       }
                     },
                   ),
-                  PlaylistPopupMenu(
-                    data: searchedList,
-                    title: playlistName,
-                  ),
+                  PlaylistPopupMenu(data: searchedList, title: playlistName),
                 ],
                 onPlayTap: () async {
                   setState(() {
                     done = false;
                   });
 
-                  final Map? response =
-                      await YouTubeServices.instance.formatVideoFromId(
-                    id: searchedList.first['id'].toString(),
-                    data: searchedList.first,
-                  );
+                  final Map? response = await YouTubeServices.instance
+                      .formatVideoFromId(
+                        id: searchedList.first['id'].toString(),
+                        data: searchedList.first,
+                      );
                   final List<Map> playList = List.from(searchedList);
                   playList[0] = response!;
                   setState(() {
@@ -192,11 +186,11 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                   });
                   final List<Map> playList = List.from(searchedList);
                   playList.shuffle();
-                  final Map? response =
-                      await YouTubeServices.instance.formatVideoFromId(
-                    id: playList.first['id'].toString(),
-                    data: playList.first,
-                  );
+                  final Map? response = await YouTubeServices.instance
+                      .formatVideoFromId(
+                        id: playList.first['id'].toString(),
+                        data: playList.first,
+                      );
                   playList[0] = response!;
                   setState(() {
                     done = true;
@@ -209,106 +203,99 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                   );
                 },
                 sliverList: SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      if (searchedList.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20.0,
-                            top: 5.0,
-                            bottom: 5.0,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.songs,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
+                  delegate: SliverChildListDelegate([
+                    if (searchedList.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20.0,
+                          top: 5.0,
+                          bottom: 5.0,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.songs,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                         ),
-                      ...searchedList.map(
-                        (Map entry) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              left: 5.0,
-                            ),
-                            child: ListTile(
-                              leading: widget.type == 'album'
+                      ),
+                    ...searchedList.map((Map entry) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 5.0),
+                        child: ListTile(
+                          leading:
+                              widget.type == 'album'
                                   ? null
                                   : imageCard(
-                                      imageUrl: entry['image'].toString(),
-                                    ),
-                              title: Text(
-                                entry['title'].toString(),
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              onLongPress: () {
-                                copyToClipboard(
-                                  context: context,
-                                  text: entry['title'].toString(),
-                                );
-                              },
-                              subtitle: entry['subtitle'] == ''
+                                    imageUrl: entry['image'].toString(),
+                                  ),
+                          title: Text(
+                            entry['title'].toString(),
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          onLongPress: () {
+                            copyToClipboard(
+                              context: context,
+                              text: entry['title'].toString(),
+                            );
+                          },
+                          subtitle:
+                              entry['subtitle'] == ''
                                   ? null
                                   : Text(
-                                      entry['subtitle'].toString(),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                              onTap: () async {
-                                setState(() {
-                                  done = false;
-                                });
-                                final Map? response = await YouTubeServices
-                                    .instance
-                                    .formatVideoFromId(
+                                    entry['subtitle'].toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                          onTap: () async {
+                            setState(() {
+                              done = false;
+                            });
+                            final Map? response = await YouTubeServices.instance
+                                .formatVideoFromId(
                                   id: entry['id'].toString(),
                                   data: entry,
                                 );
-                                setState(() {
-                                  done = true;
-                                });
-                                PlayerInvoke.init(
-                                  songsList: [response],
-                                  index: 0,
-                                  isOffline: false,
-                                );
-                                // for (var i = 0;
-                                //     i < searchedList.length;
-                                //     i++) {
-                                //   YouTubeServices.instance
-                                //       .formatVideo(
-                                //     video: searchedList[i],
-                                //     quality: Hive.box('settings')
-                                //         .get(
-                                //           'ytQuality',
-                                //           defaultValue: 'Low',
-                                //         )
-                                //         .toString(),
-                                //   )
-                                //       .then((songMap) {
-                                //     final MediaItem mediaItem =
-                                //         MediaItemConverter.mapToMediaItem(
-                                //       songMap!,
-                                //     );
-                                //     addToNowPlaying(
-                                //       context: context,
-                                //       mediaItem: mediaItem,
-                                //       showNotification: false,
-                                //     );
-                                //   });
-                                // }
-                              },
-                              trailing: YtSongTileTrailingMenu(data: entry),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                            setState(() {
+                              done = true;
+                            });
+                            PlayerInvoke.init(
+                              songsList: [response],
+                              index: 0,
+                              isOffline: false,
+                            );
+                            // for (var i = 0;
+                            //     i < searchedList.length;
+                            //     i++) {
+                            //   YouTubeServices.instance
+                            //       .formatVideo(
+                            //     video: searchedList[i],
+                            //     quality: Hive.box('settings')
+                            //         .get(
+                            //           'ytQuality',
+                            //           defaultValue: 'Low',
+                            //         )
+                            //         .toString(),
+                            //   )
+                            //       .then((songMap) {
+                            //     final MediaItem mediaItem =
+                            //         MediaItemConverter.mapToMediaItem(
+                            //       songMap!,
+                            //     );
+                            //     addToNowPlaying(
+                            //       context: context,
+                            //       mediaItem: mediaItem,
+                            //       showNotification: false,
+                            //     );
+                            //   });
+                            // }
+                          },
+                          trailing: YtSongTileTrailingMenu(data: entry),
+                        ),
+                      );
+                    }),
+                  ]),
                 ),
               ),
             if (!done)
@@ -342,9 +329,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                               ),
                               strokeWidth: 5,
                             ),
-                            Text(
-                              AppLocalizations.of(context)!.fetchingStream,
-                            ),
+                            Text(AppLocalizations.of(context)!.fetchingStream),
                           ],
                         ),
                       ),

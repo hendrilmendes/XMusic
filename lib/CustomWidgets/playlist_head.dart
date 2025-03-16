@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:xmusic/Services/player_service.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class PlaylistHead extends StatelessWidget {
   final List songsList;
@@ -26,9 +25,7 @@ class PlaylistHead extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${songsList.length} ${AppLocalizations.of(
-              context,
-            )!.songs}',
+            '${songsList.length} ${AppLocalizations.of(context)!.songs}',
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           const Spacer(),

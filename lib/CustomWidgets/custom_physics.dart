@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class CustomPhysics extends ScrollPhysics {
@@ -10,11 +9,8 @@ class CustomPhysics extends ScrollPhysics {
   }
 
   @override
-  SpringDescription get spring => const SpringDescription(
-        mass: 150,
-        stiffness: 100,
-        damping: 1,
-      );
+  SpringDescription get spring =>
+      const SpringDescription(mass: 150, stiffness: 100, damping: 1);
 }
 
 class PagingScrollPhysics extends ScrollPhysics {

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 Widget emptyScreen(
@@ -25,9 +24,10 @@ Widget emptyScreen(
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontSize: size1,
-                color: useWhite
-                    ? Colors.white
-                    : Theme.of(context).colorScheme.secondary,
+                color:
+                    useWhite
+                        ? Colors.white
+                        : Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -38,9 +38,10 @@ Widget emptyScreen(
                 text2,
                 style: TextStyle(
                   fontSize: size2,
-                  color: useWhite
-                      ? Colors.white
-                      : Theme.of(context).colorScheme.secondary,
+                  color:
+                      useWhite
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.secondary,
                   fontWeight: FontWeight.w600,
                 ),
               ),

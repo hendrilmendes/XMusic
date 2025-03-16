@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:xmusic/APIs/api.dart';
 import 'package:xmusic/CustomWidgets/bouncy_sliver_scroll_view.dart';
 import 'package:xmusic/CustomWidgets/copy_clipboard.dart';
@@ -9,16 +8,13 @@ import 'package:xmusic/CustomWidgets/gradient_containers.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';
 import 'package:xmusic/Screens/Common/song_list.dart';
 import 'package:xmusic/Screens/Search/artists.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class AlbumSearchPage extends StatefulWidget {
   final String query;
   final String type;
 
-  const AlbumSearchPage({
-    super.key,
-    required this.query,
-    required this.type,
-  });
+  const AlbumSearchPage({super.key, required this.query, required this.type});
 
   @override
   _AlbumSearchPageState createState() => _AlbumSearchPageState();
@@ -56,48 +52,40 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
       case 'Playlists':
         SaavnAPI()
             .fetchAlbums(
-          searchQuery: widget.query,
-          type: 'playlist',
-          page: page,
-        )
+              searchQuery: widget.query,
+              type: 'playlist',
+              page: page,
+            )
             .then((value) {
-          final temp = _searchedList ?? [];
-          temp.addAll(value);
-          setState(() {
-            _searchedList = temp;
-            loading = false;
-          });
-        });
+              final temp = _searchedList ?? [];
+              temp.addAll(value);
+              setState(() {
+                _searchedList = temp;
+                loading = false;
+              });
+            });
       case 'Albums':
         SaavnAPI()
-            .fetchAlbums(
-          searchQuery: widget.query,
-          type: 'album',
-          page: page,
-        )
+            .fetchAlbums(searchQuery: widget.query, type: 'album', page: page)
             .then((value) {
-          final temp = _searchedList ?? [];
-          temp.addAll(value);
-          setState(() {
-            _searchedList = temp;
-            loading = false;
-          });
-        });
+              final temp = _searchedList ?? [];
+              temp.addAll(value);
+              setState(() {
+                _searchedList = temp;
+                loading = false;
+              });
+            });
       case 'Artists':
         SaavnAPI()
-            .fetchAlbums(
-          searchQuery: widget.query,
-          type: 'artist',
-          page: page,
-        )
+            .fetchAlbums(searchQuery: widget.query, type: 'artist', page: page)
             .then((value) {
-          final temp = _searchedList ?? [];
-          temp.addAll(value);
-          setState(() {
-            _searchedList = temp;
-            loading = false;
-          });
-        });
+              final temp = _searchedList ?? [];
+              temp.addAll(value);
+              setState(() {
+                _searchedList = temp;
+                loading = false;
+              });
+            });
       default:
         break;
     }
@@ -108,95 +96,94 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
     return GradientContainer(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: _searchedList == null
-            ? const Center(
-                child: CircularProgressIndicator.adaptive(),
-              )
-            : _searchedList!.isEmpty
+        body:
+            _searchedList == null
+                ? const Center(child: CircularProgressIndicator.adaptive())
+                : _searchedList!.isEmpty
                 ? emptyScreen(
-                    context,
-                    0,
-                    ':( ',
-                    100,
-                    AppLocalizations.of(context)!.sorry,
-                    60,
-                    AppLocalizations.of(context)!.resultsNotFound,
-                    20,
-                  )
+                  context,
+                  0,
+                  ':( ',
+                  100,
+                  AppLocalizations.of(context)!.sorry,
+                  60,
+                  AppLocalizations.of(context)!.resultsNotFound,
+                  20,
+                )
                 : BouncyImageSliverScrollView(
-                    scrollController: _scrollController,
-                    title: widget.type,
-                    placeholderImage: widget.type == 'Artists'
-                        ? 'assets/artist.png'
-                        : 'assets/album.png',
-                    sliverList: SliverList(
-                      delegate: SliverChildListDelegate(
-                        _searchedList!.map(
-                          (Map entry) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 7),
-                              child: ListTile(
-                                title: Text(
-                                  '${entry["title"]}',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                onLongPress: () {
-                                  copyToClipboard(
-                                    context: context,
-                                    text: '${entry["title"]}',
-                                  );
-                                },
-                                subtitle: entry['subtitle'] == ''
+                  scrollController: _scrollController,
+                  title: widget.type,
+                  placeholderImage:
+                      widget.type == 'Artists'
+                          ? 'assets/artist.png'
+                          : 'assets/album.png',
+                  sliverList: SliverList(
+                    delegate: SliverChildListDelegate(
+                      _searchedList!.map((Map entry) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 7),
+                          child: ListTile(
+                            title: Text(
+                              '${entry["title"]}',
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            onLongPress: () {
+                              copyToClipboard(
+                                context: context,
+                                text: '${entry["title"]}',
+                              );
+                            },
+                            subtitle:
+                                entry['subtitle'] == ''
                                     ? null
                                     : Text(
-                                        '${entry["subtitle"]}',
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                leading: imageCard(
-                                  elevation: 8,
-                                  borderRadius:
-                                      widget.type == 'Artists' ? 50.0 : 7.0,
-                                  placeholderImage: AssetImage(
-                                    widget.type == 'Artists'
-                                        ? 'assets/artist.png'
-                                        : 'assets/album.png',
-                                  ),
-                                  imageUrl: entry['image'].toString(),
-                                ),
-                                trailing: widget.type != 'Albums'
+                                      '${entry["subtitle"]}',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                            leading: imageCard(
+                              elevation: 8,
+                              borderRadius:
+                                  widget.type == 'Artists' ? 50.0 : 7.0,
+                              placeholderImage: AssetImage(
+                                widget.type == 'Artists'
+                                    ? 'assets/artist.png'
+                                    : 'assets/album.png',
+                              ),
+                              imageUrl: entry['image'].toString(),
+                            ),
+                            trailing:
+                                widget.type != 'Albums'
                                     ? null
                                     : AlbumDownloadButton(
-                                        albumName: entry['title'].toString(),
-                                        albumId: entry['id'].toString(),
-                                      ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      opaque: false,
-                                      pageBuilder: (_, __, ___) =>
+                                      albumName: entry['title'].toString(),
+                                      albumId: entry['id'].toString(),
+                                    ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  opaque: false,
+                                  pageBuilder:
+                                      (_, __, ___) =>
                                           widget.type == 'Artists'
                                               ? ArtistSearchPage(
-                                                  data: entry,
-                                                  artistId:
-                                                      entry['id'].toString(),
-                                                )
-                                              : SongsListPage(
-                                                  listItem: entry,
-                                                ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        ).toList(),
-                      ),
+                                                data: entry,
+                                                artistId:
+                                                    entry['id'].toString(),
+                                              )
+                                              : SongsListPage(listItem: entry),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
+                ),
       ),
     );
   }

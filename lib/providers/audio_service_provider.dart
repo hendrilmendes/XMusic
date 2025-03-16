@@ -1,4 +1,3 @@
-
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:xmusic/Screens/Player/audioplayer.dart';
@@ -19,7 +18,8 @@ class AudioHandlerHelper {
     audioHandler = await AudioService.init(
       builder: () => AudioPlayerHandlerImpl(),
       config: AudioServiceConfig(
-        androidNotificationChannelId: 'com.github.hendrilmendes.music.channel.audio',
+        androidNotificationChannelId:
+            'com.github.hendrilmendes.music.channel.audio',
         androidNotificationChannelName: 'XMusic',
         androidNotificationIcon: 'drawable/ic_stat_music_note',
         androidShowNotificationBadge: true,

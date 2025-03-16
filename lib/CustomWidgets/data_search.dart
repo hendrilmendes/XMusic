@@ -1,13 +1,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:xmusic/CustomWidgets/download_button.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';
 import 'package:xmusic/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:xmusic/Helpers/audio_query.dart';
 import 'package:xmusic/Services/player_service.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class DataSearch extends SearchDelegate {
   final List<SongModel> data;

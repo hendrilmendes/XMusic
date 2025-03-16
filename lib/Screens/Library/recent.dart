@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:xmusic/CustomWidgets/empty_screen.dart';
 import 'package:xmusic/CustomWidgets/gradient_containers.dart';
 import 'package:xmusic/CustomWidgets/image_card.dart';
 import 'package:xmusic/CustomWidgets/like_button.dart';
 import 'package:xmusic/Services/player_service.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class RecentlyPlayed extends StatefulWidget {
   @override
@@ -49,40 +48,37 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
             ),
           ],
         ),
-        body: _songs.isEmpty
-            ? emptyScreen(
-                context,
-                3,
-                AppLocalizations.of(context)!.nothingTo,
-                15,
-                AppLocalizations.of(context)!.showHere,
-                50.0,
-                AppLocalizations.of(context)!.playSomething,
-                23.0,
-              )
-            : ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                shrinkWrap: true,
-                itemCount: _songs.length,
-                itemExtent: 70.0,
-                itemBuilder: (context, index) {
-                  return _songs.isEmpty
-                      ? const SizedBox()
-                      : Dismissible(
+        body:
+            _songs.isEmpty
+                ? emptyScreen(
+                  context,
+                  3,
+                  AppLocalizations.of(context)!.nothingTo,
+                  15,
+                  AppLocalizations.of(context)!.showHere,
+                  50.0,
+                  AppLocalizations.of(context)!.playSomething,
+                  23.0,
+                )
+                : ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  shrinkWrap: true,
+                  itemCount: _songs.length,
+                  itemExtent: 70.0,
+                  itemBuilder: (context, index) {
+                    return _songs.isEmpty
+                        ? const SizedBox()
+                        : Dismissible(
                           key: Key(_songs[index]['id'].toString()),
                           direction: DismissDirection.endToStart,
                           background: const ColoredBox(
                             color: Colors.redAccent,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 15.0,
-                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 15.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Icon(Icons.delete_outline_rounded),
-                                ],
+                                children: [Icon(Icons.delete_outline_rounded)],
                               ),
                             ),
                           ),
@@ -125,8 +121,8 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                             },
                           ),
                         );
-                },
-              ),
+                  },
+                ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:xmusic/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:sizer/sizer.dart';
@@ -11,6 +10,7 @@ import 'package:xmusic/CustomWidgets/snackbar.dart';
 import 'package:xmusic/Helpers/backup_restore.dart';
 import 'package:xmusic/Helpers/config.dart';
 import 'package:xmusic/constants/countrycodes.dart';
+import 'package:xmusic/l10n/app_localizations.dart';
 
 class PrefScreen extends StatefulWidget {
   const PrefScreen({super.key});
@@ -39,8 +39,11 @@ class _PrefScreenState extends State<PrefScreen> {
     'Assamese',
   ];
   List<bool> isSelected = [true, false];
-  List preferredLanguage = Hive.box('settings')
-      .get('preferredLanguage', defaultValue: ['English'])?.toList() as List;
+  List preferredLanguage =
+      Hive.box(
+            'settings',
+          ).get('preferredLanguage', defaultValue: ['English'])?.toList()
+          as List;
   String region =
       Hive.box('settings').get('region', defaultValue: 'Brazil') as String;
   bool useProxy =
@@ -59,16 +62,11 @@ class _PrefScreenState extends State<PrefScreen> {
                   width: MediaQuery.sizeOf(context).width,
                   height: MediaQuery.sizeOf(context).width,
                   child: const Image(
-                    image: AssetImage(
-                      'assets/icon-white-trans.png',
-                    ),
+                    image: AssetImage('assets/icon-white-trans.png'),
                   ),
                 ),
               ),
-              const GradientContainer(
-                child: null,
-                opacity: true,
-              ),
+              const GradientContainer(child: null, opacity: true),
               Column(
                 children: [
                   Row(
@@ -82,9 +80,7 @@ class _PrefScreenState extends State<PrefScreen> {
                         },
                         child: Text(
                           AppLocalizations.of(context)!.restore,
-                          style: TextStyle(
-                            color: Colors.grey.withOpacity(0.7),
-                          ),
+                          style: TextStyle(color: Colors.grey.withOpacity(0.7)),
                         ),
                       ),
                       TextButton(
@@ -93,16 +89,12 @@ class _PrefScreenState extends State<PrefScreen> {
                         },
                         child: Text(
                           AppLocalizations.of(context)!.skip,
-                          style: TextStyle(
-                            color: Colors.grey.withOpacity(0.7),
-                          ),
+                          style: TextStyle(color: Colors.grey.withOpacity(0.7)),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.1,
-                  ),
+                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.1),
                   Expanded(
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
@@ -138,9 +130,10 @@ class _PrefScreenState extends State<PrefScreen> {
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 54.sp,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
                                       ),
                                     ),
                                     TextSpan(
@@ -183,8 +176,9 @@ class _PrefScreenState extends State<PrefScreen> {
                                       height: 57.0,
                                       width: 150,
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100.0),
+                                        borderRadius: BorderRadius.circular(
+                                          100.0,
+                                        ),
                                         color: Colors.grey[900],
                                         boxShadow: const [
                                           BoxShadow(
@@ -211,8 +205,9 @@ class _PrefScreenState extends State<PrefScreen> {
                                         backgroundColor: Colors.transparent,
                                         context: context,
                                         builder: (BuildContext context) {
-                                          final List checked =
-                                              List.from(preferredLanguage);
+                                          final List checked = List.from(
+                                            preferredLanguage,
+                                          );
                                           return StatefulBuilder(
                                             builder: (
                                               BuildContext context,
@@ -220,9 +215,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                             ) {
                                               return BottomGradientContainer(
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                  20.0,
-                                                ),
+                                                    BorderRadius.circular(20.0),
                                                 child: Column(
                                                   children: [
                                                     Expanded(
@@ -231,28 +224,29 @@ class _PrefScreenState extends State<PrefScreen> {
                                                             const BouncingScrollPhysics(),
                                                         shrinkWrap: true,
                                                         padding:
-                                                            const EdgeInsets
-                                                                .fromLTRB(
-                                                          0,
-                                                          10,
-                                                          0,
-                                                          10,
-                                                        ),
+                                                            const EdgeInsets.fromLTRB(
+                                                              0,
+                                                              10,
+                                                              0,
+                                                              10,
+                                                            ),
                                                         itemCount:
                                                             languages.length,
-                                                        itemBuilder:
-                                                            (context, idx) {
+                                                        itemBuilder: (
+                                                          context,
+                                                          idx,
+                                                        ) {
                                                           return CheckboxListTile(
                                                             activeColor:
                                                                 Theme.of(
-                                                              context,
-                                                            )
+                                                                      context,
+                                                                    )
                                                                     .colorScheme
                                                                     .secondary,
                                                             value: checked
                                                                 .contains(
-                                                              languages[idx],
-                                                            ),
+                                                                  languages[idx],
+                                                                ),
                                                             title: Text(
                                                               languages[idx],
                                                             ),
@@ -261,14 +255,11 @@ class _PrefScreenState extends State<PrefScreen> {
                                                             ) {
                                                               value!
                                                                   ? checked.add(
-                                                                      languages[
-                                                                          idx],
-                                                                    )
-                                                                  : checked
-                                                                      .remove(
-                                                                      languages[
-                                                                          idx],
-                                                                    );
+                                                                    languages[idx],
+                                                                  )
+                                                                  : checked.remove(
+                                                                    languages[idx],
+                                                                  );
                                                               setStt(() {});
                                                             },
                                                           );
@@ -280,12 +271,11 @@ class _PrefScreenState extends State<PrefScreen> {
                                                           MainAxisAlignment.end,
                                                       children: [
                                                         TextButton(
-                                                          style: TextButton
-                                                              .styleFrom(
+                                                          style: TextButton.styleFrom(
                                                             foregroundColor:
                                                                 Theme.of(
-                                                              context,
-                                                            )
+                                                                      context,
+                                                                    )
                                                                     .colorScheme
                                                                     .secondary,
                                                           ),
@@ -297,17 +287,15 @@ class _PrefScreenState extends State<PrefScreen> {
                                                           child: Text(
                                                             AppLocalizations.of(
                                                               context,
-                                                            )!
-                                                                .cancel,
+                                                            )!.cancel,
                                                           ),
                                                         ),
                                                         TextButton(
-                                                          style: TextButton
-                                                              .styleFrom(
+                                                          style: TextButton.styleFrom(
                                                             foregroundColor:
                                                                 Theme.of(
-                                                              context,
-                                                            )
+                                                                      context,
+                                                                    )
                                                                     .colorScheme
                                                                     .secondary,
                                                           ),
@@ -329,26 +317,23 @@ class _PrefScreenState extends State<PrefScreen> {
                                                                 .isEmpty) {
                                                               ShowSnackBar()
                                                                   .showSnackBar(
-                                                                context,
-                                                                AppLocalizations
-                                                                        .of(
-                                                                  context,
-                                                                )!
-                                                                    .noLangSelected,
-                                                              );
+                                                                    context,
+                                                                    AppLocalizations.of(
+                                                                      context,
+                                                                    )!.noLangSelected,
+                                                                  );
                                                             }
                                                           },
                                                           child: Text(
                                                             AppLocalizations.of(
                                                               context,
-                                                            )!
-                                                                .ok,
+                                                            )!.ok,
                                                             style:
                                                                 const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
                                                           ),
                                                         ),
                                                       ],
@@ -362,9 +347,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                       );
                                     },
                                   ),
-                                  const SizedBox(
-                                    height: 20.0,
-                                  ),
+                                  const SizedBox(height: 20.0),
                                   ListTile(
                                     contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 5.0,
@@ -382,8 +365,9 @@ class _PrefScreenState extends State<PrefScreen> {
                                       height: 57.0,
                                       width: 150,
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100.0),
+                                        borderRadius: BorderRadius.circular(
+                                          100.0,
+                                        ),
                                         color: Colors.grey[900],
                                         boxShadow: const [
                                           BoxShadow(
@@ -411,74 +395,71 @@ class _PrefScreenState extends State<PrefScreen> {
                                           final List<String> countries =
                                               codes.keys.toList();
                                           return BottomGradientContainer(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
+                                            borderRadius: BorderRadius.circular(
+                                              20.0,
+                                            ),
                                             child: ListView.builder(
                                               physics:
                                                   const BouncingScrollPhysics(),
                                               shrinkWrap: true,
                                               padding:
                                                   const EdgeInsets.fromLTRB(
-                                                0,
-                                                10,
-                                                0,
-                                                10,
-                                              ),
+                                                    0,
+                                                    10,
+                                                    0,
+                                                    10,
+                                                  ),
                                               itemCount: countries.length,
                                               itemBuilder: (context, idx) {
                                                 return ListTileTheme(
                                                   selectedColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
+                                                      Theme.of(
+                                                        context,
+                                                      ).colorScheme.secondary,
                                                   child: ListTile(
                                                     contentPadding:
                                                         const EdgeInsets.only(
-                                                      left: 25.0,
-                                                      right: 25.0,
-                                                    ),
-                                                    title: Text(
-                                                      countries[idx],
-                                                    ),
-                                                    trailing: region ==
-                                                            countries[idx]
-                                                        ? const Icon(
-                                                            Icons.check_rounded,
-                                                          )
-                                                        : const SizedBox(),
-                                                    selected: region ==
+                                                          left: 25.0,
+                                                          right: 25.0,
+                                                        ),
+                                                    title: Text(countries[idx]),
+                                                    trailing:
+                                                        region == countries[idx]
+                                                            ? const Icon(
+                                                              Icons
+                                                                  .check_rounded,
+                                                            )
+                                                            : const SizedBox(),
+                                                    selected:
+                                                        region ==
                                                         countries[idx],
                                                     onTap: () {
                                                       region = countries[idx];
-                                                      Hive.box('settings').put(
-                                                        'region',
-                                                        region,
-                                                      );
-                                                      Navigator.pop(
-                                                        context,
-                                                      );
+                                                      Hive.box(
+                                                        'settings',
+                                                      ).put('region', region);
+                                                      Navigator.pop(context);
                                                       if (region != 'India') {
-                                                        ShowSnackBar()
-                                                            .showSnackBar(
+                                                        ShowSnackBar().showSnackBar(
                                                           context,
                                                           AppLocalizations.of(
                                                             context,
-                                                          )!
-                                                              .useVpn,
+                                                          )!.useVpn,
                                                           duration:
                                                               const Duration(
-                                                            seconds: 10,
-                                                          ),
-                                                          action:
-                                                              SnackBarAction(
-                                                            textColor: Theme.of(
-                                                              context,
-                                                            )
-                                                                .colorScheme
-                                                                .secondary,
-                                                            label: AppLocalizations
-                                                                    .of(context)!
-                                                                .useProxy,
+                                                                seconds: 10,
+                                                              ),
+                                                          action: SnackBarAction(
+                                                            textColor:
+                                                                Theme.of(
+                                                                      context,
+                                                                    )
+                                                                    .colorScheme
+                                                                    .secondary,
+                                                            label:
+                                                                AppLocalizations.of(
+                                                                  context,
+                                                                )!.useProxy,
                                                             onPressed: () {
                                                               Hive.box(
                                                                 'settings',
@@ -501,17 +482,12 @@ class _PrefScreenState extends State<PrefScreen> {
                                       );
                                     },
                                   ),
-                                  const SizedBox(
-                                    height: 20.0,
-                                  ),
+                                  const SizedBox(height: 20.0),
                                   Visibility(
                                     visible: region != 'India',
                                     child: BoxSwitchTile(
                                       title: Text(
-                                        AppLocalizations.of(
-                                          context,
-                                        )!
-                                            .useProxy,
+                                        AppLocalizations.of(context)!.useProxy,
                                       ),
                                       keyName: 'useProxy',
                                       defaultValue: true,
@@ -521,21 +497,14 @@ class _PrefScreenState extends State<PrefScreen> {
                                         required Box box,
                                       }) {
                                         useProxy = val;
-                                        setState(
-                                          () {},
-                                        );
+                                        setState(() {});
                                       },
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 50,
-                                  ),
+                                  const SizedBox(height: 50),
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.popAndPushNamed(
-                                        context,
-                                        '/',
-                                      );
+                                      Navigator.popAndPushNamed(context, '/');
                                     },
                                     child: Container(
                                       margin: const EdgeInsets.symmetric(
@@ -543,11 +512,13 @@ class _PrefScreenState extends State<PrefScreen> {
                                       ),
                                       height: 55.0,
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100.0),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
+                                        borderRadius: BorderRadius.circular(
+                                          100.0,
+                                        ),
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
                                         boxShadow: const [
                                           BoxShadow(
                                             color: Colors.black26,
