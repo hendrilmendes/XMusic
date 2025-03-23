@@ -4,6 +4,8 @@
 
 Um reprodutor de música incrível para todas as suas necessidades!
 
+Fork of [Blackhole](https://github.com/BrightDV/BlackHole/).
+
 [![made-with-flutter](https://img.shields.io/badge/Made%20with-Flutter-1f425f.svg)](https://flutter.dev/) ![Release](https://img.shields.io/github/v/release/hendrilmendes/XMusic) ![Downloads](https://img.shields.io/github/downloads/hendrilmendes/XMusic/total)
 
 ### Não esqueça de :star: esse repositório
