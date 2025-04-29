@@ -1,79 +1,61 @@
-<img width="125px" src="https://github.com/hendrilmendes/XMusic/blob/main/assets/icon-white-trans.png" align="center" />
 
-# XMusic
 
-Um reprodutor de música incrível para todas as suas necessidades!
+---
 
-Fork of [Blackhole](https://github.com/BrightDV/BlackHole/).
+<p align="center">
+   <img src="./cover.png" width="100%" />
+</p>
 
-[![made-with-flutter](https://img.shields.io/badge/Made%20with-Flutter-1f425f.svg)](https://flutter.dev/) ![Release](https://img.shields.io/github/v/release/hendrilmendes/XMusic) ![Downloads](https://img.shields.io/github/downloads/hendrilmendes/XMusic/total)
+<div align="center">
+<h1>Gyawun Music</h1>
+  <img src="https://hits.dwyl.com/jhelumcorp/gyawun.svg?style=flat-square" />
+    <a href="https://github.com/sheikhhaziq/gyavyn/releases/latest"><img src="https://img.shields.io/github/v/release/sheikhhaziq/gyawun?style=flat" alt="Latest release" /></a>
+    <a href="https://github.com/sheikhhaziq/gyawun/commits"><img src="https://img.shields.io/github/commits-since/sheikhhaziq/gyawun/latest?style=flat" alt="Commits since latest release" /></a>
+    <a href="https://github.com/sheikhhaziq/gyawun/commits"><img src="https://img.shields.io/github/commit-activity/m/sheikhhaziq/gyawun?color=g" alt="Commits per month" /></a>
+    <a href="https://github.com/sheikhhaziq/gyawun/releases/latest"><img src="https://img.shields.io/github/release-date/sheikhhaziq/gyawun" alt="Last release" /></a>
 
-### Não esqueça de :star: esse repositório
+  <a href="https://t.me/jhelumcorp"><img src="https://img.shields.io/badge/Join_us_on_Telegram-0088cc?style=social&logo=telegram" alt="Telergram" height="50"/></a>
+</div>
 
-[![GitHub stars](https://img.shields.io/github/stars/hendrilmendes/XMusic.svg?style=social&label=Star)](https://github.com/hendrilmendes/XMusic) ![GitHub forks](https://img.shields.io/github/forks/hendrilmendes/XMusic.svg?style=social&label=Forks) ![GitHub followers](https://img.shields.io/github/followers/hendrilmendes.svg?style=social&label=Follow)
 
-## Download
+## Features / TODO
+- [x] Play (almost) any song with high quality from YouTube Music
+- [x] Background playback
+- [x] Search for Songs, Artists and Playlists
+- [x] Reorder songs in playlist or queue
+- [x] Dark Mode
+- [x] Change Audio Quality
+- [x] Material You colors
+- [x] Dynamic theme support
+- [x] Add to favorites
+- [x] Create playlist
+- [x] Save history locally
+- [x] Download songs locally
+- [x] Multiple Language Support(Partially)
+- [x] Save playlist
+- [x] Equilizer and Loudness Enhancer
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[<img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white"
-     alt="Download from GitHub"
-     height="60">](https://github.com/hendrilmendes/XMusic/releases)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+## Installation
 
-## Features
+[<img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png"
+    alt="Get it on GitHub"
+    height="80">](https://github.com/sheikhhaziq/gyavun/releases/latest)
 
-* Alta qualidade de streaming(320kbps AAC)
-* Busca por música, album, artista e playlists
-* Playlists em alta em idiomas específicos
-* Músicas populares
-* Rádios de artistas e gêneros
-* Suporta mais de 15 idiomas de música
-* Principais músicas locais e globais do Spotify
-* Adicionar músicas aos favoritos
-* Suporta playlists
-* Importe playlists do Spotify & YouTube
-* Importe/Exporte playlists em arquivo JSON
-* Compartilhe playlists
-* Temporizador
-* Suporte à letras
-* Gestão de filas
-* Registra histórico de reprodução
-* Modo escuro / Cor de destaque
-* Gradientes personalizados e outras opções de tema
-* Suporta modo Retrato e Paisagem
-* Baixe para ouvir offline (320 kbps com tags ID3)
-* Escute online e offline
-* Suporte para edição de tag
-* Pesquisa por resultados em alta
-* Suporta pesquisa do YouTube
-* Playlists em alta do Youtube
-* Reproduza vídeos como áudio
-* Recomendação de músicas automática
-* Equalizador embutido
-* Backup & Restauração
-* Verificação de atualização automática
-* Suporte à cache
-* Sem assinatura
-* Sem anúncios
 
-e muito mais...
-Veja você mesmo :)
+## Contributing
 
-## Imagens
-<img src="https://github.com/hendrilmendes/XMusic/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true" width="32%"> <img src="https://github.com/hendrilmendes/XMusic/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png?raw=true" width="32%"> <img src="https://github.com/hendrilmendes/XMusic/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true" width="32%"> <img src="https://github.com/hendrilmendes/XMusic/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true" width="32%"> <img src="https://github.com/hendrilmendes/XMusic/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true" width="32%"> <img src="https://github.com/hendrilmendes/XMusic/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true" width="32%">
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
 
-## Licença
+Please make sure to update tests as appropriate.
 
-Este projeto está licenciado sob a [Licença MIT](LICENSE.md)
 
-## Enfrentando algum problema?
+## 👩‍💻👨‍💻 Our valuable Contributors
 
-Olhe alguns dos [problemas](https://github.com/hendrilmendes/XMusic/wiki/Common-Issues) e veja se pode lhe ajudar. Se seu problema não está lá, sinta-se livre para abrir um :)
+<p align="center"><a href="https://github.com/sheikhhaziq/gyawun/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=sheikhhaziq/gyawun" />
+</a></p>
 
-## O que há de novo
-
-Veja as novidades no [Changelog](Changelog.md)
-
-## Créditos
-
-Projeto construido sobre o [BlackHole](https://github.com/BrightDV/BlackHole)
+## Disclaimer
+This project and its contents are not affiliated with, funded, authorized, endorsed by, or in any way associated with YouTube, Google LLC or any of its affiliates and subsidiaries.
+Any trademark, service mark, trade name, or other intellectual property rights used in this project are owned by the respective owners.

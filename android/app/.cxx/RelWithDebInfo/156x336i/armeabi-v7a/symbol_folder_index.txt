@@ -1,1 +1,0 @@
-/home/Hendril/Documents/GitHub/XMusic/build/app/intermediates/cxx/RelWithDebInfo/156x336i/obj/armeabi-v7a

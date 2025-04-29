@@ -1,2 +1,0 @@
-C:/Users/Hendril/Documents/GitHub/XMusic/android/app/.cxx/RelWithDebInfo/p6o2y6x4/armeabi-v7a/CMakeFiles/edit_cache.dir
-C:/Users/Hendril/Documents/GitHub/XMusic/android/app/.cxx/RelWithDebInfo/p6o2y6x4/armeabi-v7a/CMakeFiles/rebuild_cache.dir
