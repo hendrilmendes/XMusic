@@ -53,12 +53,12 @@ class AboutScreen extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(vertical: 4),
                       leading: const ColorIcon(icon: Icons.title, color: null),
                       title: Text(
-                        "Gyawun Music",
+                        "XMusic",
                         style: textStyle(context, bold: false)
                             .copyWith(fontSize: 16),
                       ),
                       trailing: Text(
-                        S.of(context).Gyawun,
+                        S.of(context).xmusic,
                         style: smallTextStyle(context),
                       ),
                     ),
@@ -139,7 +139,7 @@ class AboutScreen extends StatelessWidget {
                       ),
                       trailing: Icon(AdaptiveIcons.chevron_right),
                       onTap: () => launchUrl(
-                          Uri.parse('https://gyawunmusic.vercel.app'),
+                          Uri.parse('https://xmusicmusic.vercel.app'),
                           mode: LaunchMode.externalApplication),
                     ),
                     AdaptiveListTile(
@@ -168,7 +168,7 @@ class AboutScreen extends StatelessWidget {
                       trailing: Icon(AdaptiveIcons.chevron_right),
                       onTap: () => launchUrl(
                           Uri.parse(
-                              'https://github.com/jhelumcorp/gyawun/contributors'),
+                              'https://github.com/jhelumcorp/xmusic/contributors'),
                           mode: LaunchMode.externalApplication),
                     ),
                     AdaptiveListTile(
@@ -181,7 +181,7 @@ class AboutScreen extends StatelessWidget {
                       ),
                       trailing: Icon(AdaptiveIcons.chevron_right),
                       onTap: () => launchUrl(
-                          Uri.parse('https://github.com/jhelumcorp/gyawun'),
+                          Uri.parse('https://github.com/jhelumcorp/xmusic'),
                           mode: LaunchMode.externalApplication),
                     ),
                     AdaptiveListTile(
@@ -196,7 +196,7 @@ class AboutScreen extends StatelessWidget {
                       trailing: Icon(AdaptiveIcons.chevron_right),
                       onTap: () => launchUrl(
                           Uri.parse(
-                              'https://github.com/jhelumcorp/gyawun/issues/new?assignees=&labels=bug&projects=&template=bug_report.yaml'),
+                              'https://github.com/jhelumcorp/xmusic/issues/new?assignees=&labels=bug&projects=&template=bug_report.yaml'),
                           mode: LaunchMode.externalApplication),
                     ),
                     AdaptiveListTile(
@@ -211,7 +211,7 @@ class AboutScreen extends StatelessWidget {
                       trailing: Icon(AdaptiveIcons.chevron_right),
                       onTap: () => launchUrl(
                           Uri.parse(
-                              'https://github.com/jhelumcorp/gyawun/issues/new?assignees=sheikhhaziq&labels=enhancement%2CFeature+Request&projects=&template=feature_request.yaml'),
+                              'https://github.com/jhelumcorp/xmusic/issues/new?assignees=sheikhhaziq&labels=enhancement%2CFeature+Request&projects=&template=feature_request.yaml'),
                           mode: LaunchMode.externalApplication),
                     ),
                     Center(

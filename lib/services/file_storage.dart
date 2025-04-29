@@ -31,10 +31,10 @@ class FileStorage {
   static Future<void> initialise() async {
     Directory directory = Directory("dir");
     if (Platform.isAndroid) {
-      directory = Directory(Hive.box('SETTINGS').get('APP_FOLDER',defaultValue:'/storage/emulated/0/Download/Gyawun'));
+      directory = Directory(Hive.box('SETTINGS').get('APP_FOLDER',defaultValue:'/storage/emulated/0/Download/xmusic'));
     } else if (Platform.isWindows) {
       directory =
-          Directory(path.join((await getDownloadsDirectory())!.path, 'Gyawun'));
+          Directory(path.join((await getDownloadsDirectory())!.path, 'xmusic'));
     } else {
       directory = await getApplicationDocumentsDirectory();
     }
@@ -52,10 +52,10 @@ class FileStorage {
   updateDirectories()async{
     Directory directory = Directory("dir");
     if (Platform.isAndroid) {
-      directory = Directory(Hive.box('SETTINGS').get('APP_FOLDER',defaultValue:'/storage/emulated/0/Download')+'/Gyawun');
+      directory = Directory(Hive.box('SETTINGS').get('APP_FOLDER',defaultValue:'/storage/emulated/0/Download')+'/xmusic');
     } else if (Platform.isWindows) {
       directory =
-          Directory(path.join((await getDownloadsDirectory())!.path, 'Gyawun'));
+          Directory(path.join((await getDownloadsDirectory())!.path, 'xmusic'));
     } else {
       directory = await getApplicationDocumentsDirectory();
     }
@@ -146,7 +146,7 @@ class FileStorage {
     final file = picker.files[0].xFile;
     String data = await file.readAsString();
     Map backup = jsonDecode(data);
-    if (backup['name'] != 'Gyawun' && backup['type'] != 'backup') {
+    if (backup['name'] != 'xmusic' && backup['type'] != 'backup') {
       return;
     }
     Map? settings = backup['data']?['settings'];

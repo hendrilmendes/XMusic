@@ -1,9 +1,10 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:get_it/get_it.dart';
-import 'package:gyawun/ytmusic/ytmusic.dart';
+import 'package:xmusic/ytmusic/ytmusic.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -39,14 +40,18 @@ class DownloadManager {
     try {
       if (!(await FileStorage.requestPermissions())) return;
 
-      AudioOnlyStreamInfo audioSource = await _getSongInfo(song['videoId'],
-          quality:
-              GetIt.I<SettingsManager>().downloadQuality.name.toLowerCase());
+      AudioOnlyStreamInfo audioSource = await _getSongInfo(
+        song['videoId'],
+        quality: GetIt.I<SettingsManager>().downloadQuality.name.toLowerCase(),
+      );
       int start = 0;
       int end = audioSource.size.totalBytes;
 
-      Stream<List<int>> stream = AudioStreamClient()
-          .getAudioStream(audioSource, start: start, end: end);
+      Stream<List<int>> stream = AudioStreamClient().getAudioStream(
+        audioSource,
+        start: start,
+        end: end,
+      );
       int total = audioSource.size.totalBytes;
       List<int> received = [];
       await _box.put(song['videoId'], {
@@ -72,7 +77,7 @@ class DownloadManager {
                 'status': 'DOWNLOADED',
                 'progress': 100,
                 'path': file.path,
-                'timestamp': DateTime.now().millisecondsSinceEpoch
+                'timestamp': DateTime.now().millisecondsSinceEpoch,
               });
             } else {
               await _box.delete(song['videoId']);
@@ -82,7 +87,9 @@ class DownloadManager {
         },
         onError: (err) async {
           await _box.delete(song['videoId']);
-          print(err);
+          if (kDebugMode) {
+            print(err);
+          }
           _downloadNext(); // Trigger next download
         },
       );
@@ -115,23 +122,27 @@ class DownloadManager {
   }
 
   Future<void> downloadPlaylist(Map playlist) async {
-    List songs =
-        await GetIt.I<YTMusic>().getPlaylistSongs(playlist['playlistId']);
+    List songs = await GetIt.I<YTMusic>().getPlaylistSongs(
+      playlist['playlistId'],
+    );
     for (Map song in songs) {
       await downloadSong(song); // Queue each song download
     }
   }
 
-  Future<AudioOnlyStreamInfo> _getSongInfo(String videoId,
-      {String quality = 'high'}) async {
+  Future<AudioOnlyStreamInfo> _getSongInfo(
+    String videoId, {
+    String quality = 'high',
+  }) async {
     try {
-      StreamManifest manifest =
-          await ytExplode.videos.streamsClient.getManifest(videoId);
-      List<AudioOnlyStreamInfo> streamInfos = manifest.audioOnly
-          .where((a) => a.container == StreamContainer.mp4)
-          .sortByBitrate()
-          .reversed
-          .toList();
+      StreamManifest manifest = await ytExplode.videos.streamsClient
+          .getManifest(videoId);
+      List<AudioOnlyStreamInfo> streamInfos =
+          manifest.audioOnly
+              .where((a) => a.container == StreamContainer.mp4)
+              .sortByBitrate()
+              .reversed
+              .toList();
       return quality == 'low' ? streamInfos.first : streamInfos.last;
     } catch (e) {
       rethrow;

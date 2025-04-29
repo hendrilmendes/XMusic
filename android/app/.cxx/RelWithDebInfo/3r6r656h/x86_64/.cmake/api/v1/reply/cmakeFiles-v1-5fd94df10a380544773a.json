@@ -41,7 +41,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeSystem.cmake"
+			"path" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeSystem.cmake"
 		},
 		{
 			"isExternal" : true,
@@ -307,7 +307,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeCCompiler.cmake"
+			"path" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeCCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -541,7 +541,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeCXXCompiler.cmake"
+			"path" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeCXXCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -692,7 +692,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeCCompiler.cmake"
+			"path" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeCCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -786,13 +786,13 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeCXXCompiler.cmake"
+			"path" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64/CMakeFiles/3.22.1-g37088a8/CMakeCXXCompiler.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64",
+		"build" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64",
 		"source" : "/home/sheikh-haziq/Apps/flutter/packages/flutter_tools/gradle/src/main/groovy"
 	},
 	"version" : 

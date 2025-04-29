@@ -1,5 +1,5 @@
 [Runtime]
-name=com.jhelum.gyawun.Debug
+name=com.github.hendrilmendes.music.Debug
 
 [ExtensionOf]
-ref=app/com.jhelum.gyawun/x86_64/master
+ref=app/com.github.hendrilmendes.music/x86_64/master

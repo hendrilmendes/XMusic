@@ -6,14 +6,14 @@
     [
       "/home/sheikh-haziq/Apps/Android/Sdk/cmake/3.22.1/bin/ninja",
       "-C",
-      "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64",
+      "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64",
       "clean"
     ]
   ],
   "buildTargetsCommandComponents": [
     "/home/sheikh-haziq/Apps/Android/Sdk/cmake/3.22.1/bin/ninja",
     "-C",
-    "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64",
+    "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/x86_64",
     "{LIST_OF_TARGETS_TO_BUILD}"
   ],
   "libraries": {}

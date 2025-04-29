@@ -48,7 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Copia de seguridad y restauración",
     ),
     "Battery_Optimisation_message": MessageLookupByLibrary.simpleMessage(
-      "Haz clic aquí para desactivar la optimización de batería para que Gyawun funcione correctamente",
+      "Haz clic aquí para desactivar la optimización de batería para que xmusic funcione correctamente",
     ),
     "Battery_Optimisation_title": MessageLookupByLibrary.simpleMessage(
       "Optimización de batería detectada",
@@ -93,7 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Developer": MessageLookupByLibrary.simpleMessage("Desarrollador"),
     "Donate": MessageLookupByLibrary.simpleMessage("Donar"),
     "Donate_Message": MessageLookupByLibrary.simpleMessage(
-      "Apoya el desarrollo de Gyawun",
+      "Apoya el desarrollo de xmusic",
     ),
     "Done": MessageLookupByLibrary.simpleMessage("Hecho"),
     "Download": MessageLookupByLibrary.simpleMessage("Descargar"),
@@ -117,7 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Solicitud de características",
     ),
     "Google_Account": MessageLookupByLibrary.simpleMessage("Cuenta de Google"),
-    "Gyawun": MessageLookupByLibrary.simpleMessage("Gyawun"),
+    "xmusic": MessageLookupByLibrary.simpleMessage("xmusic"),
     "High": MessageLookupByLibrary.simpleMessage("Alto"),
     "History": MessageLookupByLibrary.simpleMessage("Historial"),
     "Home": MessageLookupByLibrary.simpleMessage("Inicio"),
@@ -178,7 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Restore": MessageLookupByLibrary.simpleMessage("Restaurar"),
     "Saved": MessageLookupByLibrary.simpleMessage("Guardado"),
-    "Search_Gyawun": MessageLookupByLibrary.simpleMessage("Buscar Gyawun"),
+    "Search_xmusic": MessageLookupByLibrary.simpleMessage("Buscar xmusic"),
     "Search_History_Deleted": MessageLookupByLibrary.simpleMessage(
       "Historial de búsqueda eliminado",
     ),

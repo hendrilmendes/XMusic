@@ -1,6 +1,6 @@
 library ytmusic;
 
-import 'package:gyawun/ytmusic/mixins/library.dart';
+import 'package:xmusic/ytmusic/mixins/library.dart';
 
 import 'mixins/browsing.dart';
 import 'mixins/search.dart';

@@ -46,7 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Yedekle ve Geri Yükle",
     ),
     "Battery_Optimisation_message": MessageLookupByLibrary.simpleMessage(
-      "Gyawun un düzgün çalışması için pil optimizasyonunu devre dışı bırakmak için buraya tıklayın",
+      "xmusic un düzgün çalışması için pil optimizasyonunu devre dışı bırakmak için buraya tıklayın",
     ),
     "Battery_Optimisation_title": MessageLookupByLibrary.simpleMessage(
       "Pil Optimizasyonu Tespit Edildi",
@@ -93,7 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Developer": MessageLookupByLibrary.simpleMessage("Geliştirici"),
     "Donate": MessageLookupByLibrary.simpleMessage("Bağış Yap"),
     "Donate_Message": MessageLookupByLibrary.simpleMessage(
-      "Gyawun un geliştirilmesini destekleyin",
+      "xmusic un geliştirilmesini destekleyin",
     ),
     "Done": MessageLookupByLibrary.simpleMessage("Tamam"),
     "Download": MessageLookupByLibrary.simpleMessage("İndir"),
@@ -115,7 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Favourites": MessageLookupByLibrary.simpleMessage("Favoriler"),
     "Feature_Request": MessageLookupByLibrary.simpleMessage("Özellik İsteği"),
     "Google_Account": MessageLookupByLibrary.simpleMessage("Google Hesabı"),
-    "Gyawun": MessageLookupByLibrary.simpleMessage("Gyawun"),
+    "xmusic": MessageLookupByLibrary.simpleMessage("xmusic"),
     "High": MessageLookupByLibrary.simpleMessage("Yüksek"),
     "History": MessageLookupByLibrary.simpleMessage("Geçmiş"),
     "Home": MessageLookupByLibrary.simpleMessage("Ana Sayfa"),
@@ -174,7 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Restore": MessageLookupByLibrary.simpleMessage("Geri Yükle"),
     "Saved": MessageLookupByLibrary.simpleMessage("Kaydedilenler"),
-    "Search_Gyawun": MessageLookupByLibrary.simpleMessage("Gyawun Ara"),
+    "Search_xmusic": MessageLookupByLibrary.simpleMessage("xmusic Ara"),
     "Search_History_Deleted": MessageLookupByLibrary.simpleMessage(
       "Arama Geçmişi Silindi",
     ),

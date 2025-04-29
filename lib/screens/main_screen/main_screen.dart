@@ -206,7 +206,7 @@ class _MainScreenState extends State<MainScreen> with WindowListener {
           title: DragToMoveArea(
             child: Align(
               alignment: AlignmentDirectional.centerStart,
-              child: Text(S.of(context).Gyawun),
+              child: Text(S.of(context).xmusic),
             ),
           ),
           leading: fluent_ui.Padding(

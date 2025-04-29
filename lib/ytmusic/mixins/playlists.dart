@@ -1,3 +1,3 @@
-import 'package:gyawun/ytmusic/yt_service_provider.dart';
+import 'package:xmusic/ytmusic/yt_service_provider.dart';
 
 mixin PlaylistsMixin on YTMusicServices{}

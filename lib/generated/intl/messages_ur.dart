@@ -115,7 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "خصوصیت کی درخواست",
     ),
     "Google_Account": MessageLookupByLibrary.simpleMessage("گوگل اکاؤنٹ"),
-    "Gyawun": MessageLookupByLibrary.simpleMessage("گیاون"),
+    "xmusic": MessageLookupByLibrary.simpleMessage("گیاون"),
     "High": MessageLookupByLibrary.simpleMessage("زیادہ"),
     "History": MessageLookupByLibrary.simpleMessage("تاریخ"),
     "Home": MessageLookupByLibrary.simpleMessage("ہوم"),
@@ -176,7 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Restore": MessageLookupByLibrary.simpleMessage("بحال کریں"),
     "Saved": MessageLookupByLibrary.simpleMessage("محفوظ کردہ"),
-    "Search_Gyawun": MessageLookupByLibrary.simpleMessage("گیاون تلاش کریں"),
+    "Search_xmusic": MessageLookupByLibrary.simpleMessage("گیاون تلاش کریں"),
     "Search_History_Deleted": MessageLookupByLibrary.simpleMessage(
       "تلاش کی ہسٹری حذف کر دی گئی",
     ),

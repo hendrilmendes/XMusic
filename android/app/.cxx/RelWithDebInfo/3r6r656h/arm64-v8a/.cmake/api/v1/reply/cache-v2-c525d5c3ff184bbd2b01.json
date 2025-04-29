@@ -151,7 +151,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/arm64-v8a"
+			"value" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -751,7 +751,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/build/app/intermediates/cxx/RelWithDebInfo/3r6r656h/obj/arm64-v8a"
+			"value" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/build/app/intermediates/cxx/RelWithDebInfo/3r6r656h/obj/arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -1023,7 +1023,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/build/app/intermediates/cxx/RelWithDebInfo/3r6r656h/obj/arm64-v8a"
+			"value" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/build/app/intermediates/cxx/RelWithDebInfo/3r6r656h/obj/arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1343,7 +1343,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/sheikh-haziq/Development/Jhelum/gyawun-app/android/app/.cxx/RelWithDebInfo/3r6r656h/arm64-v8a"
+			"value" : "/home/sheikh-haziq/Development/Jhelum/xmusic-app/android/app/.cxx/RelWithDebInfo/3r6r656h/arm64-v8a"
 		},
 		{
 			"name" : "Project_IS_TOP_LEVEL",

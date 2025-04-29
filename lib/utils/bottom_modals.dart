@@ -778,7 +778,7 @@ _updateDialog(BuildContext context, UpdateInfo? updateInfo) {
                   String platform = Platform.isAndroid ? 'android' : 'windows';
                   launchUrl(
                       Uri.parse(
-                          'https://gyawunmusic.vercel.app/api/download?action=download&platform=$platform&url=${updateInfo.downloadUrl}'),
+                          'https://xmusicmusic.vercel.app/api/download?action=download&platform=$platform&url=${updateInfo.downloadUrl}'),
                       mode: LaunchMode.externalApplication);
                 }
               },

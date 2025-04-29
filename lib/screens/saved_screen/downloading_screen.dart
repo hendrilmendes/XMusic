@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:gyawun/utils/extensions.dart';
+import 'package:xmusic/utils/extensions.dart';
 
 import '../../generated/l10n.dart';
 import '../../services/download_manager.dart';

@@ -5,9 +5,9 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get_it/get_it.dart';
-import 'package:gyawun/screens/saved_screen/downloading_screen.dart';
-import 'package:gyawun/utils/extensions.dart';
-import 'package:gyawun/utils/pprint.dart';
+import 'package:xmusic/screens/saved_screen/downloading_screen.dart';
+import 'package:xmusic/utils/extensions.dart';
+import 'package:xmusic/utils/pprint.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../generated/l10n.dart';

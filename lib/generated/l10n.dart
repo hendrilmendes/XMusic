@@ -55,9 +55,9 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Gyawun`
-  String get Gyawun {
-    return Intl.message('Gyawun', name: 'Gyawun', desc: '', args: []);
+  /// `xmusic`
+  String get xmusic {
+    return Intl.message('xmusic', name: 'xmusic', desc: '', args: []);
   }
 
   /// `Next Up`
@@ -90,11 +90,11 @@ class S {
     return Intl.message('Settings', name: 'Settings', desc: '', args: []);
   }
 
-  /// `Search Gyawun`
-  String get Search_Gyawun {
+  /// `Search xmusic`
+  String get Search_xmusic {
     return Intl.message(
-      'Search Gyawun',
-      name: 'Search_Gyawun',
+      'Search xmusic',
+      name: 'Search_xmusic',
       desc: '',
       args: [],
     );
@@ -178,10 +178,10 @@ class S {
     );
   }
 
-  /// `Click here disable battery optimisation for Gyawun to work properly`
+  /// `Click here disable battery optimisation for xmusic to work properly`
   String get Battery_Optimisation_message {
     return Intl.message(
-      'Click here disable battery optimisation for Gyawun to work properly',
+      'Click here disable battery optimisation for xmusic to work properly',
       name: 'Battery_Optimisation_message',
       desc: '',
       args: [],
@@ -193,10 +193,10 @@ class S {
     return Intl.message('Donate', name: 'Donate', desc: '', args: []);
   }
 
-  /// `Support the development of Gyawun`
+  /// `Support the development of xmusic`
   String get Donate_Message {
     return Intl.message(
-      'Support the development of Gyawun',
+      'Support the development of xmusic',
       name: 'Donate_Message',
       desc: '',
       args: [],

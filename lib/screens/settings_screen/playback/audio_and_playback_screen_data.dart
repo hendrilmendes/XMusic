@@ -4,7 +4,7 @@ import 'package:easy_folder_picker/FolderPicker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:gyawun/services/file_storage.dart';
+import 'package:xmusic/services/file_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 

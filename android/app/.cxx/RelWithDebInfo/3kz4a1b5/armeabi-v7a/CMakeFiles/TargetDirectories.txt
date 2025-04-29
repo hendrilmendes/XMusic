@@ -1,0 +1,2 @@
+/home/hendril/Downloads/xmusic-main/android/app/.cxx/RelWithDebInfo/3kz4a1b5/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/hendril/Downloads/xmusic-main/android/app/.cxx/RelWithDebInfo/3kz4a1b5/armeabi-v7a/CMakeFiles/rebuild_cache.dir

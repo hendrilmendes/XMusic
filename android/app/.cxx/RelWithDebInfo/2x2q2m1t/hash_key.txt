@@ -18,8 +18,8 @@
 -DCMAKE_ANDROID_NDK=$NDK
 -DCMAKE_TOOLCHAIN_FILE=$NDK/build/cmake/android.toolchain.cmake
 -DCMAKE_MAKE_PROGRAM=$NINJA
--DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/sheikh-haziq/Development/Jhelum/gyawun-app/build/app/intermediates/cxx/RelWithDebInfo/$HASH/obj/$ABI
--DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/sheikh-haziq/Development/Jhelum/gyawun-app/build/app/intermediates/cxx/RelWithDebInfo/$HASH/obj/$ABI
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/sheikh-haziq/Development/Jhelum/xmusic-app/build/app/intermediates/cxx/RelWithDebInfo/$HASH/obj/$ABI
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/sheikh-haziq/Development/Jhelum/xmusic-app/build/app/intermediates/cxx/RelWithDebInfo/$HASH/obj/$ABI
 -DCMAKE_BUILD_TYPE=RelWithDebInfo
 -B$PROJECT/app/.cxx/RelWithDebInfo/$HASH/$ABI
 -GNinja

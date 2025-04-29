@@ -115,7 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Favourites": MessageLookupByLibrary.simpleMessage("पसंदीदा"),
     "Feature_Request": MessageLookupByLibrary.simpleMessage("फीचर अनुरोध"),
     "Google_Account": MessageLookupByLibrary.simpleMessage("गूगल अकाउंट"),
-    "Gyawun": MessageLookupByLibrary.simpleMessage("ग्यावुन"),
+    "xmusic": MessageLookupByLibrary.simpleMessage("ग्यावुन"),
     "High": MessageLookupByLibrary.simpleMessage("उच्च"),
     "History": MessageLookupByLibrary.simpleMessage("इतिहास"),
     "Home": MessageLookupByLibrary.simpleMessage("होम"),
@@ -176,7 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Restore": MessageLookupByLibrary.simpleMessage("पुनर्स्थापित"),
     "Saved": MessageLookupByLibrary.simpleMessage("सहेजे गए"),
-    "Search_Gyawun": MessageLookupByLibrary.simpleMessage("ग्यावुन खोजें"),
+    "Search_xmusic": MessageLookupByLibrary.simpleMessage("ग्यावुन खोजें"),
     "Search_History_Deleted": MessageLookupByLibrary.simpleMessage(
       "खोज इतिहास हटाया गया",
     ),

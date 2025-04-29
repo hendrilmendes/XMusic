@@ -8,9 +8,7 @@
 .buildlog/
 .history
 .svn/
-installers/node_modules/
-installers/package-lock.json
-installers/dmg_creator/*.dmg
+migrate_working_dir/
 
 # IntelliJ related
 *.iml
@@ -21,8 +19,7 @@ installers/dmg_creator/*.dmg
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
-.vs/
-.vscode/
+#.vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -34,9 +31,8 @@ installers/dmg_creator/*.dmg
 .pub-cache/
 .pub/
 /build/
-
-# Web related
-lib/generated_plugin_registrant.dart
+**/xmusic
+**/dist
 
 # Symbolication related
 app.*.symbols
@@ -48,3 +44,20 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/key.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+
+
+/linux
+/macos
+/windows
+/ios
+/web

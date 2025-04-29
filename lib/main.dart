@@ -34,7 +34,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isAndroid) {
     await JustAudioBackground.init(
-      androidNotificationChannelId: 'com.jhelum.gyawun.audio',
+      androidNotificationChannelId: 'com.github.hendrilmendes.music.audio',
       androidNotificationChannelName: 'Audio playback',
       androidNotificationOngoing: true,
     );
@@ -58,10 +58,7 @@ void main() async {
               defaultValue: WindowEffect.mica.name.toUpperCase(),
             ),
       );
-      await Window.setEffect(
-        effect: windowEffect,
-        dark: getInitialDarkness(),
-      );
+      await Window.setEffect(effect: windowEffect, dark: getInitialDarkness());
 
       await windowManager.show();
       await windowManager.setPreventClose(true);
@@ -71,7 +68,7 @@ void main() async {
   if (Platform.isWindows || Platform.isLinux) {
     JustAudioMediaKit.ensureInitialized();
     JustAudioMediaKit.bufferSize = 8 * 1024 * 1024;
-    JustAudioMediaKit.title = 'Gyawun Music';
+    JustAudioMediaKit.title = 'XMusic';
     JustAudioMediaKit.prefetchPlaylist = true;
   }
   await SystemChrome.setEnabledSystemUIMode(
@@ -112,81 +109,99 @@ void main() async {
         ChangeNotifierProvider(create: (_) => mediaPlayer),
         ChangeNotifierProvider(create: (_) => libraryService),
       ],
-      child: const Gyawun(),
+      child: const XMusic(),
     ),
   );
 }
 
-class Gyawun extends StatelessWidget {
-  const Gyawun({super.key});
+class XMusic extends StatelessWidget {
+  const XMusic({super.key});
   @override
   Widget build(BuildContext context) {
     SettingsManager settingsManager = context.watch<SettingsManager>();
-    return DynamicColorBuilder(builder: (lightScheme, darkScheme) {
-      return Shortcuts(
-        shortcuts: <LogicalKeySet, Intent>{
-          LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
-        },
-        child: Platform.isWindows
-            ? _buildFluentApp(
-                settingsManager,
-                lightScheme: lightScheme,
-                darkScheme: darkScheme,
-              )
-            : MaterialApp.router(
-                title: 'Gyawun Music',
-                routerConfig: router,
-                locale:
-                    Locale(context.watch<SettingsManager>().language['value']!),
-                localizationsDelegates: const [
-                  S.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                ],
-                supportedLocales: S.delegate.supportedLocales,
-                debugShowCheckedModeBanner: false,
-                themeMode: context.watch<SettingsManager>().themeMode,
-                theme: lightTheme(
-                  colorScheme: context.watch<SettingsManager>().dynamicColors &&
-                          lightScheme != null
-                      ? lightScheme
-                      : ColorScheme.fromSeed(
-                          seedColor:
-                              context.watch<SettingsManager>().accentColor ??
-                                  Colors.black,
-                          primary:
-                              context.watch<SettingsManager>().accentColor ??
-                                  Colors.black,
-                          brightness: Brightness.light,
-                        ),
-                ),
-                darkTheme: darkTheme(
-                  colorScheme: context.watch<SettingsManager>().dynamicColors &&
-                          darkScheme != null
-                      ? darkScheme
-                      : ColorScheme.fromSeed(
-                          seedColor:
-                              context.watch<SettingsManager>().accentColor ??
-                                  primaryWhite,
-                          primary:
-                              context.watch<SettingsManager>().accentColor ??
-                                  primaryWhite,
-                          brightness: Brightness.dark,
-                          surface: context.watch<SettingsManager>().amoledBlack
-                              ? Colors.black
-                              : null,
-                        ),
-                ),
-              ),
-      );
-    });
+    return DynamicColorBuilder(
+      builder: (lightScheme, darkScheme) {
+        return Shortcuts(
+          shortcuts: <LogicalKeySet, Intent>{
+            LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
+          },
+          child:
+              Platform.isWindows
+                  ? _buildFluentApp(
+                    settingsManager,
+                    lightScheme: lightScheme,
+                    darkScheme: darkScheme,
+                  )
+                  : MaterialApp.router(
+                    title: 'XMusic',
+                    routerConfig: router,
+                    locale: Locale(
+                      context.watch<SettingsManager>().language['value']!,
+                    ),
+                    localizationsDelegates: const [
+                      S.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                    ],
+                    supportedLocales: S.delegate.supportedLocales,
+                    debugShowCheckedModeBanner: false,
+                    themeMode: context.watch<SettingsManager>().themeMode,
+                    theme: lightTheme(
+                      colorScheme:
+                          context.watch<SettingsManager>().dynamicColors &&
+                                  lightScheme != null
+                              ? lightScheme
+                              : ColorScheme.fromSeed(
+                                seedColor:
+                                    context
+                                        .watch<SettingsManager>()
+                                        .accentColor ??
+                                    Colors.black,
+                                primary:
+                                    context
+                                        .watch<SettingsManager>()
+                                        .accentColor ??
+                                    Colors.black,
+                                brightness: Brightness.light,
+                              ),
+                    ),
+                    darkTheme: darkTheme(
+                      colorScheme:
+                          context.watch<SettingsManager>().dynamicColors &&
+                                  darkScheme != null
+                              ? darkScheme
+                              : ColorScheme.fromSeed(
+                                seedColor:
+                                    context
+                                        .watch<SettingsManager>()
+                                        .accentColor ??
+                                    primaryWhite,
+                                primary:
+                                    context
+                                        .watch<SettingsManager>()
+                                        .accentColor ??
+                                    primaryWhite,
+                                brightness: Brightness.dark,
+                                surface:
+                                    context.watch<SettingsManager>().amoledBlack
+                                        ? Colors.black
+                                        : null,
+                              ),
+                    ),
+                  ),
+        );
+      },
+    );
   }
 
-  _buildFluentApp(SettingsManager settingsManager,
-      {ColorScheme? lightScheme, ColorScheme? darkScheme}) {
+  _buildFluentApp(
+    SettingsManager settingsManager, {
+    ColorScheme? lightScheme,
+    ColorScheme? darkScheme,
+  }) {
     return fluent_ui.FluentApp.router(
-      title: 'Gyawun Music',
+      title: 'XMusic',
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       locale: Locale(settingsManager.language['value']!),
@@ -200,9 +215,10 @@ class Gyawun extends StatelessWidget {
       themeMode: settingsManager.themeMode,
       theme: fluent_ui.FluentThemeData(
         brightness: Brightness.light,
-        accentColor: settingsManager.dynamicColors
-            ? lightScheme?.primary.toAccentColor()
-            : settingsManager.accentColor?.toAccentColor(),
+        accentColor:
+            settingsManager.dynamicColors
+                ? lightScheme?.primary.toAccentColor()
+                : settingsManager.accentColor?.toAccentColor(),
         fontFamily: GoogleFonts.poppins().fontFamily,
         typography: fluent_ui.Typography.fromBrightness(
           brightness: Brightness.light,
@@ -217,9 +233,10 @@ class Gyawun extends StatelessWidget {
       ),
       darkTheme: fluent_ui.FluentThemeData(
         brightness: Brightness.dark,
-        accentColor: settingsManager.dynamicColors
-            ? darkScheme?.primary.toAccentColor()
-            : settingsManager.accentColor?.toAccentColor(),
+        accentColor:
+            settingsManager.dynamicColors
+                ? darkScheme?.primary.toAccentColor()
+                : settingsManager.accentColor?.toAccentColor(),
         fontFamily: GoogleFonts.poppins().fontFamily,
         typography: fluent_ui.Typography.fromBrightness(
           brightness: Brightness.dark,
@@ -231,8 +248,8 @@ class Gyawun extends StatelessWidget {
                 ? (settingsManager.dynamicColors
                     ? darkScheme?.surface
                     : settingsManager.amoledBlack
-                        ? Colors.black
-                        : null)
+                    ? Colors.black
+                    : null)
                 : null,
       ),
       builder: (context, child) {
@@ -269,8 +286,8 @@ bool getInitialDarkness() {
   int themeMode = Hive.box('SETTINGS').get('THEME_MODE', defaultValue: 0);
   if (themeMode == 0) {
     return MediaQueryData.fromView(
-                    WidgetsBinding.instance.platformDispatcher.views.first)
-                .platformBrightness ==
+              WidgetsBinding.instance.platformDispatcher.views.first,
+            ).platformBrightness ==
             Brightness.dark
         ? true
         : false;
@@ -281,10 +298,10 @@ bool getInitialDarkness() {
 }
 
 List<WindowEffect> get windowEffectList => [
-      WindowEffect.disabled,
-      WindowEffect.acrylic,
-      WindowEffect.solid,
-      WindowEffect.mica,
-      WindowEffect.tabbed,
-      WindowEffect.aero,
-    ];
+  WindowEffect.disabled,
+  WindowEffect.acrylic,
+  WindowEffect.solid,
+  WindowEffect.mica,
+  WindowEffect.tabbed,
+  WindowEffect.aero,
+];

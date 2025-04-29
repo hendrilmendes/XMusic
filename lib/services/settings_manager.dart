@@ -70,7 +70,7 @@ class SettingsManager extends ChangeNotifier {
   _init() {
     _themeMode = _themeModes[_box.get('THEME_MODE', defaultValue: 0)];
     _language = _languages.firstWhere((language) =>
-        language['value'] == _box.get('LANGUAGE', defaultValue: 'en-IN'));
+        language['value'] == _box.get('LANGUAGE', defaultValue: 'pt'));
     _accentColor = _box.get('ACCENT_COLOR') != null
         ? Color(_box.get('ACCENT_COLOR'))
         : null;
@@ -82,7 +82,7 @@ class SettingsManager extends ChangeNotifier {
             defaultValue: WindowEffect.disabled.name.toUpperCase()));
 
     _location = _countries.firstWhere((country) =>
-        country['value'] == _box.get('LOCATION', defaultValue: 'IN'));
+        country['value'] == _box.get('LOCATION', defaultValue: 'BR'));
 
     _streamingQuality =
         _audioQualities[_box.get('STREAMING_QUALITY', defaultValue: 0)];
