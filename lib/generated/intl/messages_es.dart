@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "About": MessageLookupByLibrary.simpleMessage("Acerca de"),
+    "Account": MessageLookupByLibrary.simpleMessage("Cuenta"),
     "Add_To_Favourites": MessageLookupByLibrary.simpleMessage(
       "Añadir a favoritos",
     ),
@@ -48,7 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Copia de seguridad y restauración",
     ),
     "Battery_Optimisation_message": MessageLookupByLibrary.simpleMessage(
-      "Haz clic aquí para desactivar la optimización de batería para que xmusic funcione correctamente",
+      "Haz clic aquí para desactivar la optimización de batería para que XMusic funcione correctamente",
     ),
     "Battery_Optimisation_title": MessageLookupByLibrary.simpleMessage(
       "Optimización de batería detectada",
@@ -93,7 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Developer": MessageLookupByLibrary.simpleMessage("Desarrollador"),
     "Donate": MessageLookupByLibrary.simpleMessage("Donar"),
     "Donate_Message": MessageLookupByLibrary.simpleMessage(
-      "Apoya el desarrollo de xmusic",
+      "Apoya el desarrollo de XMusic",
     ),
     "Done": MessageLookupByLibrary.simpleMessage("Hecho"),
     "Download": MessageLookupByLibrary.simpleMessage("Descargar"),
@@ -108,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Enable_Search_History": MessageLookupByLibrary.simpleMessage(
       "Activar historial de búsqueda",
     ),
+    "English": MessageLookupByLibrary.simpleMessage("English"),
     "Enter_Visitor_Id": MessageLookupByLibrary.simpleMessage(
       "Introducir ID de visitante",
     ),
@@ -116,16 +118,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Feature_Request": MessageLookupByLibrary.simpleMessage(
       "Solicitud de características",
     ),
-    "Google_Account": MessageLookupByLibrary.simpleMessage("Cuenta de Google"),
-    "xmusic": MessageLookupByLibrary.simpleMessage("xmusic"),
+    "Hendril_Mendes": MessageLookupByLibrary.simpleMessage("Hendril Mendes"),
     "High": MessageLookupByLibrary.simpleMessage("Alto"),
     "History": MessageLookupByLibrary.simpleMessage("Historial"),
+    "Hm_Corp": MessageLookupByLibrary.simpleMessage("HM Creative Studios"),
     "Home": MessageLookupByLibrary.simpleMessage("Inicio"),
     "Import": MessageLookupByLibrary.simpleMessage("Importar"),
     "Import_Playlist": MessageLookupByLibrary.simpleMessage(
       "Importar lista de reproducción",
     ),
-    "Jhelum_Corp": MessageLookupByLibrary.simpleMessage("Jhelum Corp"),
     "Language": MessageLookupByLibrary.simpleMessage("Idioma"),
     "Loudness_And_Equalizer": MessageLookupByLibrary.simpleMessage(
       "Volumen y ecualizador",
@@ -134,8 +135,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Mejorador de volumen",
     ),
     "Low": MessageLookupByLibrary.simpleMessage("Bajo"),
-    "Made_In_Kashmir": MessageLookupByLibrary.simpleMessage(
-      "Hecho en Cachemira",
+    "Made_In_Brazil": MessageLookupByLibrary.simpleMessage(
+      "Hecho en Brasil ❤️",
     ),
     "Name": MessageLookupByLibrary.simpleMessage("Nombre"),
     "Next_Up": MessageLookupByLibrary.simpleMessage("Siguiente"),
@@ -152,6 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Playlist_Name": MessageLookupByLibrary.simpleMessage("Nombre de la lista"),
     "Playlists": MessageLookupByLibrary.simpleMessage("Listas de reproducción"),
+    "Portuguese": MessageLookupByLibrary.simpleMessage("Português"),
     "Progress": MessageLookupByLibrary.simpleMessage("Progreso"),
     "Remove": MessageLookupByLibrary.simpleMessage("Eliminar"),
     "Remove_All_History_Message": MessageLookupByLibrary.simpleMessage(
@@ -177,19 +179,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "Restablecer ID de visitante",
     ),
     "Restore": MessageLookupByLibrary.simpleMessage("Restaurar"),
-    "Saved": MessageLookupByLibrary.simpleMessage("Guardado"),
-    "Search_xmusic": MessageLookupByLibrary.simpleMessage("Buscar xmusic"),
+    "Saved": MessageLookupByLibrary.simpleMessage("Biblioteca"),
+    "Search": MessageLookupByLibrary.simpleMessage("Buscar"),
     "Search_History_Deleted": MessageLookupByLibrary.simpleMessage(
       "Historial de búsqueda eliminado",
     ),
     "Search_Settings": MessageLookupByLibrary.simpleMessage(
       "Configuración de búsqueda",
     ),
+    "Search_xmusic": MessageLookupByLibrary.simpleMessage("Buscar en XMusic"),
     "Select_Backup": MessageLookupByLibrary.simpleMessage(
       "Seleccionar copia de seguridad",
     ),
-    "Settings": MessageLookupByLibrary.simpleMessage("Configuraciones"),
-    "Sheikh_Haziq": MessageLookupByLibrary.simpleMessage("Sheikh Haziq"),
+    "Settings": MessageLookupByLibrary.simpleMessage("Ajustes"),
+    "Share": MessageLookupByLibrary.simpleMessage("Compartir"),
     "Show_Less": MessageLookupByLibrary.simpleMessage("Mostrar menos"),
     "Show_More": MessageLookupByLibrary.simpleMessage("Mostrar más"),
     "Shuffle": MessageLookupByLibrary.simpleMessage("Aleatorio"),
@@ -202,6 +205,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Las canciones comenzarán a reproducirse pronto.",
     ),
     "Source_Code": MessageLookupByLibrary.simpleMessage("Código fuente"),
+    "Spanish": MessageLookupByLibrary.simpleMessage("Español"),
     "Start_Radio": MessageLookupByLibrary.simpleMessage("Iniciar radio"),
     "Streaming_Quality": MessageLookupByLibrary.simpleMessage(
       "Calidad de transmisión",
@@ -218,5 +222,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "YTMusic": MessageLookupByLibrary.simpleMessage("YTMusic"),
     "Yes": MessageLookupByLibrary.simpleMessage("Sí"),
     "nSongs": m0,
+    "xmusic": MessageLookupByLibrary.simpleMessage("XMusic"),
   };
 }

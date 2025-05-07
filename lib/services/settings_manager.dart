@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:xmusic/generated/l10n.dart';
+import 'package:xmusic/main.dart';
 
 import '../ytmusic/ytmusic.dart';
 
@@ -14,23 +16,23 @@ class SettingsManager extends ChangeNotifier {
   final List<ThemeMode> _themeModes = [
     ThemeMode.system,
     ThemeMode.light,
-    ThemeMode.dark
+    ThemeMode.dark,
   ];
   late Map<String, String> _location;
   late Map<String, String> _language;
   final List<AudioQuality> _audioQualities = [
     AudioQuality.high,
-    AudioQuality.low
+    AudioQuality.low,
   ];
   List<WindowEffect> get windowEffectList => [
-        WindowEffect.disabled,
-        WindowEffect.solid,
-        WindowEffect.transparent,
-        WindowEffect.acrylic,
-        WindowEffect.mica,
-        WindowEffect.tabbed,
-        WindowEffect.aero,
-      ];
+    WindowEffect.disabled,
+    WindowEffect.solid,
+    WindowEffect.transparent,
+    WindowEffect.acrylic,
+    WindowEffect.mica,
+    WindowEffect.tabbed,
+    WindowEffect.aero,
+  ];
   AudioQuality _streamingQuality = AudioQuality.high;
   AudioQuality _downloadQuality = AudioQuality.high;
   bool _skipSilence = false;
@@ -69,20 +71,28 @@ class SettingsManager extends ChangeNotifier {
   }
   _init() {
     _themeMode = _themeModes[_box.get('THEME_MODE', defaultValue: 0)];
-    _language = _languages.firstWhere((language) =>
-        language['value'] == _box.get('LANGUAGE', defaultValue: 'pt'));
-    _accentColor = _box.get('ACCENT_COLOR') != null
-        ? Color(_box.get('ACCENT_COLOR'))
-        : null;
+    _language = _languages.firstWhere(
+      (language) =>
+          language['value'] == _box.get('LANGUAGE', defaultValue: 'pt'),
+    );
+    _accentColor =
+        _box.get('ACCENT_COLOR') != null
+            ? Color(_box.get('ACCENT_COLOR'))
+            : null;
     _amoledBlack = _box.get('AMOLED_BLACK', defaultValue: true);
     _dynamicColors = _box.get('DYNAMIC_COLORS', defaultValue: false);
-    _windowEffect = windowEffectList.firstWhere((el) =>
-        el.name.toUpperCase() ==
-        _box.get('WINDOW_EFFECT',
-            defaultValue: WindowEffect.disabled.name.toUpperCase()));
+    _windowEffect = windowEffectList.firstWhere(
+      (el) =>
+          el.name.toUpperCase() ==
+          _box.get(
+            'WINDOW_EFFECT',
+            defaultValue: WindowEffect.disabled.name.toUpperCase(),
+          ),
+    );
 
-    _location = _countries.firstWhere((country) =>
-        country['value'] == _box.get('LOCATION', defaultValue: 'BR'));
+    _location = _countries.firstWhere(
+      (country) => country['value'] == _box.get('LOCATION', defaultValue: 'BR'),
+    );
 
     _streamingQuality =
         _audioQualities[_box.get('STREAMING_QUALITY', defaultValue: 0)];
@@ -94,6 +104,28 @@ class SettingsManager extends ChangeNotifier {
     _loudnessTargetGain = _box.get('LOUDNESS_TARGET_GAIN', defaultValue: 0.0);
     _equalizerBandsGain =
         _box.get('EQUALIZER_BANDS_GAIN', defaultValue: []).cast<double>();
+  }
+
+  String getLocalizedLanguageName(String code, BuildContext context) {
+    final s = S.of(context);
+    switch (code) {
+      case 'en':
+        return s.English;
+      case 'pt':
+        return s.Portuguese;
+      case 'es':
+        return s.Spanish;
+      default:
+        return s.Portuguese;
+    }
+  }
+
+  Map<String, String> getLanguageSettings() {
+    final storedLanguage = _box.get('LANGUAGE', defaultValue: 'pt');
+    return languages.firstWhere(
+      (lang) => lang['value'] == storedLanguage,
+      orElse: () => languages.first,
+    );
   }
 
   setThemeMode(ThemeMode mode) async {
@@ -130,8 +162,20 @@ class SettingsManager extends ChangeNotifier {
   set language(Map<String, String> value) {
     _box.put('LANGUAGE', value['value']);
     _language = value;
-    GetIt.I<YTMusic>().refreshContext();
-    notifyListeners();
+    S.load(Locale(value['value']!)).then((_) {
+      GetIt.I<YTMusic>().refreshContext();
+      notifyListeners();
+      _forceAppRebuild();
+    });
+  }
+
+  void _forceAppRebuild() {
+    final context = GetIt.I<GlobalKey<NavigatorState>>().currentContext;
+    if (context != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const XMusic()),
+      );
+    }
   }
 
   set streamingQuality(AudioQuality value) {
@@ -215,8 +259,8 @@ class SettingsManager extends ChangeNotifier {
 bool getDarkness(int themeMode) {
   if (themeMode == 0) {
     return MediaQueryData.fromView(
-                    WidgetsBinding.instance.platformDispatcher.views.first)
-                .platformBrightness ==
+              WidgetsBinding.instance.platformDispatcher.views.first,
+            ).platformBrightness ==
             Brightness.dark
         ? true
         : false;
@@ -338,7 +382,7 @@ List<Map<String, String>> _countries = [
   {"name": "Venezuela", "value": "VE"},
   {"name": "Vietnam", "value": "VN"},
   {"name": "Yemen", "value": "YE"},
-  {"name": "Zimbabwe", "value": "ZW"}
+  {"name": "Zimbabwe", "value": "ZW"},
 ];
 
 List<Map<String, String>> _languages = [
@@ -424,5 +468,5 @@ List<Map<String, String>> _languages = [
   {"name": "中文 (繁體)", "value": "zh-TW"},
   {"name": "中文 (香港)", "value": "zh-HK"},
   {"name": "日本語", "value": "ja"},
-  {"name": "한국어", "value": "ko"}
+  {"name": "한국어", "value": "ko"},
 ];

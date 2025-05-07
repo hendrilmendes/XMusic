@@ -55,9 +55,9 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `xmusic`
+  /// `XMusic`
   String get xmusic {
-    return Intl.message('xmusic', name: 'xmusic', desc: '', args: []);
+    return Intl.message('XMusic', name: 'xmusic', desc: '', args: []);
   }
 
   /// `Next Up`
@@ -75,9 +75,9 @@ class S {
     return Intl.message('Home', name: 'Home', desc: '', args: []);
   }
 
-  /// `Saved`
+  /// `Library`
   String get Saved {
-    return Intl.message('Saved', name: 'Saved', desc: '', args: []);
+    return Intl.message('Library', name: 'Saved', desc: '', args: []);
   }
 
   /// `YTMusic`
@@ -90,10 +90,10 @@ class S {
     return Intl.message('Settings', name: 'Settings', desc: '', args: []);
   }
 
-  /// `Search xmusic`
+  /// `Search in XMusic`
   String get Search_xmusic {
     return Intl.message(
-      'Search xmusic',
+      'Search in XMusic',
       name: 'Search_xmusic',
       desc: '',
       args: [],
@@ -178,10 +178,10 @@ class S {
     );
   }
 
-  /// `Click here disable battery optimisation for xmusic to work properly`
+  /// `Click here disable battery optimisation for XMusic to work properly`
   String get Battery_Optimisation_message {
     return Intl.message(
-      'Click here disable battery optimisation for xmusic to work properly',
+      'Click here disable battery optimisation for XMusic to work properly',
       name: 'Battery_Optimisation_message',
       desc: '',
       args: [],
@@ -193,10 +193,10 @@ class S {
     return Intl.message('Donate', name: 'Donate', desc: '', args: []);
   }
 
-  /// `Support the development of xmusic`
+  /// `Support the development of XMusic`
   String get Donate_Message {
     return Intl.message(
-      'Support the development of xmusic',
+      'Support the development of XMusic',
       name: 'Donate_Message',
       desc: '',
       args: [],
@@ -243,14 +243,9 @@ class S {
     );
   }
 
-  /// `Google Account`
-  String get Google_Account {
-    return Intl.message(
-      'Google Account',
-      name: 'Google_Account',
-      desc: '',
-      args: [],
-    );
+  /// `Account`
+  String get Account {
+    return Intl.message('Account', name: 'Account', desc: '', args: []);
   }
 
   /// `Appearence`
@@ -533,11 +528,11 @@ class S {
     return Intl.message('Developer', name: 'Developer', desc: '', args: []);
   }
 
-  /// `Sheikh Haziq`
-  String get Sheikh_Haziq {
+  /// `Hendril Mendes`
+  String get Hendril_Mendes {
     return Intl.message(
-      'Sheikh Haziq',
-      name: 'Sheikh_Haziq',
+      'Hendril Mendes',
+      name: 'Hendril_Mendes',
       desc: '',
       args: [],
     );
@@ -553,9 +548,14 @@ class S {
     );
   }
 
-  /// `Jhelum Corp`
-  String get Jhelum_Corp {
-    return Intl.message('Jhelum Corp', name: 'Jhelum_Corp', desc: '', args: []);
+  /// `HM Creative Studios`
+  String get Hm_Corp {
+    return Intl.message(
+      'HM Creative Studios',
+      name: 'Hm_Corp',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Telegram`
@@ -593,11 +593,11 @@ class S {
     );
   }
 
-  /// `Made in Kashmir`
-  String get Made_In_Kashmir {
+  /// `Made in Brazil ❤️`
+  String get Made_In_Brazil {
     return Intl.message(
-      'Made in Kashmir',
-      name: 'Made_In_Kashmir',
+      'Made in Brazil ❤️',
+      name: 'Made_In_Brazil',
       desc: '',
       args: [],
     );
@@ -872,6 +872,31 @@ class S {
       args: [],
     );
   }
+
+  /// `Share`
+  String get Share {
+    return Intl.message('Share', name: 'Share', desc: '', args: []);
+  }
+
+  /// `Português`
+  String get Portuguese {
+    return Intl.message('Português', name: 'Portuguese', desc: '', args: []);
+  }
+
+  /// `Español`
+  String get Spanish {
+    return Intl.message('Español', name: 'Spanish', desc: '', args: []);
+  }
+
+  /// `English`
+  String get English {
+    return Intl.message('English', name: 'English', desc: '', args: []);
+  }
+
+  /// `Search`
+  String get Search {
+    return Intl.message('Search', name: 'Search', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -881,9 +906,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'es'),
-      Locale.fromSubtags(languageCode: 'hi'),
-      Locale.fromSubtags(languageCode: 'tr'),
-      Locale.fromSubtags(languageCode: 'ur'),
+      Locale.fromSubtags(languageCode: 'pt'),
     ];
   }
 

@@ -212,7 +212,7 @@ showPaymentsModal(BuildContext context) {
           Navigator.pop(context);
           await launchUrl(
             Uri.parse(
-                'upi://pay?cu=INR&pa=sheikhhaziq76@okaxis&pn=xmusic&am=&tn=xmusic'),
+                'upi://pay?cu=INR&pa=hendrilmendes@okaxis&pn=xmusic&am=&tn=xmusic'),
             mode: LaunchMode.externalApplication,
           );
         },
@@ -232,7 +232,7 @@ showPaymentsModal(BuildContext context) {
         onTap: () async {
           Navigator.pop(context);
           await launchUrl(
-            Uri.parse('https://ko-fi.com/sheikhhaziq'),
+            Uri.parse('https://ko-fi.com/hendrilmendes'),
             mode: LaunchMode.externalApplication,
           );
         },
@@ -249,7 +249,7 @@ showPaymentsModal(BuildContext context) {
         onTap: () async {
           Navigator.pop(context);
           await launchUrl(
-            Uri.parse('https://buymeacoffee.com/sheikhhaziq'),
+            Uri.parse('https://buymeacoffee.com/hendrilmendes'),
             mode: LaunchMode.externalApplication,
           );
         },

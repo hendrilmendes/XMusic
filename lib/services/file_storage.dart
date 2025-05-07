@@ -31,10 +31,16 @@ class FileStorage {
   static Future<void> initialise() async {
     Directory directory = Directory("dir");
     if (Platform.isAndroid) {
-      directory = Directory(Hive.box('SETTINGS').get('APP_FOLDER',defaultValue:'/storage/emulated/0/Download/xmusic'));
+      directory = Directory(
+        Hive.box('SETTINGS').get(
+          'APP_FOLDER',
+          defaultValue: '/storage/emulated/0/Download/XMusic',
+        ),
+      );
     } else if (Platform.isWindows) {
-      directory =
-          Directory(path.join((await getDownloadsDirectory())!.path, 'xmusic'));
+      directory = Directory(
+        path.join((await getDownloadsDirectory())!.path, 'xmusic'),
+      );
     } else {
       directory = await getApplicationDocumentsDirectory();
     }
@@ -49,17 +55,23 @@ class FileStorage {
     _initialised = true;
   }
 
-  updateDirectories()async{
+  updateDirectories() async {
     Directory directory = Directory("dir");
     if (Platform.isAndroid) {
-      directory = Directory(Hive.box('SETTINGS').get('APP_FOLDER',defaultValue:'/storage/emulated/0/Download')+'/xmusic');
+      directory = Directory(
+        Hive.box(
+              'SETTINGS',
+            ).get('APP_FOLDER', defaultValue: '/storage/emulated/0/Download') +
+            '/XMusic',
+      );
     } else if (Platform.isWindows) {
-      directory =
-          Directory(path.join((await getDownloadsDirectory())!.path, 'xmusic'));
+      directory = Directory(
+        path.join((await getDownloadsDirectory())!.path, 'xmusic'),
+      );
     } else {
       directory = await getApplicationDocumentsDirectory();
     }
-     storagePaths = StoragePaths(
+    storagePaths = StoragePaths(
       basePath: directory.path,
       backupPath: path.join(directory.path, 'Back Up'),
       musicPath: path.join(directory.path, 'Music'),
@@ -88,7 +100,7 @@ class FileStorage {
     }
   }
 
-  Future<File?> saveMusic(List<int> data, Map song,{extension='m4a'}) async {
+  Future<File?> saveMusic(List<int> data, Map song, {extension = 'm4a'}) async {
     String fileName = song['title'];
     final RegExp avoid = RegExp(r'[\.\\\*\:\(\)\"\?#/;\|]');
     fileName = fileName.replaceAll(avoid, '').replaceAll("'", '');
@@ -107,25 +119,24 @@ class FileStorage {
         await file.delete();
       }
       await file.writeAsBytes(data, flush: true);
-      
-      
-      try{
+
+      try {
         Response res = await get(
-          Uri.parse(getEnhancedImage(song['thumbnails'].first['url'])));
-      Tag tag = Tag(
+          Uri.parse(getEnhancedImage(song['thumbnails'].first['url'])),
+        );
+        Tag tag = Tag(
           title: song['title'],
-          trackArtist:
-              song['artists']?.map((artist) => artist['name']).join(','),
+          trackArtist: song['artists']
+              ?.map((artist) => artist['name'])
+              .join(','),
           album: song['album']?['name'],
           pictures: [
-            Picture(
-              bytes: res.bodyBytes,
-              pictureType: PictureType.coverFront,
-            )
-          ]);
+            Picture(bytes: res.bodyBytes, pictureType: PictureType.coverFront),
+          ],
+        );
         await AudioTags.write(file.path, tag);
-      }catch(e){
-        await file.writeAsBytes(data,flush: true);
+      } catch (e) {
+        await file.writeAsBytes(data, flush: true);
       }
       return file;
     } catch (e) {
@@ -164,8 +175,11 @@ class FileStorage {
       });
     }
     if (playlists != null) {
-      await GetIt.I<LibraryService>().setPlaylists(playlists);
+      await GetIt.I<LibraryService>().setPlaylists(
+        Map<String, dynamic>.from(playlists),
+      );
     }
+
     if (history != null) {
       await Future.forEach(history.entries, (entry) async {
         Hive.box('SONG_HISTORY').put(entry.key, entry.value);
@@ -190,14 +204,15 @@ class FileStorage {
     if (Platform.isWindows) return true;
     List<Permission> permissions = [
       Permission.manageExternalStorage,
-      Permission.storage
+      Permission.storage,
     ];
     bool isGranted =
         (await Permission.manageExternalStorage.status.isGranted) ||
-            (await Permission.storage.status.isGranted);
+        (await Permission.storage.status.isGranted);
     if (isGranted) return true;
     await permissions.request();
-    isGranted = (await Permission.manageExternalStorage.status.isGranted) ||
+    isGranted =
+        (await Permission.manageExternalStorage.status.isGranted) ||
         (await Permission.storage.status.isGranted);
     if (!(isGranted)) {
       await openAppSettings();
@@ -210,8 +225,9 @@ class StoragePaths {
   String basePath;
   String backupPath;
   String musicPath;
-  StoragePaths(
-      {required this.basePath,
-      required this.backupPath,
-      required this.musicPath});
+  StoragePaths({
+    required this.basePath,
+    required this.backupPath,
+    required this.musicPath,
+  });
 }

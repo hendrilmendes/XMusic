@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:xmusic/screens/settings_screen/account/account.dart';
+import 'package:xmusic/screens/settings_screen/language/language.dart';
 
 import '../screens/home_screen/chip_screen.dart';
 import '../screens/home_screen/home_screen.dart';
@@ -27,14 +29,14 @@ GoRouter router = GoRouter(
       routes: [
         StatefulShellRoute(
           branches: branches,
-          builder: (context, state, navigationShell) => MainScreen(
-            navigationShell: navigationShell,
-          ),
-          navigatorContainerBuilder: (context, navigationShell, children) =>
-              MyPageView(
-            currentIndex: navigationShell.currentIndex,
-            children: children,
-          ),
+          builder:
+              (context, state, navigationShell) =>
+                  MainScreen(navigationShell: navigationShell),
+          navigatorContainerBuilder:
+              (context, navigationShell, children) => MyPageView(
+                currentIndex: navigationShell.currentIndex,
+                children: children,
+              ),
         ),
       ],
     ),
@@ -56,101 +58,142 @@ List<StatefulShellBranch> branches = [
   StatefulShellBranch(
     routes: [
       GoRoute(
-          path: '/',
-          builder: (context, state) => const HomeScreen(),
-          routes: [
-            GoRoute(
-              path: 'chip',
-              builder: (context, state) {
-                Map<String, dynamic> args = state.extra as Map<String, dynamic>;
-                return ChipScreen(
-                    title: args['title'] ?? '',
-                    endpoint: args['endpoint'] ?? {});
-              },
-            ),
-            GoRoute(
-              path: 'browse',
-              builder: (context, state) {
-                Map<String, dynamic> args = state.extra as Map<String, dynamic>;
-                return BrowseScreen(endpoint: args);
-              },
-            ),
-            GoRoute(
-              path: 'search',
-              builder: (context, state) => const SearchScreen(),
-            ),
-          ]),
+        path: '/',
+        builder: (context, state) => const HomeScreen(),
+        routes: [
+          GoRoute(
+            path: 'chip',
+            builder: (context, state) {
+              Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+              return ChipScreen(
+                title: args['title'] ?? '',
+                endpoint: args['endpoint'] ?? {},
+              );
+            },
+          ),
+          GoRoute(
+            path: 'browse',
+            builder: (context, state) {
+              Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+              return BrowseScreen(endpoint: args);
+            },
+          ),
+          GoRoute(
+            path: 'search',
+            builder: (context, state) => const SearchScreen(),
+          ),
+        ],
+      ),
     ],
   ),
-  StatefulShellBranch(routes: [
-    GoRoute(
-      path: '/saved',
-      builder: (context, state) => const SavedScreen(),
-    ),
-  ]),
+  StatefulShellBranch(
+    routes: [
+      GoRoute(
+        path: '/search',
+        builder: (context, state) {
+          final query = state.uri.queryParameters['query'] ?? '';
+          return SearchScreen(query: query);
+        },
+      ),
+    ],
+  ),
+  StatefulShellBranch(
+    routes: [
+      GoRoute(path: '/saved', builder: (context, state) => const SavedScreen()),
+    ],
+  ),
+
   // StatefulShellBranch(routes: [
   //   GoRoute(
   //     path: '/ytmusic',
   //     builder: (context, state) => const YTMScreen(),
   //   ),
   // ]),
-  StatefulShellBranch(routes: [
-    GoRoute(
+  StatefulShellBranch(
+    routes: [
+      GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
         routes: [
-          // GoRoute(
-          //   path: 'account',
-          //   pageBuilder: (context, state) => Platform.isWindows
-          //       ? const FluentPage(child: AccountScreen())
-          //       : const CupertinoPage(child: AccountScreen()),
-          // ),
+          GoRoute(
+            path: 'account',
+            pageBuilder:
+                (context, state) =>
+                    Platform.isWindows
+                        ? const FluentPage(child: AccountScreen())
+                        : const CupertinoPage(child: AccountScreen()),
+          ),
           GoRoute(
             path: 'appearence',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: AppearenceScreen())
-                : const CupertinoPage(child: AppearenceScreen()),
+            pageBuilder:
+                (context, state) =>
+                    Platform.isWindows
+                        ? const FluentPage(child: AppearenceScreen())
+                        : const CupertinoPage(child: AppearenceScreen()),
+          ),
+          GoRoute(
+            path: 'language',
+            pageBuilder:
+                (context, state) =>
+                    Platform.isWindows
+                        ? const FluentPage(child: LanguageSettingsScreen())
+                        : const CupertinoPage(child: LanguageSettingsScreen()),
           ),
           GoRoute(
             path: 'content',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: ContentScreen())
-                : const CupertinoPage(child: ContentScreen()),
+            pageBuilder:
+                (context, state) =>
+                    Platform.isWindows
+                        ? const FluentPage(child: ContentScreen())
+                        : const CupertinoPage(child: ContentScreen()),
           ),
           GoRoute(
-              path: 'playback',
-              pageBuilder: (context, state) => Platform.isWindows
-                  ? const FluentPage(child: AudioAndPlaybackScreen())
-                  : const CupertinoPage(child: AudioAndPlaybackScreen()),
-              routes: [
-                GoRoute(
-                  path: 'equalizer',
-                  pageBuilder: (context, state) =>
-                      const CupertinoPage(child: EqualizerScreen()),
-                )
-              ]),
+            path: 'playback',
+            pageBuilder:
+                (context, state) =>
+                    Platform.isWindows
+                        ? const FluentPage(child: AudioAndPlaybackScreen())
+                        : const CupertinoPage(child: AudioAndPlaybackScreen()),
+            routes: [
+              GoRoute(
+                path: 'equalizer',
+                pageBuilder:
+                    (context, state) =>
+                        const CupertinoPage(child: EqualizerScreen()),
+              ),
+            ],
+          ),
           GoRoute(
             path: 'backup_restore',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: BackupRestoreScreen())
-                : const CupertinoPage(child: BackupRestoreScreen()),
+            pageBuilder:
+                (context, state) =>
+                    Platform.isWindows
+                        ? const FluentPage(child: BackupRestoreScreen())
+                        : const CupertinoPage(child: BackupRestoreScreen()),
           ),
           GoRoute(
             path: 'about',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: AboutScreen())
-                : const CupertinoPage(child: AboutScreen()),
+            pageBuilder:
+                (context, state) =>
+                    Platform.isWindows
+                        ? const FluentPage(child: AboutScreen())
+                        : const CupertinoPage(child: AboutScreen()),
           ),
-        ]),
-  ])
+        ],
+      ),
+    ],
+  ),
 ];
 
 class MyPageView extends StatefulWidget {
   final int currentIndex;
   final List<Widget> children;
 
-  const MyPageView(
-      {super.key, required this.currentIndex, required this.children});
+  const MyPageView({
+    super.key,
+    required this.currentIndex,
+    required this.children,
+  });
 
   @override
   MyPageViewState createState() => MyPageViewState();
@@ -168,8 +211,11 @@ class MyPageViewState extends State<MyPageView> {
   void didUpdateWidget(covariant MyPageView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.currentIndex != widget.currentIndex) {
-      controller.animateToPage(widget.currentIndex,
-          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      controller.animateToPage(
+        widget.currentIndex,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     }
   }
 

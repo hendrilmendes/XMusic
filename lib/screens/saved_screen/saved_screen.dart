@@ -47,19 +47,13 @@ class _SavedScreenState extends State<SavedScreen> {
             onPressed: () {
               Modals.showImportplaylistModal(context);
             },
-            icon: Icon(
-              AdaptiveIcons.import,
-              size: 25,
-            ),
+            icon: Icon(AdaptiveIcons.import, size: 25),
           ),
           AdaptiveIconButton(
             onPressed: () {
               Modals.showCreateplaylistModal(context);
             },
-            icon: Icon(
-              AdaptiveIcons.add,
-              size: 25,
-            ),
+            icon: Icon(AdaptiveIcons.add, size: 25),
           ),
         ],
       ),
@@ -92,11 +86,13 @@ class _SavedScreenState extends State<SavedScreen> {
                     },
                   ),
                   trailing: Icon(AdaptiveIcons.chevron_right),
-                  onTap: () => Navigator.push(
-                      context,
-                      AdaptivePageRoute.create(
-                        (context) => const FavouriteDetailsScreen(),
-                      )),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        AdaptivePageRoute.create(
+                          (context) => const FavouriteDetailsScreen(),
+                        ),
+                      ),
                 ),
                 AdaptiveListTile(
                   margin: const EdgeInsets.symmetric(vertical: 4),
@@ -117,16 +113,23 @@ class _SavedScreenState extends State<SavedScreen> {
                     valueListenable: Hive.box('DOWNLOADS').listenable(),
                     builder: (context, box, child) {
                       List values = box.values.toList();
-                      List downloaded = values.where((element) => element['status'] == 'DOWNLOADED').toList();
+                      List downloaded =
+                          values
+                              .where(
+                                (element) => element['status'] == 'DOWNLOADED',
+                              )
+                              .toList();
                       return Text(S.of(context).nSongs(downloaded.length));
                     },
                   ),
                   trailing: Icon(AdaptiveIcons.chevron_right),
-                  onTap: () => Navigator.push(
-                      context,
-                      AdaptivePageRoute.create(
-                        (context) => const DownloadScreen(),
-                      )),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        AdaptivePageRoute.create(
+                          (context) => const DownloadScreen(),
+                        ),
+                      ),
                 ),
                 AdaptiveListTile(
                   margin: const EdgeInsets.symmetric(vertical: 4),
@@ -150,157 +153,191 @@ class _SavedScreenState extends State<SavedScreen> {
                     },
                   ),
                   trailing: Icon(AdaptiveIcons.chevron_right),
-                  onTap: () => Navigator.push(
-                      context,
-                      AdaptivePageRoute.create(
-                        (context) => const HistoryScreen(),
-                      )),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        AdaptivePageRoute.create(
+                          (context) => const HistoryScreen(),
+                        ),
+                      ),
                 ),
                 Column(
-                  children: SplayTreeMap.from(playlists)
-                      .map((key, item) {
-                        return MapEntry(
-                          key,
-                          item == null
-                              ? const SizedBox.shrink()
-                              : AdaptiveListTile(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  onSecondaryTap: () {
-                                    if (item['videoId'] == null &&
-                                        item['playlistId'] != null) {
-                                      Modals.showPlaylistBottomModal(
-                                          context, item);
-                                    } else if (item['isPredefined'] == false) {
-                                      Modals.showPlaylistBottomModal(context,
-                                          {...item, 'playlistId': key});
-                                    }
-                                  },
-                                  onLongPress: () {
-                                    if (item['videoId'] == null &&
-                                        item['playlistId'] != null) {
-                                      Modals.showPlaylistBottomModal(
-                                          context, item);
-                                    } else if (item['isPredefined'] == false) {
-                                      Modals.showPlaylistBottomModal(context,
-                                          {...item, 'playlistId': key});
-                                    }
-                                  },
-                                  onTap: () {
-                                    if (item['isPredefined']) {
-                                      Navigator.push(
-                                        context,
-                                        AdaptivePageRoute.create(
-                                          (context) => BrowseScreen(
-                                              endpoint: item['endpoint']
-                                                  .cast<String, dynamic>()),
-                                        ),
-                                      );
-                                    } else {
-                                      Navigator.push(
-                                        context,
-                                        AdaptivePageRoute.create(
-                                          (context) => PlaylistDetailsScreen(
-                                              playlistkey: key),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  title: Text(
-                                    item['title'],
-                                    maxLines: 2,
-                                  ),
-                                  leading: item['isPredefined'] == true ||
-                                          (item['songs'] != null &&
-                                              item['songs']?.length > 0)
-                                      ? ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              item['type'] == 'ARTIST'
-                                                  ? 50
-                                                  : 3),
-                                          child: item['isPredefined'] == true
-                                              ? CachedNetworkImage(
-                                                  imageUrl: item['thumbnails']
-                                                      .first['url']
-                                                      .replaceAll('w540-h225',
-                                                          'w60-h60'),
-                                                  height: 50,
-                                                  width: 50,
-                                                )
-                                              : SizedBox(
-                                                  height: 50,
-                                                  width: 50,
-                                                  child: StaggeredGrid.count(
-                                                    crossAxisCount:
-                                                        item['songs'].length > 1
-                                                            ? 2
-                                                            : 1,
-                                                    children: (item['songs']
-                                                            as List)
-                                                        .sublist(
-                                                            0,
-                                                            min(
-                                                                item['songs']
-                                                                    .length,
-                                                                4))
-                                                        .indexed
-                                                        .map((ind) {
-                                                      int index = ind.$1;
-                                                      Map song = ind.$2;
-                                                      return CachedNetworkImage(
+                  children:
+                      SplayTreeMap.from(playlists)
+                          .map((key, item) {
+                            return MapEntry(
+                              key,
+                              item == null
+                                  ? const SizedBox.shrink()
+                                  : AdaptiveListTile(
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                    ),
+                                    onSecondaryTap: () {
+                                      if (item['videoId'] == null &&
+                                          item['playlistId'] != null) {
+                                        Modals.showPlaylistBottomModal(
+                                          context,
+                                          item,
+                                        );
+                                      } else if (item['isPredefined'] ==
+                                          false) {
+                                        Modals.showPlaylistBottomModal(
+                                          context,
+                                          {...item, 'playlistId': key},
+                                        );
+                                      }
+                                    },
+                                    onLongPress: () {
+                                      if (item['videoId'] == null &&
+                                          item['playlistId'] != null) {
+                                        Modals.showPlaylistBottomModal(
+                                          context,
+                                          item,
+                                        );
+                                      } else if (item['isPredefined'] ==
+                                          false) {
+                                        Modals.showPlaylistBottomModal(
+                                          context,
+                                          {...item, 'playlistId': key},
+                                        );
+                                      }
+                                    },
+                                    onTap: () {
+                                      if (item['isPredefined']) {
+                                        Navigator.push(
+                                          context,
+                                          AdaptivePageRoute.create(
+                                            (context) => BrowseScreen(
+                                              endpoint:
+                                                  item['endpoint']
+                                                      .cast<String, dynamic>(),
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          AdaptivePageRoute.create(
+                                            (context) => PlaylistDetailsScreen(
+                                              playlistkey: key,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    title: Text(item['title'], maxLines: 2),
+                                    leading:
+                                        item['isPredefined'] == true ||
+                                                (item['songs'] != null &&
+                                                    item['songs']?.length > 0)
+                                            ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    item['type'] == 'ARTIST'
+                                                        ? 50
+                                                        : 3,
+                                                  ),
+                                              child:
+                                                  item['isPredefined'] == true
+                                                      ? CachedNetworkImage(
                                                         imageUrl:
-                                                            song['thumbnails']
+                                                            item['thumbnails']
                                                                 .first['url']
                                                                 .replaceAll(
-                                                                    'w540-h225',
-                                                                    'w60-h60'),
-                                                        height: (item['songs']
-                                                                        .length <=
-                                                                    2 ||
-                                                                (item['songs']
-                                                                            .length ==
-                                                                        3 &&
-                                                                    index == 0))
-                                                            ? 50
-                                                            : null,
-                                                        fit: BoxFit.cover,
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                ),
-                                        )
-                                      : Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: greyColor,
-                                            borderRadius:
-                                                BorderRadius.circular(3),
-                                          ),
-                                          child: Icon(
-                                            CupertinoIcons.music_note_list,
-                                            color: context.isDarkMode
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
-                                        ),
-                                  subtitle: (item['songs'] != null ||
-                                          item['isPredefined'])
-                                      ? Text(
-                                          item['isPredefined'] == true
-                                              ? item['subtitle']
-                                              : S
-                                                  .of(context)
-                                                  .nSongs(item['songs'].length),
-                                          maxLines: 1,
-                                        )
-                                      : null,
-                                  trailing: Icon(AdaptiveIcons.chevron_right),
-                                ),
-                        );
-                      })
-                      .values
-                      .toList(),
+                                                                  'w540-h225',
+                                                                  'w60-h60',
+                                                                ),
+                                                        height: 50,
+                                                        width: 50,
+                                                      )
+                                                      : SizedBox(
+                                                        height: 50,
+                                                        width: 50,
+                                                        child: StaggeredGrid.count(
+                                                          crossAxisCount:
+                                                              item['songs']
+                                                                          .length >
+                                                                      1
+                                                                  ? 2
+                                                                  : 1,
+                                                          children:
+                                                              (item['songs']
+                                                                      as List)
+                                                                  .sublist(
+                                                                    0,
+                                                                    min(
+                                                                      item['songs']
+                                                                          .length,
+                                                                      4,
+                                                                    ),
+                                                                  )
+                                                                  .indexed
+                                                                  .map((ind) {
+                                                                    int index =
+                                                                        ind.$1;
+                                                                    Map song =
+                                                                        ind.$2;
+                                                                    return CachedNetworkImage(
+                                                                      imageUrl: song['thumbnails']
+                                                                          .first['url']
+                                                                          .replaceAll(
+                                                                            'w540-h225',
+                                                                            'w60-h60',
+                                                                          ),
+                                                                      height:
+                                                                          (item['songs'].length <=
+                                                                                      2 ||
+                                                                                  (item['songs'].length ==
+                                                                                          3 &&
+                                                                                      index == 0))
+                                                                              ? 50
+                                                                              : null,
+                                                                      fit:
+                                                                          BoxFit
+                                                                              .cover,
+                                                                    );
+                                                                  })
+                                                                  .toList(),
+                                                        ),
+                                                      ),
+                                            )
+                                            : Container(
+                                              height: 50,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                color: greyColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                              ),
+                                              child: Icon(
+                                                CupertinoIcons.music_note_list,
+                                                color:
+                                                    context.isDarkMode
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                              ),
+                                            ),
+                                    subtitle:
+                                        (item['songs'] != null ||
+                                                item['isPredefined'])
+                                            ? Text(
+                                              item['isPredefined'] == true
+                                                  ? item['subtitle']
+                                                  : S
+                                                      .of(context)
+                                                      .nSongs(
+                                                        item['songs'].length,
+                                                      ),
+                                              maxLines: 1,
+                                            )
+                                            : null,
+                                    trailing: Icon(AdaptiveIcons.chevron_right),
+                                  ),
+                            );
+                          })
+                          .values
+                          .toList(),
                 ),
               ],
             ),

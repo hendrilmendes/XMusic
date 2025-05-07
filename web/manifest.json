@@ -1,6 +1,6 @@
 {
-    "name": "gyawun_music",
-    "short_name": "gyawun_music",
+    "name": "XMusic",
+    "short_name": "XMusic",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "744134867766",
+    "project_id": "xmusic-f14de",
+    "storage_bucket": "xmusic-f14de.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744134867766:android:4f0f40ee0b575ee8921197",
+        "android_client_info": {
+          "package_name": "com.github.hendrilmendes.music"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "744134867766-bi1pb7lplsbenklr699482q4mhgafhh7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.hendrilmendes.music",
+            "certificate_hash": "f908ff68223b34e5917a340a4da01895217becdf"
+          }
+        },
+        {
+          "client_id": "744134867766-ni3qtcmo2hr7jfpn7hbf8e2e3r3lqau5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDakUa8vjQ0TiuBhdiIMXiNdTqjYG4ZN_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "744134867766-ni3qtcmo2hr7jfpn7hbf8e2e3r3lqau5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "744134867766-8m0lngp4aa0l03ovhupkenq3pt2psv6j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.github.hendrilmendes.music"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,7 @@
 name: xmusic
 description: "A new Flutter project."
 publish_to: 'none'
-version: 2.0.0+200
+version: 2.0.4+204
 
 environment:
   sdk: ^3.7.0
@@ -12,7 +12,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.8
   go_router: ^14.2.1
   google_fonts: ^6.2.1
   intl: ^0.19.0
@@ -28,7 +28,7 @@ dependencies:
   flutter_typeahead: ^5.2.0
   expandable_text: ^2.3.0
   salomon_bottom_bar: ^3.3.2
-  share_plus: ^9.0.0
+  share_plus: ^11.0.0
   provider: ^6.1.2
   flutter_staggered_grid_view: ^0.7.0
   flutter_swipe_action_cell: ^3.1.3
@@ -65,13 +65,25 @@ dependencies:
   fl_toast: ^3.2.0
   flutter_colorpicker: ^1.1.0
   easy_folder_picker: ^1.3.3
+  flutter_cache_manager: ^3.4.1
+  package_info_plus: ^8.3.0
+  crypto: ^3.0.6
+  flutter_web_auth_2: ^4.1.0
+  firebase_auth: ^5.5.1
+  firebase_core: ^3.12.1
+  cloud_firestore: ^5.6.7
+  google_sign_in: ^6.3.0
+  flutter_signin_button: ^2.0.0
+  shared_preferences: ^2.5.3
+  shimmer: ^3.0.0
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-  change_app_package_name: ^1.3.0
-  flutter_native_splash: ^2.4.1
+  flutter_lints: ^5.0.0
+  change_app_package_name: ^1.5.0
+  flutter_native_splash: ^2.4.6
 flutter:
   uses-material-design: true
   generate: true

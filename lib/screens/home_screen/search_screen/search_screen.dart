@@ -14,9 +14,15 @@ import '../../../ytmusic/ytmusic.dart';
 import '../../browse_screen/browse_screen.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({this.endpoint, this.isMore = false, super.key});
+  const SearchScreen({
+    this.endpoint,
+    this.isMore = false,
+    this.query,
+    super.key,
+  });
   final Map<String, dynamic>? endpoint;
   final bool isMore;
+  final String? query;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -24,8 +30,8 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   late ScrollController _scrollController;
-  TextEditingController? _textEditingController;
-  FocusNode? _focusNode;
+  late TextEditingController _textEditingController;
+  late FocusNode _focusNode;
   bool initialLoading = false;
   bool nextLoading = false;
   List<Map<String, dynamic>> results = [];
@@ -35,14 +41,22 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-    _focusNode?.requestFocus();
+    _textEditingController = TextEditingController();
+    _focusNode = FocusNode();
+
+    if (widget.query != null) {
+      _textEditingController.text = widget.query!;
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => onSubmit(widget.query!),
+      );
+    }
+
     if (widget.endpoint != null) {
       search(widget.endpoint!);
     }
   }
 
-  _scrollListener() async {
+  scrollListener() async {
     if (initialLoading || nextLoading || continuation == null) {
       return;
     }
@@ -54,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   onSubmit(String value) async {
-    _focusNode?.unfocus();
+    _focusNode.unfocus();
     setState(() {
       initialLoading = true;
     });
@@ -75,8 +89,11 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       nextLoading = true;
     });
-    Map response = await GetIt.I<YTMusic>()
-        .search('', endpoint: widget.endpoint, additionalParams: continuation!);
+    Map response = await GetIt.I<YTMusic>().search(
+      '',
+      endpoint: widget.endpoint,
+      additionalParams: continuation!,
+    );
     results.addAll(response['sections']);
     continuation = response['continuation'];
     if (mounted) {
@@ -87,12 +104,15 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   search(Map<String, dynamic> value, {String additionalParams = ''}) async {
-    _textEditingController?.value = value['query'];
+    _textEditingController.value = value['query'];
     setState(() {
       initialLoading = true;
     });
-    Map response = await GetIt.I<YTMusic>()
-        .search('', endpoint: value, additionalParams: additionalParams);
+    Map response = await GetIt.I<YTMusic>().search(
+      '',
+      endpoint: value,
+      additionalParams: additionalParams,
+    );
     results = response['sections'];
     continuation = response['continuation'];
     setState(() {
@@ -109,131 +129,152 @@ class _SearchScreenState extends State<SearchScreen> {
     return AdaptiveScaffold(
       appBar: PreferredSize(
         preferredSize: const AdaptiveAppBar().preferredSize,
-        child: LayoutBuilder(builder: (context, constraints) {
-          return AdaptiveAppBar(
-            title: widget.endpoint != null
-                ? Text(widget.endpoint!['query'])
-                : Material(
-                    color: Colors.transparent,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TypeAheadField(
-                            suggestionsCallback: (query) =>
-                                GetIt.I<YTMusic>().getSearchSuggestions(query),
-                            builder: (context, controller, focusNode) {
-                              _textEditingController = controller;
-                              _focusNode = focusNode;
-                              return AdaptiveTextField(
-                                focusNode: _focusNode,
-                                controller: _textEditingController,
-                                onSubmitted: onSubmit,
-                                onChanged: (value) {
-                                  getSuggestions(value);
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return AdaptiveAppBar(
+              title:
+                  widget.endpoint != null
+                      ? Text(widget.endpoint!['query'])
+                      : Material(
+                        color: Colors.transparent,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TypeAheadField(
+                                suggestionsCallback:
+                                    (query) => GetIt.I<YTMusic>()
+                                        .getSearchSuggestions(query),
+                                builder: (context, controller, focusNode) {
+                                  return AdaptiveTextField(
+                                    focusNode: _focusNode,
+                                    controller: _textEditingController,
+                                    onSubmitted: onSubmit,
+                                    onChanged: (value) {
+                                      getSuggestions(value);
+                                    },
+                                    keyboardType: TextInputType.text,
+                                    maxLines: 1,
+                                    autofocus: true,
+                                    textInputAction: TextInputAction.search,
+                                    fillColor:
+                                        Platform.isWindows
+                                            ? null
+                                            : Colors.grey.withOpacity(0.3),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 2,
+                                      horizontal: 8,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      Platform.isWindows ? 4.0 : 35,
+                                    ),
+                                    hintText: S.of(context).Search_xmusic,
+                                    prefix:
+                                        constraints.maxWidth > 400
+                                            ? null
+                                            : const AdaptiveBackButton(),
+                                    suffix: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _textEditingController.text = '';
+                                        });
+                                      },
+                                      child: const Icon(CupertinoIcons.clear),
+                                    ),
+                                  );
                                 },
-                                keyboardType: TextInputType.text,
-                                maxLines: 1,
-                                autofocus: true,
-                                textInputAction: TextInputAction.search,
-                                fillColor: Platform.isWindows
-                                    ? null
-                                    : Colors.grey.withOpacity(0.3),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 8),
-                                borderRadius: BorderRadius.circular(
-                                    Platform.isWindows ? 4.0 : 35),
-                                hintText: S.of(context).Search_xmusic,
-                                prefix: constraints.maxWidth > 400
-                                    ? null
-                                    : const AdaptiveBackButton(),
-                                suffix: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _textEditingController?.text = '';
-                                    });
-                                  },
-                                  child: const Icon(CupertinoIcons.clear),
-                                ),
-                              );
-                            },
-                            decorationBuilder: Platform.isWindows
-                                ? (context, child) {
-                                    return Ink(
-                                      padding: EdgeInsets.zero,
-                                      decoration: BoxDecoration(
-                                        color: AdaptiveTheme.of(context)
-                                            .inactiveBackgroundColor,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: child,
+                                decorationBuilder:
+                                    Platform.isWindows
+                                        ? (context, child) {
+                                          return Ink(
+                                            padding: EdgeInsets.zero,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  AdaptiveTheme.of(
+                                                    context,
+                                                  ).inactiveBackgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: child,
+                                          );
+                                        }
+                                        : null,
+                                itemBuilder: (context, value) {
+                                  if (value['type'] == 'TEXT') {
+                                    return AdaptiveListTile(
+                                      leading:
+                                          value['isHistory'] != null
+                                              ? const Icon(Icons.history)
+                                              : null,
+                                      title: Text(value['query']),
+                                      onTap: () {
+                                        setState(() {
+                                          _textEditingController.text =
+                                              value['query'];
+                                        });
+                                        onSubmit(value['query']);
+                                      },
                                     );
                                   }
-                                : null,
-                            itemBuilder: (context, value) {
-                              if (value['type'] == 'TEXT') {
-                                return AdaptiveListTile(
-                                    leading: value['isHistory'] != null
-                                        ? const Icon(Icons.history)
-                                        : null,
-                                    title: Text(value['query']),
-                                    onTap: () {
-                                      setState(() {
-                                        _textEditingController?.text =
-                                            value['query'];
-                                      });
-                                      onSubmit(value['query']);
-                                    });
-                              }
-                              return SearchListTile(item: value);
-                            },
-                            onSelected: (value) => (),
-                          ),
+                                  return SearchListTile(item: value);
+                                },
+                                onSelected: (value) => (),
+                              ),
+                            ),
+                          ],
                         ),
+                      ),
+              automaticallyImplyLeading:
+                  (constraints.maxWidth <= 400) ? false : true,
+            );
+          },
+        ),
+      ),
+      body:
+          initialLoading
+              ? const Center(child: AdaptiveProgressRing())
+              : SingleChildScrollView(
+                controller: _scrollController,
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 1000),
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        ...results.map((section) {
+                          if (Platform.isWindows) {
+                            return Center(
+                              child: Adaptivecard(
+                                borderRadius: BorderRadius.circular(8),
+                                child: SearchSectionItem(
+                                  section: section,
+                                  isMore: widget.isMore,
+                                ),
+                              ),
+                            );
+                          }
+                          return SearchSectionItem(
+                            section: section,
+                            isMore: widget.isMore,
+                          );
+                        }),
+                        if (nextLoading)
+                          const Center(child: AdaptiveProgressRing()),
                       ],
                     ),
                   ),
-            automaticallyImplyLeading:
-                (constraints.maxWidth <= 400) ? false : true,
-          );
-        }),
-      ),
-      body: initialLoading
-          ? const Center(child: AdaptiveProgressRing())
-          : SingleChildScrollView(
-              controller: _scrollController,
-              child: Center(
-                child: Container(
-                  constraints: const BoxConstraints(maxWidth: 1000),
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: [
-                      ...results.map((section) {
-                        if (Platform.isWindows) {
-                          return Center(
-                            child: Adaptivecard(
-                              borderRadius: BorderRadius.circular(8),
-                              child: SearchSectionItem(
-                                  section: section, isMore: widget.isMore),
-                            ),
-                          );
-                        }
-                        return SearchSectionItem(
-                            section: section, isMore: widget.isMore);
-                      }),
-                      if (nextLoading)
-                        const Center(child: AdaptiveProgressRing())
-                    ],
-                  ),
                 ),
               ),
-            ),
     );
   }
 }
 
 class SearchSectionItem extends StatelessWidget {
-  const SearchSectionItem(
-      {required this.section, this.isMore = false, super.key});
+  const SearchSectionItem({
+    required this.section,
+    this.isMore = false,
+    super.key,
+  });
   final Map<String, dynamic> section;
   final bool isMore;
 
@@ -243,47 +284,50 @@ class SearchSectionItem extends StatelessWidget {
       children: [
         if (section['title'] != null && !isMore)
           AdaptiveListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 4,
+              horizontal: 4,
+            ),
             title: Text(
               section['title'],
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            trailing: section['trailing']?['text'] != null
-                ? Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: Platform.isAndroid ? 12 : 0),
-                    child: AdaptiveOutlinedButton(
+            trailing:
+                section['trailing']?['text'] != null
+                    ? Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: Platform.isAndroid ? 12 : 0,
+                      ),
+                      child: AdaptiveOutlinedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             AdaptivePageRoute.create(
                               (context) => SearchScreen(
-                                  endpoint: section['trailing']['endpoint'],
-                                  isMore: true),
+                                endpoint: section['trailing']['endpoint'],
+                                isMore: true,
+                              ),
                             ),
                           );
                         },
                         child: Text(
                           section['trailing']['text'],
                           style: const TextStyle(fontSize: 12),
-                        )),
-                  )
-                : null,
+                        ),
+                      ),
+                    )
+                    : null,
           ),
         ...section['contents'].map((item) {
           return SearchListTile(item: item);
-        })
+        }),
       ],
     );
   }
 }
 
 class SearchListTile extends StatelessWidget {
-  const SearchListTile({
-    required this.item,
-    super.key,
-  });
+  const SearchListTile({required this.item, super.key});
   final Map item;
   @override
   Widget build(BuildContext context) {
@@ -300,10 +344,11 @@ class SearchListTile extends StatelessWidget {
           await GetIt.I<MediaPlayer>().playSong(Map.from(item));
         } else if (item['endpoint'] != null && item['videoId'] == null) {
           Navigator.push(
-              context,
-              AdaptivePageRoute.create(
-                (context) => BrowseScreen(endpoint: item['endpoint']),
-              ));
+            context,
+            AdaptivePageRoute.create(
+              (context) => BrowseScreen(endpoint: item['endpoint']),
+            ),
+          );
         }
       },
       onLongPress: () {
@@ -314,31 +359,32 @@ class SearchListTile extends StatelessWidget {
         }
       },
       dense: false,
-      title: Text(
-        item['title'],
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: item['subtitle'] != null
-          ? Text(
-              item['subtitle'],
-              maxLines: 1,
-              style: TextStyle(color: Colors.grey.withOpacity(0.9)),
-              overflow: TextOverflow.ellipsis,
-            )
-          : null,
-      leading: item['thumbnails'] != null && item['thumbnails'].isNotEmpty
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(
-                  ['ARTIST', 'PROFILE'].contains(item['type']) ? 30 : 3),
-              child: Image.network(
-                item['thumbnails'].first['url'],
-                width: 50,
-              ))
-          : null,
-      trailing: item['videoId'] == null && item['endpoint'] != null
-          ? const Icon(CupertinoIcons.chevron_right)
-          : null,
+      title: Text(item['title'], maxLines: 1, overflow: TextOverflow.ellipsis),
+      subtitle:
+          item['subtitle'] != null
+              ? Text(
+                item['subtitle'],
+                maxLines: 1,
+                style: TextStyle(color: Colors.grey.withOpacity(0.9)),
+                overflow: TextOverflow.ellipsis,
+              )
+              : null,
+      leading:
+          item['thumbnails'] != null && item['thumbnails'].isNotEmpty
+              ? ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  ['ARTIST', 'PROFILE'].contains(item['type']) ? 30 : 3,
+                ),
+                child: Image.network(
+                  item['thumbnails'].first['url'],
+                  width: 50,
+                ),
+              )
+              : null,
+      trailing:
+          item['videoId'] == null && item['endpoint'] != null
+              ? const Icon(CupertinoIcons.chevron_right)
+              : null,
     );
   }
 }

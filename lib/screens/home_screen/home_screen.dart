@@ -1,13 +1,15 @@
-import 'dart:io';
+import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../generated/l10n.dart';
-import '../../utils/adaptive_widgets/adaptive_widgets.dart';
-import '../../ytmusic/ytmusic.dart';
-import 'section_item.dart';
+import 'package:xmusic/generated/l10n.dart';
+import 'package:xmusic/screens/home_screen/card.dart';
+import 'package:xmusic/screens/home_screen/search_screen/search_screen.dart';
+import 'package:xmusic/screens/home_screen/section_item.dart';
+import 'package:xmusic/utils/adaptive_widgets/adaptive_widgets.dart';
+import 'package:xmusic/ytmusic/ytmusic.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,110 +20,172 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final YTMusic ytMusic = GetIt.I<YTMusic>();
-  late ScrollController _scrollController;
-  late List chips = [];
-  late List sections = [];
-  int page = 0;
+  late PageController _pageController;
+  Timer? _autoScrollTimer;
+
+  List chips = [];
+  List sections = [];
+  List highlights = [];
   String? continuation;
   bool initialLoading = true;
   bool nextLoading = false;
+  int _currentHighlightPage = 0;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-    fetchHome();
-  }
-
-  _scrollListener() async {
-    if (initialLoading || nextLoading || continuation == null) {
-      return;
-    }
-
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      await fetchNext();
-    }
-  }
-
-  fetchHome() async {
-    setState(() {
-      initialLoading = true;
-      nextLoading = false;
+    _pageController = PageController(viewportFraction: 0.9)..addListener(() {
+      final page = (_pageController.page ?? 0).round();
+      if (_currentHighlightPage != page) {
+        setState(() => _currentHighlightPage = page);
+      }
     });
-    Map<String, dynamic> home = await ytMusic.browse();
-    if (mounted) {
-      setState(() {
-        initialLoading = false;
-        nextLoading = false;
-        chips = home['chips'];
-        sections = home['sections'];
-        continuation = home['continuation'];
-      });
-    }
+
+    _startAutoScroll();
+    _loadInitialData();
   }
 
-  refresh() async {
-    if (initialLoading) return;
-    Map<String, dynamic> home = await ytMusic.browse();
-    if (mounted) {
-      setState(() {
-        initialLoading = false;
-        nextLoading = false;
-        chips = home['chips'];
-        sections = home['sections'];
-        continuation = home['continuation'];
-      });
-    }
-  }
+  void _startAutoScroll() {
+    _autoScrollTimer?.cancel();
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (!mounted || !_pageController.hasClients) {
+        timer.cancel();
+        return;
+      }
+      if (highlights.isEmpty) return;
 
-  fetchNext() async {
-    if (continuation == null) return;
-    setState(() {
-      nextLoading = true;
+      final nextPage = (_currentHighlightPage + 1) % highlights.length;
+      _pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
     });
-    Map<String, dynamic> home =
-        await ytMusic.browseContinuation(additionalParams: continuation!);
-    List<Map<String, dynamic>> secs =
-        home['sections'].cast<Map<String, dynamic>>();
-    if (mounted) {
+  }
+
+  @override
+  void dispose() {
+    _autoScrollTimer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadInitialData() async {
+    try {
+      final data = await ytMusic.browse();
+      final allSections = data['sections'] as List;
+      if (allSections.isNotEmpty && allSections.first['contents'] != null) {
+        highlights = (allSections.first['contents'] as List).take(3).toList();
+        sections = allSections.skip(1).toList();
+      } else {
+        highlights = [];
+        sections = allSections;
+      }
       setState(() {
-        sections.addAll(secs);
-        continuation = home['continuation'];
-        nextLoading = false;
+        chips = data['chips'] ?? [];
+        continuation = data['continuation'];
+        initialLoading = false;
       });
+    } catch (e) {
+      if (mounted) {
+        setState(() => initialLoading = false);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Erro ao carregar dados")));
+      }
     }
   }
 
-  Widget _horizontalChipsRow(List data) {
-    var list = <Widget>[const SizedBox(width: 16)];
-    for (var element in data) {
-      list.add(
-        AdaptiveInkWell(
-          borderRadius: BorderRadius.circular(10),
-          onTap: () => context.go('/chip', extra: element),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(10)),
-            child: Text(element['title']),
+  Future<void> _loadMoreData() async {
+    if (nextLoading || continuation == null) return;
+    setState(() => nextLoading = true);
+    try {
+      final data = await ytMusic.browseContinuation(
+        additionalParams: continuation!,
+      );
+      if (mounted) {
+        setState(() {
+          sections.addAll(data['sections'] ?? []);
+          continuation = data['continuation'];
+          nextLoading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => nextLoading = false);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Erro ao carregar mais")));
+      }
+    }
+  }
+
+  Widget _buildHighlights() {
+    if (highlights.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 220,
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: highlights.length,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              final highlight = highlights[index] as Map<String, dynamic>;
+              final thumbs = highlight['thumbnails'] as List<dynamic>?;
+              final imageUrl =
+                  thumbs != null && thumbs.isNotEmpty
+                      ? (thumbs.last['url'] as String)
+                      : '';
+              return HighlightCard(
+                imageUrl: imageUrl,
+                videoId: highlight['videoId'] as String?,
+                title: highlight['title'] ?? '',
+                subtitle: highlight['subtitle'] ?? '',
+                onTap: () => _handleHighlightTap(highlight),
+              );
+            },
           ),
         ),
+        const SizedBox(height: 8),
+        _PageIndicator(
+          count: highlights.length,
+          currentIndex: _currentHighlightPage,
+        ),
+      ],
+    );
+  }
+
+  void _handleHighlightTap(Map<String, dynamic> highlight) {
+    final title = highlight['title'] as String? ?? '';
+    if (title.isNotEmpty) {
+      Navigator.of(context, rootNavigator: true).push(
+        CupertinoPageRoute(builder: (context) => SearchScreen(query: title)),
       );
-      list.add(const SizedBox(
-        width: 8,
-      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Não foi possível buscar a música.')),
+      );
     }
-    list.add(const SizedBox(
-      width: 8,
-    ));
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: list,
+  }
+
+  Widget _buildChipsRow() {
+    return SizedBox(
+      height: 50,
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        scrollDirection: Axis.horizontal,
+        itemCount: chips.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemBuilder: (context, index) {
+          final chip = chips[index];
+          return ActionChip(
+            label: Text(chip['title'] ?? ''),
+            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+            onPressed: () => context.go('/chip', extra: chip),
+          );
+        },
       ),
     );
   }
@@ -129,74 +193,90 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
-      appBar: PreferredSize(
-        preferredSize: const AdaptiveAppBar().preferredSize,
-        child: AdaptiveAppBar(
-          automaticallyImplyLeading: false,
-          title: Material(
-            color: Colors.transparent,
-            child: LayoutBuilder(builder: (context, constraints) {
-              return Row(
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: constraints.maxWidth > 400
-                            ? (400)
-                            : constraints.maxWidth),
-                    child: AdaptiveTextField(
-                      onTap: () => context.go('/search'),
-                      readOnly: true,
-                      keyboardType: TextInputType.text,
-                      maxLines: 1,
-                      autofocus: false,
-                      textInputAction: TextInputAction.search,
-                      fillColor: Platform.isWindows
-                          ? null
-                          : Colors.grey.withOpacity(0.3),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 8),
-                      borderRadius:
-                          BorderRadius.circular(Platform.isWindows ? 4.0 : 35),
-                      hintText: S.of(context).Search_xmusic,
-                      prefix: Icon(AdaptiveIcons.search),
-                    ),
-                  ),
-                ],
-              );
-            }),
-          ),
-          centerTitle: false,
-        ),
+      appBar: AdaptiveAppBar(
+        title: Text(S.of(context).Home),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
-      body: initialLoading
-          ? const Center(child: AdaptiveProgressRing())
-          : RefreshIndicator(
-              onRefresh: () => refresh(),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                controller: _scrollController,
-                child: SafeArea(
-                  child: Column(
-                    children: [
-                      _horizontalChipsRow(chips),
-                      Column(
-                        children: [
-                          ...sections.map((section) {
-                            return SectionItem(section: section);
-                          }),
-                          if (!nextLoading && continuation != null)
-                            const SizedBox(height: 50),
-                          if (nextLoading)
-                            const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: AdaptiveProgressRing()),
-                        ],
-                      )
-                    ],
+      body:
+          initialLoading
+              ? const Center(child: AdaptiveProgressRing())
+              : RefreshIndicator(
+                onRefresh: () async => _loadInitialData(),
+                child: NestedScrollView(
+                  headerSliverBuilder:
+                      (context, innerBoxScrolled) => [
+                        SliverPadding(
+                          padding: const EdgeInsets.only(top: 16, bottom: 24),
+                          sliver: SliverToBoxAdapter(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                _buildHighlights(),
+                                const SizedBox(height: 24),
+                                _buildChipsRow(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                  body: NotificationListener<ScrollNotification>(
+                    onNotification: (scrollInfo) {
+                      if (scrollInfo.metrics.pixels >=
+                          scrollInfo.metrics.maxScrollExtent * 0.8) {
+                        _loadMoreData();
+                        return true;
+                      }
+                      return false;
+                    },
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: sections.length + (nextLoading ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index < sections.length) {
+                          return SectionItem(section: sections[index]);
+                        }
+                        return const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(child: AdaptiveProgressRing()),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
+    );
+  }
+}
+
+class _PageIndicator extends StatelessWidget {
+  final int count;
+  final int currentIndex;
+
+  const _PageIndicator({required this.count, required this.currentIndex});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(count, (index) {
+          return Container(
+            width: currentIndex == index ? 16 : 8,
+            height: 8,
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color:
+                  currentIndex == index
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.outline.withOpacity(0.3),
             ),
+          );
+        }),
+      ),
     );
   }
 }

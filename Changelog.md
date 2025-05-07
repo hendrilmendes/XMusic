@@ -2,6 +2,23 @@ Changelog
 
 ======================================================
 
+## [*.*.*](https://github.com/hendrilmendes/XMusic/compare/1.2.0..*.*.*) (**-**-2025)
+
+## Alterações
+
+
+### Novo
+
+- A base do app foi alterada, agora tem como base o @https://github.com/jhelumcorp/gyawun
+- interface totalmente nova, fluida, moderna
+
+### Correções
+
+- Correções de bugs
+
+
+======================================================
+
 ## [1.2.0](https://github.com/hendrilmendes/XMusic/compare/1.1.0..1.2.0) (**-**-2025)
 
 ### Correções

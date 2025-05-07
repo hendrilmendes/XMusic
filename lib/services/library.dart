@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:xmusic/services/providers/spotify.dart';
 
 import '../ytmusic/ytmusic.dart';
 
@@ -17,7 +18,8 @@ class LibraryService extends ChangeNotifier {
   }
   Map get playlists => _playlists;
   Map get userPlaylists => Map.fromEntries(
-      _playlists.entries.where((item) => item.value['isPredefined'] == false));
+    _playlists.entries.where((item) => item.value['isPredefined'] == false),
+  );
   Map? getPlaylist(String playlistId) => _box.get(playlistId);
 
   Future<String> createPlaylist(String title, {Map? item}) async {
@@ -26,15 +28,12 @@ class LibraryService extends ChangeNotifier {
     } else if (_box.get(title.toLowerCase()) != null) {
       "Playlist is already created";
     }
-    await _box.put(
-      title.toLowerCase(),
-      {
-        'title': title,
-        'isPredefined': false,
-        'songs': item != null ? [item] : [],
-        'createdAt': DateTime.now().millisecondsSinceEpoch
-      },
-    );
+    await _box.put(title.toLowerCase(), {
+      'title': title,
+      'isPredefined': false,
+      'songs': item != null ? [item] : [],
+      'createdAt': DateTime.now().millisecondsSinceEpoch,
+    });
     if (item != null) {
       return '${item['title']} added to $title';
     } else {
@@ -45,29 +44,59 @@ class LibraryService extends ChangeNotifier {
   Future<String> importPlaylist(String playlistUrl) async {
     try {
       Uri uri = Uri.parse(playlistUrl);
-      String? playlistId = uri.queryParameters['list'];
-      if (!uri.host.contains('youtube.com') || playlistId == null) {
-        return 'Invalid Url';
-      }
-      String browseId =
-          playlistId.startsWith("VL") ? playlistId : "VL$playlistId";
-      Map<String, dynamic> playlist =
-          await GetIt.I<YTMusic>().importPlaylist(browseId);
-      String id = playlistId;
-      if (_playlists[id] != null) {
-        await _box.delete(id);
-        return 'Playlist is already added';
-      } else {
-        await _box.put(
-          id,
-          {
+
+      // Verifica se é um link do YouTube
+      if (uri.host.contains('youtube.com') || uri.host.contains('youtu.be')) {
+        String? playlistId = uri.queryParameters['list'];
+        if (playlistId == null && uri.host.contains('youtu.be')) {
+          // URLs curtas podem ter ID direto no path
+          playlistId =
+              uri.pathSegments.isNotEmpty ? uri.pathSegments.last : null;
+        }
+        if (playlistId == null) return 'Invalid YouTube URL';
+
+        String browseId =
+            playlistId.startsWith("VL") ? playlistId : "VL$playlistId";
+        Map<String, dynamic> playlist = await GetIt.I<YTMusic>().importPlaylist(
+          browseId,
+        );
+        String id = playlistId;
+
+        if (_playlists[id] != null) {
+          await _box.delete(id);
+          return 'Playlist is already added';
+        } else {
+          await _box.put(id, {
             ...playlist,
             'isPredefined': true,
-            'createdAt': DateTime.now().millisecondsSinceEpoch
-          },
-        );
-        return 'Added to Library';
+            'createdAt': DateTime.now().millisecondsSinceEpoch,
+          });
+          return 'Added to Library';
+        }
       }
+      // Verifica se é um link do Spotify
+      else if (uri.host.contains('spotify.com') &&
+          uri.path.contains('/playlist/')) {
+        String playlistId = uri.pathSegments.last;
+        Map<String, dynamic> playlist = await SpotifyService().importPlaylist(
+          playlistId,
+        );
+        String id = playlistId;
+
+        if (_playlists[id] != null) {
+          await _box.delete(id);
+          return 'Playlist is already added';
+        } else {
+          await _box.put(id, {
+            ...playlist,
+            'isPredefined': true,
+            'createdAt': DateTime.now().millisecondsSinceEpoch,
+          });
+          return 'Added to Library';
+        }
+      }
+
+      return 'Invalid URL format';
     } catch (e) {
       return e.toString();
     }
@@ -79,20 +108,19 @@ class LibraryService extends ChangeNotifier {
       await _box.delete(id);
       return 'Removed from Library';
     } else {
-      await _box.put(
-        id,
-        {
-          ...item,
-          'isPredefined': true,
-          'createdAt': DateTime.now().millisecondsSinceEpoch
-        },
-      );
+      await _box.put(id, {
+        ...item,
+        'isPredefined': true,
+        'createdAt': DateTime.now().millisecondsSinceEpoch,
+      });
       return 'Added to Library';
     }
   }
 
-  Future<String> renamePlaylist(
-      {String? title, required String playlistId}) async {
+  Future<String> renamePlaylist({
+    String? title,
+    required String playlistId,
+  }) async {
     if (_playlists[playlistId] == null) {
       return 'Playlist does not exist';
     }
@@ -114,10 +142,7 @@ class LibraryService extends ChangeNotifier {
     }
   }
 
-  Future<String> addToPlaylist({
-    required Map item,
-    required String key,
-  }) async {
+  Future<String> addToPlaylist({required Map item, required String key}) async {
     Map? playlist = await _box.get(key);
     if (playlist == null) return 'Playlist does not exist';
     List songs = playlist['songs'] ?? [];
@@ -130,8 +155,10 @@ class LibraryService extends ChangeNotifier {
     return 'Added to Playlist';
   }
 
-  Future<String> removeFromPlaylist(
-      {required Map item, required String playlistId}) async {
+  Future<String> removeFromPlaylist({
+    required Map item,
+    required String playlistId,
+  }) async {
     Map? playlist = await _box.get(playlistId);
     if (playlist == null) return 'Playlist does not exist';
     List songs = playlist['songs'] ?? [];

@@ -1,0 +1,1 @@
+/home/hendril/Documentos/GitHub/XMusic/build/app/intermediates/cxx/Debug/6g174i3l/obj/arm64-v8a

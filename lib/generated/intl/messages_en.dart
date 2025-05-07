@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "About": MessageLookupByLibrary.simpleMessage("About"),
+    "Account": MessageLookupByLibrary.simpleMessage("Account"),
     "Add_To_Favourites": MessageLookupByLibrary.simpleMessage(
       "Add To Favourites",
     ),
@@ -44,7 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Backup and Restore",
     ),
     "Battery_Optimisation_message": MessageLookupByLibrary.simpleMessage(
-      "Click here disable battery optimisation for xmusic to work properly",
+      "Click here disable battery optimisation for XMusic to work properly",
     ),
     "Battery_Optimisation_title": MessageLookupByLibrary.simpleMessage(
       "Battery Optimisation Detected",
@@ -87,7 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Developer": MessageLookupByLibrary.simpleMessage("Developer"),
     "Donate": MessageLookupByLibrary.simpleMessage("Donate"),
     "Donate_Message": MessageLookupByLibrary.simpleMessage(
-      "Support the development of xmusic",
+      "Support the development of XMusic",
     ),
     "Done": MessageLookupByLibrary.simpleMessage("Done"),
     "Download": MessageLookupByLibrary.simpleMessage("Download"),
@@ -102,20 +103,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Enable_Search_History": MessageLookupByLibrary.simpleMessage(
       "Enable Search History",
     ),
+    "English": MessageLookupByLibrary.simpleMessage("English"),
     "Enter_Visitor_Id": MessageLookupByLibrary.simpleMessage(
       "Enter Visitor Id",
     ),
     "Equalizer": MessageLookupByLibrary.simpleMessage("Equalizer"),
     "Favourites": MessageLookupByLibrary.simpleMessage("Favourites"),
     "Feature_Request": MessageLookupByLibrary.simpleMessage("Feature Request"),
-    "Google_Account": MessageLookupByLibrary.simpleMessage("Google Account"),
-    "xmusic": MessageLookupByLibrary.simpleMessage("xmusic"),
+    "Hendril_Mendes": MessageLookupByLibrary.simpleMessage("Hendril Mendes"),
     "High": MessageLookupByLibrary.simpleMessage("High"),
     "History": MessageLookupByLibrary.simpleMessage("History"),
+    "Hm_Corp": MessageLookupByLibrary.simpleMessage("HM Creative Studios"),
     "Home": MessageLookupByLibrary.simpleMessage("Home"),
     "Import": MessageLookupByLibrary.simpleMessage("Import"),
     "Import_Playlist": MessageLookupByLibrary.simpleMessage("Import Playlist"),
-    "Jhelum_Corp": MessageLookupByLibrary.simpleMessage("Jhelum Corp"),
     "Language": MessageLookupByLibrary.simpleMessage("Language"),
     "Loudness_And_Equalizer": MessageLookupByLibrary.simpleMessage(
       "Loudness And Equalizer",
@@ -124,7 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Loudness Enhancer",
     ),
     "Low": MessageLookupByLibrary.simpleMessage("Low"),
-    "Made_In_Kashmir": MessageLookupByLibrary.simpleMessage("Made in Kashmir"),
+    "Made_In_Brazil": MessageLookupByLibrary.simpleMessage("Made in Brazil ❤️"),
     "Name": MessageLookupByLibrary.simpleMessage("Name"),
     "Next_Up": MessageLookupByLibrary.simpleMessage("Next Up"),
     "No": MessageLookupByLibrary.simpleMessage("No"),
@@ -140,6 +141,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Playlist_Name": MessageLookupByLibrary.simpleMessage("Playlist Name"),
     "Playlists": MessageLookupByLibrary.simpleMessage("Playlists"),
+    "Portuguese": MessageLookupByLibrary.simpleMessage("Português"),
     "Progress": MessageLookupByLibrary.simpleMessage("Progress"),
     "Remove": MessageLookupByLibrary.simpleMessage("Remove"),
     "Remove_All_History_Message": MessageLookupByLibrary.simpleMessage(
@@ -163,15 +165,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "Reset Visitor Id",
     ),
     "Restore": MessageLookupByLibrary.simpleMessage("Restore"),
-    "Saved": MessageLookupByLibrary.simpleMessage("Saved"),
-    "Search_xmusic": MessageLookupByLibrary.simpleMessage("Search xmusic"),
+    "Saved": MessageLookupByLibrary.simpleMessage("Library"),
+    "Search": MessageLookupByLibrary.simpleMessage("Search"),
     "Search_History_Deleted": MessageLookupByLibrary.simpleMessage(
       "Search History Deleted",
     ),
     "Search_Settings": MessageLookupByLibrary.simpleMessage("Search Settings"),
+    "Search_xmusic": MessageLookupByLibrary.simpleMessage("Search in XMusic"),
     "Select_Backup": MessageLookupByLibrary.simpleMessage("Select Backup"),
     "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
-    "Sheikh_Haziq": MessageLookupByLibrary.simpleMessage("Sheikh Haziq"),
+    "Share": MessageLookupByLibrary.simpleMessage("Share"),
     "Show_Less": MessageLookupByLibrary.simpleMessage("Show Less"),
     "Show_More": MessageLookupByLibrary.simpleMessage("Show More"),
     "Shuffle": MessageLookupByLibrary.simpleMessage("Shuffle"),
@@ -182,6 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Songs will start playing soon.",
     ),
     "Source_Code": MessageLookupByLibrary.simpleMessage("Source Code"),
+    "Spanish": MessageLookupByLibrary.simpleMessage("Español"),
     "Start_Radio": MessageLookupByLibrary.simpleMessage("Start Radio"),
     "Streaming_Quality": MessageLookupByLibrary.simpleMessage(
       "Streaming Quality",
@@ -198,5 +202,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "YTMusic": MessageLookupByLibrary.simpleMessage("YTMusic"),
     "Yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "nSongs": m0,
+    "xmusic": MessageLookupByLibrary.simpleMessage("XMusic"),
   };
 }

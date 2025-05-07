@@ -1,0 +1,2 @@
+/home/hendril/Documentos/GitHub/XMusic/android/app/.cxx/Debug/6g174i3l/x86_64/CMakeFiles/edit_cache.dir
+/home/hendril/Documentos/GitHub/XMusic/android/app/.cxx/Debug/6g174i3l/x86_64/CMakeFiles/rebuild_cache.dir

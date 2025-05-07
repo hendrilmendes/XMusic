@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent_ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,9 +14,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:xmusic/app_config.dart';
+import 'package:xmusic/firebase_options.dart';
+import 'package:xmusic/services/providers/spotify.dart';
 
 import 'generated/l10n.dart';
 import 'services/download_manager.dart';
@@ -30,8 +35,11 @@ import 'themes/light.dart';
 import 'utils/router.dart';
 import 'ytmusic/ytmusic.dart';
 
+late AppConfig appConfig;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (Platform.isAndroid) {
     await JustAudioBackground.init(
       androidNotificationChannelId: 'com.github.hendrilmendes.music.audio',
@@ -100,7 +108,15 @@ void main() async {
   GetIt.I.registerSingleton<FileStorage>(fileStorage);
 
   GetIt.I.registerSingleton<LibraryService>(libraryService);
+  GetIt.I.registerSingleton<SpotifyService>(SpotifyService());
   GetIt.I.registerSingleton<Lyrics>(Lyrics());
+
+  final pkg = await PackageInfo.fromPlatform();
+
+  appConfig = AppConfig(
+    version: int.tryParse(pkg.buildNumber) ?? 0,
+    codeName: pkg.version,
+  );
 
   runApp(
     MultiProvider(
@@ -109,7 +125,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => mediaPlayer),
         ChangeNotifierProvider(create: (_) => libraryService),
       ],
-      child: const XMusic(),
+      child: XMusic(),
     ),
   );
 }

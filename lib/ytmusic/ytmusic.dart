@@ -1,4 +1,4 @@
-library ytmusic;
+library;
 
 import 'package:xmusic/ytmusic/mixins/library.dart';
 

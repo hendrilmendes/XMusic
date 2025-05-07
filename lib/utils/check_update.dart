@@ -4,17 +4,19 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:pub_semver/pub_semver.dart';
-
-import '../app_config.dart';
+import 'package:xmusic/main.dart';
 
 Future<UpdateInfo?> checkUpdate({BaseDeviceInfo? deviceInfo}) async {
-  final response = await http.get(appConfig.updateUri,
-      headers: {'Accept': 'application/vnd.github+json'});
+  final response = await http.get(
+    appConfig.updateUri,
+    headers: {'Accept': 'application/vnd.github+json'},
+  );
   Map update = jsonDecode(response.body);
   Version currentVersion = Version.parse(appConfig.codeName);
 
-  Version remoteVersion =
-      Version.parse(update['tag_name'].toString().replaceAll('v', ''));
+  Version remoteVersion = Version.parse(
+    update['tag_name'].toString().replaceAll('v', ''),
+  );
 
   int comparison = remoteVersion.compareTo(currentVersion);
 
@@ -31,22 +33,24 @@ Future<UpdateInfo?> checkUpdate({BaseDeviceInfo? deviceInfo}) async {
           deviceInfo.data['supportedAbis'].cast<String>();
 
       for (var supportedAbi in supportedAbis) {
-        List supportedAssets = assets
-            .where((asset) => asset['name'].contains(supportedAbi))
-            .toList();
+        List supportedAssets =
+            assets
+                .where((asset) => asset['name'].contains(supportedAbi))
+                .toList();
         if (supportedAssets.isNotEmpty) {
           supportedAsset = supportedAssets.first;
           break;
         }
       }
     } else if (Platform.isWindows) {
-      List supportedAssets = assets
-          .where(
-            (asset) =>
-                asset["content_type"] == "application/x-msdownload" ||
-                asset['name'].toString().endsWith('.exe'),
-          )
-          .toList();
+      List supportedAssets =
+          assets
+              .where(
+                (asset) =>
+                    asset["content_type"] == "application/x-msdownload" ||
+                    asset['name'].toString().endsWith('.exe'),
+              )
+              .toList();
       supportedAsset =
           supportedAssets.isNotEmpty ? supportedAssets.first : null;
     }

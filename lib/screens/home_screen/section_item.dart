@@ -53,140 +53,166 @@ class _SectionItemState extends State<SectionItem> {
       GetIt.I<YTMusic>()
           .getMoreItems(continuation: widget.section['continuation'])
           .then((value) {
-        setState(() {
-          widget.section['contents'].addAll(value['items']);
-          widget.section['continuation'] = value['continuation'];
-          loadingMore = false;
-        });
-      });
+            setState(() {
+              widget.section['contents'].addAll(value['items']);
+              widget.section['continuation'] = value['continuation'];
+              loadingMore = false;
+            });
+          });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     horizontalPageController = PageController(
-        viewportFraction: 350 / MediaQuery.of(context).size.width);
+      viewportFraction: 350 / MediaQuery.of(context).size.width,
+    );
     return widget.section['contents'].isEmpty
         ? const SizedBox()
         : Column(
-            children: [
-              if (widget.section['title'] != null)
-                AdaptiveListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  title: widget.section['strapline'] == null
-                      ? Text(widget.section['title'] ?? '',
+          children: [
+            if (widget.section['title'] != null)
+              AdaptiveListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 8,
+                ),
+                title:
+                    widget.section['strapline'] == null
+                        ? Text(
+                          widget.section['title'] ?? '',
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20))
-                      : Text(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        )
+                        : Text(
                           widget.section['strapline'],
                           style: TextStyle(
-                              color: Colors.grey.withAlpha(200), fontSize: 14),
+                            color: Colors.grey.withAlpha(200),
+                            fontSize: 14,
+                          ),
                         ),
-                  subtitle: widget.section['strapline'] != null
-                      ? Text(widget.section['title'] ?? '',
-                          style:
-                              mediumTextStyle(context).copyWith(fontSize: 20))
-                      : null,
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (widget.section['trailing'] != null)
-                        AdaptiveOutlinedButton(
-                          onPressed: () async {
-                            if (widget.section['trailing']['playable'] ==
-                                false) {
-                              Navigator.push(
-                                context,
-                                AdaptivePageRoute.create(
-                                  (context) => BrowseScreen(
-                                    endpoint: widget.section['trailing']
-                                        ['endpoint'],
-                                    isMore: true,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              BottomMessage.showText(
-                                  context, 'Songs will start playing soon.');
-                              await GetIt.I<MediaPlayer>().startPlaylistSongs(
-                                  widget.section['trailing']['endpoint']);
-                            }
-                          },
-                          child: Text(widget.section['trailing']['text']),
-                        ),
-                      if (Platform.isWindows &&
-                          widget.section['viewType'] != 'SINGLE_COLUMN')
-                        AdaptiveIconButton(
-                          icon: Icon(AdaptiveIcons.chevron_left),
-                          onPressed: () {
-                            if (widget.section['viewType'] == 'COLUMN' &&
-                                !widget.isMore) {
-                              horizontalPageController.previousPage(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeOut);
-                            } else {
-                              horizontalScrollController.animateTo(
-                                horizontalScrollController.offset -
-                                    horizontalScrollController
-                                        .position.extentInside,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeOut,
-                              );
-                            }
-                          },
-                        ),
-                      if (Platform.isWindows &&
-                          widget.section['viewType'] != 'SINGLE_COLUMN')
-                        AdaptiveIconButton(
-                          icon: Icon(AdaptiveIcons.chevron_right),
-                          onPressed: () {
-                            if (widget.section['viewType'] == 'COLUMN' &&
-                                !widget.isMore) {
-                              horizontalPageController.nextPage(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeOut);
-                            } else {
-                              horizontalScrollController.animateTo(
-                                horizontalScrollController.offset +
-                                    horizontalScrollController
-                                        .position.extentInside,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeOut,
-                              );
-                            }
-                          },
+                subtitle:
+                    widget.section['strapline'] != null
+                        ? Text(
+                          widget.section['title'] ?? '',
+                          style: mediumTextStyle(
+                            context,
+                          ).copyWith(fontSize: 20),
                         )
-                    ],
-                  ),
-                  leading: widget.section['thumbnails'] != null &&
-                          widget.section['thumbnails']?.isNotEmpty
-                      ? CircleAvatar(
+                        : null,
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.section['trailing'] != null)
+                      AdaptiveOutlinedButton(
+                        onPressed: () async {
+                          final trailing =
+                              widget.section['trailing']
+                                  as Map<String, dynamic>?;
+                          final endpoint =
+                              trailing?['endpoint'] as Map<String, dynamic>?;
+
+                          if (endpoint != null) {
+                            Navigator.push(
+                              context,
+                              AdaptivePageRoute.create(
+                                (context) => BrowseScreen(
+                                  endpoint: endpoint,
+                                  isMore: true,
+                                ),
+                              ),
+                            );
+                          } else {
+                            BottomMessage.showText(
+                              context,
+                              'Não há mais itens para carregar.',
+                            );
+                          }
+                        },
+
+                        child: Text(widget.section['trailing']['text']),
+                      ),
+                    if (Platform.isWindows &&
+                        widget.section['viewType'] != 'SINGLE_COLUMN')
+                      AdaptiveIconButton(
+                        icon: Icon(AdaptiveIcons.chevron_left),
+                        onPressed: () {
+                          if (widget.section['viewType'] == 'COLUMN' &&
+                              !widget.isMore) {
+                            horizontalPageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                          } else {
+                            horizontalScrollController.animateTo(
+                              horizontalScrollController.offset -
+                                  horizontalScrollController
+                                      .position
+                                      .extentInside,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                          }
+                        },
+                      ),
+                    if (Platform.isWindows &&
+                        widget.section['viewType'] != 'SINGLE_COLUMN')
+                      AdaptiveIconButton(
+                        icon: Icon(AdaptiveIcons.chevron_right),
+                        onPressed: () {
+                          if (widget.section['viewType'] == 'COLUMN' &&
+                              !widget.isMore) {
+                            horizontalPageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                          } else {
+                            horizontalScrollController.animateTo(
+                              horizontalScrollController.offset +
+                                  horizontalScrollController
+                                      .position
+                                      .extentInside,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                          }
+                        },
+                      ),
+                  ],
+                ),
+                leading:
+                    widget.section['thumbnails'] != null &&
+                            widget.section['thumbnails']?.isNotEmpty
+                        ? CircleAvatar(
                           backgroundImage: CachedNetworkImageProvider(
                             widget.section['thumbnails'].first['url'],
                           ),
                         )
-                      : null,
-                ),
-              if (widget.section['viewType'] == 'COLUMN' && !widget.isMore)
-                SongList(
-                  songs: widget.section['contents'],
-                  controller: horizontalPageController,
-                )
-              else if (widget.section['viewType'] == 'SINGLE_COLUMN' ||
-                  widget.isMore)
-                SingleColumnList(songs: widget.section['contents'])
-              else
-                ItemList(
-                  items: widget.section['contents'],
-                  controller: horizontalScrollController,
-                ),
-              if (loadingMore) const AdaptiveProgressRing(),
-              if (widget.section['continuation'] != null && !loadingMore)
-                AdaptiveButton(
-                    onPressed: loadMoreItems, child: const Text("Load More"))
-            ],
-          );
+                        : null,
+              ),
+            if (widget.section['viewType'] == 'COLUMN' && !widget.isMore)
+              SongList(
+                songs: widget.section['contents'],
+                controller: horizontalPageController,
+              )
+            else if (widget.section['viewType'] == 'SINGLE_COLUMN' ||
+                widget.isMore)
+              SingleColumnList(songs: widget.section['contents'])
+            else
+              ItemList(
+                items: widget.section['contents'],
+                controller: horizontalScrollController,
+              ),
+            if (loadingMore) const AdaptiveProgressRing(),
+            if (widget.section['continuation'] != null && !loadingMore)
+              AdaptiveButton(
+                onPressed: loadMoreItems,
+                child: const Text("Load More"),
+              ),
+          ],
+        );
   }
 }
 
@@ -230,11 +256,12 @@ class _SongListState extends State<SongList> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
-            children: widget.songs
-                .sublist(start, min(end, widget.songs.length))
-                .map((pageSongs) {
-              return SongTile(song: pageSongs);
-            }).toList(),
+            children:
+                widget.songs.sublist(start, min(end, widget.songs.length)).map((
+                  pageSongs,
+                ) {
+                  return SongTile(song: pageSongs);
+                }).toList(),
           ),
         );
       },
@@ -248,9 +275,10 @@ class SingleColumnList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: songs.map((song) {
-        return SongTile(song: song);
-      }).toList(),
+      children:
+          songs.map((song) {
+            return SongTile(song: song);
+          }).toList(),
     );
   }
 }
@@ -266,74 +294,74 @@ class SongTile extends StatelessWidget {
         (song['aspectRatio'] != null ? 50 / song['aspectRatio'] : 50)
             .toDouble();
     return AdaptiveListTile(
-        // borderRadius: BorderRadius.circular(5),
-        // focusColor: greyColor,
-        onTap: () async {
-          if (song['endpoint'] != null && song['videoId'] == null) {
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) =>
-                      BrowseScreen(endpoint: song['endpoint']),
-                ));
-          } else {
-            await GetIt.I<MediaPlayer>().playSong(Map.from(song));
+      // borderRadius: BorderRadius.circular(5),
+      // focusColor: greyColor,
+      onTap: () async {
+        if (song['endpoint'] != null && song['videoId'] == null) {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => BrowseScreen(endpoint: song['endpoint']),
+            ),
+          );
+        } else {
+          await GetIt.I<MediaPlayer>().playSong(Map.from(song));
 
-            // final s = GetIt.I<HttpServer>();
-            // await get(Uri.parse(
-            //     'http://${s.address.host}:${s.port}/stream?videoId=${song['videoId']}'));
-          }
-        },
-        onSecondaryTap: () {
-          if (song['videoId'] != null) {
-            Modals.showSongBottomModal(context, song);
-          }
-        },
-        onLongPress: () {
-          if (song['videoId'] != null) {
-            Modals.showSongBottomModal(context, song);
-          }
-        },
-        title: Text(song['title'] ?? "", maxLines: 1),
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(3),
-          child: CachedNetworkImage(
-            imageUrl: thumbnails
-                .where((el) => el['width'] >= 50)
-                .toList()
-                .first['url'],
-            height: height,
-            width: 50,
-            fit: BoxFit.cover,
-          ),
+          // final s = GetIt.I<HttpServer>();
+          // await get(Uri.parse(
+          //     'http://${s.address.host}:${s.port}/stream?videoId=${song['videoId']}'));
+        }
+      },
+      onSecondaryTap: () {
+        if (song['videoId'] != null) {
+          Modals.showSongBottomModal(context, song);
+        }
+      },
+      onLongPress: () {
+        if (song['videoId'] != null) {
+          Modals.showSongBottomModal(context, song);
+        }
+      },
+      title: Text(song['title'] ?? "", maxLines: 1),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(3),
+        child: CachedNetworkImage(
+          imageUrl:
+              thumbnails.where((el) => el['width'] >= 50).toList().first['url'],
+          height: height,
+          width: 50,
+          fit: BoxFit.cover,
         ),
-        subtitle: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (song['explicit'] == true)
-              Padding(
-                padding: const EdgeInsets.only(right: 2),
-                child: Icon(
-                  Icons.explicit,
-                  size: 18,
-                  color: Colors.grey.withOpacity(0.9),
-                ),
-              ),
-            Expanded(
-              child: Text(
-                _buildSubtitle(song),
-                maxLines: 1,
-                style: TextStyle(color: Colors.grey.withOpacity(0.9)),
-                overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (song['explicit'] == true)
+            Padding(
+              padding: const EdgeInsets.only(right: 2),
+              child: Icon(
+                Icons.explicit,
+                size: 18,
+                color: Colors.grey.withOpacity(0.9),
               ),
             ),
-          ],
-        ),
-        trailing: song['endpoint'] != null && song['videoId'] == null
-            ? Icon(AdaptiveIcons.chevron_right)
-            : null,
-        description: (song['type'] == 'EPISODE' && song['description'] != null)
-            ? Padding(
+          Expanded(
+            child: Text(
+              _buildSubtitle(song),
+              maxLines: 1,
+              style: TextStyle(color: Colors.grey.withOpacity(0.9)),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+      trailing:
+          song['endpoint'] != null && song['videoId'] == null
+              ? Icon(AdaptiveIcons.chevron_right)
+              : null,
+      description:
+          (song['type'] == 'EPISODE' && song['description'] != null)
+              ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
@@ -347,7 +375,8 @@ class SongTile extends StatelessWidget {
                   ],
                 ),
               )
-            : null);
+              : null,
+    );
   }
 
   String _buildSubtitle(Map item) {
@@ -378,135 +407,153 @@ class ItemList extends StatefulWidget {
 class _ItemListState extends State<ItemList> {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      double height = constraints.maxWidth > 600 ? 200 : 150;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double height = constraints.maxWidth > 600 ? 200 : 150;
 
-      return SizedBox(
-        height: height + (Platform.isWindows ? 102 : 78),
-        child: ListView.separated(
-          controller: widget.controller,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            double width = height * (widget.items[index]?['aspectRatio'] ?? 1);
-            String? subtitle = _buildSubtitle(widget.items[index]);
-            return Adaptivecard(
-              elevation: 0,
-              borderRadius: BorderRadius.circular(8),
-              backgroundColor: Platform.isAndroid ? Colors.transparent : null,
-              padding: EdgeInsets.zero,
-              child: AdaptiveInkWell(
-                padding: EdgeInsets.all(Platform.isWindows ? 12 : 0),
-                onTap: () async {
-                  if (widget.items[index]['endpoint'] != null &&
-                      widget.items[index]['videoId'] == null) {
-                    Navigator.push(
+        return SizedBox(
+          height: height + (Platform.isWindows ? 102 : 78),
+          child: ListView.separated(
+            controller: widget.controller,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              double width =
+                  height * (widget.items[index]?['aspectRatio'] ?? 1);
+              String? subtitle = _buildSubtitle(widget.items[index]);
+              return Adaptivecard(
+                elevation: 0,
+                borderRadius: BorderRadius.circular(8),
+                backgroundColor: Platform.isAndroid ? Colors.transparent : null,
+                padding: EdgeInsets.zero,
+                child: AdaptiveInkWell(
+                  padding: EdgeInsets.all(Platform.isWindows ? 12 : 0),
+                  onTap: () async {
+                    if (widget.items[index]['endpoint'] != null &&
+                        widget.items[index]['videoId'] == null) {
+                      Navigator.push(
                         context,
                         AdaptivePageRoute.create(
                           (context) => BrowseScreen(
-                              endpoint: widget.items[index]['endpoint']),
-                        ));
-                  } else {
-                    await GetIt.I<MediaPlayer>()
-                        .playSong(Map.from(widget.items[index]));
-                  }
-                },
-                onSecondaryTap: () {
-                  if (widget.items[index]['videoId'] != null) {
-                    Modals.showSongBottomModal(context, widget.items[index]);
-                  } else if (widget.items[index]['playlistId'] != null) {
-                    Modals.showPlaylistBottomModal(
-                        context, widget.items[index]);
-                  }
-                },
-                onLongPress: () {
-                  if (widget.items[index]['videoId'] != null) {
-                    Modals.showSongBottomModal(context, widget.items[index]);
-                  } else if (widget.items[index]['playlistId'] != null) {
-                    Modals.showPlaylistBottomModal(
-                        context, widget.items[index]);
-                  }
-                },
-                borderRadius: BorderRadius.circular(8),
-                child: Column(
-                  children: [
-                    Ink(
-                      width: width,
-                      height: height,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1),
-                        borderRadius: widget.items[index]['type'] == 'ARTIST'
-                            ? BorderRadius.circular(height / 2)
-                            : BorderRadius.circular(8),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(
-                            getEnhancedImage(
+                            endpoint: widget.items[index]['endpoint'],
+                          ),
+                        ),
+                      );
+                    } else {
+                      await GetIt.I<MediaPlayer>().playSong(
+                        Map.from(widget.items[index]),
+                      );
+                    }
+                  },
+                  onSecondaryTap: () {
+                    if (widget.items[index]['videoId'] != null) {
+                      Modals.showSongBottomModal(context, widget.items[index]);
+                    } else if (widget.items[index]['playlistId'] != null) {
+                      Modals.showPlaylistBottomModal(
+                        context,
+                        widget.items[index],
+                      );
+                    }
+                  },
+                  onLongPress: () {
+                    if (widget.items[index]['videoId'] != null) {
+                      Modals.showSongBottomModal(context, widget.items[index]);
+                    } else if (widget.items[index]['playlistId'] != null) {
+                      Modals.showPlaylistBottomModal(
+                        context,
+                        widget.items[index],
+                      );
+                    }
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                  child: Column(
+                    children: [
+                      Ink(
+                        width: width,
+                        height: height,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          borderRadius:
+                              widget.items[index]['type'] == 'ARTIST'
+                                  ? BorderRadius.circular(height / 2)
+                                  : BorderRadius.circular(8),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(
+                              getEnhancedImage(
                                 widget.items[index]['thumbnails'].first['url'],
                                 dp: MediaQuery.of(context).devicePixelRatio,
-                                width: width),
+                                width: width,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        width: width,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            AdaptiveListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 4),
-                              title: Text(
-                                widget.items[index]['title']
-                                    .toString()
-                                    .breakWord,
-                                maxLines: 2,
-                                style: const TextStyle(height: 1.3),
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                              ),
-                              subtitle: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  if (widget.items[index]['explicit'] == true)
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 2),
-                                      child: Icon(
-                                        Icons.explicit,
-                                        size: 14,
-                                        color: Colors.grey.withOpacity(0.9),
+                      Expanded(
+                        child: SizedBox(
+                          width: width,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AdaptiveListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 0,
+                                  vertical: 4,
+                                ),
+                                title: Text(
+                                  widget.items[index]['title']
+                                      .toString()
+                                      .breakWord,
+                                  maxLines: 2,
+                                  style: const TextStyle(height: 1.3),
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                ),
+                                subtitle: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    if (widget.items[index]['explicit'] == true)
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 2,
+                                        ),
+                                        child: Icon(
+                                          Icons.explicit,
+                                          size: 14,
+                                          color: Colors.grey.withOpacity(0.9),
+                                        ),
                                       ),
-                                    ),
-                                  if (subtitle != null)
-                                    Expanded(
-                                      child: Text(subtitle,
+                                    if (subtitle != null)
+                                      Expanded(
+                                        child: Text(
+                                          subtitle,
                                           maxLines: 1,
                                           style: TextStyle(
-                                              color:
-                                                  Colors.grey.withOpacity(0.9),
-                                              fontSize: 13,
-                                              height: 1.2),
-                                          overflow: TextOverflow.ellipsis),
-                                    ),
-                                ],
+                                            color: Colors.grey.withOpacity(0.9),
+                                            fontSize: 13,
+                                            height: 1.2,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(width: 8),
-          itemCount: widget.items.length,
-        ),
-      );
-    });
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(width: 8),
+            itemCount: widget.items.length,
+          ),
+        );
+      },
+    );
   }
 
   String? _buildSubtitle(Map item) {
