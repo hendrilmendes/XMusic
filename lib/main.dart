@@ -69,7 +69,7 @@ void main() async {
       await Window.setEffect(effect: windowEffect, dark: getInitialDarkness());
 
       await windowManager.show();
-      await windowManager.setPreventClose(true);
+      await windowManager.setPreventClose(false);
       await windowManager.setSkipTaskbar(false);
     });
   }

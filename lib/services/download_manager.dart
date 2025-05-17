@@ -136,7 +136,11 @@ class DownloadManager {
   }) async {
     try {
       StreamManifest manifest = await ytExplode.videos.streamsClient
-          .getManifest(videoId);
+          .getManifest(
+            videoId,
+            requireWatchPage: true,
+            ytClients: [YoutubeApiClient.androidVr],
+          );
       List<AudioOnlyStreamInfo> streamInfos =
           manifest.audioOnly
               .where((a) => a.container == StreamContainer.mp4)
