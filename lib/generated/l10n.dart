@@ -158,10 +158,10 @@ class S {
     );
   }
 
-  /// `Search Settings`
+  /// `Search in Settings`
   String get Search_Settings {
     return Intl.message(
-      'Search Settings',
+      'Search in Settings',
       name: 'Search_Settings',
       desc: '',
       args: [],

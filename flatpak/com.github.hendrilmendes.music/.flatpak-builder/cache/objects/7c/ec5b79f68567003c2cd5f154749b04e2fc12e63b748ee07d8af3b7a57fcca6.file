@@ -1,0 +1,22 @@
+[Application]
+name=com.github.hendrilmendes.music
+runtime=org.freedesktop.Platform/x86_64/24.08
+sdk=org.freedesktop.Sdk/x86_64/24.08
+command=xmusic
+
+[Context]
+shared=network;
+sockets=x11;wayland;
+devices=dri;
+filesystems=host;
+
+[Environment]
+LIBGL_ALWAYS_SOFTWARE=0
+
+[Extension com.github.hendrilmendes.music.Debug]
+directory=lib/debug
+autodelete=true
+no-autodownload=true
+
+[Build]
+built-extensions=com.github.hendrilmendes.music.Debug;
