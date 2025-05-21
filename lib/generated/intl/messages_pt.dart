@@ -187,7 +187,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Histórico de Pesquisa Excluído",
     ),
     "Search_Settings": MessageLookupByLibrary.simpleMessage(
-      "Pesquisar nos AJustes",
+      "Buscar nos Ajustes",
     ),
     "Search_xmusic": MessageLookupByLibrary.simpleMessage("Buscar no XMusic"),
     "Select_Backup": MessageLookupByLibrary.simpleMessage("Selecionar Backup"),

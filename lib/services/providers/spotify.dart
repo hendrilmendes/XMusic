@@ -15,11 +15,11 @@ class SpotifyService {
 
   Future<void> _loadToken() async {
     _accessToken = await storage.read(key: 'access_token') ?? '';
-
+    final refresh = await storage.read(key: 'refresh_token') ?? '';
     if (kDebugMode) {
       print('🔍 Token carregado: $_accessToken');
+      print('🔍 Refresh token carregado: $refresh');
     }
-    
   }
 
   Future<void> authenticate() async {
@@ -34,7 +34,7 @@ class SpotifyService {
           'https://accounts.spotify.com/authorize?'
           'response_type=code&'
           'client_id=$_clientId&'
-          'scope=playlist-read-private%20playlist-read-collaborative&'
+          'scope=playlist-read-private%20playlist-read-collaborative%20playlist-read-public&'
           'redirect_uri=${Uri.encodeComponent(_redirectUrl)}&'
           'code_challenge_method=S256&'
           'code_challenge=$codeChallenge&'
@@ -79,9 +79,10 @@ class SpotifyService {
 
   String _generateCodeVerifier() {
     final random = Random.secure();
+    final values = List<int>.generate(64, (i) => random.nextInt(256));
     return base64UrlEncode(
-      List.generate(32, (_) => random.nextInt(256)),
-    ).replaceAll('=', '');
+      values,
+    ).replaceAll('=', '').replaceAll('+', '-').replaceAll('/', '_');
   }
 
   String _generateCodeChallenge(String verifier) {
@@ -104,18 +105,24 @@ class SpotifyService {
     );
 
     if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+      _accessToken = body['access_token'];
+      final refreshToken = body['refresh_token'];
+
+      if (kDebugMode) print('Tokens recebidos: $body');
+
+      // Armazenar os tokens de forma segura
+      await storage.write(key: 'access_token', value: _accessToken);
+      await storage.write(key: 'refresh_token', value: refreshToken);
+
+      final savedAccess = await storage.read(key: 'access_token');
+      final savedRefresh = await storage.read(key: 'refresh_token');
       if (kDebugMode) {
-        print('Tokens recebidos: ${response.body}');
+        print('💾 access_token armazenado: $savedAccess');
+        print('💾 refresh_token armazenado: $savedRefresh');
       }
-      _accessToken = jsonDecode(response.body)['access_token'];
-      await storage.write(
-        key: 'refresh_token',
-        value: jsonDecode(response.body)['refresh_token'],
-      );
     } else {
-      if (kDebugMode) {
-        print('Erro ao obter tokens: ${response.body}');
-      }
+      if (kDebugMode) print('Erro ao obter tokens: ${response.body}');
       throw Exception('Erro ao obter tokens: ${response.body}');
     }
   }

@@ -117,21 +117,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
               if (searchText == "")
-                AdaptiveListTile(
-                  leading:
-                      ColorIcon(icon: Icons.money, color: Colors.accents[14]),
-                  title: Text(
-                    S.of(context).Donate,
-                    style:
-                        textStyle(context, bold: false).copyWith(fontSize: 16),
-                  ),
-                  subtitle: Text(
-                    S.of(context).Donate_Message,
-                    style: tinyTextStyle(context),
-                  ),
-                  onTap: () => showPaymentsModal(context),
-                  margin: const EdgeInsets.symmetric(vertical: 4),
-                ),
+                // AdaptiveListTile(
+                //   leading:
+                //       ColorIcon(icon: Icons.money, color: Colors.accents[14]),
+                //   title: Text(
+                //     S.of(context).Donate,
+                //     style:
+                //         textStyle(context, bold: false).copyWith(fontSize: 16),
+                //   ),
+                //   subtitle: Text(
+                //     S.of(context).Donate_Message,
+                //     style: tinyTextStyle(context),
+                //   ),
+                //   onTap: () => showPaymentsModal(context),
+                //   margin: const EdgeInsets.symmetric(vertical: 4),
+                // ),
               ...(searchText == ""
                       ? settingScreenData(context)
                       : allSettingsData(context)

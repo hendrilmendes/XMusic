@@ -1,10 +1,10 @@
 name: xmusic
 description: "A new Flutter project."
 publish_to: 'none'
-version: 2.0.4-beta2+204
+version: 2.0.4-beta5+210
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.8.0
 
 dependencies:
   flutter:
@@ -13,9 +13,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  go_router: ^14.2.1
+  go_router: ^15.1.2
   google_fonts: ^6.2.1
-  intl: ^0.19.0
+  intl: ^0.20.2
   http: ^1.2.2
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -23,7 +23,7 @@ dependencies:
     git:
       url: https://github.com/sheikhhaziq/youtube_explode_dart.git
   expandable_page_view: ^1.0.17
-  get_it: ^7.7.0
+  get_it: ^8.0.3
   cached_network_image: ^3.3.1
   flutter_typeahead: ^5.2.0
   expandable_text: ^2.3.0
@@ -31,7 +31,7 @@ dependencies:
   provider: ^6.1.2
   flutter_staggered_grid_view: ^0.7.0
   flutter_swipe_action_cell: ^3.1.3
-  just_audio: ^0.9.42
+  just_audio: ^0.10.3
   just_audio_background: ^0.0.1-beta.14
   audio_video_progress_bar: ^2.0.3
   sliding_up_panel: ^2.0.0+1
@@ -47,7 +47,7 @@ dependencies:
   dynamic_color: ^1.7.0
   audiotags: ^1.4.3
   pub_semver: ^2.1.4
-  device_info_plus: ^10.1.0
+  device_info_plus: ^11.4.0
   flutter_markdown: ^0.7.3
   flutter_expandable_fab: ^2.1.0
   flutter_lyric: ^2.0.4+6
@@ -56,7 +56,7 @@ dependencies:
   just_audio_media_kit: ^2.0.6
   media_kit_native_event_loop: any
   flutter_acrylic: ^1.1.4
-  fluent_ui: ^4.9.2
+  fluent_ui: ^4.11.5
   window_manager: ^0.4.3
   receive_sharing_intent:
     git:
