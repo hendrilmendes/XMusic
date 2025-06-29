@@ -81,24 +81,35 @@ abstract class YTMusicServices {
     return await Hive.box('SETTINGS').get('VISITOR_ID');
   }
 
-  Future<Map> sendRequest(String endpoint, Map<String, dynamic> body,
-      {Map<String, String>? headers, String additionalParams = ''}) async {
-    //
-    body = {...body, ...context};
+Future<Map> sendRequest(
+  String endpoint,
+  Map<String, dynamic> body, {
+  Map<String, String>? headers,
+  String additionalParams = '',
+}) async {
+  body = {...body, ...context};
 
-    this.headers.addAll(headers ?? {});
-    final Uri uri = Uri.parse(httpsYtmDomain +
-        baseApiEndpoint +
-        endpoint +
-        ytmParams +
-        additionalParams);
-    final response =
-        await post(uri, headers: this.headers, body: jsonEncode(body));
-
-    if (response.statusCode == 200) {
-      return json.decode(response.body) as Map;
-    } else {
-      return {};
-    }
+  // Se for playlistItems e tiver pageToken, adiciona na URL e remove do corpo
+  if (endpoint == 'playlistItems' && body.containsKey('pageToken')) {
+    additionalParams += '&pageToken=${body['pageToken']}';
+    body.remove('pageToken');
   }
+
+  this.headers.addAll(headers ?? {});
+  final Uri uri = Uri.parse(
+    httpsYtmDomain +
+    baseApiEndpoint +
+    endpoint +
+    ytmParams +
+    additionalParams,
+  );
+
+  final response = await post(uri, headers: this.headers, body: jsonEncode(body));
+
+  if (response.statusCode == 200) {
+    return json.decode(response.body) as Map;
+  } else {
+    return {};
+  }
+}
 }
