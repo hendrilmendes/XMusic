@@ -121,7 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Hendril_Mendes": MessageLookupByLibrary.simpleMessage("Hendril Mendes"),
     "High": MessageLookupByLibrary.simpleMessage("Alto"),
     "History": MessageLookupByLibrary.simpleMessage("Histórico"),
-    "Hm_Corp": MessageLookupByLibrary.simpleMessage("HM Creative Studios"),
+    "Hm_Corp": MessageLookupByLibrary.simpleMessage("Hendevs Studios"),
     "Home": MessageLookupByLibrary.simpleMessage("Início"),
     "Import": MessageLookupByLibrary.simpleMessage("Importar"),
     "Import_Playlist": MessageLookupByLibrary.simpleMessage(

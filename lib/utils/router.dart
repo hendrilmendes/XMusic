@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:xmusic/screens/login/login.dart';
 import 'package:xmusic/screens/settings_screen/account/account.dart';
 import 'package:xmusic/screens/settings_screen/language/language.dart';
 
@@ -23,17 +25,43 @@ import '../screens/settings_screen/settings_screen.dart';
 
 GoRouter router = GoRouter(
   initialLocation: '/',
+  // Adicione a lógica de redirect aqui
+  redirect: (context, state) {
+    // Pega o usuário atual do Firebase
+    final user = FirebaseAuth.instance.currentUser;
+
+    // Verifica se o usuário está logado
+    final bool loggedIn = user != null;
+
+    // Verifica se a rota atual é a de login
+    final bool loggingIn = state.matchedLocation == '/login';
+
+    // Se o usuário NÃO estiver logado E NÃO estiver na página de login,
+    // redireciona para /login.
+    if (!loggedIn && !loggingIn) {
+      return '/login';
+    }
+
+    // Se o usuário ESTIVER logado E estiver tentando acessar a página de login,
+    // redireciona para a home ('/').
+    if (loggedIn && loggingIn) {
+      return '/';
+    }
+
+    // Em todos os outros casos, não faz nada (deixa a navegação acontecer).
+    return null;
+  },
   routes: [
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     ShellRoute(
       builder: (context, state, child) => child,
       routes: [
         StatefulShellRoute(
           branches: branches,
-          builder:
-              (context, state, navigationShell) =>
-                  MainScreen(navigationShell: navigationShell),
-          navigatorContainerBuilder:
-              (context, navigationShell, children) => MyPageView(
+          builder: (context, state, navigationShell) =>
+              MainScreen(navigationShell: navigationShell),
+          navigatorContainerBuilder: (context, navigationShell, children) =>
+              MyPageView(
                 currentIndex: navigationShell.currentIndex,
                 children: children,
               ),
@@ -117,67 +145,52 @@ List<StatefulShellBranch> branches = [
         routes: [
           GoRoute(
             path: 'account',
-            pageBuilder:
-                (context, state) =>
-                    Platform.isWindows
-                        ? const FluentPage(child: AccountScreen())
-                        : const CupertinoPage(child: AccountScreen()),
+            pageBuilder: (context, state) => Platform.isWindows
+                ? const FluentPage(child: AccountScreen())
+                : const CupertinoPage(child: AccountScreen()),
           ),
           GoRoute(
             path: 'appearence',
-            pageBuilder:
-                (context, state) =>
-                    Platform.isWindows
-                        ? const FluentPage(child: AppearenceScreen())
-                        : const CupertinoPage(child: AppearenceScreen()),
+            pageBuilder: (context, state) => Platform.isWindows
+                ? const FluentPage(child: AppearenceScreen())
+                : const CupertinoPage(child: AppearenceScreen()),
           ),
           GoRoute(
             path: 'language',
-            pageBuilder:
-                (context, state) =>
-                    Platform.isWindows
-                        ? const FluentPage(child: LanguageSettingsScreen())
-                        : const CupertinoPage(child: LanguageSettingsScreen()),
+            pageBuilder: (context, state) => Platform.isWindows
+                ? const FluentPage(child: LanguageSettingsScreen())
+                : const CupertinoPage(child: LanguageSettingsScreen()),
           ),
           GoRoute(
             path: 'content',
-            pageBuilder:
-                (context, state) =>
-                    Platform.isWindows
-                        ? const FluentPage(child: ContentScreen())
-                        : const CupertinoPage(child: ContentScreen()),
+            pageBuilder: (context, state) => Platform.isWindows
+                ? const FluentPage(child: ContentScreen())
+                : const CupertinoPage(child: ContentScreen()),
           ),
           GoRoute(
             path: 'playback',
-            pageBuilder:
-                (context, state) =>
-                    Platform.isWindows
-                        ? const FluentPage(child: AudioAndPlaybackScreen())
-                        : const CupertinoPage(child: AudioAndPlaybackScreen()),
+            pageBuilder: (context, state) => Platform.isWindows
+                ? const FluentPage(child: AudioAndPlaybackScreen())
+                : const CupertinoPage(child: AudioAndPlaybackScreen()),
             routes: [
               GoRoute(
                 path: 'equalizer',
-                pageBuilder:
-                    (context, state) =>
-                        const CupertinoPage(child: EqualizerScreen()),
+                pageBuilder: (context, state) =>
+                    const CupertinoPage(child: EqualizerScreen()),
               ),
             ],
           ),
           GoRoute(
             path: 'backup_restore',
-            pageBuilder:
-                (context, state) =>
-                    Platform.isWindows
-                        ? const FluentPage(child: BackupRestoreScreen())
-                        : const CupertinoPage(child: BackupRestoreScreen()),
+            pageBuilder: (context, state) => Platform.isWindows
+                ? const FluentPage(child: BackupRestoreScreen())
+                : const CupertinoPage(child: BackupRestoreScreen()),
           ),
           GoRoute(
             path: 'about',
-            pageBuilder:
-                (context, state) =>
-                    Platform.isWindows
-                        ? const FluentPage(child: AboutScreen())
-                        : const CupertinoPage(child: AboutScreen()),
+            pageBuilder: (context, state) => Platform.isWindows
+                ? const FluentPage(child: AboutScreen())
+                : const CupertinoPage(child: AboutScreen()),
           ),
         ],
       ),
@@ -224,8 +237,8 @@ class MyPageViewState extends State<MyPageView> {
     return PageView(
       scrollDirection:
           (Platform.isWindows || MediaQuery.of(context).size.width >= 450)
-              ? Axis.vertical
-              : Axis.horizontal,
+          ? Axis.vertical
+          : Axis.horizontal,
       physics: const NeverScrollableScrollPhysics(),
       controller: controller,
       children: widget.children,

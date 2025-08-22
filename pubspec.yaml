@@ -1,7 +1,7 @@
 name: xmusic
 description: "A new Flutter project."
 publish_to: 'none'
-version: 2.0.4-beta5+210
+version: 2.0.5+20250809
 
 environment:
   sdk: ^3.8.0
@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  go_router: ^15.1.2
+  go_router: ^16.1.0
   google_fonts: ^6.2.1
   intl: ^0.20.2
   http: ^1.2.2
@@ -41,9 +41,9 @@ dependencies:
   text_scroll: ^0.2.0
   duration_picker: ^1.2.0
   path_provider: ^2.1.3
-  permission_handler: ^11.3.1
+  permission_handler: ^11.4.0
   path: ^1.9.0
-  file_picker: ^8.0.6
+  file_picker: ^10.2.4
   dynamic_color: ^1.7.0
   audiotags: ^1.4.3
   pub_semver: ^2.1.4
@@ -68,9 +68,9 @@ dependencies:
   package_info_plus: ^8.3.0
   crypto: ^3.0.6
   flutter_web_auth_2: ^4.1.0
-  firebase_auth: ^5.5.1
-  firebase_core: ^3.12.1
-  cloud_firestore: ^5.6.7
+  firebase_auth: ^6.0.0
+  firebase_core: ^4.0.0
+  cloud_firestore: ^6.0.0
   google_sign_in: ^6.3.0
   flutter_signin_button: ^2.0.0
   shared_preferences: ^2.5.3

@@ -41,8 +41,6 @@
 | Material You Design    |   ✅   | Dynamic theme customization      |
 | Local Downloads        |   ✅   | Offline playback support         |
 | Advanced Equalizer     |   ✅   | 10-band audio customization      |
-| **Sleep Timer**        |   🆕   | Auto-stop playback (XMusic Add)  |
-| **Crossfade**          |   🆕   | Smooth track transitions         |
 
 ---
 

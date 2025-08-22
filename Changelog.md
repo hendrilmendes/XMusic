@@ -16,16 +16,6 @@ Changelog
 
 - Correções de bugs
 
-
-======================================================
-
-## [1.2.0](https://github.com/hendrilmendes/XMusic/compare/1.1.0..1.2.0) (**-**-2025)
-
-### Correções
-
-- Ajustes visuais no Player
-- Melhorias no desempenho
-
 ======================================================
 
 ## [1.1.0](https://github.com/hendrilmendes/XMusic/compare/1.0.14..1.1.0) (17-12-2024)

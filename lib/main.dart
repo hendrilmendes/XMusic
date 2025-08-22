@@ -211,7 +211,7 @@ class XMusic extends StatelessWidget {
     );
   }
 
-  _buildFluentApp(
+  fluent_ui.FluentApp _buildFluentApp(
     SettingsManager settingsManager, {
     ColorScheme? lightScheme,
     ColorScheme? darkScheme,
@@ -283,7 +283,7 @@ class XMusic extends StatelessWidget {
   }
 }
 
-initialiseHive() async {
+Future<void> initialiseHive() async {
   String? applicationDataDirectoryPath;
   if (Platform.isWindows || Platform.isLinux) {
     applicationDataDirectoryPath =

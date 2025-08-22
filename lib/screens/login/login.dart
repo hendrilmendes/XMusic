@@ -1,7 +1,9 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,18 +13,47 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+// Adicionamos 'SingleTickerProviderStateMixin' para a animação
+class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   bool isLoading = false;
-  bool rememberMe = true;
+
+  // Controladores para a animação de entrada
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
     _checkSavedLogin();
+
+    // Configuração da animação
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    );
+
+    _slideAnimation = Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero).animate(
+       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
+
+    // Inicia a animação
+    _animationController.forward();
   }
 
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  // --- Lógica de autenticação (sem alterações) ---
   Future<void> _checkSavedLogin() async {
     final prefs = await SharedPreferences.getInstance();
     final loggedIn = prefs.getBool('loggedIn') ?? false;
@@ -32,187 +63,166 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _signInWithGoogle() async {
+    if (isLoading) return;
     setState(() => isLoading = true);
     try {
       final googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return;
-
+      if (googleUser == null) {
+        setState(() => isLoading = false);
+        return;
+      }
       final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
       await _auth.signInWithCredential(credential);
-
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('loggedIn', true);
-
-      _navigateToHome();
+      if (mounted) _navigateToHome();
     } catch (e) {
-      debugPrint('Erro no login: $e');
-    } finally {
-      setState(() => isLoading = false);
+      debugPrint('Erro no login com Google: $e');
+      if (mounted) setState(() => isLoading = false);
     }
   }
 
   void _navigateToHome() {
-    Navigator.of(context).pushReplacementNamed('/');
+    context.pushReplacement('/');
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
-    var size = MediaQuery.of(context).size;
-
-    final primaryColor =
-        isDarkMode
-            ? const Color.fromARGB(255, 0, 47, 255)
-            : const Color.fromARGB(255, 70, 115, 255);
-    final backgroundColor = isDarkMode ? Colors.black : Colors.white;
-    final cardColor = isDarkMode ? Colors.grey[850] : Colors.white;
-    final textColor = isDarkMode ? Colors.white : Colors.black87;
-    final dividerColor = isDarkMode ? Colors.grey : Colors.grey[400];
-    final iconColor = isDarkMode ? Colors.white : Colors.black87;
-
     return Scaffold(
       body: Stack(
         children: [
-          // Fundo
           Container(
-            height: size.height,
-            width: size.width,
-            color: backgroundColor,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/background.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-
-          // Forma decorativa no topo
           Container(
-            height: size.height * 0.65,
-            width: size.width,
             decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: const BorderRadius.vertical(
-                bottom: Radius.elliptical(500, 180),
+              gradient: LinearGradient(
+                colors: [Colors.black.withOpacity(0.8), Colors.black.withOpacity(0.4), Colors.black.withOpacity(0.9)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.0, 0.5, 1.0],
               ),
             ),
           ),
 
-          // Card central
-          Positioned(
-            top: 240,
-            left: 40,
-            child: SizedBox(
-              height: size.height * 0.55,
-              width: size.width * 0.8,
-              child: Card(
-                color: cardColor,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Bem-vindo ao XMusic',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: textColor,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-
-                      // Botão de login por email
-                      SignInButton(
-                        Buttons.Email,
-                        onPressed:
-                            () =>
-                                Navigator.of(context).pushNamed('/email_login'),
-                        text: "Entrar com E-mail",
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Indicador de carregamento
-                      if (isLoading) ...[
-                        CircularProgressIndicator(color: primaryColor),
-                        const SizedBox(height: 12),
-                      ],
-
-                      // Botão de login com Google
-                      SignInButton(
-                        Buttons.Google,
-                        onPressed: _signInWithGoogle,
-                        text: "Entrar com o Google",
-                      ),
-                      const SizedBox(height: 24),
-
-                      // Divisor
-                      Row(
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: Column(
+                children: [
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(child: Divider(color: dividerColor)),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                            ),
-                            child: Text(
-                              'ou',
-                              style: TextStyle(color: primaryColor),
+                          const Icon(Icons.music_note_rounded, color: Colors.white, size: 30),
+                          const SizedBox(width: 8),
+                          Text(
+                            'XMusic',
+                            style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Expanded(child: Divider(color: dividerColor)),
                         ],
                       ),
-                      const SizedBox(height: 24),
-
-                      // Botão para criação de conta
-                      TextButton(
-                        onPressed:
-                            () => Navigator.of(
-                              context,
-                            ).pushNamed('/create_account'),
-                        child: Text(
-                          "Criar conta",
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
 
-          // Ícone do app
-          Positioned(
-            top: 78,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Icon(Icons.music_note_rounded, color: iconColor, size: 64),
-            ),
-          ),
+                  const Spacer(),
 
-          // Mensagem de slogan
-          Positioned(
-            top: 190,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Text(
-                'Milhões de músicas, gratuitas no XMusic',
-                style: TextStyle(color: iconColor, fontSize: 16),
+                  SlideTransition(
+                    position: _slideAnimation,
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: Column(
+                        children: [
+                          Text(
+                            'Música para todos.',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 42,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              height: 1.2,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'A trilha sonora perfeita para a sua vida está a um clique de distância.',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16,
+                              color: Colors.white.withOpacity(0.8),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 40),
+                          _buildGoogleButton(),
+                          const SizedBox(height: 20),
+                          _buildTermsText(),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGoogleButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton.icon(
+        onPressed: _signInWithGoogle,
+        icon: isLoading
+            ? const SizedBox.shrink()
+            : Image.asset('assets/images/google_logo.png', height: 22.0),
+        label: isLoading
+            ? const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                    strokeWidth: 3, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)))
+            : Text(
+                'Continuar com o Google',
+                style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black)),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          elevation: 0,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTermsText() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Text(
+        'Ao continuar, você concorda com os nossos Termos de Uso e a nossa Política de Privacidade.',
+        textAlign: TextAlign.center,
+        style: GoogleFonts.montserrat(
+          fontSize: 11,
+          color: Colors.white.withOpacity(0.6),
+        ),
       ),
     );
   }

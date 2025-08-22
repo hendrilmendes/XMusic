@@ -34,12 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.9)..addListener(() {
-      final page = (_pageController.page ?? 0).round();
-      if (_currentHighlightPage != page) {
-        setState(() => _currentHighlightPage = page);
-      }
-    });
+    _pageController = PageController(viewportFraction: 0.9)
+      ..addListener(() {
+        final page = (_pageController.page ?? 0).round();
+        if (_currentHighlightPage != page) {
+          setState(() => _currentHighlightPage = page);
+        }
+      });
 
     _startAutoScroll();
     _loadInitialData();
@@ -132,12 +133,11 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: highlights.length,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              final highlight = highlights[index] as Map<String, dynamic>;
+              final highlight = Map<String, dynamic>.from(highlights[index]);
               final thumbs = highlight['thumbnails'] as List<dynamic>?;
-              final imageUrl =
-                  thumbs != null && thumbs.isNotEmpty
-                      ? (thumbs.last['url'] as String)
-                      : '';
+              final imageUrl = thumbs != null && thumbs.isNotEmpty
+                  ? (thumbs.last['url'] as String)
+                  : '';
               return HighlightCard(
                 imageUrl: imageUrl,
                 videoId: highlight['videoId'] as String?,
@@ -198,54 +198,52 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body:
-          initialLoading
-              ? const Center(child: AdaptiveProgressRing())
-              : RefreshIndicator(
-                onRefresh: () async => _loadInitialData(),
-                child: NestedScrollView(
-                  headerSliverBuilder:
-                      (context, innerBoxScrolled) => [
-                        SliverPadding(
-                          padding: const EdgeInsets.only(top: 16, bottom: 24),
-                          sliver: SliverToBoxAdapter(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                _buildHighlights(),
-                                const SizedBox(height: 24),
-                                _buildChipsRow(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                  body: NotificationListener<ScrollNotification>(
-                    onNotification: (scrollInfo) {
-                      if (scrollInfo.metrics.pixels >=
-                          scrollInfo.metrics.maxScrollExtent * 0.8) {
-                        _loadMoreData();
-                        return true;
-                      }
-                      return false;
-                    },
-                    child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: sections.length + (nextLoading ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index < sections.length) {
-                          return SectionItem(section: sections[index]);
-                        }
-                        return const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Center(child: AdaptiveProgressRing()),
-                        );
-                      },
+      body: initialLoading
+          ? const Center(child: AdaptiveProgressRing())
+          : RefreshIndicator(
+              onRefresh: () async => _loadInitialData(),
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxScrolled) => [
+                  SliverPadding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 24),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _buildHighlights(),
+                          const SizedBox(height: 24),
+                          _buildChipsRow(),
+                        ],
+                      ),
                     ),
+                  ),
+                ],
+                body: NotificationListener<ScrollNotification>(
+                  onNotification: (scrollInfo) {
+                    if (scrollInfo.metrics.pixels >=
+                        scrollInfo.metrics.maxScrollExtent * 0.8) {
+                      _loadMoreData();
+                      return true;
+                    }
+                    return false;
+                  },
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: sections.length + (nextLoading ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index < sections.length) {
+                        return SectionItem(section: sections[index]);
+                      }
+                      return const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(child: AdaptiveProgressRing()),
+                      );
+                    },
                   ),
                 ),
               ),
+            ),
     );
   }
 }
@@ -269,10 +267,9 @@ class _PageIndicator extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color:
-                  currentIndex == index
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.outline.withOpacity(0.3),
+              color: currentIndex == index
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.outline.withOpacity(0.3),
             ),
           );
         }),

@@ -51,21 +51,6 @@ class AboutScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     AdaptiveListTile(
                       margin: const EdgeInsets.symmetric(vertical: 4),
-                      leading: const ColorIcon(icon: Icons.title, color: null),
-                      title: Text(
-                        "XMusic",
-                        style: textStyle(
-                          context,
-                          bold: false,
-                        ).copyWith(fontSize: 16),
-                      ),
-                      trailing: Text(
-                        S.of(context).xmusic,
-                        style: smallTextStyle(context),
-                      ),
-                    ),
-                    AdaptiveListTile(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
                       leading: const ColorIcon(
                         color: null,
                         icon: Icons.new_releases,
