@@ -20,7 +20,6 @@ import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:xmusic/app_config.dart';
 import 'package:xmusic/firebase_options.dart';
-import 'package:xmusic/services/providers/spotify.dart';
 
 import 'generated/l10n.dart';
 import 'services/download_manager.dart';
@@ -108,7 +107,6 @@ void main() async {
   GetIt.I.registerSingleton<FileStorage>(fileStorage);
 
   GetIt.I.registerSingleton<LibraryService>(libraryService);
-  GetIt.I.registerSingleton<SpotifyService>(SpotifyService());
   GetIt.I.registerSingleton<Lyrics>(Lyrics());
 
   final pkg = await PackageInfo.fromPlatform();

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:xmusic/services/providers/spotify.dart';
 
 import '../ytmusic/ytmusic.dart';
 
@@ -41,67 +40,46 @@ class LibraryService extends ChangeNotifier {
     }
   }
 
-  Future<String> importPlaylist(String playlistUrl) async {
-    try {
-      Uri uri = Uri.parse(playlistUrl);
+Future<String> importPlaylist(String playlistUrl) async {
+  try {
+    Uri uri = Uri.parse(playlistUrl);
 
-      // Verifica se é um link do YouTube
-      if (uri.host.contains('youtube.com') || uri.host.contains('youtu.be')) {
-        String? playlistId = uri.queryParameters['list'];
-        if (playlistId == null && uri.host.contains('youtu.be')) {
-          // URLs curtas podem ter ID direto no path
-          playlistId =
-              uri.pathSegments.isNotEmpty ? uri.pathSegments.last : null;
-        }
-        if (playlistId == null) return 'Invalid YouTube URL';
-
-        String browseId =
-            playlistId.startsWith("VL") ? playlistId : "VL$playlistId";
-        Map<String, dynamic> playlist = await GetIt.I<YTMusic>().importPlaylist(
-          browseId,
-        );
-        String id = playlistId;
-
-        if (_playlists[id] != null) {
-          await _box.delete(id);
-          return 'Playlist is already added';
-        } else {
-          await _box.put(id, {
-            ...playlist,
-            'isPredefined': true,
-            'createdAt': DateTime.now().millisecondsSinceEpoch,
-          });
-          return 'Added to Library';
-        }
+    // Verifica se é um link do YouTube
+    if (uri.host.contains('youtube.com') || uri.host.contains('youtu.be')) {
+      String? playlistId = uri.queryParameters['list'];
+      if (playlistId == null && uri.host.contains('youtu.be')) {
+        // URLs curtas podem ter ID direto no path
+        playlistId =
+            uri.pathSegments.isNotEmpty ? uri.pathSegments.last : null;
       }
-      // Verifica se é um link do Spotify
-      else if (uri.host.contains('spotify.com') &&
-          uri.path.contains('/playlist/')) {
-        String playlistId = uri.pathSegments.last;
-        Map<String, dynamic> playlist = await SpotifyService().importPlaylist(
-          playlistId,
-        );
-        String id = playlistId;
+      if (playlistId == null) return 'Invalid YouTube URL';
 
-        if (_playlists[id] != null) {
-          await _box.delete(id);
-          return 'Playlist is already added';
-        } else {
-          await _box.put(id, {
-            ...playlist,
-            'isPredefined': true,
-            'createdAt': DateTime.now().millisecondsSinceEpoch,
-          });
-          return 'Added to Library';
-        }
+      String browseId =
+          playlistId.startsWith("VL") ? playlistId : "VL$playlistId";
+      Map<String, dynamic> playlist = await GetIt.I<YTMusic>().importPlaylist(
+        browseId,
+      );
+      String id = playlistId;
+
+      if (_playlists[id] != null) {
+        await _box.delete(id);
+        return 'Playlist is already added';
+      } else {
+        await _box.put(id, {
+          ...playlist,
+          'isPredefined': true,
+          'createdAt': DateTime.now().millisecondsSinceEpoch,
+        });
+        return 'Added to Library';
       }
-
-      return 'Invalid URL format';
-    } catch (e) {
-      return e.toString();
     }
-  }
 
+    // Se não for YouTube, o formato é inválido
+    return 'Invalid URL format';
+  } catch (e) {
+    return e.toString();
+  }
+}
   Future<String> addToOrRemoveFromLibrary(Map item) async {
     String id = item['playlistId'];
     if (_playlists[id] != null) {
