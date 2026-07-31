@@ -1,7 +1,28 @@
 import 'package:flutter/material.dart';
 
+// ─── Apple Music Style Tokens ───────────────────────────────────────────────
+const Color kBgDeep = Color(0xFF000000); // Pure Black (AMOLED)
+const Color kBgLayer = Color(0xFF1C1C1E); // Elevated surfaces (dark gray)
+
+// ─── Glass surface (pure blur, minimal color) ──────────────────────────────
+const Color kGlassSurface = Color(0x331C1C1E);
+const Color kGlassBorder = Colors.transparent;
+const Color kGlassBorderStrong = Color(0x1AFFFFFF);
+
+// ─── Accent (Vibrant Pink/Red) ────────────────────────────────────────────────
+const Color kAccent = Color(0xFFFA243C);
+const Color kAccentDeep = Color(0xFFE0182C);
+const Color kAccentGlow = Colors.transparent; // No glow in Apple Music
+
+// ─── Text on dark ────────────────────────────────────────────────────────────
+const Color kOnGlass = Color(0xFFFFFFFF);            // Pure white
+const Color kOnGlassSecondary = Color(0xFF8E8E93);   // Gray for subtitles
+const Color kOnGlassMuted = Color(0xFF636366);       // Deeper gray
+
+// ─── Legacy compat ───────────────────────────────────────────────────────────
 Color greyColor = Colors.grey.withAlpha(100);
 Color darkGreyColor = Colors.grey.withAlpha(70);
+
 const MaterialColor primaryBlack = MaterialColor(
   0xFF000000,
   <int, Color>{

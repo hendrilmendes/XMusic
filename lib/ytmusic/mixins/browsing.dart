@@ -6,24 +6,32 @@ import '../yt_service_provider.dart';
 import 'utils.dart';
 
 mixin BrowsingMixin on YTMusicServices {
-  Future<Map<String, dynamic>> browse(
-      {Map<String, dynamic>? body,
-      int limit = 2,
-      String additionalParams = ''}) async {
+  Future<Map<String, dynamic>> browse({
+    Map<String, dynamic>? body,
+    int limit = 2,
+    String additionalParams = '',
+  }) async {
     if (additionalParams != '') {
       return browseContinuation(
-          body: body, limit: limit, additionalParams: additionalParams);
+        body: body,
+        limit: limit,
+        additionalParams: additionalParams,
+      );
     }
     String endpoint = 'browse';
     body ??= {"browseId": "FEmusic_home"};
 
-    var response =
-        await sendRequest(endpoint, body, additionalParams: additionalParams);
+    var response = await sendRequest(
+      endpoint,
+      body,
+      additionalParams: additionalParams,
+    );
 
     Map<String, dynamic> result = {};
     Map<String, dynamic>? contents = response['contents'];
 
-    Map<String, dynamic>? header = response['header'] ??
+    Map<String, dynamic>? header =
+        response['header'] ??
         nav(response, [
           'contents',
           'twoColumnBrowseResultsRenderer',
@@ -33,41 +41,53 @@ mixin BrowsingMixin on YTMusicServices {
           'content',
           'sectionListRenderer',
           'contents',
-          0
+          0,
         ]);
 
     if (header != null) {
       result['header'] = handlePageHeader(
-          header['musicDetailHeaderRenderer'] ??
-              header['musicImmersiveHeaderRenderer'] ??
-              header['musicResponsiveHeaderRenderer'] ??
-              header['musicVisualHeaderRenderer'] ??
-              header['musicHeaderRenderer'] ??
-              header['musicEditablePlaylistDetailHeaderRenderer']?['header']
-                  ?['musicResponsiveHeaderRenderer'] ??
-              header['musicEditablePlaylistDetailHeaderRenderer']?['header'],
-          editHeader: header['musicEditablePlaylistDetailHeaderRenderer']
-              ?['editHeader']?['musicPlaylistEditHeaderRenderer']);
+        header['musicDetailHeaderRenderer'] ??
+            header['musicImmersiveHeaderRenderer'] ??
+            header['musicResponsiveHeaderRenderer'] ??
+            header['musicVisualHeaderRenderer'] ??
+            header['musicHeaderRenderer'] ??
+            header['musicEditablePlaylistDetailHeaderRenderer']?['header']?['musicResponsiveHeaderRenderer'] ??
+            header['musicEditablePlaylistDetailHeaderRenderer']?['header'],
+        editHeader:
+            header['musicEditablePlaylistDetailHeaderRenderer']?['editHeader']?['musicPlaylistEditHeaderRenderer'],
+      );
     }
 
     if (contents != null) {
-      Map? tabRenderer = nav(contents,
-          ['singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer']);
+      Map? tabRenderer = nav(contents, [
+        'singleColumnBrowseResultsRenderer',
+        'tabs',
+        0,
+        'tabRenderer',
+      ]);
       Map? sectionListRenderer =
           nav(tabRenderer, ['content', 'sectionListRenderer']) ??
-              nav(contents, [
-                'twoColumnBrowseResultsRenderer',
-                'secondaryContents',
-                'sectionListRenderer'
-              ]);
-      List? chips =
-          nav(sectionListRenderer, ['header', 'chipCloudRenderer', 'chips']);
+          nav(contents, [
+            'twoColumnBrowseResultsRenderer',
+            'secondaryContents',
+            'sectionListRenderer',
+          ]);
+      List? chips = nav(sectionListRenderer, [
+        'header',
+        'chipCloudRenderer',
+        'chips',
+      ]);
       if (chips != null) {
         result['chips'] = [];
         result['chips'].addAll(handleChips(chips));
       }
-      String? cont = nav(sectionListRenderer,
-              ['continuations', 0, 'nextContinuationData', 'continuation']) ??
+      String? cont =
+          nav(sectionListRenderer, [
+            'continuations',
+            0,
+            'nextContinuationData',
+            'continuation',
+          ]) ??
           nav(sectionListRenderer, [
             'contents',
             0,
@@ -75,8 +95,36 @@ mixin BrowsingMixin on YTMusicServices {
             'continuations',
             0,
             'nextContinuationData',
-            'continuation'
+            'continuation',
+          ]) ??
+          nav(sectionListRenderer, [
+            'contents',
+            0,
+            'musicPlaylistShelfRenderer',
+            'continuations',
+            0,
+            'nextContinuationData',
+            'continuation',
           ]);
+
+      List finalContents = nav(sectionListRenderer, ['contents']) ?? [];
+
+      if (cont == null && finalContents.isNotEmpty) {
+        Map? musicPlaylist = nav(finalContents.first, [
+          'musicPlaylistShelfRenderer',
+        ]);
+        if (musicPlaylist != null) {
+          List? playlistContents = nav(musicPlaylist, ['contents']);
+          if (playlistContents != null && playlistContents.isNotEmpty) {
+            cont = nav(playlistContents.last, [
+              'continuationItemRenderer',
+              'continuationEndpoint',
+              'continuationCommand',
+              'token',
+            ]);
+          }
+        }
+      }
 
       String? continuationparams;
       if (cont != null) {
@@ -86,24 +134,28 @@ mixin BrowsingMixin on YTMusicServices {
         result['continuation'] = null;
       }
 
-      List finalContents = nav(sectionListRenderer, ['contents']);
-
-      result['sections'] = handleOuterContents(finalContents,
-          thumbnails: result['header']?['thumbnails']);
+      result['sections'] = handleOuterContents(
+        finalContents,
+        thumbnails: result['header']?['thumbnails'],
+      );
       (result['sections'] as List).removeWhere((el) => el['contents'].isEmpty);
       if (limit > 1 && continuationparams != null) {
         limit = limit - 1;
 
         var data = await browseContinuation(
-            body: body, limit: limit, additionalParams: continuationparams);
+          body: body,
+          limit: limit,
+          additionalParams: continuationparams,
+        );
         if (data['sections'] != null) {
           if (data['addToLast'] == true) {
-            result['sections']
-                .last['contents']
-                .addAll(data['sections'].first['contents']);
+            result['sections'].last['contents'].addAll(
+              data['sections'].first['contents'],
+            );
           } else {
-            result['sections']
-                .addAll(data['sections'].cast<Map<String, dynamic>>());
+            result['sections'].addAll(
+              data['sections'].cast<Map<String, dynamic>>(),
+            );
           }
         }
         result['continuation'] = data['continuation'];
@@ -114,39 +166,78 @@ mixin BrowsingMixin on YTMusicServices {
     return result;
   }
 
-  Future<Map<String, dynamic>> browseContinuation(
-      {Map<String, dynamic>? body,
-      int limit = 1,
-      String additionalParams = ''}) async {
+  Future<Map<String, dynamic>> browseContinuation({
+    Map<String, dynamic>? body,
+    int limit = 1,
+    String additionalParams = '',
+  }) async {
     String endpoint = 'browse';
     body ??= {"browseId": "FEmusic_home"};
 
-    var response =
-        await sendRequest(endpoint, body, additionalParams: additionalParams);
+    var response = await sendRequest(
+      endpoint,
+      body,
+      additionalParams: additionalParams,
+    );
     Map<String, dynamic> result = {'sections': []};
 
-    List? contents = nav(response,
-            ['continuationContents', 'sectionListContinuation', 'contents']) ??
-        nav(response,
-            ['continuationContents', 'musicShelfContinuation', 'contents']);
+    List? contents =
+        nav(response, [
+          'continuationContents',
+          'sectionListContinuation',
+          'contents',
+        ]) ??
+        nav(response, [
+          'continuationContents',
+          'musicShelfContinuation',
+          'contents',
+        ]) ??
+        nav(response, [
+          'continuationContents',
+          'musicPlaylistShelfContinuation',
+          'contents',
+        ]) ??
+        nav(response, [
+          'onResponseReceivedActions',
+          0,
+          'appendContinuationItemsAction',
+          'continuationItems',
+        ]);
 
     if (contents == null) return {};
-    if (nav(response,
-            ['continuationContents', 'musicShelfContinuation', 'contents']) !=
-        null) {
+    if (nav(response, [
+              'continuationContents',
+              'musicShelfContinuation',
+              'contents',
+            ]) !=
+            null ||
+        nav(response, [
+              'continuationContents',
+              'musicPlaylistShelfContinuation',
+              'contents',
+            ]) !=
+            null ||
+        nav(response, [
+              'onResponseReceivedActions',
+              0,
+              'appendContinuationItemsAction',
+              'continuationItems',
+            ]) !=
+            null) {
       result['sections'].add({'contents': handleContents(contents)});
       result['addToLast'] = true;
     } else {
       result['sections'] = handleOuterContents(contents);
     }
 
-    String? continuations = nav(response, [
+    String? continuations =
+        nav(response, [
           'continuationContents',
           'sectionListContinuation',
           'continuations',
           0,
           'nextContinuationData',
-          'continuation'
+          'continuation',
         ]) ??
         nav(response, [
           'continuationContents',
@@ -154,8 +245,25 @@ mixin BrowsingMixin on YTMusicServices {
           'continuations',
           0,
           'nextContinuationData',
-          'continuation'
+          'continuation',
+        ]) ??
+        nav(response, [
+          'continuationContents',
+          'musicPlaylistShelfContinuation',
+          'continuations',
+          0,
+          'nextContinuationData',
+          'continuation',
         ]);
+    if (continuations == null && contents.isNotEmpty) {
+      continuations = nav(contents.last, [
+        'continuationItemRenderer',
+        'continuationEndpoint',
+        'continuationCommand',
+        'token',
+      ]);
+    }
+
     if (continuations != null) {
       String? continuationparams = getContinuationString(continuations);
       result['continuation'] = continuationparams;
@@ -166,7 +274,10 @@ mixin BrowsingMixin on YTMusicServices {
     if (limit > 1 && result['continuation'] != null) {
       limit = limit - 1;
       var data = await browse(
-          body: body, limit: limit, additionalParams: result['continuation']);
+        body: body,
+        limit: limit,
+        additionalParams: result['continuation'],
+      );
       if (data['sections'] != null) {
         result['sections'].addAll(data['sections']);
       }
@@ -175,21 +286,92 @@ mixin BrowsingMixin on YTMusicServices {
 
     return result;
   }
-  Future<Map<String, dynamic>> getMoreItems(
-      {continuation=''}) async {
-    String endpoint = 'browse';
-    Map<String,dynamic>? body = {"browseId": "FEmusic_home"};
 
-    var response =
-        await sendRequest(endpoint, body, additionalParams: continuation);
-    String? continuationString = nav(response,['continuationContents','musicPlaylistShelfContinuation','continuations',0,'nextContinuationData','continuation']);
-    List contents = 
-        nav(response,['continuationContents','musicPlaylistShelfContinuation','contents'])??[];
+  Future<Map<String, dynamic>> getMoreItems({String continuation = ''}) async {
+    String endpoint = 'browse';
+    Map<String, dynamic>? body = {};
+
+    var response = await sendRequest(
+      endpoint,
+      body,
+      additionalParams: continuation,
+    );
+
+    // Try all known continuation response formats
+    List? contents =
+        nav(response, [
+          'continuationContents',
+          'musicPlaylistShelfContinuation',
+          'contents',
+        ]) ??
+        nav(response, [
+          'continuationContents',
+          'musicShelfContinuation',
+          'contents',
+        ]) ??
+        nav(response, [
+          'continuationContents',
+          'sectionListContinuation',
+          'contents',
+        ]) ??
+        nav(response, [
+          'onResponseReceivedActions',
+          0,
+          'appendContinuationItemsAction',
+          'continuationItems',
+        ]);
+
+    contents ??= [];
+
+    // Remove trailing continuationItemRenderer tokens from items list
+    List items = contents
+        .where((c) => nav(c, ['continuationItemRenderer']) == null)
+        .toList();
+
+    String? continuationString =
+        nav(response, [
+          'continuationContents',
+          'musicPlaylistShelfContinuation',
+          'continuations',
+          0,
+          'nextContinuationData',
+          'continuation',
+        ]) ??
+        nav(response, [
+          'continuationContents',
+          'musicShelfContinuation',
+          'continuations',
+          0,
+          'nextContinuationData',
+          'continuation',
+        ]) ??
+        nav(response, [
+          'continuationContents',
+          'sectionListContinuation',
+          'continuations',
+          0,
+          'nextContinuationData',
+          'continuation',
+        ]);
+
+    // Also check the last item for a continuationItemRenderer token (new API format)
+    if (continuationString == null && contents.isNotEmpty) {
+      continuationString = nav(contents.last, [
+        'continuationItemRenderer',
+        'continuationEndpoint',
+        'continuationCommand',
+        'token',
+      ]);
+    }
+
     return {
-      'items':handleContents(contents),
-      'continuation':continuationString!=null ? getContinuationString(continuationString):null,
+      'items': handleContents(items),
+      'continuation': continuationString != null
+          ? getContinuationString(continuationString)
+          : null,
     };
-      }
+  }
+
   int getDatestamp() {
     final DateTime now = DateTime.now();
     final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
@@ -207,8 +389,12 @@ mixin BrowsingMixin on YTMusicServices {
     body['video_id'] = videoId;
 
     final Map response = await sendRequest('player', body);
-    String url =
-        response['playbackTracking']['videostatsPlaybackUrl']['baseUrl'];
+    final String? baseUrl =
+        response['playbackTracking']?['videostatsPlaybackUrl']?['baseUrl'];
+    if (baseUrl == null) {
+      return;
+    }
+    String url = baseUrl;
     const String cpna =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
     Random rand = Random();
@@ -269,7 +455,7 @@ mixin BrowsingMixin on YTMusicServices {
             'watchEndpointMusicConfig': {
               'hasPersistentPlaylistPanel': true,
               'musicVideoType': 'MUSIC_VIDEO_TYPE_ATV;',
-            }
+            },
           };
         }
       }
@@ -292,7 +478,7 @@ mixin BrowsingMixin on YTMusicServices {
         'musicQueueRenderer',
         'content',
         'playlistPanelRenderer',
-        'contents'
+        'contents',
       ]);
 
       List result = handleContents(contents);
@@ -304,11 +490,12 @@ mixin BrowsingMixin on YTMusicServices {
 
   Future<List> getPlaylistSongs(String playlistId) async {
     Map<String, dynamic> body = {
-      "browseId": playlistId.startsWith('VL') ? playlistId : 'VL$playlistId'
+      "browseId": playlistId.startsWith('VL') ? playlistId : 'VL$playlistId',
     };
     var response = await sendRequest('browse', body);
 
-    List contents = nav(response, [
+    List contents =
+        nav(response, [
           'contents',
           'singleColumnBrowseResultsRenderer',
           'tabs',
@@ -319,7 +506,7 @@ mixin BrowsingMixin on YTMusicServices {
           'contents',
           0,
           'musicPlaylistShelfRenderer',
-          'contents'
+          'contents',
         ]) ??
         nav(response, [
           'contents',
@@ -329,7 +516,7 @@ mixin BrowsingMixin on YTMusicServices {
           'contents',
           0,
           'musicPlaylistShelfRenderer',
-          'contents'
+          'contents',
         ]);
 
     List result = handleContents(contents);
@@ -338,7 +525,7 @@ mixin BrowsingMixin on YTMusicServices {
   }
 }
 
-List handleChips(chips) {
+List handleChips(List chips) {
   List resultChips = [];
   for (Map chip in chips) {
     chip = chip['chipCloudChipRenderer'];
@@ -351,17 +538,19 @@ List handleChips(chips) {
   return resultChips;
 }
 
-List<Map<String, dynamic>> handleOuterContents(List contents,
-    {List? thumbnails}) {
+List<Map<String, dynamic>> handleOuterContents(
+  List contents, {
+  List? thumbnails,
+}) {
   List<Map<String, dynamic>> results = [];
   for (Map content in contents) {
-    Map<String, dynamic> result = {};
-    result['contents'] = [];
-    Map? musicPlaylistShelfRenderer =
-        nav(content, ['musicPlaylistShelfRenderer']);
+    Map? musicPlaylistShelfRenderer = nav(content, [
+      'musicPlaylistShelfRenderer',
+    ]);
     Map? musicShelfRenderer = nav(content, ['musicShelfRenderer']);
-    Map? musicCarouselShelfRenderer =
-        nav(content, ['musicCarouselShelfRenderer']);
+    Map? musicCarouselShelfRenderer = nav(content, [
+      'musicCarouselShelfRenderer',
+    ]);
     Map? gridRenderer = nav(content, ['gridRenderer']);
     if (musicCarouselShelfRenderer != null) {
       results.add(handleMusicCarouselShelfRenderer(musicCarouselShelfRenderer));
@@ -369,21 +558,23 @@ List<Map<String, dynamic>> handleOuterContents(List contents,
       results.add(handleMusicPlaylistShelfRenderer(musicPlaylistShelfRenderer));
     } else if (musicShelfRenderer != null) {
       results.add(
-          handleMusicShelfRenderer(musicShelfRenderer, thumbnails: thumbnails));
+        handleMusicShelfRenderer(musicShelfRenderer, thumbnails: thumbnails),
+      );
     } else if (gridRenderer != null) {
       results.add(handleGridRenderer(gridRenderer));
-    } else {
     }
-    results.add(result);
   }
 
   return results;
 }
 
-handleMusicCarouselShelfRenderer(Map item) {
+Map<String, dynamic> handleMusicCarouselShelfRenderer(Map item) {
   Map<String, dynamic> section = {};
-  section.addAll(handleHeader(
-      nav(item, ['header', 'musicCarouselShelfBasicHeaderRenderer'])));
+  section.addAll(
+    handleHeader(
+      nav(item, ['header', 'musicCarouselShelfBasicHeaderRenderer']),
+    ),
+  );
   if (item['numItemsPerColumn'] != null &&
       (int.parse(item['numItemsPerColumn'] ?? 0)) >= 4) {
     section['viewType'] = 'COLUMN';
@@ -396,7 +587,7 @@ handleMusicCarouselShelfRenderer(Map item) {
     'thumbnail',
     'musicThumbnailRenderer',
     'thumbnail',
-    'thumbnails'
+    'thumbnails',
   ]);
   section['contents'] = [];
   List? contents = nav(item, ['contents']);
@@ -420,26 +611,28 @@ Map<String, dynamic> handleHeader(Map header) {
               'text',
               'runs',
               0,
-              'text'
+              'text',
             ]),
-            'playable': nav(header, [
+            'playable':
+                nav(header, [
                   'moreContentButton',
                   'buttonRenderer',
                   'navigationEndpoint',
-                  'watchPlaylistEndpoint'
+                  'watchPlaylistEndpoint',
                 ]) !=
                 null,
-            'endpoint': nav(header, [
+            'endpoint':
+                nav(header, [
                   'moreContentButton',
                   'buttonRenderer',
                   'navigationEndpoint',
-                  'watchPlaylistEndpoint'
+                  'watchPlaylistEndpoint',
                 ]) ??
                 nav(header, [
                   'moreContentButton',
                   'buttonRenderer',
                   'navigationEndpoint',
-                  'browseEndpoint'
+                  'browseEndpoint',
                 ]),
           }
         : null,

@@ -10,6 +10,7 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../generated/l10n.dart';
+import '../../themes/colors.dart';
 import '../../themes/text_styles.dart';
 import '../../utils/adaptive_widgets/adaptive_widgets.dart';
 import '../../utils/bottom_modals.dart';
@@ -48,7 +49,7 @@ class _MainScreenState extends State<MainScreen> with WindowListener {
     _update();
   }
 
-  _handleIntent(SharedMediaFile value) {
+  void _handleIntent(SharedMediaFile value) {
     if (value.mimeType == 'text/plain' &&
         value.path.contains('music.youtube.com')) {
       Uri? uri = Uri.tryParse(value.path);
@@ -79,7 +80,7 @@ class _MainScreenState extends State<MainScreen> with WindowListener {
     super.dispose();
   }
 
-  _update() async {
+  Future<void> _update() async {
     final deviceInfoPlugin = DeviceInfoPlugin();
     BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
 
@@ -110,94 +111,102 @@ class _MainScreenState extends State<MainScreen> with WindowListener {
     return Platform.isWindows
         ? _buildWindowsMain(_goBranch, widget.navigationShell)
         : Scaffold(
-          body: Column(
-            children: [
-              Expanded(
-                child: Row(
+            body: Stack(
+              children: [
+                // ── Main content ──
+                Column(
                   children: [
-                    if (screenWidth >= 450)
-                      NavigationRail(
-                        backgroundColor:
-                            Theme.of(context).scaffoldBackgroundColor,
-                        labelType: NavigationRailLabelType.none,
-                        selectedLabelTextStyle: smallTextStyle(
-                          context,
-                          bold: true,
-                        ),
-                        extended: (screenWidth > 1000),
-                        onDestinationSelected: _goBranch,
-                        destinations: [
-                          NavigationRailDestination(
-                            selectedIcon: const Icon(
-                              CupertinoIcons.music_house_fill,
+                    Expanded(
+                      child: Row(
+                        children: [
+                          if (screenWidth >= 450)
+                            NavigationRail(
+                              backgroundColor: Colors.transparent,
+                              labelType: NavigationRailLabelType.none,
+                              selectedLabelTextStyle: smallTextStyle(
+                                context,
+                                bold: true,
+                              ),
+                              extended: (screenWidth > 1000),
+                              onDestinationSelected: _goBranch,
+                              selectedIconTheme: IconThemeData(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              destinations: [
+                                NavigationRailDestination(
+                                  selectedIcon: const Icon(
+                                    CupertinoIcons.music_house_fill,
+                                  ),
+                                  icon: const Icon(CupertinoIcons.music_house),
+                                  label: Text(
+                                    S.of(context).Home,
+                                    style: smallTextStyle(context, bold: false),
+                                  ),
+                                ),
+                                NavigationRailDestination(
+                                  selectedIcon: const Icon(
+                                    Icons.search_outlined,
+                                  ),
+                                  icon: const Icon(Icons.search_outlined),
+                                  label: Text(
+                                    S.of(context).Search,
+                                    style: smallTextStyle(context, bold: false),
+                                  ),
+                                ),
+                                NavigationRailDestination(
+                                  selectedIcon: const Icon(
+                                    Icons.library_music_outlined,
+                                  ),
+                                  icon: const Icon(
+                                    Icons.library_music_outlined,
+                                  ),
+                                  label: Text(
+                                    S.of(context).Saved,
+                                    style: smallTextStyle(context, bold: false),
+                                  ),
+                                ),
+                                NavigationRailDestination(
+                                  selectedIcon: const Icon(
+                                    CupertinoIcons.gear_alt_fill,
+                                  ),
+                                  icon: const Icon(CupertinoIcons.gear_alt),
+                                  label: Text(
+                                    S.of(context).Settings,
+                                    style: smallTextStyle(context, bold: false),
+                                  ),
+                                ),
+                              ],
+                              selectedIndex:
+                                  widget.navigationShell.currentIndex,
                             ),
-                            icon: const Icon(CupertinoIcons.music_house),
-                            label: Text(
-                              S.of(context).Home,
-                              style: smallTextStyle(context, bold: false),
-                            ),
-                          ),
-                          NavigationRailDestination(
-                            selectedIcon: const Icon(Icons.search_outlined),
-                            icon: const Icon(Icons.search_outlined),
-                            label: Text(
-                              S.of(context).Search,
-                              style: smallTextStyle(context, bold: false),
-                            ),
-                          ),
-                          NavigationRailDestination(
-                            selectedIcon: const Icon(
-                              Icons.library_music_outlined,
-                            ),
-                            icon: const Icon(Icons.library_music_outlined),
-                            label: Text(
-                              S.of(context).Saved,
-                              style: smallTextStyle(context, bold: false),
-                            ),
-                          ),
-                          NavigationRailDestination(
-                            selectedIcon: const Icon(
-                              CupertinoIcons.gear_alt_fill,
-                            ),
-                            icon: const Icon(CupertinoIcons.gear_alt),
-                            label: Text(
-                              S.of(context).Settings,
-                              style: smallTextStyle(context, bold: false),
-                            ),
-                          ),
+                          Expanded(child: widget.navigationShell),
                         ],
-                        selectedIndex: widget.navigationShell.currentIndex,
                       ),
-                    Expanded(child: widget.navigationShell),
+                    ),
+                    const BottomPlayer(),
                   ],
                 ),
-              ),
-              const BottomPlayer(),
-            ],
-          ),
-
-          bottomNavigationBar:
-              screenWidth < 450
-                  ? ClipRect(
+              ],
+            ),
+            bottomNavigationBar: screenWidth < 450
+                ? ClipRect(
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(
                             context,
-                          ).colorScheme.surface.withOpacity(0.8),
+                          ).scaffoldBackgroundColor.withOpacity(0.5),
                           border: Border(
                             top: BorderSide(
-                              color: Theme.of(
-                                context,
-                              ).dividerColor.withOpacity(0.1),
-                              width: 0.5,
+                              color: Theme.of(context).dividerColor,
+                              width: 0.3,
                             ),
                           ),
                         ),
                         child: NavigationBarTheme(
                           data: NavigationBarThemeData(
-                            height: 65,
+                            height: 55,
                             indicatorColor: Colors.transparent,
                             backgroundColor: Colors.transparent,
                             iconTheme: WidgetStateProperty.resolveWith((
@@ -207,26 +216,18 @@ class _MainScreenState extends State<MainScreen> with WindowListener {
                                 WidgetState.selected,
                               );
                               return IconThemeData(
-                                color:
-                                    isSelected
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .onSurface
-                                            .withOpacity(0.6),
+                                color: isSelected
+                                    ? Theme.of(context).primaryColor
+                                    : kOnGlassSecondary,
                               );
                             }),
                             labelTextStyle: WidgetStateProperty.resolveWith(
                               (states) => TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                                color:
-                                    states.contains(WidgetState.selected)
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .onSurface
-                                            .withOpacity(0.6),
+                                fontSize: 10,
+                                color: states.contains(WidgetState.selected)
+                                    ? Theme.of(context).primaryColor
+                                    : kOnGlassSecondary,
                               ),
                             ),
                           ),
@@ -268,29 +269,32 @@ class _MainScreenState extends State<MainScreen> with WindowListener {
                       ),
                     ),
                   )
-                  : null,
-        );
+                : null,
+          );
   }
 
-  _buildWindowsMain(
+  fluent_ui.Directionality _buildWindowsMain(
     Function goTOBranch,
     StatefulNavigationShell navigationShell,
   ) {
     return Directionality(
       textDirection: fluent_ui.TextDirection.ltr,
       child: fluent_ui.NavigationView(
-        appBar: fluent_ui.NavigationAppBar(
+        titleBar: fluent_ui.TitleBar(
           title: DragToMoveArea(
             child: Align(
               alignment: AlignmentDirectional.centerStart,
               child: Text(S.of(context).xmusic),
             ),
           ),
-          leading: fluent_ui.Padding(
+          icon: fluent_ui.Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Image.asset('assets/images/icon.png', height: 25, width: 25),
           ),
-          actions: const WindowButtons(),
+          content: const Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: WindowButtons(),
+          ),
         ),
         paneBodyBuilder: (item, body) {
           return Column(

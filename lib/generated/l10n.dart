@@ -891,6 +891,136 @@ class S {
   String get Search {
     return Intl.message('Search', name: 'Search', desc: '', args: []);
   }
+
+  /// `You are already up to date.`
+  String get Already_Up_To_Date {
+    return Intl.message(
+      'You are already up to date.',
+      name: 'Already_Up_To_Date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select`
+  String get Select {
+    return Intl.message('Select', name: 'Select', desc: '', args: []);
+  }
+
+  /// `Select Color`
+  String get Select_Color {
+    return Intl.message(
+      'Select Color',
+      name: 'Select_Color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset`
+  String get Reset {
+    return Intl.message('Reset', name: 'Reset', desc: '', args: []);
+  }
+
+  /// `youtube`
+  String get Youtube_Hint {
+    return Intl.message('youtube', name: 'Youtube_Hint', desc: '', args: []);
+  }
+
+  /// `No Lyrics`
+  String get No_Lyrics {
+    return Intl.message('No Lyrics', name: 'No_Lyrics', desc: '', args: []);
+  }
+
+  /// `Not available`
+  String get Not_Available {
+    return Intl.message(
+      'Not available',
+      name: 'Not_Available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play All`
+  String get Play_All {
+    return Intl.message('Play All', name: 'Play_All', desc: '', args: []);
+  }
+
+  /// `App Folder`
+  String get App_Folder {
+    return Intl.message('App Folder', name: 'App_Folder', desc: '', args: []);
+  }
+
+  /// `Crossfade`
+  String get Crossfade {
+    return Intl.message('Crossfade', name: 'Crossfade', desc: '', args: []);
+  }
+
+  /// `Change`
+  String get Change {
+    return Intl.message('Change', name: 'Change', desc: '', args: []);
+  }
+
+  /// `Accent Color`
+  String get Accent_Color {
+    return Intl.message(
+      'Accent Color',
+      name: 'Accent_Color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amoled Black`
+  String get Amoled_Black {
+    return Intl.message(
+      'Amoled Black',
+      name: 'Amoled_Black',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error loading data`
+  String get Error_Loading_Data {
+    return Intl.message(
+      'Error loading data',
+      name: 'Error_Loading_Data',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error loading more`
+  String get Error_Loading_More {
+    return Intl.message(
+      'Error loading more',
+      name: 'Error_Loading_More',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not search the song.`
+  String get Could_Not_Search_Song {
+    return Intl.message(
+      'Could not search the song.',
+      name: 'Could_Not_Search_Song',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Browse Categories`
+  String get Browse_Categories {
+    return Intl.message(
+      'Browse Categories',
+      name: 'Browse_Categories',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:xmusic/screens/main_screen/main_screen.dart';
-import 'package:xmusic/utils/extensions.dart';
+import 'package:orbit_music/screens/main_screen/main_screen.dart';
+import 'package:orbit_music/utils/extensions.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -74,7 +74,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     super.dispose();
   }
 
-  songListener() {
+  void songListener() {
     if (currentSong != GetIt.I<MediaPlayer>().currentSongNotifier.value) {
       if (mounted) {
         setState(() {
@@ -85,7 +85,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     }
   }
 
-  setShowLyrics() {
+  void setShowLyrics() {
     if (mounted) {
       setState(() {
         showLyrics = !showLyrics;
@@ -93,13 +93,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
     }
   }
 
-  _fetchImage() {
+  void _fetchImage() {
     if (!mounted) return;
     if (currentSong?.extras?['thumbnails'] != null &&
         currentSong?.extras?['thumbnails'].isNotEmpty &&
         image !=
             getEnhancedImage(
-                currentSong?.extras?['thumbnails']?.first['url'])) {
+              currentSong?.extras?['thumbnails']?.first['url'],
+            )) {
       if (mounted) {
         setState(() {
           image = getEnhancedImage(
@@ -118,9 +119,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
         errorListener: (p0) {
           if (mounted) {
             setState(() {
-              image = getEnhancedImage(image!,
-                  dp: MediaQuery.of(context).devicePixelRatio,
-                  quality: 'medium');
+              image = getEnhancedImage(
+                image!,
+                dp: MediaQuery.of(context).devicePixelRatio,
+                quality: 'medium',
+              );
             });
           }
         },
@@ -162,21 +165,18 @@ class _PlayerScreenState extends State<PlayerScreen> {
     // }
   }
 
-  MaterialColor primaryWhite = const MaterialColor(
-    0xFFFFFFFF,
-    <int, Color>{
-      50: Color(0xFFFFFFFF),
-      100: Color(0xFFFFFFFF),
-      200: Color(0xFFFFFFFF),
-      300: Color(0xFFFFFFFF),
-      400: Color(0xFFFFFFFF),
-      500: Color(0xFFFFFFFF),
-      600: Color(0xFFFFFFFF),
-      700: Color(0xFFFFFFFF),
-      800: Color(0xFFFFFFFF),
-      900: Color(0xFFFFFFFF),
-    },
-  );
+  MaterialColor primaryWhite = const MaterialColor(0xFFFFFFFF, <int, Color>{
+    50: Color(0xFFFFFFFF),
+    100: Color(0xFFFFFFFF),
+    200: Color(0xFFFFFFFF),
+    300: Color(0xFFFFFFFF),
+    400: Color(0xFFFFFFFF),
+    500: Color(0xFFFFFFFF),
+    600: Color(0xFFFFFFFF),
+    700: Color(0xFFFFFFFF),
+    800: Color(0xFFFFFFFF),
+    900: Color(0xFFFFFFFF),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -189,9 +189,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
         ),
       ),
       child: (widget.videoId != null && fetchedSong == false)
-          ? const Center(
-              child: AdaptiveProgressRing(),
-            )
+          ? const Center(child: AdaptiveProgressRing())
           // ignore: deprecated_member_use
           : WillPopScope(
               onWillPop: () async {
@@ -209,93 +207,107 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   systemNavigationBarColor: Colors.transparent,
                 ),
                 child: FutureBuilder<Color?>(
-                    future: getColor(image, context.isDarkMode),
-                    builder: (context, snapshot) {
-                      if (!mounted) return Container();
-                      // pprint(snapshot.data?.toString());
-                      return Container(
-                        color: Colors.black,
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                snapshot.hasData && snapshot.data != null
-                                    ? snapshot.data!.withAlpha(200)
-                                    : Colors.transparent,
-                                snapshot.hasData && snapshot.data != null
-                                    ? snapshot.data!.withAlpha(80)
-                                    : Colors.transparent
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                          child: Scaffold(
-                            appBar: PreferredSize(
-                              preferredSize: AppBar().preferredSize,
-                              child: DragToMoveArea(
-                                child: AppBar(
-                                  backgroundColor: Colors.transparent,
-                                  surfaceTintColor: Colors.transparent,
-                                  elevation: 0,
-                                  iconTheme:
-                                      const IconThemeData(color: Colors.white),
-                                  leading: AdaptiveIconButton(
-                                    onPressed: () {
-                                      context.pop();
-                                    },
-                                    icon: Icon(AdaptiveIcons.chevron_down),
-                                  ),
-                                  actions: [
-                                    AdaptiveIconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          showLyrics = !showLyrics;
-                                        });
-                                      },
-                                      icon: Icon(AdaptiveIcons.lyrics),
-                                    ),
-                                    if (MediaQuery.of(context).size.width >
-                                            MediaQuery.of(context)
-                                                .size
-                                                .height ||
-                                        Platform.isWindows)
-                                      AdaptiveIconButton(
-                                        onPressed: () {
-                                          _key.currentState?.openEndDrawer();
-                                        },
-                                        icon: Icon(AdaptiveIcons.queue),
-                                      ),
-                                    if (Platform.isWindows)
-                                      const WindowButtons()
-                                  ],
+                  future: getColor(image, context.isDarkMode),
+                  builder: (context, snapshot) {
+                    if (!mounted) return Container();
+                    // pprint(snapshot.data?.toString());
+                    return Stack(
+                      children: [
+                        // ── Blurred album art background ──
+                        if (image != null)
+                          Positioned.fill(
+                            child: ImageFiltered(
+                              imageFilter: ImageFilter.blur(
+                                sigmaX: 60,
+                                sigmaY: 60,
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: getEnhancedImage(
+                                  image!,
+                                  dp: MediaQuery.of(context).devicePixelRatio,
+                                  width: 400,
                                 ),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            key: _key,
-                            backgroundColor: Colors.transparent,
-                            endDrawer: MediaQuery.of(context).size.width >
-                                        MediaQuery.of(context).size.height ||
-                                    Platform.isWindows
-                                ? SizedBox(
-                                    width: min(400,
-                                            MediaQuery.of(context).size.width) -
-                                        50,
-                                    child: const QueueList(),
-                                  )
-                                : null,
-                            body: SizedBox(
+                          ),
+                        // Dark overlay to ensure text readability
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.black.withOpacity(0.6),
+                          ),
+                        ),
+                        Scaffold(
+                          appBar: PreferredSize(
+                            preferredSize: AppBar().preferredSize,
+                            child: DragToMoveArea(
+                              child: AppBar(
+                                backgroundColor: Colors.transparent,
+                                surfaceTintColor: Colors.transparent,
+                                elevation: 0,
+                                iconTheme: const IconThemeData(
+                                  color: Colors.white,
+                                ),
+                                leading: AdaptiveIconButton(
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  icon: Icon(AdaptiveIcons.chevron_down),
+                                ),
+                                actions: [
+                                  AdaptiveIconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        showLyrics = !showLyrics;
+                                      });
+                                    },
+                                    icon: Icon(AdaptiveIcons.lyrics),
+                                  ),
+                                  if (MediaQuery.of(context).size.width >
+                                          MediaQuery.of(context).size.height ||
+                                      Platform.isWindows)
+                                    AdaptiveIconButton(
+                                      onPressed: () {
+                                        _key.currentState?.openEndDrawer();
+                                      },
+                                      icon: Icon(AdaptiveIcons.queue),
+                                    ),
+                                  if (Platform.isWindows) const WindowButtons(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          key: _key,
+                          backgroundColor: Colors.transparent,
+                          endDrawer:
+                              MediaQuery.of(context).size.width >
+                                      MediaQuery.of(context).size.height ||
+                                  Platform.isWindows
+                              ? SizedBox(
+                                  width:
+                                      min(
+                                        400,
+                                        MediaQuery.of(context).size.width,
+                                      ) -
+                                      50,
+                                  child: const QueueList(),
+                                )
+                              : null,
+                          body: IconTheme(
+                            data: const IconThemeData(color: Colors.white),
+                            child: SizedBox(
                               width: double.maxFinite,
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
-                                  EdgeInsets padding =
-                                      MediaQuery.of(context).padding;
-                                  double maxWidth = constraints.maxWidth -
+                                  EdgeInsets padding = MediaQuery.of(
+                                    context,
+                                  ).padding;
+                                  double maxWidth =
+                                      constraints.maxWidth -
                                       padding.left -
                                       padding.right;
-                                  double maxHeight = constraints.maxHeight -
+                                  double maxHeight =
+                                      constraints.maxHeight -
                                       padding.top -
                                       padding.bottom;
                                   if (maxWidth > maxHeight) {
@@ -316,7 +328,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                           width: maxWidth - (maxWidth / 2.3),
                                           height: maxHeight,
                                           isRow: true,
-                                        )
+                                        ),
                                       ],
                                     );
                                   }
@@ -333,16 +345,17 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                             showLyrics: showLyrics,
                                             width:
                                                 min(maxWidth, maxHeight / 2.2) -
-                                                    24,
+                                                24,
                                             song: currentSong,
                                           ),
                                           NameAndControls(
                                             song: currentSong,
                                             width: maxWidth,
-                                            height: maxHeight -
+                                            height:
+                                                maxHeight -
                                                 min(maxWidth, maxHeight / 2.2) -
                                                 24,
-                                          )
+                                          ),
                                         ],
                                       ),
                                       SlidingUpPanel(
@@ -355,22 +368,24 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                           topRight: Radius.circular(20),
                                         ),
                                         boxShadow: const [],
-                                        minHeight: 50 +
-                                            MediaQuery.of(context)
-                                                .padding
-                                                .bottom,
+                                        minHeight:
+                                            50 +
+                                            MediaQuery.of(
+                                              context,
+                                            ).padding.bottom,
                                         panel: ClipRRect(
                                           borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20)),
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
                                           child: Container(
                                             width: constraints.maxWidth,
                                             alignment: Alignment.center,
                                             decoration: const BoxDecoration(
                                               borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(20),
-                                                  topRight:
-                                                      Radius.circular(20)),
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20),
+                                              ),
                                             ),
                                             child: Column(
                                               crossAxisAlignment:
@@ -380,26 +395,31 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                                 ClipRRect(
                                                   child: BackdropFilter(
                                                     filter: ImageFilter.blur(
-                                                        sigmaX: 3, sigmaY: 3),
+                                                      sigmaX: 20,
+                                                      sigmaY: 20,
+                                                    ),
                                                     child: Container(
-                                                      height: 50 +
-                                                          MediaQuery.of(context)
-                                                              .padding
-                                                              .bottom,
+                                                      height:
+                                                          50 +
+                                                          MediaQuery.of(
+                                                            context,
+                                                          ).padding.bottom,
                                                       width: double.maxFinite,
                                                       decoration: BoxDecoration(
                                                         color: Theme.of(context)
                                                             .scaffoldBackgroundColor
-                                                            .withAlpha(70),
+                                                            .withOpacity(0.5),
                                                         borderRadius:
-                                                            const BorderRadius
-                                                                .only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        20),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        20)),
+                                                            const BorderRadius.only(
+                                                              topLeft:
+                                                                  Radius.circular(
+                                                                    20,
+                                                                  ),
+                                                              topRight:
+                                                                  Radius.circular(
+                                                                    20,
+                                                                  ),
+                                                            ),
                                                       ),
                                                       child: Column(
                                                         mainAxisSize:
@@ -413,22 +433,25 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                                             width: 50,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: greyColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
+                                                                  color:
+                                                                      greyColor,
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                        20,
+                                                                      ),
+                                                                ),
                                                           ),
                                                           const SizedBox(
-                                                              height: 8),
+                                                            height: 8,
+                                                          ),
                                                           Text(
                                                             S
                                                                 .of(context)
                                                                 .Next_Up,
                                                             style: textStyle(
-                                                                context,
-                                                                bold: true),
+                                                              context,
+                                                              bold: true,
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -436,12 +459,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                                   ),
                                                 ),
                                                 const Expanded(
-                                                    child: QueueList())
+                                                  child: QueueList(),
+                                                ),
                                               ],
                                             ),
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   );
                                 },
@@ -449,8 +473,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             ),
                           ),
                         ),
-                      );
-                    }),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
     );
@@ -458,12 +484,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
 }
 
 class Artwork extends StatelessWidget {
-  const Artwork(
-      {this.song,
-      required this.width,
-      required this.showLyrics,
-      required this.setShowLyrics,
-      super.key});
+  const Artwork({
+    this.song,
+    required this.width,
+    required this.showLyrics,
+    required this.setShowLyrics,
+    super.key,
+  });
   final double width;
   final MediaItem? song;
   final bool showLyrics;
@@ -477,62 +504,100 @@ class Artwork extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: song == null
-            ? Icon(
-                Icons.music_note,
-                size: width * 0.5,
-              )
+            ? Icon(Icons.music_note, size: width * 0.5)
             : SafeArea(
-                child: LayoutBuilder(builder: (context, constraints) {
-                  return GestureDetector(
-                    onTap: () {
-                      setShowLyrics();
-                    },
-                    child: Center(
-                      child: showLyrics
-                          ? LyricsBox(
-                              currentSong: song!, size: Size(width, width))
-                          : Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withAlpha(30),
-                                    spreadRadius: 10,
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: song?.extras?['offline'] == true &&
-                                        !song!.artUri
-                                            .toString()
-                                            .startsWith('https')
-                                    ? Image.file(
-                                        File.fromUri(song!.artUri!),
-                                      )
-                                    : CachedNetworkImage(
-                                        filterQuality: FilterQuality.high,
-                                        imageUrl: getEnhancedImage(
-                                          song!.extras!['thumbnails']
-                                              .first['url'],
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return GestureDetector(
+                      onTap: () {
+                        setShowLyrics();
+                      },
+                      child: Center(
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 500),
+                          switchInCurve: Curves.easeOutBack,
+                          switchOutCurve: Curves.easeInBack,
+                          transitionBuilder: (child, animation) {
+                            return AnimatedBuilder(
+                              animation: animation,
+                              builder: (context, childWidget) {
+                                final isLyrics =
+                                    child.key == const ValueKey('lyrics_box');
+                                double angle = (1.0 - animation.value) * pi;
+                                if (isLyrics) {
+                                  angle = -angle;
+                                }
+                                if (animation.value <= 0.5) {
+                                  return const SizedBox.shrink();
+                                }
+                                return Transform(
+                                  transform: Matrix4.identity()
+                                    ..setEntry(3, 2, 0.001)
+                                    ..rotateY(angle),
+                                  alignment: Alignment.center,
+                                  child: childWidget,
+                                );
+                              },
+                              child: child,
+                            );
+                          },
+                          child: showLyrics
+                              ? LyricsBox(
+                                  key: const ValueKey('lyrics_box'),
+                                  currentSong: song!,
+                                  size: Size(width, width),
+                                )
+                              : Hero(
+                                  tag: 'artwork_${song!.id}',
+                                  child: Container(
+                                    key: const ValueKey('artwork_box'),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.4),
+                                          spreadRadius: 2,
+                                          blurRadius: 24,
+                                          offset: const Offset(0, 12),
                                         ),
-                                        errorWidget: (context, url, error) {
-                                          return CachedNetworkImage(
-                                            imageUrl: getEnhancedImage(
-                                              song!.extras!['thumbnails']
-                                                  .first['url'],
-                                              quality: 'medium',
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child:
+                                          song?.extras?['offline'] == true &&
+                                              !song!.artUri
+                                                  .toString()
+                                                  .startsWith('https')
+                                          ? Image.file(
+                                              File.fromUri(song!.artUri!),
+                                            )
+                                          : CachedNetworkImage(
+                                              filterQuality: FilterQuality.high,
+                                              imageUrl: getEnhancedImage(
+                                                song!
+                                                    .extras!['thumbnails']
+                                                    .first['url'],
+                                              ),
+                                              errorWidget: (context, url, error) {
+                                                return CachedNetworkImage(
+                                                  imageUrl: getEnhancedImage(
+                                                    song!
+                                                        .extras!['thumbnails']
+                                                        .first['url'],
+                                                    quality: 'medium',
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          );
-                                        },
-                                      ),
-                              ),
-                            ),
-                    ),
-                  );
-                }),
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
       ),
     );
@@ -540,12 +605,13 @@ class Artwork extends StatelessWidget {
 }
 
 class NameAndControls extends StatelessWidget {
-  const NameAndControls(
-      {this.song,
-      required this.height,
-      required this.width,
-      this.isRow = false,
-      super.key});
+  const NameAndControls({
+    this.song,
+    required this.height,
+    required this.width,
+    this.isRow = false,
+    super.key,
+  });
   final double width;
   final double height;
   final MediaItem? song;
@@ -566,20 +632,31 @@ class NameAndControls extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextScroll(
                   song?.title ?? 'Title',
-                  style: bigTextStyle(context, bold: true),
+                  style:
+                      Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ) ??
+                      bigTextStyle(context, bold: true),
                   mode: TextScrollMode.endless,
                 ),
+                const SizedBox(height: 4),
                 Text(
                   song?.artist ??
                       song?.album ??
                       song?.extras?['subtitle'] ??
                       '',
-                  style: smallTextStyle(context),
-                )
+                  style:
+                      Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white.withOpacity(0.7),
+                      ) ??
+                      smallTextStyle(context),
+                ),
               ],
             ),
             Column(
@@ -593,8 +670,11 @@ class NameAndControls extends StatelessWidget {
                       progress: value.current,
                       total: value.total,
                       buffered: value.buffered,
-                      barHeight: 3,
-                      thumbRadius: 5,
+                      barHeight: 6,
+                      thumbRadius: 8,
+                      baseBarColor: Colors.white.withOpacity(0.24),
+                      progressBarColor: Colors.white,
+                      thumbColor: Colors.white,
                       onSeek: (value) => mediaPlayer.player.seek(value),
                     );
                   },
@@ -615,14 +695,13 @@ class NameAndControls extends StatelessWidget {
                           ),
                           onPressed: () async {
                             if (item == null) {
-                              await Hive.box('FAVOURITES').put(
-                                song!.extras!['videoId'],
-                                {
-                                  ...song!.extras!,
-                                  'createdAt':
-                                      DateTime.now().millisecondsSinceEpoch
-                                },
-                              );
+                              await Hive.box(
+                                'FAVOURITES',
+                              ).put(song!.extras!['videoId'], {
+                                ...song!.extras!,
+                                'createdAt':
+                                    DateTime.now().millisecondsSinceEpoch,
+                              });
                             } else {
                               await value.delete(song!.extras!['videoId']);
                             }
@@ -634,40 +713,41 @@ class NameAndControls extends StatelessWidget {
                       onPressed: () {
                         mediaPlayer.player.seekToPrevious();
                       },
-                      icon: Icon(
-                        AdaptiveIcons.skip_previous,
-                        size: 30,
+                      icon: Icon(AdaptiveIcons.skip_previous, size: 30),
+                    ),
+                    Hero(
+                      tag: 'playpause_${song?.id}',
+                      child: const Material(
+                        type: MaterialType.transparency,
+                        child: PlayButton(size: 40),
                       ),
                     ),
-                    const PlayButton(size: 40),
                     AdaptiveIconButton(
                       onPressed: () {
                         mediaPlayer.player.seekToNext();
                       },
-                      icon: Icon(
-                        AdaptiveIcons.skip_next,
-                        size: 30,
-                      ),
+                      icon: Icon(AdaptiveIcons.skip_next, size: 30),
                     ),
                     ValueListenableBuilder(
-                        valueListenable: mediaPlayer.loopMode,
-                        builder: (context, value, child) {
-                          return AdaptiveIconButton(
-                            onPressed: () {
-                              mediaPlayer.changeLoopMode();
-                            },
-                            isSelected: value != LoopMode.off,
-                            icon: Icon(
-                              value == LoopMode.off || value == LoopMode.all
-                                  ? AdaptiveIcons.repeat_all
-                                  : AdaptiveIcons.repeat_one,
-                              size: 30,
-                              color: value == LoopMode.off
-                                  ? Colors.white.withOpacity(0.3)
-                                  : null,
-                            ),
-                          );
-                        }),
+                      valueListenable: mediaPlayer.loopMode,
+                      builder: (context, value, child) {
+                        return AdaptiveIconButton(
+                          onPressed: () {
+                            mediaPlayer.changeLoopMode();
+                          },
+                          isSelected: value != LoopMode.off,
+                          icon: Icon(
+                            value == LoopMode.off || value == LoopMode.all
+                                ? AdaptiveIcons.repeat_all
+                                : AdaptiveIcons.repeat_one,
+                            size: 30,
+                            color: value == LoopMode.off
+                                ? Colors.white.withOpacity(0.3)
+                                : null,
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],
@@ -699,32 +779,29 @@ class NameAndControls extends StatelessWidget {
                           }
                         }
                         return AdaptiveIconButton(
-                            onPressed: () {
-                              GetIt.I<DownloadManager>()
-                                  .downloadSong(song!.extras!);
-                            },
-                            icon: Icon(
-                              AdaptiveIcons.download,
-                              size: 30,
-                            ));
+                          onPressed: () {
+                            GetIt.I<DownloadManager>().downloadSong(
+                              song!.extras!,
+                            );
+                          },
+                          icon: Icon(AdaptiveIcons.download, size: 30),
+                        );
                       },
                     ),
                   ),
                 AdaptiveIconButton(
-                    onPressed: () {
-                      Modals.showPlayerOptionsModal(
-                        context,
-                        mediaPlayer.currentSongNotifier.value!.extras!,
-                      );
-                    },
-                    icon: Icon(
-                      AdaptiveIcons.more_vertical,
-                      size: 30,
-                    ))
+                  onPressed: () {
+                    Modals.showPlayerOptionsModal(
+                      context,
+                      mediaPlayer.currentSongNotifier.value!.extras!,
+                    );
+                  },
+                  icon: Icon(AdaptiveIcons.more_vertical, size: 30),
+                ),
               ],
             ),
             if (song != null && !isRow)
-              SizedBox(height: 55 + MediaQuery.of(context).padding.bottom)
+              SizedBox(height: 55 + MediaQuery.of(context).padding.bottom),
           ],
         ),
       ),

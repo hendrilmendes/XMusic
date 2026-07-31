@@ -4,10 +4,9 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:expandable_text/expandable_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:xmusic/ytmusic/ytmusic.dart';
+import 'package:orbit_music/ytmusic/ytmusic.dart';
 
 import '../../generated/l10n.dart';
 import '../../services/bottom_message.dart';
@@ -30,189 +29,207 @@ class SectionItem extends StatefulWidget {
 
 class _SectionItemState extends State<SectionItem> {
   final ScrollController horizontalScrollController = ScrollController();
-  PageController horizontalPageController = PageController();
+  PageController? horizontalPageController;
   bool loadingMore = false;
 
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    horizontalPageController.dispose();
-    horizontalScrollController.dispose();
-    super.dispose();
-  }
-
-  loadMoreItems() {
-    if (widget.section['continuation'] != null) {
-      setState(() {
-        loadingMore = true;
+    // Auto-load all continuation pages for playlists (COLUMN view or isMore)
+    if (widget.section['continuation'] != null &&
+        (widget.section['viewType'] == 'COLUMN' || widget.isMore)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _loadNextPage();
       });
-      GetIt.I<YTMusic>()
-          .getMoreItems(continuation: widget.section['continuation'])
-          .then((value) {
-            setState(() {
-              widget.section['contents'].addAll(value['items']);
-              widget.section['continuation'] = value['continuation'];
-              loadingMore = false;
-            });
-          });
     }
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final fraction = 350 / MediaQuery.of(context).size.width;
+    if (horizontalPageController == null ||
+        horizontalPageController!.viewportFraction != fraction) {
+      horizontalPageController?.dispose();
+      horizontalPageController = PageController(viewportFraction: fraction);
+    }
+  }
+
+  @override
+  void dispose() {
+    horizontalPageController?.dispose();
+    horizontalScrollController.dispose();
+    super.dispose();
+  }
+
+  void loadMoreItems() {
+    _loadNextPage();
+  }
+
+  void _loadNextPage() {
+    String? continuation = widget.section['continuation'];
+    if (continuation == null) return;
+
+    setState(() {
+      loadingMore = true;
+    });
+
+    GetIt.I<YTMusic>().getMoreItems(continuation: continuation).then((value) {
+      if (!mounted) return;
+      widget.section['contents'].addAll(value['items']);
+      widget.section['continuation'] = value['continuation'];
+      setState(() {});
+      if (value['continuation'] != null) {
+        _loadNextPage();
+      } else {
+        setState(() {
+          loadingMore = false;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    horizontalPageController = PageController(
-      viewportFraction: 350 / MediaQuery.of(context).size.width,
-    );
     return widget.section['contents'].isEmpty
         ? const SizedBox()
         : Column(
-          children: [
-            if (widget.section['title'] != null)
-              AdaptiveListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 8,
-                ),
-                title:
-                    widget.section['strapline'] == null
-                        ? Text(
+            children: [
+              if (widget.section['title'] != null)
+                AdaptiveListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 8,
+                  ),
+                  title: widget.section['strapline'] == null
+                      ? Text(
                           widget.section['title'] ?? '',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         )
-                        : Text(
+                      : Text(
                           widget.section['strapline'],
                           style: TextStyle(
                             color: Colors.grey.withAlpha(200),
                             fontSize: 14,
                           ),
                         ),
-                subtitle:
-                    widget.section['strapline'] != null
-                        ? Text(
+                  subtitle: widget.section['strapline'] != null
+                      ? Text(
                           widget.section['title'] ?? '',
                           style: mediumTextStyle(
                             context,
                           ).copyWith(fontSize: 20),
                         )
-                        : null,
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.section['trailing'] != null)
-                      AdaptiveOutlinedButton(
-                        onPressed: () async {
-                          final trailing =
-                              widget.section['trailing']
-                                  as Map<String, dynamic>?;
-                          final endpoint =
-                              trailing?['endpoint'] as Map<String, dynamic>?;
+                      : null,
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.section['trailing'] != null)
+                        AdaptiveOutlinedButton(
+                          onPressed: () async {
+                            final trailing =
+                                widget.section['trailing']
+                                    as Map<String, dynamic>?;
+                            final endpoint =
+                                trailing?['endpoint'] as Map<String, dynamic>?;
 
-                          if (endpoint != null) {
-                            Navigator.push(
-                              context,
-                              AdaptivePageRoute.create(
-                                (context) => BrowseScreen(
-                                  endpoint: endpoint,
-                                  isMore: true,
+                            if (endpoint != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BrowseScreen(
+                                    endpoint: endpoint,
+                                    isMore: true,
+                                  ),
                                 ),
-                              ),
-                            );
-                          } else {
-                            BottomMessage.showText(
-                              context,
-                              'Não há mais itens para carregar.',
-                            );
-                          }
-                        },
+                              );
+                            } else {
+                              BottomMessage.showText(
+                                context,
+                                'Não há mais itens para carregar.',
+                              );
+                            }
+                          },
 
-                        child: Text(widget.section['trailing']['text']),
-                      ),
-                    if (Platform.isWindows &&
-                        widget.section['viewType'] != 'SINGLE_COLUMN')
-                      AdaptiveIconButton(
-                        icon: Icon(AdaptiveIcons.chevron_left),
-                        onPressed: () {
-                          if (widget.section['viewType'] == 'COLUMN' &&
-                              !widget.isMore) {
-                            horizontalPageController.previousPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                            );
-                          } else {
-                            horizontalScrollController.animateTo(
-                              horizontalScrollController.offset -
-                                  horizontalScrollController
-                                      .position
-                                      .extentInside,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                            );
-                          }
-                        },
-                      ),
-                    if (Platform.isWindows &&
-                        widget.section['viewType'] != 'SINGLE_COLUMN')
-                      AdaptiveIconButton(
-                        icon: Icon(AdaptiveIcons.chevron_right),
-                        onPressed: () {
-                          if (widget.section['viewType'] == 'COLUMN' &&
-                              !widget.isMore) {
-                            horizontalPageController.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                            );
-                          } else {
-                            horizontalScrollController.animateTo(
-                              horizontalScrollController.offset +
-                                  horizontalScrollController
-                                      .position
-                                      .extentInside,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                            );
-                          }
-                        },
-                      ),
-                  ],
-                ),
-                leading:
-                    widget.section['thumbnails'] != null &&
-                            widget.section['thumbnails']?.isNotEmpty
-                        ? CircleAvatar(
+                          child: Text(widget.section['trailing']['text']),
+                        ),
+                      if (Platform.isWindows &&
+                          widget.section['viewType'] != 'SINGLE_COLUMN')
+                        AdaptiveIconButton(
+                          icon: Icon(AdaptiveIcons.chevron_left),
+                          onPressed: () {
+                            if (widget.section['viewType'] == 'COLUMN' &&
+                                !widget.isMore) {
+                              horizontalPageController!.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeOut,
+                              );
+                            } else {
+                              horizontalScrollController.animateTo(
+                                horizontalScrollController.offset -
+                                    horizontalScrollController
+                                        .position
+                                        .extentInside,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeOut,
+                              );
+                            }
+                          },
+                        ),
+                      if (Platform.isWindows &&
+                          widget.section['viewType'] != 'SINGLE_COLUMN')
+                        AdaptiveIconButton(
+                          icon: Icon(AdaptiveIcons.chevron_right),
+                          onPressed: () {
+                            if (widget.section['viewType'] == 'COLUMN' &&
+                                !widget.isMore) {
+                              horizontalPageController!.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeOut,
+                              );
+                            } else {
+                              horizontalScrollController.animateTo(
+                                horizontalScrollController.offset +
+                                    horizontalScrollController
+                                        .position
+                                        .extentInside,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeOut,
+                              );
+                            }
+                          },
+                        ),
+                    ],
+                  ),
+                  leading:
+                      widget.section['thumbnails'] != null &&
+                          widget.section['thumbnails']?.isNotEmpty
+                      ? CircleAvatar(
                           backgroundImage: CachedNetworkImageProvider(
                             widget.section['thumbnails'].first['url'],
                           ),
                         )
-                        : null,
-              ),
-            if (widget.section['viewType'] == 'COLUMN' && !widget.isMore)
-              SongList(
-                songs: widget.section['contents'],
-                controller: horizontalPageController,
-              )
-            else if (widget.section['viewType'] == 'SINGLE_COLUMN' ||
-                widget.isMore)
-              SingleColumnList(songs: widget.section['contents'])
-            else
-              ItemList(
-                items: widget.section['contents'],
-                controller: horizontalScrollController,
-              ),
-            if (loadingMore) const AdaptiveProgressRing(),
-            if (widget.section['continuation'] != null && !loadingMore)
-              AdaptiveButton(
-                onPressed: loadMoreItems,
-                child: const Text("Load More"),
-              ),
-          ],
-        );
+                      : null,
+                ),
+              if (widget.section['viewType'] == 'COLUMN' && !widget.isMore)
+                SongList(
+                  songs: widget.section['contents'],
+                  controller: horizontalPageController!,
+                )
+              else if (widget.section['viewType'] == 'SINGLE_COLUMN' ||
+                  widget.isMore)
+                SingleColumnList(songs: widget.section['contents'])
+              else
+                ItemList(
+                  items: widget.section['contents'],
+                  controller: horizontalScrollController,
+                ),
+              if (loadingMore) const AdaptiveProgressRing(),
+            ],
+          );
   }
 }
 
@@ -238,7 +255,6 @@ class _SongListState extends State<SongList> {
   @override
   dispose() {
     super.dispose();
-    widget.controller.dispose();
   }
 
   @override
@@ -256,12 +272,12 @@ class _SongListState extends State<SongList> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
-            children:
-                widget.songs.sublist(start, min(end, widget.songs.length)).map((
-                  pageSongs,
-                ) {
+            children: widget.songs
+                .sublist(start, min(end, widget.songs.length))
+                .map((pageSongs) {
                   return SongTile(song: pageSongs);
-                }).toList(),
+                })
+                .toList(),
           ),
         );
       },
@@ -275,10 +291,9 @@ class SingleColumnList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children:
-          songs.map((song) {
-            return SongTile(song: song);
-          }).toList(),
+      children: songs.map((song) {
+        return SongTile(song: song);
+      }).toList(),
     );
   }
 }
@@ -300,7 +315,7 @@ class SongTile extends StatelessWidget {
         if (song['endpoint'] != null && song['videoId'] == null) {
           Navigator.push(
             context,
-            CupertinoPageRoute(
+            MaterialPageRoute(
               builder: (context) => BrowseScreen(endpoint: song['endpoint']),
             ),
           );
@@ -326,8 +341,10 @@ class SongTile extends StatelessWidget {
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(3),
         child: CachedNetworkImage(
-          imageUrl:
-              thumbnails.where((el) => el['width'] >= 50).toList().first['url'],
+          imageUrl: thumbnails
+              .where((el) => el['width'] >= 50)
+              .toList()
+              .first['url'],
           height: height,
           width: 50,
           fit: BoxFit.cover,
@@ -355,27 +372,25 @@ class SongTile extends StatelessWidget {
           ),
         ],
       ),
-      trailing:
-          song['endpoint'] != null && song['videoId'] == null
-              ? Icon(AdaptiveIcons.chevron_right)
-              : null,
-      description:
-          (song['type'] == 'EPISODE' && song['description'] != null)
-              ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    ExpandableText(
-                      song['description'].split('\n')?[0] ?? '',
-                      expandText: S.of(context).Show_More,
-                      collapseText: S.of(context).Show_Less,
-                      maxLines: 3,
-                      style: TextStyle(color: context.subtitleColor),
-                    ),
-                  ],
-                ),
-              )
-              : null,
+      trailing: song['endpoint'] != null && song['videoId'] == null
+          ? Icon(AdaptiveIcons.chevron_right)
+          : null,
+      description: (song['type'] == 'EPISODE' && song['description'] != null)
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: [
+                  ExpandableText(
+                    song['description'].split('\n')?[0] ?? '',
+                    expandText: S.of(context).Show_More,
+                    collapseText: S.of(context).Show_Less,
+                    maxLines: 3,
+                    style: TextStyle(color: context.subtitleColor),
+                  ),
+                ],
+              ),
+            )
+          : null,
     );
   }
 
@@ -473,10 +488,9 @@ class _ItemListState extends State<ItemList> {
                         height: height,
                         decoration: BoxDecoration(
                           color: Colors.grey.withOpacity(0.1),
-                          borderRadius:
-                              widget.items[index]['type'] == 'ARTIST'
-                                  ? BorderRadius.circular(height / 2)
-                                  : BorderRadius.circular(8),
+                          borderRadius: widget.items[index]['type'] == 'ARTIST'
+                              ? BorderRadius.circular(height / 2)
+                              : BorderRadius.circular(8),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(

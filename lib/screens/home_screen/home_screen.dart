@@ -1,15 +1,14 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:xmusic/generated/l10n.dart';
-import 'package:xmusic/screens/home_screen/card.dart';
-import 'package:xmusic/screens/home_screen/search_screen/search_screen.dart';
-import 'package:xmusic/screens/home_screen/section_item.dart';
-import 'package:xmusic/utils/adaptive_widgets/adaptive_widgets.dart';
-import 'package:xmusic/ytmusic/ytmusic.dart';
+import 'package:orbit_music/generated/l10n.dart';
+import 'package:orbit_music/screens/home_screen/card.dart';
+import 'package:orbit_music/screens/home_screen/search_screen/search_screen.dart';
+import 'package:orbit_music/screens/home_screen/section_item.dart';
+import 'package:orbit_music/utils/adaptive_widgets/adaptive_widgets.dart';
+import 'package:orbit_music/ytmusic/ytmusic.dart';
+import 'package:orbit_music/widgets/screen_header.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,10 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final YTMusic ytMusic = GetIt.I<YTMusic>();
   late PageController _pageController;
   Timer? _autoScrollTimer;
+  late ScrollController _scrollController;
 
-  List chips = [];
-  List sections = [];
-  List highlights = [];
+  List<dynamic> chips = [];
+  List<dynamic> sections = [];
+  List<dynamic> highlights = [];
   String? continuation;
   bool initialLoading = true;
   bool nextLoading = false;
@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     _pageController = PageController(viewportFraction: 0.9)
       ..addListener(() {
         final page = (_pageController.page ?? 0).round();
@@ -66,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _autoScrollTimer?.cancel();
     _pageController.dispose();
     super.dispose();
@@ -92,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() => initialLoading = false);
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text("Erro ao carregar dados")));
+        ).showSnackBar(SnackBar(content: Text(S.of(context).Error_Loading_Data)));
       }
     }
   }
@@ -116,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() => nextLoading = false);
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text("Erro ao carregar mais")));
+        ).showSnackBar(SnackBar(content: Text(S.of(context).Error_Loading_More)));
       }
     }
   }
@@ -160,12 +162,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void _handleHighlightTap(Map<String, dynamic> highlight) {
     final title = highlight['title'] as String? ?? '';
     if (title.isNotEmpty) {
-      Navigator.of(context, rootNavigator: true).push(
-        CupertinoPageRoute(builder: (context) => SearchScreen(query: title)),
-      );
+      Navigator.of(
+        context,
+      ).push(AdaptivePageRoute.create((_) => SearchScreen(query: title)));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Não foi possível buscar a música.')),
+        SnackBar(content: Text(S.of(context).Could_Not_Search_Song)),
       );
     }
   }
@@ -177,12 +179,16 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         scrollDirection: Axis.horizontal,
         itemCount: chips.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
           final chip = chips[index];
           return ActionChip(
             label: Text(chip['title'] ?? ''),
             backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+              side: BorderSide.none,
+            ),
             onPressed: () => context.go('/chip', extra: chip),
           );
         },
@@ -193,32 +199,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
-      appBar: AdaptiveAppBar(
-        title: Text(S.of(context).Home),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
-      body: initialLoading
-          ? const Center(child: AdaptiveProgressRing())
-          : RefreshIndicator(
-              onRefresh: () async => _loadInitialData(),
-              child: NestedScrollView(
-                headerSliverBuilder: (context, innerBoxScrolled) => [
-                  SliverPadding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 24),
-                    sliver: SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _buildHighlights(),
-                          const SizedBox(height: 24),
-                          _buildChipsRow(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-                body: NotificationListener<ScrollNotification>(
+      appBar: null,
+      body: SafeArea(
+        child: initialLoading
+            ? const Center(child: AdaptiveProgressRing())
+            : RefreshIndicator(
+                onRefresh: _loadInitialData,
+                child: NotificationListener<ScrollNotification>(
                   onNotification: (scrollInfo) {
                     if (scrollInfo.metrics.pixels >=
                         scrollInfo.metrics.maxScrollExtent * 0.8) {
@@ -227,23 +214,47 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                     return false;
                   },
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: sections.length + (nextLoading ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index < sections.length) {
-                        return SectionItem(section: sections[index]);
-                      }
-                      return const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Center(child: AdaptiveProgressRing()),
-                      );
-                    },
+                    child: Center(
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 1000),
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ScreenHeader(title: S.of(context).Home),
+                            _buildHighlights(),
+                            const SizedBox(height: 24),
+                            _buildChipsRow(),
+                            const SizedBox(height: 16),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              itemCount:
+                                  sections.length + (nextLoading ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (index < sections.length) {
+                                  return SectionItem(section: sections[index]);
+                                }
+                                return const Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Center(child: AdaptiveProgressRing()),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+      ),
     );
   }
 }

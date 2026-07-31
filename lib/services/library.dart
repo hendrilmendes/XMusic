@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,6 +17,9 @@ class LibraryService extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  // ─── Public API ──────────────────────────────────────────────────────────
+
   Map get playlists => _playlists;
   Map get userPlaylists => Map.fromEntries(
     _playlists.entries.where((item) => item.value['isPredefined'] == false),
@@ -23,16 +28,19 @@ class LibraryService extends ChangeNotifier {
 
   Future<String> createPlaylist(String title, {Map? item}) async {
     if (title.trim().isEmpty) {
-      "Playlist name can't be empty";
+      return "Playlist name can't be empty";
     } else if (_box.get(title.toLowerCase()) != null) {
-      "Playlist is already created";
+      return "Playlist is already created";
     }
-    await _box.put(title.toLowerCase(), {
+    final data = {
       'title': title,
       'isPredefined': false,
       'songs': item != null ? [item] : [],
       'createdAt': DateTime.now().millisecondsSinceEpoch,
-    });
+    };
+    final key = title.toLowerCase();
+    await _box.put(key, data);
+
     if (item != null) {
       return '${item['title']} added to $title';
     } else {
@@ -40,46 +48,44 @@ class LibraryService extends ChangeNotifier {
     }
   }
 
-Future<String> importPlaylist(String playlistUrl) async {
-  try {
-    Uri uri = Uri.parse(playlistUrl);
+  Future<String> importPlaylist(String playlistUrl) async {
+    try {
+      Uri uri = Uri.parse(playlistUrl);
 
-    // Verifica se é um link do YouTube
-    if (uri.host.contains('youtube.com') || uri.host.contains('youtu.be')) {
-      String? playlistId = uri.queryParameters['list'];
-      if (playlistId == null && uri.host.contains('youtu.be')) {
-        // URLs curtas podem ter ID direto no path
-        playlistId =
-            uri.pathSegments.isNotEmpty ? uri.pathSegments.last : null;
+      if (uri.host.contains('youtube.com') || uri.host.contains('youtu.be')) {
+        String? playlistId = uri.queryParameters['list'];
+        if (playlistId == null && uri.host.contains('youtu.be')) {
+          playlistId =
+              uri.pathSegments.isNotEmpty ? uri.pathSegments.last : null;
+        }
+        if (playlistId == null) return 'Invalid YouTube URL';
+
+        String browseId =
+            playlistId.startsWith("VL") ? playlistId : "VL$playlistId";
+        Map<String, dynamic> playlist = await GetIt.I<YTMusic>().importPlaylist(
+          browseId,
+        );
+        String id = playlistId;
+
+        if (_playlists[id] != null) {
+          await _box.delete(id);
+          return 'Playlist is already added';
+        } else {
+          await _box.put(id, {
+            ...playlist,
+            'isPredefined': true,
+            'createdAt': DateTime.now().millisecondsSinceEpoch,
+          });
+          return 'Added to Library';
+        }
       }
-      if (playlistId == null) return 'Invalid YouTube URL';
 
-      String browseId =
-          playlistId.startsWith("VL") ? playlistId : "VL$playlistId";
-      Map<String, dynamic> playlist = await GetIt.I<YTMusic>().importPlaylist(
-        browseId,
-      );
-      String id = playlistId;
-
-      if (_playlists[id] != null) {
-        await _box.delete(id);
-        return 'Playlist is already added';
-      } else {
-        await _box.put(id, {
-          ...playlist,
-          'isPredefined': true,
-          'createdAt': DateTime.now().millisecondsSinceEpoch,
-        });
-        return 'Added to Library';
-      }
+      return 'Invalid URL format';
+    } catch (e) {
+      return e.toString();
     }
-
-    // Se não for YouTube, o formato é inválido
-    return 'Invalid URL format';
-  } catch (e) {
-    return e.toString();
   }
-}
+
   Future<String> addToOrRemoveFromLibrary(Map item) async {
     String id = item['playlistId'];
     if (_playlists[id] != null) {
@@ -105,7 +111,7 @@ Future<String> importPlaylist(String playlistUrl) async {
     if (title == null || title.trim().isEmpty) {
       return "Playlist name can't be empty";
     }
-    Map playlist = await _box.get(playlistId);
+    Map playlist = Map.from(await _box.get(playlistId));
     playlist['title'] = title;
     await _box.put(playlistId, playlist);
     return 'Playlist renamed';
@@ -123,11 +129,12 @@ Future<String> importPlaylist(String playlistUrl) async {
   Future<String> addToPlaylist({required Map item, required String key}) async {
     Map? playlist = await _box.get(key);
     if (playlist == null) return 'Playlist does not exist';
-    List songs = playlist['songs'] ?? [];
-    if (songs.contains(item)) {
+    List songs = List.from(playlist['songs'] ?? []);
+    if (songs.any((s) => s['videoId'] == item['videoId'])) {
       return 'Already present in Playlist';
     }
     songs.add(item);
+    playlist = Map.from(playlist);
     playlist['songs'] = songs;
     await _box.put(key, playlist);
     return 'Added to Playlist';
@@ -139,14 +146,12 @@ Future<String> importPlaylist(String playlistUrl) async {
   }) async {
     Map? playlist = await _box.get(playlistId);
     if (playlist == null) return 'Playlist does not exist';
-    List songs = playlist['songs'] ?? [];
-    if (songs.remove(item)) {
-      playlist['songs'] = songs;
-      await _box.put(playlistId, playlist);
-      return 'Removed from Playlist';
-    } else {
-      return 'An error occured';
-    }
+    List songs = List.from(playlist['songs'] ?? []);
+    songs.removeWhere((s) => s['videoId'] == item['videoId']);
+    playlist = Map.from(playlist);
+    playlist['songs'] = songs;
+    await _box.put(playlistId, playlist);
+    return 'Removed from Playlist';
   }
 
   Future setPlaylists(Map value) async {

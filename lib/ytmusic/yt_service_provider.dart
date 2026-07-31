@@ -17,7 +17,7 @@ abstract class YTMusicServices {
     }
   }
 
-  refreshContext() {
+  void refreshContext() {
     context = initializeContext();
   }
 
@@ -63,7 +63,8 @@ abstract class YTMusicServices {
 
   Future<Response> addPlayingStats(String videoId, Duration time) async {
     final Uri uri = Uri.parse(
-        'https://music.youtube.com/api/stats/watchtime?ns=yt&ver=2&c=WEB_REMIX&cmt=${(time.inMilliseconds / 1000)}&docid=$videoId');
+      'https://music.youtube.com/api/stats/watchtime?ns=yt&ver=2&c=WEB_REMIX&cmt=${(time.inMilliseconds / 1000)}&docid=$videoId',
+    );
     final Response response = await get(uri, headers: headers);
     return response;
   }
@@ -81,35 +82,39 @@ abstract class YTMusicServices {
     return await Hive.box('SETTINGS').get('VISITOR_ID');
   }
 
-Future<Map> sendRequest(
-  String endpoint,
-  Map<String, dynamic> body, {
-  Map<String, String>? headers,
-  String additionalParams = '',
-}) async {
-  body = {...body, ...context};
+  Future<Map> sendRequest(
+    String endpoint,
+    Map<String, dynamic> body, {
+    Map<String, String>? headers,
+    String additionalParams = '',
+  }) async {
+    body = {...body, ...context};
 
-  // Se for playlistItems e tiver pageToken, adiciona na URL e remove do corpo
-  if (endpoint == 'playlistItems' && body.containsKey('pageToken')) {
-    additionalParams += '&pageToken=${body['pageToken']}';
-    body.remove('pageToken');
+    // Se for playlistItems e tiver pageToken, adiciona na URL e remove do corpo
+    if (endpoint == 'playlistItems' && body.containsKey('pageToken')) {
+      additionalParams += '&pageToken=${body['pageToken']}';
+      body.remove('pageToken');
+    }
+
+    this.headers.addAll(headers ?? {});
+    final Uri uri = Uri.parse(
+      httpsYtmDomain +
+          baseApiEndpoint +
+          endpoint +
+          ytmParams +
+          additionalParams,
+    );
+
+    final response = await post(
+      uri,
+      headers: this.headers,
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body) as Map;
+    } else {
+      return {};
+    }
   }
-
-  this.headers.addAll(headers ?? {});
-  final Uri uri = Uri.parse(
-    httpsYtmDomain +
-    baseApiEndpoint +
-    endpoint +
-    ytmParams +
-    additionalParams,
-  );
-
-  final response = await post(uri, headers: this.headers, body: jsonEncode(body));
-
-  if (response.statusCode == 200) {
-    return json.decode(response.body) as Map;
-  } else {
-    return {};
-  }
-}
 }

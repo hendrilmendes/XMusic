@@ -1,3 +1,4 @@
+// ignore_for_file: experimental_member_use
 import 'dart:async';
 
 import 'package:just_audio/just_audio.dart';
@@ -8,22 +9,47 @@ class YouTubeAudioSource extends StreamAudioSource {
   final String quality; // 'high' or 'low'
   final YoutubeExplode ytExplode;
 
-  YouTubeAudioSource({
-    required this.videoId,
-    required this.quality,
-    super.tag,
-  }) : ytExplode = YoutubeExplode();
+  YouTubeAudioSource({required this.videoId, required this.quality, super.tag})
+    : ytExplode = YoutubeExplode();
+
+  bool isPreloaded = false;
+  AudioOnlyStreamInfo? _cachedStreamInfo;
+
+  Future<void> preload() async {
+    if (isPreloaded) return;
+    try {
+      final manifest = await ytExplode.videos.streams.getManifest(
+        videoId,
+        requireWatchPage: true,
+        ytClients: [YoutubeApiClient.androidVr],
+      );
+      final supportedStreams = manifest.audioOnly.sortByBitrate();
+
+      _cachedStreamInfo = quality == 'high'
+          ? supportedStreams.firstOrNull
+          : supportedStreams.lastOrNull;
+      isPreloaded = true;
+    } catch (e) {
+      // Failed to preload, will try again on request
+    }
+  }
 
   @override
   Future<StreamAudioResponse> request([int? start, int? end]) async {
     try {
-      final manifest = await ytExplode.videos.streams.getManifest(videoId,
-          requireWatchPage: true, ytClients: [YoutubeApiClient.androidVr]);
-      final supportedStreams = manifest.audioOnly.sortByBitrate();
+      AudioOnlyStreamInfo? audioStream = _cachedStreamInfo;
+      if (audioStream == null) {
+        final manifest = await ytExplode.videos.streams.getManifest(
+          videoId,
+          requireWatchPage: true,
+          ytClients: [YoutubeApiClient.androidVr],
+        );
+        final supportedStreams = manifest.audioOnly.sortByBitrate();
 
-      final audioStream = quality == 'high'
-          ? supportedStreams.firstOrNull
-          : supportedStreams.lastOrNull;
+        audioStream = quality == 'high'
+            ? supportedStreams.firstOrNull
+            : supportedStreams.lastOrNull;
+      }
 
       if (audioStream == null) {
         throw Exception('No audio stream available for this video.');

@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "About": MessageLookupByLibrary.simpleMessage("Sobre"),
+    "Accent_Color": MessageLookupByLibrary.simpleMessage("Cor de Destaque"),
     "Account": MessageLookupByLibrary.simpleMessage("Conta"),
     "Add_To_Favourites": MessageLookupByLibrary.simpleMessage(
       "Adicionar aos Favoritos",
@@ -39,6 +40,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_To_Queue": MessageLookupByLibrary.simpleMessage("Adicionar à Fila"),
     "Album": MessageLookupByLibrary.simpleMessage("Álbum"),
     "Albums": MessageLookupByLibrary.simpleMessage("Álbuns"),
+    "Already_Up_To_Date": MessageLookupByLibrary.simpleMessage(
+      "Você já possui a versão mais recente.",
+    ),
+    "Amoled_Black": MessageLookupByLibrary.simpleMessage("Preto Amoled"),
+    "App_Folder": MessageLookupByLibrary.simpleMessage("Pasta do Aplicativo"),
     "Appearence": MessageLookupByLibrary.simpleMessage("Aparência"),
     "Artists": MessageLookupByLibrary.simpleMessage("Artistas"),
     "Audio_And_Playback": MessageLookupByLibrary.simpleMessage(
@@ -54,11 +60,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Battery_Optimisation_title": MessageLookupByLibrary.simpleMessage(
       "Otimização de Bateria Detectada",
     ),
+    "Browse_Categories": MessageLookupByLibrary.simpleMessage(
+      "Navegar por Categorias",
+    ),
     "Bug_Report": MessageLookupByLibrary.simpleMessage("Relatar Bug"),
     "Buy_Me_A_Coffee": MessageLookupByLibrary.simpleMessage(
       "Compre-me um Café",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
+    "Change": MessageLookupByLibrary.simpleMessage("Mudar"),
     "Check_For_Update": MessageLookupByLibrary.simpleMessage(
       "Verificar Atualizações",
     ),
@@ -68,9 +78,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Copied_To_Clipboard": MessageLookupByLibrary.simpleMessage(
       "Copiado para a Área de Transferência",
     ),
+    "Could_Not_Search_Song": MessageLookupByLibrary.simpleMessage(
+      "Não foi possível buscar a música.",
+    ),
     "Country": MessageLookupByLibrary.simpleMessage("País"),
     "Create": MessageLookupByLibrary.simpleMessage("Criar"),
     "Create_Playlist": MessageLookupByLibrary.simpleMessage("Criar Playlist"),
+    "Crossfade": MessageLookupByLibrary.simpleMessage("Transição Gradual"),
     "DOwnload_Quality": MessageLookupByLibrary.simpleMessage(
       "Qualidade do Download",
     ),
@@ -114,6 +128,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Insira o ID do Visitante",
     ),
     "Equalizer": MessageLookupByLibrary.simpleMessage("Equalizador"),
+    "Error_Loading_Data": MessageLookupByLibrary.simpleMessage(
+      "Erro ao carregar dados",
+    ),
+    "Error_Loading_More": MessageLookupByLibrary.simpleMessage(
+      "Erro ao carregar mais",
+    ),
     "Favourites": MessageLookupByLibrary.simpleMessage("Favoritos"),
     "Feature_Request": MessageLookupByLibrary.simpleMessage(
       "Solicitar Recurso",
@@ -141,6 +161,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Name": MessageLookupByLibrary.simpleMessage("Nome"),
     "Next_Up": MessageLookupByLibrary.simpleMessage("Próximas"),
     "No": MessageLookupByLibrary.simpleMessage("Não"),
+    "No_Lyrics": MessageLookupByLibrary.simpleMessage("Sem Letras"),
+    "Not_Available": MessageLookupByLibrary.simpleMessage("Não disponível"),
     "Organisation": MessageLookupByLibrary.simpleMessage("Organização"),
     "Pay_With_UPI": MessageLookupByLibrary.simpleMessage("Pagar com UPI"),
     "Payment_Methods": MessageLookupByLibrary.simpleMessage(
@@ -149,6 +171,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Personalised_Content": MessageLookupByLibrary.simpleMessage(
       "Conteúdo Personalizado",
     ),
+    "Play_All": MessageLookupByLibrary.simpleMessage("Tocar Tudo"),
     "Play_Next": MessageLookupByLibrary.simpleMessage("Tocar Próxima"),
     "Playback_History_Deleted": MessageLookupByLibrary.simpleMessage(
       "Histórico de Reprodução Excluído",
@@ -177,6 +200,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Rename_Playlist": MessageLookupByLibrary.simpleMessage(
       "Renomear Playlist",
     ),
+    "Reset": MessageLookupByLibrary.simpleMessage("Restaurar"),
     "Reset_Visitor_Id": MessageLookupByLibrary.simpleMessage(
       "Redefinir ID do Visitante",
     ),
@@ -190,7 +214,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Buscar nos Ajustes",
     ),
     "Search_xmusic": MessageLookupByLibrary.simpleMessage("Buscar no XMusic"),
+    "Select": MessageLookupByLibrary.simpleMessage("Selecionar"),
     "Select_Backup": MessageLookupByLibrary.simpleMessage("Selecionar Backup"),
+    "Select_Color": MessageLookupByLibrary.simpleMessage("Selecionar Cor"),
     "Settings": MessageLookupByLibrary.simpleMessage("Ajustes"),
     "Share": MessageLookupByLibrary.simpleMessage("Compartilhar"),
     "Show_Less": MessageLookupByLibrary.simpleMessage("Mostrar Menos"),
@@ -219,6 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Window_Effect": MessageLookupByLibrary.simpleMessage("Efeito de Janela"),
     "YTMusic": MessageLookupByLibrary.simpleMessage("YTMusic"),
     "Yes": MessageLookupByLibrary.simpleMessage("Sim"),
+    "Youtube_Hint": MessageLookupByLibrary.simpleMessage("youtube"),
     "nSongs": m0,
     "xmusic": MessageLookupByLibrary.simpleMessage("XMusic"),
   };

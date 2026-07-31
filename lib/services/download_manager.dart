@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import 'package:get_it/get_it.dart';
-import 'package:xmusic/ytmusic/ytmusic.dart';
+import 'package:orbit_music/ytmusic/ytmusic.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -113,7 +113,7 @@ class DownloadManager {
     return 'Song deleted successfully.';
   }
 
-  updateStatus(String key, String status) {
+  void updateStatus(String key, String status) {
     Map? song = _box.get(key);
     if (song != null) {
       song['status'] = status;

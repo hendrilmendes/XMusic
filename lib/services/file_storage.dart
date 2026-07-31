@@ -55,7 +55,7 @@ class FileStorage {
     _initialised = true;
   }
 
-  updateDirectories() async {
+  Future<void> updateDirectories() async {
     Directory directory = Directory("dir");
     if (Platform.isAndroid) {
       directory = Directory(
@@ -194,8 +194,12 @@ class FileStorage {
 
   static Future<Directory> _getDirectory(String pathString) async {
     Directory dir = Directory(pathString);
-    if (!(await dir.exists())) {
-      await dir.create(recursive: true);
+    try {
+      if (!(await dir.exists())) {
+        await dir.create(recursive: true);
+      }
+    } catch (e) {
+      // Ignored: The directory will be created later when permissions are granted.
     }
     return dir;
   }

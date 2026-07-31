@@ -97,12 +97,12 @@ class AdaptiveTextField extends StatelessWidget {
         hintText: hintText,
         prefixIcon: prefix,
         suffixIcon: suffix,
-        border: OutlineInputBorder(
-          borderSide: borderWidth > 0
-              ? BorderSide(width: borderWidth)
-              : BorderSide.none,
-          borderRadius: borderRadius,
-        ),
+        border: borderWidth > 0
+            ? OutlineInputBorder(
+                borderSide: BorderSide(width: borderWidth),
+                borderRadius: borderRadius,
+              )
+            : null,
       ),
     );
   }

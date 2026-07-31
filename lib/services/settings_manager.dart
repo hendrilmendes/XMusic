@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:xmusic/generated/l10n.dart';
-import 'package:xmusic/main.dart';
+import 'package:orbit_music/generated/l10n.dart';
+import 'package:orbit_music/main.dart';
 
 import '../ytmusic/ytmusic.dart';
 
@@ -44,6 +44,7 @@ class SettingsManager extends ChangeNotifier {
   List<double> _equalizerBandsGain = [];
   bool _loudnessEnabled = false;
   double _loudnessTargetGain = 0.0;
+  int _crossfadeDuration = 0;
 
   ThemeMode get themeMode => _themeMode;
   List<ThemeMode> get themeModes => _themeModes;
@@ -64,21 +65,21 @@ class SettingsManager extends ChangeNotifier {
   List<double> get equalizerBandsGain => _equalizerBandsGain;
   bool get loudnessEnabled => _loudnessEnabled;
   double get loudnessTargetGain => _loudnessTargetGain;
+  int get crossfadeDuration => _crossfadeDuration;
 
   Map get settings => _box.toMap();
   SettingsManager() {
     _init();
   }
-  _init() {
+  void _init() {
     _themeMode = _themeModes[_box.get('THEME_MODE', defaultValue: 0)];
     _language = _languages.firstWhere(
       (language) =>
-          language['value'] == _box.get('LANGUAGE', defaultValue: 'pt'),
+          language['value'] == _box.get('LANGUAGE', defaultValue: 'en'),
     );
-    _accentColor =
-        _box.get('ACCENT_COLOR') != null
-            ? Color(_box.get('ACCENT_COLOR'))
-            : null;
+    _accentColor = _box.get('ACCENT_COLOR') != null
+        ? Color(_box.get('ACCENT_COLOR'))
+        : null;
     _amoledBlack = _box.get('AMOLED_BLACK', defaultValue: true);
     _dynamicColors = _box.get('DYNAMIC_COLORS', defaultValue: false);
     _windowEffect = windowEffectList.firstWhere(
@@ -91,8 +92,27 @@ class SettingsManager extends ChangeNotifier {
     );
 
     _location = _countries.firstWhere(
-      (country) => country['value'] == _box.get('LOCATION', defaultValue: 'BR'),
+      (country) => country['value'] == _box.get('LOCATION', defaultValue: 'US'),
     );
+
+    // Migration: reset India-specific settings that limit the catalog
+    final String storedLocation = _box.get('LOCATION', defaultValue: 'US');
+    if (storedLocation == 'IN') {
+      _box.put('LOCATION', 'US');
+      _location = _countries.firstWhere((c) => c['value'] == 'US');
+    }
+    // Migration: normalize language to one of the 3 supported values (en, es, pt)
+    final String storedLanguage = _box.get('LANGUAGE', defaultValue: 'en');
+    if (!['en', 'es', 'pt'].contains(storedLanguage)) {
+      String normalized = 'en';
+      if (storedLanguage.startsWith('pt')) {
+        normalized = 'pt';
+      } else if (storedLanguage.startsWith('es')) {
+        normalized = 'es';
+      }
+      _box.put('LANGUAGE', normalized);
+      _language = _languages.firstWhere((l) => l['value'] == normalized);
+    }
 
     _streamingQuality =
         _audioQualities[_box.get('STREAMING_QUALITY', defaultValue: 0)];
@@ -102,8 +122,10 @@ class SettingsManager extends ChangeNotifier {
     _equalizerEnabled = _box.get('EQUALIZER_ENABLED', defaultValue: false);
     _loudnessEnabled = _box.get('LOUDNESS_ENABLED', defaultValue: false);
     _loudnessTargetGain = _box.get('LOUDNESS_TARGET_GAIN', defaultValue: 0.0);
-    _equalizerBandsGain =
-        _box.get('EQUALIZER_BANDS_GAIN', defaultValue: []).cast<double>();
+    _equalizerBandsGain = _box
+        .get('EQUALIZER_BANDS_GAIN', defaultValue: [])
+        .cast<double>();
+    _crossfadeDuration = _box.get('CROSSFADE_DURATION', defaultValue: 0);
   }
 
   String getLocalizedLanguageName(String code, BuildContext context) {
@@ -128,7 +150,7 @@ class SettingsManager extends ChangeNotifier {
     );
   }
 
-  setThemeMode(ThemeMode mode) async {
+  void setThemeMode(ThemeMode mode) async {
     _box.put('THEME_MODE', _themeModes.indexOf(mode));
     _themeMode = mode;
     if (Platform.isWindows) {
@@ -140,7 +162,7 @@ class SettingsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  setwindowEffect(WindowEffect effect) async {
+  void setwindowEffect(WindowEffect effect) async {
     _box.put('WINDOW_EFFECT', effect.name.toUpperCase());
     _windowEffect = effect;
 
@@ -173,7 +195,7 @@ class SettingsManager extends ChangeNotifier {
     final context = GetIt.I<GlobalKey<NavigatorState>>().currentContext;
     if (context != null) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const XMusic()),
+        MaterialPageRoute(builder: (context) => const OrbitMusic()),
       );
     }
   }
@@ -235,7 +257,7 @@ class SettingsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  set loudnessEnabled(enabled) {
+  set loudnessEnabled(bool enabled) {
     _box.put('LOUDNESS_ENABLED', enabled);
     _loudnessEnabled = enabled;
     notifyListeners();
@@ -244,6 +266,12 @@ class SettingsManager extends ChangeNotifier {
   set loudnessTargetGain(double value) {
     _box.put('LOUDNESS_TARGET_GAIN', value);
     _loudnessTargetGain = value;
+    notifyListeners();
+  }
+
+  set crossfadeDuration(int value) {
+    _box.put('CROSSFADE_DURATION', value);
+    _crossfadeDuration = value;
     notifyListeners();
   }
 
@@ -386,87 +414,7 @@ List<Map<String, String>> _countries = [
 ];
 
 List<Map<String, String>> _languages = [
-  {"name": "Afrikaans", "value": "af"},
-  {"name": "Azərbaycan", "value": "az"},
-  {"name": "Bahasa Indonesia", "value": "id"},
-  {"name": "Bahasa Malaysia", "value": "ms"},
-  {"name": "Bosanski", "value": "bs"},
-  {"name": "Català", "value": "ca"},
-  {"name": "Čeština", "value": "cs"},
-  {"name": "Dansk", "value": "da"},
-  {"name": "Deutsch", "value": "de"},
-  {"name": "Eesti", "value": "et"},
-  {"name": "English (India)", "value": "en-IN"},
-  {"name": "English (UK)", "value": "en-GB"},
-  {"name": "English (US)", "value": "en"},
-  {"name": "Español (España)", "value": "es"},
-  {"name": "Español (Latinoamérica)", "value": "es-419"},
-  {"name": "Español (US)", "value": "es-US"},
-  {"name": "Euskara", "value": "eu"},
-  {"name": "Filipino", "value": "fil"},
-  {"name": "Français", "value": "fr"},
-  {"name": "Français (Canada)", "value": "fr-CA"},
-  {"name": "Galego", "value": "gl"},
-  {"name": "Hrvatski", "value": "hr"},
-  {"name": "IsiZulu", "value": "zu"},
-  {"name": "Íslenska", "value": "is"},
-  {"name": "Italiano", "value": "it"},
-  {"name": "Kiswahili", "value": "sw"},
-  {"name": "Latviešu valoda", "value": "lv"},
-  {"name": "Lietuvių", "value": "lt"},
-  {"name": "Magyar", "value": "hu"},
-  {"name": "Nederlands", "value": "nl"},
-  {"name": "Norsk", "value": "no"},
-  {"name": "O‘zbek", "value": "uz"},
-  {"name": "Polski", "value": "pl"},
-  {"name": "Português", "value": "pt-PT"},
-  {"name": "Português (Brasil)", "value": "pt"},
-  {"name": "Română", "value": "ro"},
-  {"name": "Shqip", "value": "sq"},
-  {"name": "Slovenčina", "value": "sk"},
-  {"name": "Slovenščina", "value": "sl"},
-  {"name": "Srpski", "value": "sr-Latn"},
-  {"name": "Suomi", "value": "fi"},
-  {"name": "Svenska", "value": "sv"},
-  {"name": "Tiếng Việt", "value": "vi"},
-  {"name": "Türkçe", "value": "tr"},
-  {"name": "Беларуская", "value": "be"},
-  {"name": "Български", "value": "bg"},
-  {"name": "Кыргызча", "value": "ky"},
-  {"name": "Қазақ Тілі", "value": "kk"},
-  {"name": "Македонски", "value": "mk"},
-  {"name": "Монгол", "value": "mn"},
-  {"name": "Русский", "value": "ru"},
-  {"name": "Српски", "value": "sr"},
-  {"name": "Українська", "value": "uk"},
-  {"name": "Ελληνικά", "value": "el"},
-  {"name": "Հայերեն", "value": "hy"},
-  {"name": "עברית", "value": "iw"},
-  {"name": "اردو", "value": "ur"},
-  {"name": "العربية", "value": "ar"},
-  {"name": "فارسی", "value": "fa"},
-  {"name": "नेपाली", "value": "ne"},
-  {"name": "मराठी", "value": "mr"},
-  {"name": "हिन्दी", "value": "hi"},
-  {"name": "অসমীয়া", "value": "as"},
-  {"name": "বাংলা", "value": "bn"},
-  {"name": "ਪੰਜਾਬੀ", "value": "pa"},
-  {"name": "ગુજરાતી", "value": "gu"},
-  {"name": "ଓଡ଼ିଆ", "value": "or"},
-  {"name": "தமிழ்", "value": "ta"},
-  {"name": "తెలుగు", "value": "te"},
-  {"name": "ಕನ್ನಡ", "value": "kn"},
-  {"name": "മലയാളം", "value": "ml"},
-  {"name": "සිංහල", "value": "si"},
-  {"name": "ภาษาไทย", "value": "th"},
-  {"name": "ລາວ", "value": "lo"},
-  {"name": "ဗမာ", "value": "my"},
-  {"name": "ქართული", "value": "ka"},
-  {"name": "አማርኛ", "value": "am"},
-  {"name": "ខ្មែរ", "value": "km"},
-  {"name": "中文 (简体)", "value": "zh-CN"},
-  {"name": "中文 (繁體)", "value": "zh-TW"},
-  {"name": "中文 (香港)", "value": "zh-HK"},
-  {"name": "日本語", "value": "ja"},
-  {"name": "한국어", "value": "ko"},
+  {"name": "English", "value": "en"},
+  {"name": "Español", "value": "es"},
+  {"name": "Português", "value": "pt"},
 ];

@@ -51,13 +51,15 @@ class _BrowseScreenState extends State<BrowseScreen> {
     }
   }
 
-  fetchData() async {
+  Future<void> fetchData() async {
     setState(() {
       initialLoading = true;
       nextLoading = false;
     });
-    Map<String, dynamic> response =
-        await ytMusic.browse(body: widget.endpoint, limit: 2);
+    Map<String, dynamic> response = await ytMusic.browse(
+      body: widget.endpoint,
+      limit: 2,
+    );
     if (mounted) {
       setState(() {
         initialLoading = false;
@@ -69,25 +71,33 @@ class _BrowseScreenState extends State<BrowseScreen> {
     }
   }
 
-  fetchNext() async {
+  Future<void> fetchNext() async {
     if (continuation == null) return;
     setState(() {
       nextLoading = true;
     });
-    Map<String, dynamic> home =
-        await ytMusic.browseContinuation(additionalParams: continuation!);
-    List<Map<String, dynamic>>? secs =
-        home['sections']?.cast<Map<String, dynamic>>();
+    Map<String, dynamic> home = await ytMusic.browseContinuation(
+      additionalParams: continuation!,
+    );
+    List<Map<String, dynamic>>? secs = home['sections']
+        ?.cast<Map<String, dynamic>>();
     if (mounted) {
       setState(() {
-        sections.addAll(secs ?? []);
+        if (home['addToLast'] == true &&
+            sections.isNotEmpty &&
+            secs != null &&
+            secs.isNotEmpty) {
+          sections.first['contents'].addAll(secs.first['contents']);
+        } else {
+          sections.addAll(secs ?? []);
+        }
         continuation = home['continuation'];
         nextLoading = false;
       });
     }
   }
 
-  _scrollListener() async {
+  Future<void> _scrollListener() async {
     if (initialLoading || nextLoading || continuation == null) {
       return;
     }
@@ -122,18 +132,21 @@ class _BrowseScreenState extends State<BrowseScreen> {
                       const SizedBox(height: 8),
                       ...sections.indexed.map((sec) {
                         return SectionItem(
-                            section: sec.$2,
-                            isMore: widget.isMore ||
-                                sections.length == 1 ||
-                                sec.$1 == 0);
+                          section: sec.$2,
+                          isMore:
+                              widget.isMore ||
+                              sections.length == 1 ||
+                              sec.$1 == 0,
+                        );
                       }),
                       if (!nextLoading && continuation != null)
                         const SizedBox(height: 64),
                       if (nextLoading)
                         const Center(
                           child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: AdaptiveProgressRing()),
+                            padding: EdgeInsets.all(8.0),
+                            child: AdaptiveProgressRing(),
+                          ),
                         ),
                     ],
                   ),
@@ -145,10 +158,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
 }
 
 class HeaderWidget extends StatefulWidget {
-  const HeaderWidget({
-    super.key,
-    required this.header,
-  });
+  const HeaderWidget({super.key, required this.header});
 
   final Map<String, dynamic> header;
 
@@ -164,13 +174,20 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     super.initState();
   }
 
-  _buildImage(BuildContext context, List thumbnails, double maxWidth,
-      {bool isRound = false}) {
+  Widget _buildImage(
+    BuildContext context,
+    List thumbnails,
+    double maxWidth, {
+    bool isRound = false,
+  }) {
     return isRound
         ? CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(
-              getEnhancedImage(thumbnails.first['url'],
-                  dp: MediaQuery.of(context).devicePixelRatio, width: 250),
+              getEnhancedImage(
+                thumbnails.first['url'],
+                dp: MediaQuery.of(context).devicePixelRatio,
+                width: 250,
+              ),
             ),
             radius: 125,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -178,8 +195,11 @@ class _HeaderWidgetState extends State<HeaderWidget> {
         : ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: CachedNetworkImage(
-              imageUrl: getEnhancedImage(thumbnails.last['url'],
-                  dp: MediaQuery.of(context).devicePixelRatio, width: 250),
+              imageUrl: getEnhancedImage(
+                thumbnails.last['url'],
+                dp: MediaQuery.of(context).devicePixelRatio,
+                width: 250,
+              ),
               filterQuality: FilterQuality.high,
               width: 250,
               height: 250,
@@ -187,35 +207,37 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           );
   }
 
-  _buildContent(Map header, BuildContext context, {bool isRow = false}) {
+  Padding _buildContent(
+    Map header,
+    BuildContext context, {
+    bool isRow = false,
+  }) {
     if (widget.header['playlistId'] != null) {
-      isAddedToLibrary = context
-              .watch<LibraryService>()
-              .getPlaylist(widget.header['playlistId']) !=
+      isAddedToLibrary =
+          context.watch<LibraryService>().getPlaylist(
+            widget.header['playlistId'],
+          ) !=
           null;
     }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Column(
-        crossAxisAlignment:
-            isRow ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-        mainAxisAlignment:
-            isRow ? MainAxisAlignment.start : MainAxisAlignment.center,
+        crossAxisAlignment: isRow
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center,
+        mainAxisAlignment: isRow
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
         children: [
           if (header['subtitle'] != null)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(
-                header['subtitle'] ?? '',
-                maxLines: 2,
-              ),
+              child: Text(header['subtitle'] ?? '', maxLines: 2),
             ),
           if (header['secondSubtitle'] != null)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(
-                header['secondSubtitle'],
-              ),
+              child: Text(header['secondSubtitle']),
             ),
           if (header['description'] != null)
             Padding(
@@ -249,8 +271,8 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                           .read<LibraryService>()
                           .addToOrRemoveFromLibrary(header)
                           .then((String message) {
-                        BottomMessage.showText(context, message);
-                      }),
+                            BottomMessage.showText(context, message);
+                          }),
                       child: Icon(
                         isAddedToLibrary
                             ? AdaptiveIcons.library_add_check
@@ -262,16 +284,22 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   if (header['videoId'] != null || header['playlistId'] != null)
                     AdaptiveFilledButton(
                       onPressed: () async {
-                        BottomMessage.showText(context,
-                            S.of(context).Songs_Will_Start_Playing_Soon);
-                        await GetIt.I<MediaPlayer>()
-                            .startPlaylistSongs(Map.from(header));
+                        BottomMessage.showText(
+                          context,
+                          S.of(context).Songs_Will_Start_Playing_Soon,
+                        );
+                        await GetIt.I<MediaPlayer>().startPlaylistSongs(
+                          Map.from(header),
+                        );
                       },
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(Platform.isWindows ? 8 : 35),
+                        borderRadius: BorderRadius.circular(
+                          Platform.isWindows ? 8 : 35,
+                        ),
                       ),
                       color: context.isDarkMode ? Colors.white : Colors.black,
                       child: Row(
@@ -286,7 +314,10 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                             size: 26,
                           ),
                           const SizedBox(width: 8),
-                          const Text("Play All", style: TextStyle(fontSize: 18))
+                          const Text(
+                            "Play All",
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ],
                       ),
                     ),
@@ -302,10 +333,10 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                       size: 20,
                       color: context.isDarkMode ? Colors.white : Colors.black,
                     ),
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
         ],
       ),
     );
@@ -317,32 +348,45 @@ class _HeaderWidgetState extends State<HeaderWidget> {
       width: double.maxFinite,
       child: Adaptivecard(
         // margin: const EdgeInsets.all(16),
-        child: LayoutBuilder(builder: (context, constraints) {
-          return constraints.maxWidth > 600
-              ? Row(
-                  children: [
-                    if (widget.header['thumbnails'] != null)
-                      _buildImage(context, widget.header['thumbnails'],
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return constraints.maxWidth > 600
+                ? Row(
+                    children: [
+                      if (widget.header['thumbnails'] != null)
+                        _buildImage(
+                          context,
+                          widget.header['thumbnails'],
                           constraints.maxWidth,
-                          isRound: widget.header['type'] == 'ARTIST'),
-                    const SizedBox(width: 4),
-                    Expanded(
-                        child:
-                            _buildContent(widget.header, context, isRow: true)),
-                  ],
-                )
-              : Column(
-                  children: [
-                    if (widget.header['thumbnails'] != null)
-                      _buildImage(context, widget.header['thumbnails'],
+                          isRound: widget.header['type'] == 'ARTIST',
+                        ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: _buildContent(
+                          widget.header,
+                          context,
+                          isRow: true,
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      if (widget.header['thumbnails'] != null)
+                        _buildImage(
+                          context,
+                          widget.header['thumbnails'],
                           constraints.maxWidth,
-                          isRound: widget.header['type'] == 'ARTIST'),
-                    SizedBox(
-                        height: widget.header['thumbnails'] != null ? 4 : 0),
-                    _buildContent(widget.header, context),
-                  ],
-                );
-        }),
+                          isRound: widget.header['type'] == 'ARTIST',
+                        ),
+                      SizedBox(
+                        height: widget.header['thumbnails'] != null ? 4 : 0,
+                      ),
+                      _buildContent(widget.header, context),
+                    ],
+                  );
+          },
+        ),
       ),
     );
   }

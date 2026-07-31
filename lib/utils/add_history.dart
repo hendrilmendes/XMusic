@@ -5,7 +5,7 @@ import '../ytmusic/ytmusic.dart';
 
 Box _box = Hive.box('SETTINGS');
 
-addHistory(Map song) async {
+Future<void> addHistory(Map song) async {
   if (_box.get('PLAYBACK_HISTORY', defaultValue: true)) {
     await addLocalHistory(song);
   }
@@ -15,15 +15,22 @@ addHistory(Map song) async {
   }
 }
 
-addLocalHistory(Map song) async {
+Future<void> addLocalHistory(Map song) async {
   Box box = Hive.box('SONG_HISTORY');
   Map? oldState = box.get(song['videoId']);
   int timestamp = DateTime.now().millisecondsSinceEpoch;
   if (oldState != null) {
-    await box.put(song['videoId'],
-        {...oldState, 'plays': oldState['plays'] + 1, 'updatedAt': timestamp});
+    await box.put(song['videoId'], {
+      ...oldState,
+      'plays': oldState['plays'] + 1,
+      'updatedAt': timestamp,
+    });
   } else {
-    await box.put(song['videoId'],
-        {...song, 'plays': 1, 'CreatedAt': timestamp, 'updatedAt': timestamp});
+    await box.put(song['videoId'], {
+      ...song,
+      'plays': 1,
+      'CreatedAt': timestamp,
+      'updatedAt': timestamp,
+    });
   }
 }

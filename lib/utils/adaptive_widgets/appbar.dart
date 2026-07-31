@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart' as fluent_ui;
 import 'package:flutter/material.dart';
@@ -16,26 +17,11 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
   });
 
-  ///The widget displayed before the [title]
-  ///
-  ///Usually an [Icon] widget.
   final Widget? leading;
-
-  /// The title of this [AdaptiveAppBar].
   final Widget? title;
-
-  /// Whether the title should be centered.
-  ///
-  /// Works only on android.
   final bool? centerTitle;
-
-  /// Controls whether we should try to imply the leading widget if null.
   final bool automaticallyImplyLeading;
-
-  /// This widget appears across the bottom of the [AdaptiveAppBar].
   final PreferredSizeWidget? bottom;
-
-  /// A list of Widgets to display in a row after the [title] widget.
   final List<Widget>? actions;
 
   @override
@@ -46,7 +32,8 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: fluent_ui.Column(
           children: [
             fluent_ui.PageHeader(
-              leading: leading ??
+              leading:
+                  leading ??
                   (automaticallyImplyLeading && context.canPop()
                       ? const AdaptiveBackButton()
                       : null),
@@ -57,7 +44,8 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
               commandBar: actions != null || actions?.isNotEmpty == false
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: actions ?? [])
+                      children: actions ?? [],
+                    )
                   : null,
             ),
             if (bottom != null) bottom!,
@@ -65,13 +53,26 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       );
     }
-    return AppBar(
-      leading: leading,
-      title: title,
-      centerTitle: centerTitle,
-      automaticallyImplyLeading: automaticallyImplyLeading,
-      bottom: bottom,
-      actions: actions,
+
+    // Android — Apple Music style clean AppBar. No borders, pure black blend.
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+        child: Container(
+          color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.85),
+          child: AppBar(
+            leading: leading,
+            title: title,
+            centerTitle: centerTitle ?? false,
+            automaticallyImplyLeading: automaticallyImplyLeading,
+            bottom: bottom,
+            actions: actions,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            scrolledUnderElevation: 0,
+          ),
+        ),
+      ),
     );
   }
 
@@ -81,7 +82,8 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
       return Size.fromHeight(50.0 + (bottom == null ? 0 : kTextTabBarHeight));
     } else {
       return Size.fromHeight(
-          kToolbarHeight + (bottom == null ? 0 : kTextTabBarHeight));
+        kToolbarHeight + (bottom == null ? 0 : kTextTabBarHeight),
+      );
     }
   }
 }

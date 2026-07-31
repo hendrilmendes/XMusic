@@ -3,13 +3,10 @@ import 'package:get_it/get_it.dart';
 
 import '../../services/media_player.dart';
 import '../../utils/adaptive_widgets/adaptive_widgets.dart';
-import '../../utils/extensions.dart';
+import 'package:flutter/cupertino.dart';
 
 class PlayButton extends StatefulWidget {
-  const PlayButton({
-    super.key,
-    this.size = 30,
-  });
+  const PlayButton({super.key, this.size = 30});
 
   final double size;
 
@@ -55,21 +52,21 @@ class _PlayButtonState extends State<PlayButton> with TickerProviderStateMixin {
           }
           return AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            height: 60,
-            width: 60,
+            height: 72,
+            width: 72,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: (context.isDarkMode ? Colors.white : Colors.black)
-                  .withAlpha(50),
-              borderRadius: BorderRadius.circular(
-                  buttonState == ButtonState.playing ? 15 : 40),
+              color: Colors.white.withOpacity(0.15),
+              shape: BoxShape.circle,
             ),
             child: (buttonState == ButtonState.loading)
                 ? const AdaptiveProgressRing()
-                : AnimatedIcon(
-                    icon: AnimatedIcons.play_pause,
-                    progress: _animationController,
-                    size: 40,
+                : Icon(
+                    buttonState == ButtonState.playing
+                        ? CupertinoIcons.pause_fill
+                        : CupertinoIcons.play_fill,
+                    size: 36,
+                    color: Colors.white,
                   ),
           );
         },

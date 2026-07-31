@@ -38,7 +38,7 @@ class _ChipScreenState extends State<ChipScreen> {
     _scrollController.dispose();
   }
 
-  _scrollListener() async {
+  Future<void> _scrollListener() async {
     if (initialLoading || nextLoading || continuation == null) {
       return;
     }
@@ -49,7 +49,7 @@ class _ChipScreenState extends State<ChipScreen> {
     }
   }
 
-  fetchHome() async {
+  Future<void> fetchHome() async {
     setState(() {
       initialLoading = true;
       nextLoading = false;
@@ -66,15 +66,16 @@ class _ChipScreenState extends State<ChipScreen> {
     }
   }
 
-  fetchNext() async {
+  Future<void> fetchNext() async {
     if (continuation == null) return;
     setState(() {
       nextLoading = true;
     });
-    Map<String, dynamic> home =
-        await ytMusic.browse(additionalParams: continuation!);
-    List<Map<String, dynamic>> secs =
-        home['sections'].cast<Map<String, dynamic>>();
+    Map<String, dynamic> home = await ytMusic.browse(
+      additionalParams: continuation!,
+    );
+    List<Map<String, dynamic>> secs = home['sections']
+        .cast<Map<String, dynamic>>();
     if (mounted) {
       setState(() {
         sections.addAll(secs);
@@ -87,10 +88,7 @@ class _ChipScreenState extends State<ChipScreen> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
-      appBar: AdaptiveAppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
+      appBar: AdaptiveAppBar(title: Text(widget.title), centerTitle: true),
       body: initialLoading
           ? const Center(child: AdaptiveProgressRing())
           : SingleChildScrollView(
@@ -103,8 +101,9 @@ class _ChipScreenState extends State<ChipScreen> {
                     }),
                     if (nextLoading)
                       const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: AdaptiveProgressRing()),
+                        padding: EdgeInsets.all(8.0),
+                        child: AdaptiveProgressRing(),
+                      ),
                   ],
                 ),
               ),

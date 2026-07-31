@@ -1,12 +1,6 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:xmusic/screens/login/login.dart';
-import 'package:xmusic/screens/settings_screen/account/account.dart';
-import 'package:xmusic/screens/settings_screen/language/language.dart';
+import 'package:orbit_music/screens/settings_screen/language/language.dart';
 
 import '../screens/home_screen/chip_screen.dart';
 import '../screens/home_screen/home_screen.dart';
@@ -25,34 +19,7 @@ import '../screens/settings_screen/settings_screen.dart';
 
 GoRouter router = GoRouter(
   initialLocation: '/',
-  // Adicione a lógica de redirect aqui
-  redirect: (context, state) {
-    // Pega o usuário atual do Firebase
-    final user = FirebaseAuth.instance.currentUser;
-
-    // Verifica se o usuário está logado
-    final bool loggedIn = user != null;
-
-    // Verifica se a rota atual é a de login
-    final bool loggingIn = state.matchedLocation == '/login';
-
-    // Se o usuário NÃO estiver logado E NÃO estiver na página de login,
-    // redireciona para /login.
-    if (!loggedIn && !loggingIn) {
-      return '/login';
-    }
-
-    // Se o usuário ESTIVER logado E estiver tentando acessar a página de login,
-    // redireciona para a home ('/').
-    if (loggedIn && loggingIn) {
-      return '/';
-    }
-
-    // Em todos os outros casos, não faz nada (deixa a navegação acontecer).
-    return null;
-  },
   routes: [
-    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     ShellRoute(
       builder: (context, state, child) => child,
       routes: [
@@ -72,10 +39,22 @@ GoRouter router = GoRouter(
       path: '/player',
       pageBuilder: (context, state) {
         String? videoId = state.extra as String?;
-        return CupertinoPage(
+        return CustomTransitionPage(
           name: 'player',
           child: PlayerScreen(videoId: videoId),
-          fullscreenDialog: true,
+          transitionDuration: const Duration(milliseconds: 500),
+          reverseTransitionDuration: const Duration(milliseconds: 400),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            final slideTween = Tween(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).chain(CurveTween(curve: Curves.fastOutSlowIn));
+
+            return SlideTransition(
+              position: animation.drive(slideTween),
+              child: child,
+            );
+          },
         );
       },
     ),
@@ -105,10 +84,6 @@ List<StatefulShellBranch> branches = [
               Map<String, dynamic> args = state.extra as Map<String, dynamic>;
               return BrowseScreen(endpoint: args);
             },
-          ),
-          GoRoute(
-            path: 'search',
-            builder: (context, state) => const SearchScreen(),
           ),
         ],
       ),
@@ -144,53 +119,34 @@ List<StatefulShellBranch> branches = [
         builder: (context, state) => const SettingsScreen(),
         routes: [
           GoRoute(
-            path: 'account',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: AccountScreen())
-                : const CupertinoPage(child: AccountScreen()),
-          ),
-          GoRoute(
             path: 'appearence',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: AppearenceScreen())
-                : const CupertinoPage(child: AppearenceScreen()),
+            builder: (context, state) => const AppearenceScreen(),
           ),
           GoRoute(
             path: 'language',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: LanguageSettingsScreen())
-                : const CupertinoPage(child: LanguageSettingsScreen()),
+            builder: (context, state) => const LanguageSettingsScreen(),
           ),
           GoRoute(
             path: 'content',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: ContentScreen())
-                : const CupertinoPage(child: ContentScreen()),
+            builder: (context, state) => const ContentScreen(),
           ),
           GoRoute(
             path: 'playback',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: AudioAndPlaybackScreen())
-                : const CupertinoPage(child: AudioAndPlaybackScreen()),
+            builder: (context, state) => const AudioAndPlaybackScreen(),
             routes: [
               GoRoute(
                 path: 'equalizer',
-                pageBuilder: (context, state) =>
-                    const CupertinoPage(child: EqualizerScreen()),
+                builder: (context, state) => const EqualizerScreen(),
               ),
             ],
           ),
           GoRoute(
             path: 'backup_restore',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: BackupRestoreScreen())
-                : const CupertinoPage(child: BackupRestoreScreen()),
+            builder: (context, state) => const BackupRestoreScreen(),
           ),
           GoRoute(
             path: 'about',
-            pageBuilder: (context, state) => Platform.isWindows
-                ? const FluentPage(child: AboutScreen())
-                : const CupertinoPage(child: AboutScreen()),
+            builder: (context, state) => const AboutScreen(),
           ),
         ],
       ),
@@ -213,35 +169,19 @@ class MyPageView extends StatefulWidget {
 }
 
 class MyPageViewState extends State<MyPageView> {
-  final PageController controller = PageController(initialPage: 0);
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant MyPageView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.currentIndex != widget.currentIndex) {
-      controller.animateToPage(
-        widget.currentIndex,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      scrollDirection:
-          (Platform.isWindows || MediaQuery.of(context).size.width >= 450)
-          ? Axis.vertical
-          : Axis.horizontal,
-      physics: const NeverScrollableScrollPhysics(),
-      controller: controller,
-      children: widget.children,
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      transitionBuilder: (child, animation) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+      child: Container(
+        key: ValueKey<int>(widget.currentIndex),
+        child: widget.children[widget.currentIndex],
+      ),
     );
   }
 }

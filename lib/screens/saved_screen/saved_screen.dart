@@ -6,7 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:xmusic/utils/extensions.dart';
+import 'package:orbit_music/utils/extensions.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +20,7 @@ import 'download_screen.dart';
 import 'favourite_details_screen.dart';
 import 'history_screen.dart';
 import 'playlist_details_screen.dart';
+import '../../widgets/screen_header.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({super.key});
@@ -38,32 +39,35 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget build(BuildContext context) {
     Map playlists = context.watch<LibraryService>().playlists;
     return AdaptiveScaffold(
-      appBar: AdaptiveAppBar(
-        title: Text(S.of(context).Saved),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        actions: [
-          AdaptiveIconButton(
-            onPressed: () {
-              Modals.showImportplaylistModal(context);
-            },
-            icon: Icon(AdaptiveIcons.import, size: 25),
-          ),
-          AdaptiveIconButton(
-            onPressed: () {
-              Modals.showCreateplaylistModal(context);
-            },
-            icon: Icon(AdaptiveIcons.add, size: 25),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 1000),
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Column(
-              children: [
+      appBar: null,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 1000),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ScreenHeader(
+                    title: S.of(context).Saved,
+                    trailing: Row(
+                      children: [
+                        AdaptiveIconButton(
+                          onPressed: () {
+                            Modals.showImportplaylistModal(context);
+                          },
+                          icon: Icon(AdaptiveIcons.import, size: 25, color: Theme.of(context).colorScheme.primary),
+                        ),
+                        AdaptiveIconButton(
+                          onPressed: () {
+                            Modals.showCreateplaylistModal(context);
+                          },
+                          icon: Icon(AdaptiveIcons.add, size: 25, color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ],
+                    ),
+                  ),
                 AdaptiveListTile(
                   margin: const EdgeInsets.symmetric(vertical: 4),
                   title: Text(S.of(context).Favourites),
@@ -340,6 +344,7 @@ class _SavedScreenState extends State<SavedScreen> {
                           .toList(),
                 ),
               ],
+            ),
             ),
           ),
         ),

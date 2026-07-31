@@ -29,21 +29,21 @@ class Adaptivecard extends StatelessWidget {
         backgroundColor: backgroundColor,
         margin: margin,
         borderRadius:
-            borderRadius ?? const BorderRadius.all(Radius.circular(4.0)),
+            borderRadius ?? const BorderRadius.all(Radius.circular(12.0)),
         child: child,
       );
     }
-    return Card(
-      margin: margin ?? const EdgeInsets.all(1),
-      color: backgroundColor,
-      elevation: elevation,
-      shape: RoundedRectangleBorder(
-          borderRadius:
-              borderRadius ?? const BorderRadius.all(Radius.circular(8.0))),
-      child: Padding(
-        padding: padding ?? const EdgeInsets.all(12.0),
-        child: child,
+
+    // Android — Apple Music style flat surface, no borders, simple color.
+    return Container(
+      margin: margin ?? const EdgeInsets.all(2),
+      padding: padding ?? const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        color: backgroundColor ?? Theme.of(context).cardColor,
+        borderRadius:
+            borderRadius ?? const BorderRadius.all(Radius.circular(12)),
       ),
+      child: child,
     );
   }
 }

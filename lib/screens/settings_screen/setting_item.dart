@@ -20,3 +20,10 @@ class SettingItem {
     this.subtitle,
   });
 }
+
+class SettingGroup {
+  String title;
+  List<SettingItem> items;
+
+  SettingGroup({required this.title, required this.items});
+}

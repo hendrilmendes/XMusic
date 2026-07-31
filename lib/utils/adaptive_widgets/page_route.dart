@@ -1,7 +1,6 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent_ui;
+import 'package:flutter/material.dart';
 
 class AdaptivePageRoute<T> extends PageRoute<T> {
   final WidgetBuilder builder;
@@ -18,8 +17,11 @@ class AdaptivePageRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     final result = builder(context);
     return Semantics(
       scopesRoute: true,
@@ -38,8 +40,12 @@ class AdaptivePageRoute<T> extends PageRoute<T> {
   Duration get transitionDuration => const Duration(milliseconds: 200);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     return child;
   }
 
@@ -47,7 +53,33 @@ class AdaptivePageRoute<T> extends PageRoute<T> {
     if (Platform.isWindows) {
       return fluent_ui.FluentPageRoute<T>(builder: builder);
     } else {
-      return CupertinoPageRoute<T>(builder: builder);
+      return PageRouteBuilder<T>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            builder(context),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 0.04);
+          const end = Offset.zero;
+          const curve = Curves.easeOutQuart;
+
+          var tween = Tween(
+            begin: begin,
+            end: end,
+          ).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          var fadeAnimation = Tween<double>(
+            begin: 0.0,
+            end: 1.0,
+          ).animate(CurvedAnimation(parent: animation, curve: curve));
+
+          return FadeTransition(
+            opacity: fadeAnimation,
+            child: SlideTransition(position: offsetAnimation, child: child),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
+        reverseTransitionDuration: const Duration(milliseconds: 300),
+      );
     }
   }
 }

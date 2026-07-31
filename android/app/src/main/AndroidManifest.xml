@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
 
     <application
-        android:label="XMusic"
+        android:label="Orbit Music"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
@@ -57,14 +57,6 @@
                 <data android:scheme="https" />
                 <data android:host="music.youtube.com" />
                  <data android:scheme="xmusic" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.linusu.flutter_web_auth.CallbackActivity" android:exported="true">
-            <intent-filter android:label="flutter_web_auth">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="xmusic" android:host="spotify" android:path="/auth"/>
             </intent-filter>
         </activity>
 

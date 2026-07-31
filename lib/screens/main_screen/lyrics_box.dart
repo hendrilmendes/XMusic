@@ -3,6 +3,7 @@ import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:get_it/get_it.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
+import 'package:orbit_music/generated/l10n.dart';
 
 import '../../services/lyrics.dart';
 import '../../services/media_player.dart';
@@ -76,64 +77,66 @@ class _LyricsBoxState extends State<LyricsBox> {
       padding: const EdgeInsets.all(16),
       child: Center(
         child: ValueListenableBuilder(
-            valueListenable: GetIt.I<MediaPlayer>().progressBarState,
-            builder: (context, progress, child) {
-              return progress.total.inSeconds > 0 && _fetchLyricsFuture != null
-                  ? FutureBuilder(
-                      future: _fetchLyricsFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data == null) {
-                            return const Text('No Lyrics');
-                          }
-                          if (snapshot.data!['success'] == false) {
-                            return const Text('No Lyrics');
-                          }
-                          Map lyrics = snapshot.data!;
-                          return ValueListenableBuilder(
-                              valueListenable:
-                                  GetIt.I<MediaPlayer>().progressBarState,
-                              builder: (context, progress, child) {
-                                return LyricsReader(
-                                  padding: EdgeInsets.zero,
-                                  position: progress.current.inMilliseconds,
-                                  playing: context
-                                      .watch<MediaPlayer>()
-                                      .player
-                                      .playing,
-                                  lyricUi: UINetease(
-                                    highlight: false,
-                                    defaultSize: 19,
-                                  ),
-                                  model: LyricsModelBuilder.create()
-                                      .bindLyricToMain(
-                                        (lyrics['syncedLyrics']).toString(),
-                                      )
-                                      .getModel(),
-                                  emptyBuilder: () => SingleChildScrollView(
-                                    child: Center(
-                                      child: Text(
-                                        lyrics['plainLyrics'] ?? "No lyrics",
-                                        style: UINetease(
-                                                highlight: false,
-                                                defaultSize: 19)
-                                            .getOtherMainTextStyle(),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                  size: widget.size,
-                                );
-                              });
+          valueListenable: GetIt.I<MediaPlayer>().progressBarState,
+          builder: (context, progress, child) {
+            return progress.total.inSeconds > 0 && _fetchLyricsFuture != null
+                ? FutureBuilder(
+                    future: _fetchLyricsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data == null) {
+                          return Text(S.of(context).No_Lyrics);
                         }
-                        if (snapshot.hasError) {
-                          return const Text('No Lyrics');
+                        if (snapshot.data!['success'] == false) {
+                          return Text(S.of(context).No_Lyrics);
                         }
-                        return const AdaptiveProgressRing();
-                      },
-                    )
-                  : const AdaptiveProgressRing();
-            }),
+                        Map lyrics = snapshot.data!;
+                        return ValueListenableBuilder(
+                          valueListenable:
+                              GetIt.I<MediaPlayer>().progressBarState,
+                          builder: (context, progress, child) {
+                            return LyricsReader(
+                              padding: EdgeInsets.zero,
+                              position: progress.current.inMilliseconds,
+                              playing: context
+                                  .watch<MediaPlayer>()
+                                  .player
+                                  .playing,
+                              lyricUi: UINetease(
+                                highlight: false,
+                                defaultSize: 19,
+                              ),
+                              model: LyricsModelBuilder.create()
+                                  .bindLyricToMain(
+                                    (lyrics['syncedLyrics']).toString(),
+                                  )
+                                  .getModel(),
+                              emptyBuilder: () => SingleChildScrollView(
+                                child: Center(
+                                  child: Text(
+                                    lyrics['plainLyrics'] ?? "No lyrics",
+                                    style: UINetease(
+                                      highlight: false,
+                                      defaultSize: 19,
+                                    ).getOtherMainTextStyle(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              size: widget.size,
+                            );
+                          },
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Text(S.of(context).No_Lyrics);
+                      }
+                      return const AdaptiveProgressRing();
+                    },
+                  )
+                : const AdaptiveProgressRing();
+          },
+        ),
       ),
     );
   }

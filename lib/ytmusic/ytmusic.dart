@@ -1,6 +1,6 @@
 library;
 
-import 'package:xmusic/ytmusic/mixins/library.dart';
+import 'package:orbit_music/ytmusic/mixins/library.dart';
 
 import 'mixins/browsing.dart';
 import 'mixins/search.dart';

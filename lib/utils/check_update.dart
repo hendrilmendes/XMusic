@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:pub_semver/pub_semver.dart';
-import 'package:xmusic/main.dart';
+import 'package:orbit_music/main.dart';
 
 Future<UpdateInfo?> checkUpdate({BaseDeviceInfo? deviceInfo}) async {
   final response = await http.get(

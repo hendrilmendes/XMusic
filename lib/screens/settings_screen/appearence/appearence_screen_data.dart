@@ -28,12 +28,12 @@ List<SettingItem> appearenceScreenData(BuildContext context) => [
                   .toList(),
               onChanged: (value) async {
                 if (value == null) return;
-                await context.read<SettingsManager>().setThemeMode(value);
+                context.read<SettingsManager>().setThemeMode(value);
               });
         },
       ),
       SettingItem(
-        title: 'Accent Color',
+        title: S.of(context).Accent_Color,
         icon: Icons.colorize_outlined,
         trailing: (context) {
           Color? accentColor = context.watch<SettingsManager>().accentColor;
@@ -77,12 +77,12 @@ List<SettingItem> appearenceScreenData(BuildContext context) => [
                     .toList(),
                 onChanged: (value) async {
                   if (value == null) return;
-                  await context.read<SettingsManager>().setwindowEffect(value);
+                  context.read<SettingsManager>().setwindowEffect(value);
                 });
           },
         ),
       SettingItem(
-        title: 'Amoled Black',
+        title: S.of(context).Amoled_Black,
         icon: Icons.mode_night_outlined,
         onTap: (context) async {
           bool isEnabled = context.read<SettingsManager>().amoledBlack;
