@@ -48,7 +48,7 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
                     )
                   : null,
             ),
-            if (bottom != null) bottom!,
+            ?bottom,
           ],
         ),
       );
